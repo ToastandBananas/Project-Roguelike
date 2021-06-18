@@ -29,14 +29,15 @@ MonoBehaviour:
     referenceMode: 2
     serializationDepthLimit: 64
     assemblyNames:
-    - AstarPathfindingProject
     - InControl
+    - AstarPathfindingProject
     - Assembly-CSharp-firstpass
+    - Assembly-CSharp
     - VSSettingsProvider
     - PsdPlugin
     - AstarPathfindingProjectEditor
-    - PackageToolsEditor
     - InControl.Editor
+    - PackageToolsEditor
     showAdvancedSettings: 0
   addMgrToSceneAutomatically: 0
   autoUpdateReferences: 1
