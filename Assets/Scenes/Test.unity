@@ -384,6 +384,9 @@ MonoBehaviour:
   onCooldown: 0
   gameTiles: {fileID: 519101914}
   turnManager: {fileID: 0}
+  movementObstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!58 &549636868
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1313,6 +1316,9 @@ MonoBehaviour:
   onCooldown: 0
   gameTiles: {fileID: 0}
   turnManager: {fileID: 0}
+  movementObstacleMask:
+    serializedVersion: 2
+    m_Bits: 4416
 --- !u!212 &1347319891
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1467,7 +1473,7 @@ MonoBehaviour:
   gravity: {x: NaN, y: NaN, z: NaN}
   groundMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294962841
   centerOffsetCompatibility: NaN
   orientation: 1
   enableRotation: 0

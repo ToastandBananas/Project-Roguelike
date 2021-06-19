@@ -7,16 +7,14 @@ public class Movement : MonoBehaviour
     [HideInInspector] public GameTiles gameTiles;
     [HideInInspector] public TurnManager turnManager;
 
-    float moveTime = 0.2f;
+    public LayerMask movementObstacleMask;
 
-    LayerMask movementObstacleMask;
+    float moveTime = 0.2f;
 
     public virtual void Start()
     {
         gameTiles = GameTiles.instance;
         turnManager = TurnManager.instance;
-
-        movementObstacleMask = LayerMask.GetMask("Character", "Walls", "Objects");
     }
 
     public void Move(int xDir, int yDir, bool isNPC)
@@ -88,7 +86,6 @@ public class Movement : MonoBehaviour
             Vector3 newPosition = Vector3.MoveTowards(transform.position, end, inverseMoveTime * Time.deltaTime);
             transform.position = newPosition;
             sqrRemainingDistance = (transform.position - end).sqrMagnitude;
-
             yield return null;
         }
 
@@ -98,7 +95,6 @@ public class Movement : MonoBehaviour
             Vector3 newPosition = Vector3.MoveTowards(transform.position, originalPos, inverseMoveTime * Time.deltaTime);
             transform.position = newPosition;
             sqrRemainingDistance = (transform.position - originalPos).sqrMagnitude;
-
             yield return null;
         }
 

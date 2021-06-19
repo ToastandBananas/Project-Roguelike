@@ -61,7 +61,14 @@ public class NPCMovement : Movement
             if (gameTiles.gridGraph.GetNearest(nextPos).node.Tag == 31)
                 return transform.position;
             else
-                return nextPos;
+            {
+                // Make sure the NPC isn't trying to move on top of an obstacle, such as an object or wall
+                RaycastHit2D hit = Physics2D.Raycast(nextPos, Vector2.zero, 1, movementObstacleMask);
+                if (hit.collider == null)
+                    return nextPos;
+                else
+                    return transform.position;
+            }
         }
     }
 }

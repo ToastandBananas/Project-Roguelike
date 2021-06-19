@@ -5,6 +5,8 @@ public class PlayerMovement : Movement
     public override void Start()
     {
         base.Start();
+
+        movementObstacleMask = LayerMask.GetMask("Character", "Walls", "Objects");
     }
     
     void Update()
