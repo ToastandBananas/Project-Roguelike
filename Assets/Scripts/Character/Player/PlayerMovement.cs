@@ -24,7 +24,7 @@ public class PlayerMovement : Movement
         float horizontal = movementInput.x;
         float vertical   = movementInput.y;
 
-        if (horizontal > 0.3f || horizontal < -0.3f || vertical > 0.3f || vertical < -0.3f) // Account for stick drift
+        if (horizontal > 0.3f || horizontal < -0.3f || vertical > 0.3f || vertical < -0.3f) // Account for stick drift (which is quite common)
         {
             if (horizontal <= 0.3f && horizontal >= -0.3f)
             {

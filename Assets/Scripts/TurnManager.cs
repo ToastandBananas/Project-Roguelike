@@ -41,7 +41,7 @@ public class TurnManager : MonoBehaviour
 
     public void TakeNPCTurn(NPCMovement npcMovment)
     {
-        npcMovment.MoveToNextPointOnPath();
+        npcMovment.TakeTurn();
     }
 
     void DoAllNPCsTurns()

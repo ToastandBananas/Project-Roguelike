@@ -9,10 +9,14 @@ public class Movement : MonoBehaviour
 
     float moveTime = 0.2f;
 
+    LayerMask movementObstacleMask;
+
     public virtual void Start()
     {
         gameTiles = GameTiles.instance;
         turnManager = TurnManager.instance;
+
+        movementObstacleMask = LayerMask.GetMask("Character", "Walls", "Objects");
     }
 
     public void Move(int xDir, int yDir, bool isNPC)
@@ -20,27 +24,41 @@ public class Movement : MonoBehaviour
         Vector2 startCell = transform.position;
         Vector2 targetCell = startCell + new Vector2(xDir, yDir);
 
+        RaycastHit2D hit = Physics2D.Raycast(targetCell, Vector2.zero, 1, movementObstacleMask);
+        
         // If the target tile is a walkable tile, the player moves here
-        if (TargetTileIsWalkable(targetCell))// || targetHasRoadTile) && (targetHasWallTile == false && targetHasObstacleTile == false && targetHasClosedDoorTile == false))
+        if (hit.collider == null)
             StartCoroutine(SmoothMovement(targetCell, isNPC));
         else
             StartCoroutine(BlockedMovement(targetCell));
     }
 
+    public void FaceForward(Vector2 targetPos)
+    {
+        if (transform.position.x > targetPos.x)
+            transform.localScale = new Vector3(-1, 1);
+        else
+            transform.localScale = Vector3.one;
+    }
+
     // Move Animation
-    public virtual IEnumerator SmoothMovement(Vector3 end, bool isNPC)
+    public virtual IEnumerator SmoothMovement(Vector3 endPos, bool isNPC)
     {
         isMoving = true;
+        FaceForward(endPos);
 
-        float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
+        // Set pathfinding grid graph tags for current and end position nodes
+        gameTiles.SetTagForNode(gameTiles.gridGraph.GetNearest(transform.position).node);
+        gameTiles.gridGraph.GetNearest(endPos).node.Tag = 31; // Character tag
+
+        float sqrRemainingDistance = (transform.position - endPos).sqrMagnitude;
         float inverseMoveTime = 1 / moveTime;
 
         while (sqrRemainingDistance > float.Epsilon)
         {
-            Vector3 newPosition = Vector3.MoveTowards(transform.position, end, inverseMoveTime * Time.deltaTime);
+            Vector3 newPosition = Vector3.MoveTowards(transform.position, endPos, inverseMoveTime * Time.deltaTime);
             transform.position = newPosition;
-            sqrRemainingDistance = (transform.position - end).sqrMagnitude;
-
+            sqrRemainingDistance = (transform.position - endPos).sqrMagnitude;
             yield return null;
         }
 

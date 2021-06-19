@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Pathfinding;
 
 public class GameTiles : MonoBehaviour
 {
@@ -19,6 +20,10 @@ public class GameTiles : MonoBehaviour
     //public Dictionary<Vector3, Tile> obstacleTiles   = new Dictionary<Vector3, Tile>();
     //public Dictionary<Vector3, Tile> roadTiles       = new Dictionary<Vector3, Tile>();
     //public Dictionary<Vector3, Tile> closedDoorTiles = new Dictionary<Vector3, Tile>();
+
+    [HideInInspector] public GridGraph gridGraph;
+
+    Vector3 gridOffset = new Vector3(0.5f, 0.5f);
 
     void Awake()
     {
@@ -40,18 +45,24 @@ public class GameTiles : MonoBehaviour
 
     void Start()
     {
-        var gg = AstarPath.active.data.gridGraph;
-        for (int y = 0; y < gg.depth; y++)
+        // Update tags of each node
+        gridGraph = AstarPath.active.data.gridGraph;
+        for (int y = 0; y < gridGraph.depth; y++)
         {
-            for (int x = 0; x < gg.width; x++)
+            for (int x = 0; x < gridGraph.width; x++)
             {
-                var node = gg.GetNode(x, y);
-                if (GetTileFromWorldPosition((Vector3)node.position - new Vector3(0.5f, 0.5f), shallowWaterTiles) != null)
-                    node.Tag = 2;
-                else
-                    node.Tag = 0;
+                var node = gridGraph.GetNode(x, y);
+                SetTagForNode(node);
             }
         }
+    }
+
+    public void SetTagForNode(GraphNode node)
+    {
+        if (GetTileFromWorldPosition((Vector3)node.position - gridOffset, shallowWaterTiles) != null)
+            node.Tag = 2;
+        else
+            node.Tag = 0;
     }
 
     // Use this for initialization
