@@ -35,8 +35,11 @@ public class BlockerPath : MonoBehaviour
             path = ABPath.Construct(transform.position, targetPos);
 
         // Make the path use a specific traversal provider
-        path.traversalProvider = traversalProvider;
-        //path.traversalProvider = new CustomTraversalProvider();
+        //path.traversalProvider = traversalProvider;
+        CustomTraversalProvider customTraversalProvider = new CustomTraversalProvider();
+        customTraversalProvider.blockManager = traversalProvider;
+
+        path.traversalProvider = customTraversalProvider;
 
         // Calculate the path synchronously
         AstarPath.StartPath(path);
@@ -53,7 +56,7 @@ public class BlockerPath : MonoBehaviour
             // Draw the path in the scene view
             for (int i = 0; i < path.vectorPath.Count - 1; i++)
             {
-                Debug.DrawLine(path.vectorPath[i], path.vectorPath[i + 1], Color.red);
+                //Debug.DrawLine(path.vectorPath[i], path.vectorPath[i + 1], Color.red);
             }
         }
     }
