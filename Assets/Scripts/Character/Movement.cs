@@ -7,9 +7,15 @@ public class Movement : MonoBehaviour
     [HideInInspector] public GameTiles gameTiles;
     [HideInInspector] public TurnManager turnManager;
 
+    [Header("Obstacle Mask")]
     public LayerMask movementObstacleMask;
 
     float moveTime = 0.2f;
+
+    public virtual void Awake()
+    {
+
+    }
 
     public virtual void Start()
     {
