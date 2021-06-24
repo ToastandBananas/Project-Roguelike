@@ -46,7 +46,7 @@ public class Movement : MonoBehaviour
     }
 
     // Move Animation
-    public virtual IEnumerator SmoothMovement(Vector3 endPos, bool isNPC)
+    public virtual IEnumerator SmoothMovement(Vector2 endPos, bool isNPC)
     {
         isMoving = true;
         FaceForward(endPos);
@@ -55,25 +55,41 @@ public class Movement : MonoBehaviour
         gameTiles.SetTagForNode(gameTiles.gridGraph.GetNearest(transform.position).node);
         gameTiles.gridGraph.GetNearest(endPos).node.Tag = 31; // Character tag
 
-        float sqrRemainingDistance = (transform.position - endPos).sqrMagnitude;
-        float inverseMoveTime = 1 / moveTime;
+        float sqrRemainingDistance = ((Vector2)transform.position - endPos).sqrMagnitude;
+
+        float finalMoveTime = moveTime;
+        if (IsDiagonal(endPos))
+            finalMoveTime = moveTime / 1.414214f; // 1.414214 is the length of a diagonal movement
+
+        float inverseMoveTime = 1 / finalMoveTime;
 
         while (sqrRemainingDistance > float.Epsilon)
         {
             Vector3 newPosition = Vector3.MoveTowards(transform.position, endPos, inverseMoveTime * Time.deltaTime);
             transform.position = newPosition;
-            sqrRemainingDistance = (transform.position - endPos).sqrMagnitude;
+            sqrRemainingDistance = ((Vector2)transform.position - endPos).sqrMagnitude;
             yield return null;
         }
 
         if (isNPC)
-        {
-            turnManager.npcsFinishedTakingTurnCount++;
-            if (turnManager.npcsFinishedTakingTurnCount == turnManager.npcs.Count)
-                turnManager.ReadyPlayersTurn();
-        }
+            FinishTurn();
 
         isMoving = false;
+    }
+
+    bool IsDiagonal(Vector2 endPos)
+    {
+        if (transform.position.x != endPos.x && transform.position.y != endPos.y) 
+            return true;
+
+        return false;
+    }
+
+    public void FinishTurn()
+    {
+        turnManager.npcsFinishedTakingTurnCount++;
+        if (turnManager.npcsFinishedTakingTurnCount == turnManager.npcs.Count)
+            turnManager.ReadyPlayersTurn();
     }
 
     // Blocked Animation

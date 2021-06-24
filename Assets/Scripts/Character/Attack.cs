@@ -27,9 +27,14 @@ public class Attack : MonoBehaviour
     /// <summary>This function determines what type of attack the character should do.</summary>
     public void DoAttack()
     {
-        // TODO: Determine attack based off of held weapons
+        // TODO: Determine attack based off of held weapons, throwables and spells
+
+        characterManager.npcMovement.FaceForward(characterManager.npcMovement.target.position);
+
         if (characterManager.npcMovement != null)
             Debug.Log(name + " is attacking " + characterManager.npcMovement.target);
+
+        characterManager.npcMovement.FinishTurn();
     }
 
     public IEnumerator Attack_DualWield()

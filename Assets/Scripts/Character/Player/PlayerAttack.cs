@@ -13,7 +13,7 @@ public class PlayerAttack : Attack
     {
         if (canAttack /*&& /iManager.UIMenuActive() == false*/ && GameControls.gamePlayActions.playerAttack.WasPressed)
         {
-            DoAttack();
+            //DoAttack();
         }
     }
 }

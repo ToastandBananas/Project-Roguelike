@@ -399,6 +399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3d2c0d65f6319e4f94475806f38a35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackRange: 1
   characterManager: {fileID: 0}
   canAttack: 1
 --- !u!114 &549636867
@@ -720,7 +721,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d8a53acd40489046ad28d08fe6f8af4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lookRadius: 12
+  lookRadius: 10
   enemiesInRange: []
   alliesInRange: []
   knownEnemiesInRange: []
@@ -1454,6 +1455,9 @@ MonoBehaviour:
   movementObstacleMask:
     serializedVersion: 2
     m_Bits: 4416
+  fleeObstacleMask:
+    serializedVersion: 2
+    m_Bits: 256
   fleeDistance: 20
   shouldAlwaysFleeCombat: 0
   leader: {fileID: 0}
@@ -1485,11 +1489,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 443426bfc0d83fc40916f08a6592718d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackRange: 1
   characterManager: {fileID: 0}
   canAttack: 1
-  combatRange: 8
-  attackRange: 0.9
   backoffDistance: 1.25
+  combatRange: 8
   targetInCombatRange: 0
   targetInAttackRange: 0
   currentCombatState: 0
@@ -1724,7 +1728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ddd1a5acdd29934f9d3c60be036144d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultState: 0
+  defaultState: 2
   currentState: 0
 --- !u!1 &1531877140
 GameObject:

@@ -6,6 +6,7 @@ using CodeMonkey.Utils;
 public class NPCMovement : Movement
 {
     [Header("Flee State Variables")]
+    public LayerMask fleeObstacleMask;
     public float fleeDistance = 20f;
     public bool shouldAlwaysFleeCombat;
 
@@ -68,15 +69,19 @@ public class NPCMovement : Movement
 
     public void TakeTurn()
     {
-        StartCoroutine(MoveToNextPointOnPath());
+        characterManager.vision.CheckEnemyVisibility();
+        characterManager.stateController.DoAction();
     }
 
-    IEnumerator MoveToNextPointOnPath()
+    public IEnumerator MoveToNextPointOnPath()
     {
+        yield return null;
+
         AIPath.SearchPath();
 
         while (AIPath.pathPending)
         {
+            // Finish searching for a path before moving
             yield return null;
         }
 
@@ -122,13 +127,10 @@ public class NPCMovement : Movement
     #region Set Pathfinding Target
     public void SetTarget(Transform targetTransform)
     {
-        if (target != targetTransform || AIPath.canMove == false)
-        {
-            // Set pathfinding variables
-            target = targetTransform;
-            AIDestSetter.target = targetTransform;
-            AIDestSetter.moveToTargetPos = false;
-        }
+        // Set pathfinding variables
+        target = targetTransform;
+        AIDestSetter.target = targetTransform;
+        AIDestSetter.moveToTargetPos = false;
     }
 
     public void SetPathToCurrentTarget()
@@ -139,13 +141,10 @@ public class NPCMovement : Movement
     // Used for waypoint and wandering movement (or any other time assigning a target transform is impossible)
     public void SetTargetPosition(Vector2 targetPosition)
     {
-        if (this.targetPosition != targetPosition)
-        {
-            // Set pathfinding variables
-            AIDestSetter.targetPos = targetPosition;
-            this.targetPosition = targetPosition;
-            AIDestSetter.moveToTargetPos = true;
-        }
+        // Set pathfinding variables
+        AIDestSetter.targetPos = targetPosition;
+        this.targetPosition = targetPosition;
+        AIDestSetter.moveToTargetPos = true;
     }
     #endregion
 
@@ -157,9 +156,14 @@ public class NPCMovement : Movement
             float distToTarget = Vector2.Distance(theTarget.position, transform.position);
 
             if (distToTarget <= startFollowingDistance)
-                StartCoroutine(DelayStopPathfinding(0.1f));
-            else if (characterManager.npcMovement.AIDestSetter.target == null)
+            {
+                FinishTurn();
+                return;
+            }
+            else if (characterManager.npcMovement.AIDestSetter.target != theTarget)
                 SetTarget(theTarget);
+
+            StartCoroutine(MoveToNextPointOnPath());
         }
         else
         {
@@ -175,7 +179,7 @@ public class NPCMovement : Movement
     #endregion
 
     #region Flee
-    public void Flee(Transform targetToFleeFrom, float fleeDist, bool isInCombat)
+    public void Flee(Transform targetToFleeFrom, float fleeDist)
     {
         float distToTarget = Vector2.Distance(targetToFleeFrom.position, transform.position);
 
@@ -193,7 +197,7 @@ public class NPCMovement : Movement
             distToFleeDestination = Vector2.Distance(fleeDestination, transform.position);
 
             // Check if there is a wall in the way
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, (fleeDestination - transform.position).normalized, 3f, movementObstacleMask);
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, (fleeDestination - transform.position).normalized, 3f, fleeObstacleMask);
 
             // If the character is about to run into a wall, choose a new destination
             if (hit.collider != null)
@@ -203,8 +207,10 @@ public class NPCMovement : Movement
                 distToFleeDestination = Vector2.Distance(fleeDestination, transform.position);
                 SetTargetPosition(fleeDestination);
             }
+
+            StartCoroutine(MoveToNextPointOnPath());
         }
-        else if (isInCombat == false) // If the character has reached a safe distance from the targetToFleeFrom, resume its default State
+        else // If the character has reached a safe distance from the targetToFleeFrom, resume its default State
         {
             characterManager.stateController.SetToDefaultState(shouldFollowLeader);
             targetFleeingFrom = null;
@@ -235,17 +241,19 @@ public class NPCMovement : Movement
                 initialPatrolPointSet = true;
             }
 
-            if (Vector2.Distance(patrolPoints[currentPatrolPointIndex], transform.position) <= characterManager.npcMovement.AIPath.endReachedDistance)
+            if (Vector2.Distance(patrolPoints[currentPatrolPointIndex], transform.position) <= 0.1f)
             {
                 if (currentPatrolPointIndex == patrolPoints.Length - 1)
                     currentPatrolPointIndex = 0;
                 else
                     currentPatrolPointIndex++;
-            }
-            else if (targetPosition != patrolPoints[currentPatrolPointIndex] || characterManager.npcMovement.AIDestSetter.target == null)
-            {
+
                 SetTargetPosition(patrolPoints[currentPatrolPointIndex]);
             }
+            else if (targetPosition != patrolPoints[currentPatrolPointIndex])
+                SetTargetPosition(patrolPoints[currentPatrolPointIndex]);
+
+            StartCoroutine(MoveToNextPointOnPath());
         }
         else
         {
@@ -285,30 +293,45 @@ public class NPCMovement : Movement
         {
             float distanceToTarget = Vector2.Distance(target.position, transform.position);
 
-            if (AIDestSetter.target == null && distanceToTarget > AIPath.endReachedDistance)
-            {
-                if (distanceToTarget <= maxChaseDistance)
-                    SetTarget(target);
-                else
-                    StopPathfinding();
-
-                characterManager.npcAttack.targetInCombatRange = false;
-                characterManager.npcAttack.targetInAttackRange = false;
-            }
-            else if (target.CompareTag("Interactable") == false && distanceToTarget <= characterManager.npcAttack.combatRange && characterManager.stateController.currentState != State.Fight)
+            if (distanceToTarget <= characterManager.npcAttack.combatRange && characterManager.stateController.currentState != State.Fight)
             {
                 characterManager.npcAttack.targetInCombatRange = true;
                 characterManager.npcAttack.currentCombatState = CombatState.MoveInToAttack;
                 characterManager.stateController.SetCurrentState(State.Fight);
+                characterManager.npcAttack.Fight();
             }
+            else
+            {
+                if (distanceToTarget <= maxChaseDistance)
+                {
+                    SetTarget(target);
+                    StartCoroutine(MoveToNextPointOnPath());
+                }
+                else
+                {
+                    StopPathfinding();
+                    FinishTurn();
+                }
+
+                characterManager.npcAttack.targetInCombatRange = false;
+                characterManager.npcAttack.targetInAttackRange = false;
+            }
+        }
+        else if (AIDestSetter.moveToTargetPos)
+        {
+            StartCoroutine(MoveToNextPointOnPath());
         }
         else
         {
             if (characterManager.vision.knownEnemiesInRange.Count > 0)
-                target = characterManager.alliances.GetClosestKnownEnemy();
+            {
+                SetTarget(characterManager.alliances.GetClosestKnownEnemy());
+                StartCoroutine(MoveToNextPointOnPath());
+            }
             else
             {
                 StopPathfinding();
+                FinishTurn();
                 characterManager.npcAttack.targetInCombatRange = false;
                 characterManager.npcAttack.targetInAttackRange = false;
                 characterManager.stateController.SetToDefaultState(shouldFollowLeader);
@@ -322,29 +345,44 @@ public class NPCMovement : Movement
     {
         if (roamPositionSet == false)
         {
-            roamPosition = GetRoamingPosition();
-            roamPositionSet = true;
-
-            RaycastHit2D hit = Physics2D.Raycast(roamPosition, Vector2.zero, 5f, movementObstacleMask);
-            if (hit.collider != null)
+            roamPosition = GetNewRoamingPosition();
+            if (RoamingPositionValid())
             {
-                // Debug.Log("Invalid roamPosition...finding new one now. Collider hit: " + hit.collider);
-                roamPositionSet = false;
-                return;
+                SetTargetPosition(roamPosition);
+                StartCoroutine(MoveToNextPointOnPath());
             }
-
-            SetTargetPosition(roamPosition);
+            else
+                FinishTurn();
         }
-        else if (Vector2.Distance(roamPosition, transform.position) <= AIPath.endReachedDistance)
+        else if (Vector2.Distance(roamPosition, transform.position) <= 0.1f)
         {
             // Get a new roamPosition when the current one is reached
             roamPositionSet = false;
+            FinishTurn();
         }
+        else
+            StartCoroutine(MoveToNextPointOnPath());
     }
 
-    Vector3 GetRoamingPosition()
+    bool RoamingPositionValid()
     {
-        return defaultPosition + UtilsClass.GetRandomDir() * Random.Range(minRoamDistance, maxRoamDistance);
+        RaycastHit2D hit = Physics2D.Raycast(roamPosition, Vector2.zero, 5f, movementObstacleMask);
+        if (hit.collider != null)
+        {
+            // Debug.Log("Invalid roamPosition...finding new one now. Collider hit: " + hit.collider);
+            roamPositionSet = false;
+            return false;
+        }
+
+        return true;
+    }
+
+    Vector3 GetNewRoamingPosition()
+    {
+        roamPositionSet = true;
+        Vector2 roamPos = defaultPosition + UtilsClass.GetRandomDir() * Random.Range(minRoamDistance, maxRoamDistance);
+        roamPos = new Vector2(Mathf.RoundToInt(roamPos.x) + 0.5f, Mathf.RoundToInt(roamPos.y) + 0.5f);
+        return roamPos;
     }
     #endregion
 

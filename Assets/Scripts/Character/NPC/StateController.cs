@@ -22,6 +22,7 @@ public class StateController : MonoBehaviour
         switch (characterManager.stateController.currentState)
         {
             case State.Idle:
+                characterManager.npcMovement.FinishTurn();
                 break;
             case State.Patrol:
                 characterManager.npcMovement.DoPatrol();
@@ -39,7 +40,7 @@ public class StateController : MonoBehaviour
                 characterManager.npcAttack.Fight();
                 break;
             case State.Flee:
-                characterManager.npcMovement.Flee(characterManager.npcMovement.targetFleeingFrom, characterManager.npcMovement.fleeDistance, false);
+                characterManager.npcMovement.Flee(characterManager.npcMovement.targetFleeingFrom, characterManager.npcMovement.fleeDistance);
                 break;
             case State.Hunt:
                 break;
