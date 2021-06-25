@@ -3,9 +3,9 @@ using UnityEngine;
 public class ItemPickup : Interactable
 {
     [Header("Item")]
-    public ItemData itemData;
     public int itemCount = 1;
-    
+
+    [HideInInspector] public ItemData itemData;
     [HideInInspector] public Rigidbody2D rigidBody;
     [HideInInspector] public SpriteRenderer spriteRenderer;
 
@@ -13,6 +13,7 @@ public class ItemPickup : Interactable
     {
         rigidBody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        itemData = GetComponent<ItemData>();
     }
 
     public override void Start()

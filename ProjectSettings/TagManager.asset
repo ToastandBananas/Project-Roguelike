@@ -11,7 +11,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Interactable
+  - 
   - Water
   - UI
   - Character
@@ -21,8 +21,8 @@ TagManager:
   - Deep Water
   - Hills
   - Objects
-  - 
-  - 
+  - Interactable Objects
+  - Interactable
   - 
   - 
   - 
@@ -55,6 +55,9 @@ TagManager:
     locked: 0
   - name: Hills
     uniqueID: 963466045
+    locked: 0
+  - name: Object
+    uniqueID: 2537626633
     locked: 0
   - name: Character
     uniqueID: 792488805

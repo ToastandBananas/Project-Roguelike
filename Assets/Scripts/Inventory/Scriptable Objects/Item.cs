@@ -17,7 +17,7 @@ public class Item : ScriptableObject
 
     [Header("Sprites")]
     public Sprite defaultSprite;
-    public Sprite pickupSprite, icon;
+    public Sprite pickupSprite;
 
     public virtual void Use(EquipmentManager equipmentManager, Inventory inventory, InventorySlot inventorySlot, int itemCount)
     {

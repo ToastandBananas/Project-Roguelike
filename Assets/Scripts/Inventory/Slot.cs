@@ -3,7 +3,6 @@ using UnityEngine.UI;
 
 public class Slot : MonoBehaviour
 {
-    public Image icon;
     public ItemData itemData;
 
     [HideInInspector] public Image slotImage;
@@ -22,20 +21,11 @@ public class Slot : MonoBehaviour
     public virtual void AddItem(ItemData newItemData)
     {
         itemData = newItemData;
-
-        icon.sprite = itemData.item.icon;
-        icon.enabled = true;
     }
 
     public virtual void ClearSlot()
     {
-        itemData = null;
-
-        if (icon != null)
-        {
-            icon.sprite = null;
-            icon.enabled = false;
-        }
+        itemData.ClearData();
     }
 
     public bool IsEmpty()

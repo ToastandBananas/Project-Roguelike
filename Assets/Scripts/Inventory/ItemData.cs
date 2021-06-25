@@ -12,8 +12,6 @@ public class ItemData : MonoBehaviour
     public Item item;
 
     [Header("General Data")]
-    public Sprite inventoryIcon;
-    public Sprite gameSprite;
     public string itemName;
     public int value;
     public int currentStackSize = 1;
@@ -51,8 +49,6 @@ public class ItemData : MonoBehaviour
         dataReceiver.item = dataGiver.item;
 
         // General Data
-        dataReceiver.inventoryIcon = dataGiver.inventoryIcon;
-        dataReceiver.gameSprite = dataGiver.gameSprite;
         dataReceiver.itemName = dataGiver.itemName;
         dataReceiver.value = dataGiver.value;
         dataReceiver.currentStackSize = dataGiver.currentStackSize;
@@ -164,9 +160,7 @@ public class ItemData : MonoBehaviour
         hasBeenRandomized = false;
         
         item = null;
-
-        inventoryIcon = null;
-        gameSprite = null;
+        
         itemName = "";
         value = 0;
         currentStackSize = 1;

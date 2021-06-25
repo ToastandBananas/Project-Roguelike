@@ -2,6 +2,7 @@ using UnityEngine;
 
 public enum ConsumableType { Food, Drink }
 
+[CreateAssetMenu(fileName = "New Consumable", menuName = "Inventory/Consumable")]
 public class Consumable : Item
 {
     [HideInInspector] public int minBaseFreshness = 25;

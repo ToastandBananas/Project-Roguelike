@@ -9,6 +9,7 @@ public class InventoryUI : MonoBehaviour
 
     [HideInInspector] public Inventory inventory;
     [HideInInspector] public InventorySlot[] slots;
+    [HideInInspector] public PlayerManager playerManager;
 
     DropItemController dropItemController;
     UIManager uiManager;
@@ -24,6 +25,8 @@ public class InventoryUI : MonoBehaviour
 
         if (inventoryParent.activeSelf)
             inventoryParent.SetActive(false);
+
+        playerManager = PlayerManager.instance;
     }
 
     void AddItem(ItemData itemData, int itemCount)
@@ -46,14 +49,14 @@ public class InventoryUI : MonoBehaviour
         if (inventoryParent.activeSelf == false)
         {
             // Close the Context Menu
-            if (uiManager.contextMenu.isActive)
-                uiManager.contextMenu.DisableContextMenu();
+            //if (uiManager.contextMenu.isActive)
+                //uiManager.contextMenu.DisableContextMenu();
 
             // Close the Stack Size Selector
-            if (uiManager.stackSizeSelector.isActive)
-                uiManager.stackSizeSelector.HideStackSizeSelector();
+            //if (uiManager.stackSizeSelector.isActive)
+                //uiManager.stackSizeSelector.HideStackSizeSelector();
 
-            uiManager.tooltipManager.HideAllTooltips();
+            //uiManager.tooltipManager.HideAllTooltips();
         }
     }
 
@@ -94,7 +97,7 @@ public class InventoryUI : MonoBehaviour
         {
             for (int i = 0; i < slots.Length; i++)
             {
-                if (i < inventory.space)
+                if (i < inventory.maxWeight)
                     slots[i].gameObject.SetActive(true);
                 else
                     slots[i].gameObject.SetActive(false);

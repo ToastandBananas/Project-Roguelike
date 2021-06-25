@@ -53,9 +53,7 @@ public class UIManager : MonoBehaviour
         if (GameControls.gamePlayActions.playerInventory.WasPressed)
         {
             playerInventory.myInventoryUI.ToggleInventoryMenu();
-
-            if (containerInvUI.inventoryParent.activeSelf)
-                containerInvUI.ToggleInventoryMenu();
+            containerInvUI.ToggleInventoryMenu();
         }
 
         // Disable Inventory menus if they are open and tab is pressed

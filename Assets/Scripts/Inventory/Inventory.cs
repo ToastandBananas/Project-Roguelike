@@ -9,8 +9,9 @@ public class Inventory : MonoBehaviour
     public delegate void OnItemRemoved(ItemData itemData, int itemCount, InventorySlot inventorySlot);
     public OnItemRemoved onItemRemovedCallback;
 
-    public int space = 18;
-    
+    public float maxWeight = 20;
+    public float maxVolume = 20;
+
     public List<ItemData> items = new List<ItemData>();
 
     [HideInInspector] public bool invUICallbacksAdded;
