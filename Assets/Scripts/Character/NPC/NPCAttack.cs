@@ -4,11 +4,9 @@ public enum CombatState { MoveInToAttack, CircleOpponent, Ranged }
 
 public class NPCAttack : Attack
 {
-    public float backoffDistance = 1.25f;
     [HideInInspector] public float combatRange;
-
-    public bool targetInCombatRange;
-    public bool targetInAttackRange;
+    [HideInInspector] public bool targetInCombatRange;
+    [HideInInspector] public bool targetInAttackRange;
 
     [HideInInspector] public CombatState currentCombatState;
 

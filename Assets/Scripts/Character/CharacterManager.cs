@@ -3,6 +3,8 @@ using UnityEngine;
 public class CharacterManager : MonoBehaviour
 {
     [HideInInspector] public Alliances alliances;
+    [HideInInspector] public EquipmentManager equipmentManager;
+    [HideInInspector] public Inventory inventory;
     [HideInInspector] public Movement movement;
     [HideInInspector] public NPCAttack npcAttack;
     [HideInInspector] public NPCMovement npcMovement;
@@ -21,6 +23,8 @@ public class CharacterManager : MonoBehaviour
         movement = GetComponent<Movement>();
         vision = GetComponentInChildren<Vision>();
 
+        TryGetComponent(out equipmentManager);
+        TryGetComponent(out inventory);
         TryGetComponent(out npcAttack);
         TryGetComponent(out npcMovement);
         TryGetComponent(out stateController);
