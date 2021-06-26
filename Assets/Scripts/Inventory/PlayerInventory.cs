@@ -19,7 +19,6 @@ public class PlayerInventory : Inventory
         #endregion
 
         myInventoryUI = GameObject.Find("Player Inventory").GetComponent<InventoryUI>();
-        myInventoryUI.inventory = this;
     }
 
     public override void Start()

@@ -4,6 +4,7 @@ public class ItemPickup : Interactable
 {
     [Header("Item")]
     public int itemCount = 1;
+    public bool shouldUseItemCount;
 
     [HideInInspector] public ItemData itemData;
     [HideInInspector] public Rigidbody2D rigidBody;
@@ -19,6 +20,9 @@ public class ItemPickup : Interactable
     public override void Start()
     {
         base.Start();
+
+        if (shouldUseItemCount)
+            itemData.currentStackSize = itemCount;
     }
 
     public override void Interact(EquipmentManager equipmentManager, Inventory inventory, Transform whoIsInteracting)

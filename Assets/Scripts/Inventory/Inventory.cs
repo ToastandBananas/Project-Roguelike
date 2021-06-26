@@ -6,7 +6,7 @@ public class Inventory : MonoBehaviour
     public delegate void OnItemAdded(ItemData itemData, int itemCount);
     public OnItemAdded onItemAddedCallback;
 
-    public delegate void OnItemRemoved(ItemData itemData, int itemCount, InventorySlot inventorySlot);
+    public delegate void OnItemRemoved(ItemData itemData, int itemCount, InventoryItem inventorySlot);
     public OnItemRemoved onItemRemovedCallback;
 
     public float maxWeight = 20;
@@ -16,13 +16,14 @@ public class Inventory : MonoBehaviour
 
     [HideInInspector] public bool invUICallbacksAdded;
 
+    [HideInInspector] public Container container;
     [HideInInspector] public InventoryUI myInventoryUI;
-
     [HideInInspector] public GameObject inventoryOwner;
 
     public virtual void Start()
     {
         inventoryOwner = gameObject;
+        TryGetComponent(out container);
 
         if (items.Count > 0)
         {
@@ -60,7 +61,7 @@ public class Inventory : MonoBehaviour
         return true;
     }
 
-    public void Remove(ItemData itemData, int itemCount, InventorySlot inventorySlot)
+    public void Remove(ItemData itemData, int itemCount, InventoryItem inventorySlot)
     {
         if (onItemRemovedCallback != null)
             onItemRemovedCallback.Invoke(itemData, itemCount, inventorySlot);
@@ -71,10 +72,10 @@ public class Inventory : MonoBehaviour
         int itemCountInInventory = 0;
 
         // Add up how much of this Item that we have in our Inventory
-        for (int i = 0; i < myInventoryUI.slots.Length; i++)
+        for (int i = 0; i < myInventoryUI.inventoryItemObjectPool.pooledInventoryItems.Count; i++)
         {
-            if (myInventoryUI.slots[i].itemData.item == itemData.item)
-                itemCountInInventory += myInventoryUI.slots[i].currentStackSize;
+            if (myInventoryUI.inventoryItemObjectPool.pooledInventoryItems[i].itemData.item == itemData.item)
+                itemCountInInventory += myInventoryUI.inventoryItemObjectPool.pooledInventoryItems[i].currentStackSize;
         }
 
         if (itemCountInInventory >= itemAmountRequired)

@@ -9,7 +9,7 @@ public class StackSizeSelector : MonoBehaviour
     public Button leftArrowButton, rightArrowButton, submitButton;
     public TMP_InputField inputField;
 
-    [HideInInspector] public InventorySlot selectedInventorySlot;
+    [HideInInspector] public InventoryItem selectedInventorySlot;
 
     [HideInInspector] public bool isActive;
 
@@ -96,13 +96,13 @@ public class StackSizeSelector : MonoBehaviour
             if (selectedInventorySlot.currentStackSize > 0)
                 selectedInventorySlot.UpdateStackSizeText();
             else
-                selectedInventorySlot.ClearSlot();
+                selectedInventorySlot.ClearItem();
         }
 
         HideStackSizeSelector();
     }
 
-    public void ShowStackSizeSelector(InventorySlot inventorySlot)
+    public void ShowStackSizeSelector(InventoryItem inventorySlot)
     {
         uiParent.SetActive(true);
         isActive = true;

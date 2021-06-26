@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class InventorySlot : Slot
+public class InventoryItem : InventoryItemBase
 { 
     public int currentStackSize;
     
@@ -30,14 +30,14 @@ public class InventorySlot : Slot
         UpdateStackSizeText();
     }
 
-    public override void ClearSlot()
+    /*public override void ClearItem()
     {
-        base.ClearSlot();
+        base.ClearItem();
 
         currentStackSize = 0;
         
         UpdateStackSizeText();
-    }
+    }*/
 
     public void UseItem(int amountToUse = 1)
     {

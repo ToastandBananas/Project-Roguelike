@@ -6,9 +6,8 @@ public class InventoryUI : MonoBehaviour
     public TextMeshProUGUI inventoryNameText;
     public Transform slotsParent;
     public GameObject inventoryParent;
-
-    [HideInInspector] public Inventory inventory;
-    [HideInInspector] public InventorySlot[] slots;
+    public InventoryItemObjectPool inventoryItemObjectPool;
+    
     [HideInInspector] public PlayerManager playerManager;
 
     DropItemController dropItemController;
@@ -19,14 +18,13 @@ public class InventoryUI : MonoBehaviour
         dropItemController = DropItemController.instance;
         uiManager = UIManager.instance;
 
-        AddCallbacks();
-
         UpdateVisibleSlots();
 
         if (inventoryParent.activeSelf)
             inventoryParent.SetActive(false);
 
         playerManager = PlayerManager.instance;
+
     }
 
     void AddItem(ItemData itemData, int itemCount)
@@ -35,7 +33,7 @@ public class InventoryUI : MonoBehaviour
         // TODO
     }
 
-    void RemoveItem(ItemData itemData, int itemCount, InventorySlot inventorySlot)
+    void RemoveItem(ItemData itemData, int itemCount, InventoryItem inventorySlot)
     {
         int itemCountRemaining = itemCount;
         // TODO
@@ -93,25 +91,6 @@ public class InventoryUI : MonoBehaviour
 
     public void UpdateVisibleSlots()
     {
-        if (inventory != null)
-        {
-            for (int i = 0; i < slots.Length; i++)
-            {
-                if (i < inventory.maxWeight)
-                    slots[i].gameObject.SetActive(true);
-                else
-                    slots[i].gameObject.SetActive(false);
-            }
-        }
-    }
-
-    public void AddCallbacks()
-    {
-        if (inventory != null && inventory.invUICallbacksAdded == false)
-        {
-            inventory.onItemAddedCallback += AddItem;
-            inventory.onItemRemovedCallback += RemoveItem;
-            inventory.invUICallbacksAdded = true;
-        }
+        // TODO
     }
 }

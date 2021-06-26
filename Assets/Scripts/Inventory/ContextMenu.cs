@@ -4,7 +4,7 @@ using UnityEngine;
 public class ContextMenu : MonoBehaviour
 {
     public bool isActive;
-    public InventorySlot activeInventorySlot;
+    public InventoryItem activeInventorySlot;
 
     public ContextMenuButton[] buttons;
 
@@ -45,7 +45,7 @@ public class ContextMenu : MonoBehaviour
         uiManager = UIManager.instance;
     }
 
-    public void BuildContextMenu(InventorySlot invSlot)
+    public void BuildContextMenu(InventoryItem invSlot)
     {
         isActive = true;
 

@@ -2,7 +2,11 @@ using UnityEngine;
 
 public class Container : Interactable
 {
+    public Sprite sidebarSpriteClosed;
+    public Sprite sidebarSpriteOpen;
+
     [HideInInspector] public Inventory containerInventory;
+    [HideInInspector] public SpriteRenderer spriteRenderer;
 
     ContainerInventoryUI containerInvUI;
     PlayerInventoryUI playerInvUI;
@@ -13,6 +17,7 @@ public class Container : Interactable
         base.Start();
 
         containerInventory = GetComponent<Inventory>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
         containerInvUI = ContainerInventoryUI.instance;
         playerInvUI = PlayerInventoryUI.instance;
@@ -28,23 +33,6 @@ public class Container : Interactable
             containerInvUI.ToggleInventoryMenu();
 
         if (playerInvUI.inventoryParent.activeSelf == false)
-        {
             playerInvUI.ToggleInventoryMenu();
-        }
-
-        if (containerInvUI.inventory != containerInventory)
-        {
-            containerInvUI.AssignInventory(containerInventory);
-            containerInvUI.ClearAllSlots();
-            containerInvUI.PopulateSlots();
-        }
-    }
-
-    public override void OnTriggerExit2D(Collider2D collision)
-    {
-        base.OnTriggerExit2D(collision);
-
-        if (collision.CompareTag("Player") && collision.isTrigger && containerInvUI.inventory == containerInventory)
-            uiManager.DisableMenus();
     }
 }

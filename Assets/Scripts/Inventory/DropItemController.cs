@@ -81,8 +81,6 @@ public class DropItemController : MonoBehaviour
         else
             newItemPickup.spriteRenderer.sprite = itemData.item.defaultSprite;
 
-        newItemPickup.interactRadius = itemData.item.pickupRadius;
-
         newItemPickup.itemData = itemData;
         newItemPickup.itemCount = amountToDrop;
         newItemPickup.interactionTransform = newItemPickup.transform;

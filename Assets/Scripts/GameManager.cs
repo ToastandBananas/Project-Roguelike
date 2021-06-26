@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+public enum Direction { Center, Up, Down, Left, Right, UpLeft, UpRight, DownLeft, DownRight }
 
 public class GameManager : MonoBehaviour
 {

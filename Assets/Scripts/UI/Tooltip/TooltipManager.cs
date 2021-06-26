@@ -34,7 +34,7 @@ public class TooltipManager : MonoBehaviour
         HideAllTooltips();
     }
 
-    public void ShowInventoryTooltip(Slot slot)
+    public void ShowInventoryTooltip(InventoryItemBase slot)
     {
         if (slot != null && slot.itemData != null)
         {
@@ -55,7 +55,7 @@ public class TooltipManager : MonoBehaviour
         }
     }
 
-    void ShowMatchingEquipmentTooltip(Slot slot)
+    void ShowMatchingEquipmentTooltip(InventoryItemBase slot)
     {
         if (slot.itemData.item.IsEquipment())
         {

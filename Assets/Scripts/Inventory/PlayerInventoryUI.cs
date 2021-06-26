@@ -23,6 +23,6 @@ public class PlayerInventoryUI : InventoryUI
     {
         base.Start();
 
-        inventory = PlayerInventory.instance;
+        inventoryItemObjectPool.Init();
     }
 }

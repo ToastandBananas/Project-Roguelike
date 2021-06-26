@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    [HideInInspector] public InventorySlot activeInventorySlot;
+    [HideInInspector] public InventoryItem activeInventorySlot;
 
     [HideInInspector] public ContextMenu contextMenu;
     [HideInInspector] public StackSizeSelector stackSizeSelector;

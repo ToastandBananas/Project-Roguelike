@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: Long Sword
   m_EditorClassIdentifier: 
   name: Long Sword
+  itemType: 1
   description: The sword...it's long.
   maxStackSize: 1
-  pickupRadius: 1
+  weight: 3.15
+  volume: 0.1
   isUsable: 1
-  minBaseValue: 1
+  minBaseValue: 8
   maxBaseValue: 20
   staticValue: 1
   defaultSprite: {fileID: 2451652252212011429, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}

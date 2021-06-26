@@ -1,13 +1,17 @@
 using UnityEngine;
 
+public enum ItemType { Item, Weapon, Ammo, Clothing, Armor, Food, Drink, Ingredient, Seed, Readable, Key, QuestItem }
+
 [CreateAssetMenu(fileName = "New Item", menuName = "Inventory/Item")]
 public class Item : ScriptableObject
 {
     [Header("General Item Info")]
     new public string name = "New Item";
+    public ItemType itemType;
     public string description;
     public int maxStackSize = 1;
-    public float pickupRadius = 1f;
+    public float weight = 0.1f;
+    public float volume = 0.1f;
     public bool isUsable = true;
 
     [Header("Value")]
@@ -19,7 +23,7 @@ public class Item : ScriptableObject
     public Sprite defaultSprite;
     public Sprite pickupSprite;
 
-    public virtual void Use(EquipmentManager equipmentManager, Inventory inventory, InventorySlot inventorySlot, int itemCount)
+    public virtual void Use(EquipmentManager equipmentManager, Inventory inventory, InventoryItem inventorySlot, int itemCount)
     {
         if (inventorySlot != null && isUsable)
         {
@@ -28,7 +32,7 @@ public class Item : ScriptableObject
         }
     }
 
-    public void RemoveFromInventory(Inventory inventory, int itemCount, InventorySlot inventorySlot)
+    public void RemoveFromInventory(Inventory inventory, int itemCount, InventoryItem inventorySlot)
     {
         inventory.Remove(inventorySlot.itemData, itemCount, inventorySlot);
     }

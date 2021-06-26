@@ -10,6 +10,8 @@ public class Movement : MonoBehaviour
     [Header("Obstacle Mask")]
     public LayerMask movementObstacleMask;
 
+    ContainerInventoryUI containerInvUI;
+
     float moveTime = 0.2f;
 
     public virtual void Awake()
@@ -19,6 +21,7 @@ public class Movement : MonoBehaviour
 
     public virtual void Start()
     {
+        containerInvUI = ContainerInventoryUI.instance;
         gameTiles = GameTiles.instance;
         turnManager = TurnManager.instance;
     }
@@ -73,6 +76,11 @@ public class Movement : MonoBehaviour
 
         if (isNPC)
             FinishTurn();
+        else
+        {
+            containerInvUI.GetItemsAroundPlayer();
+            containerInvUI.PopulateInventoryUI(containerInvUI.playerPositionItems, Direction.Center);
+        }
 
         isMoving = false;
     }

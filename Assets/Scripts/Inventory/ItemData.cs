@@ -32,7 +32,7 @@ public class ItemData : MonoBehaviour
     public int freshness = 100;
     public int uses = 1;
 
-    void Start()
+    void Awake()
     {
         if (hasBeenRandomized)
             value = CalculateItemValue();

@@ -10,7 +10,7 @@ public class Equipment : Item
     public int minBaseDurability = 75;
     public int maxBaseDurability = 100;
 
-    public override void Use(EquipmentManager equipmentManager, Inventory inventory, InventorySlot inventorySlot, int itemCount)
+    public override void Use(EquipmentManager equipmentManager, Inventory inventory, InventoryItem inventorySlot, int itemCount)
     {
         base.Use(equipmentManager, inventory, inventorySlot, itemCount);
 
