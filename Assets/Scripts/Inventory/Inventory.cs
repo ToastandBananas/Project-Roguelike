@@ -14,24 +14,42 @@ public class Inventory : MonoBehaviour
 
     public List<ItemData> items = new List<ItemData>();
 
-    [HideInInspector] public bool invUICallbacksAdded;
-
     [HideInInspector] public Container container;
     [HideInInspector] public InventoryUI myInventoryUI;
     [HideInInspector] public GameObject inventoryOwner;
 
+    [HideInInspector] public bool hasBeenInitialized;
+
+    Transform itemsParent;
+
     public virtual void Start()
     {
-        inventoryOwner = gameObject;
-        TryGetComponent(out container);
+        Init();
+    }
 
-        if (items.Count > 0)
+    public void Init()
+    {
+        if (hasBeenInitialized == false)
         {
-            // Clamp itemCount values if we accidentally set them over the Item's maxStackSize
-            for (int i = 0; i < items.Count; i++)
+            inventoryOwner = gameObject;
+            itemsParent = transform.Find("Items");
+            TryGetComponent(out container);
+
+            for (int i = 0; i < itemsParent.childCount; i++)
             {
-                // TODO
+                items.Add(itemsParent.GetChild(i).GetComponent<ItemData>());
             }
+
+            if (items.Count > 0)
+            {
+                // Clamp itemCount values if we accidentally set them over the Item's maxStackSize
+                for (int i = 0; i < items.Count; i++)
+                {
+                    // TODO
+                }
+            }
+
+            hasBeenInitialized = true;
         }
     }
 

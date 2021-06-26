@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Container : Interactable
 {
+    [Header("Sprites")]
     public Sprite sidebarSpriteClosed;
     public Sprite sidebarSpriteOpen;
 

@@ -13,7 +13,7 @@ public class UIManager : MonoBehaviour
 
     DropItemController dropItemController;
     PlayerManager playerManager;
-    PlayerInventory playerInventory;
+    PlayerInventoryUI playerInvUI;
     ContainerInventoryUI containerInvUI;
 
     bool onSelectionCooldown;
@@ -40,7 +40,7 @@ public class UIManager : MonoBehaviour
     {
         dropItemController = DropItemController.instance;
         playerManager = PlayerManager.instance;
-        playerInventory = PlayerInventory.instance;
+        playerInvUI = PlayerInventoryUI.instance;
         containerInvUI = ContainerInventoryUI.instance;
         contextMenu = ContextMenu.instance;
         stackSizeSelector = StackSizeSelector.instance;
@@ -52,7 +52,7 @@ public class UIManager : MonoBehaviour
         // Toggle the Player's Inventory
         if (GameControls.gamePlayActions.playerInventory.WasPressed)
         {
-            playerInventory.myInventoryUI.ToggleInventoryMenu();
+            playerInvUI.ToggleInventoryMenu();
             containerInvUI.ToggleInventoryMenu();
         }
 
@@ -147,7 +147,7 @@ public class UIManager : MonoBehaviour
 
     public bool UIMenuActive()
     {
-        if (playerInventory.myInventoryUI.inventoryParent.activeSelf)
+        if (playerInvUI.inventoryParent.activeSelf)
             return true;
 
         return false;
@@ -162,10 +162,8 @@ public class UIManager : MonoBehaviour
 
     public void DisableMenus()
     {
-        if (playerInventory.myInventoryUI.inventoryParent.activeSelf)
-        {
-            playerInventory.myInventoryUI.ToggleInventoryMenu();
-        }
+        if (playerInvUI.inventoryParent.activeSelf)
+            playerInvUI.ToggleInventoryMenu();
 
         if (containerInvUI.inventoryParent.activeSelf)
             containerInvUI.ToggleInventoryMenu();

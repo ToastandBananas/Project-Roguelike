@@ -5,7 +5,9 @@ public class PlayerManager : CharacterManager
 {
     [HideInInspector] public GameObject playerGameObject;
     [HideInInspector] public PlayerController playerController;
+    [HideInInspector] public PlayerEquipmentManager playerEquipmentManager;
     [HideInInspector] public PlayerMovement playerMovement;
+    [HideInInspector] public PlayerStats playerStats;
     [HideInInspector] public CircleCollider2D interactionCollider;
 
     [HideInInspector] public List<Interactable> nearbyInteractables = new List<Interactable>();
@@ -31,7 +33,10 @@ public class PlayerManager : CharacterManager
         base.Awake();
 
         playerGameObject = gameObject;
+        playerController = GetComponent<PlayerController>();
+        playerEquipmentManager = GetComponent<PlayerEquipmentManager>();
         playerMovement = GetComponent<PlayerMovement>();
+        playerStats = GetComponent<PlayerStats>();
         interactionCollider = GetComponent<CircleCollider2D>();
     }
 

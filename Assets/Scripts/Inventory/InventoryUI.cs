@@ -1,9 +1,12 @@
 using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
 
 public class InventoryUI : MonoBehaviour
 {
     public TextMeshProUGUI inventoryNameText;
+    public TextMeshProUGUI weightText;
+    public TextMeshProUGUI volumeText;
     public Transform slotsParent;
     public GameObject inventoryParent;
     public InventoryItemObjectPool inventoryItemObjectPool;
@@ -39,6 +42,18 @@ public class InventoryUI : MonoBehaviour
         // TODO
     }
 
+    public void ClearInventoryUI()
+    {
+        for (int i = 0; i < inventoryItemObjectPool.pooledInventoryItems.Count; i++)
+        {
+            if (inventoryItemObjectPool.pooledInventoryItems[i].gameObject.activeSelf)
+            {
+                inventoryItemObjectPool.pooledInventoryItems[i].ClearItem();
+                inventoryItemObjectPool.pooledInventoryItems[i].gameObject.SetActive(false);
+            }
+        }
+    }
+
     public void ToggleInventoryMenu()
     {
         inventoryParent.SetActive(!inventoryParent.activeSelf);
@@ -56,6 +71,52 @@ public class InventoryUI : MonoBehaviour
 
             //uiManager.tooltipManager.HideAllTooltips();
         }
+    }
+
+    public float GetTotalWeight(List<ItemData> itemsList)
+    {
+        float totalWeight = 0f;
+        for (int i = 0; i < itemsList.Count; i++)
+        {
+            totalWeight += itemsList[i].item.weight * itemsList[i].currentStackSize;
+        }
+
+        return totalWeight;
+    }
+
+    public float GetTotalWeight(ItemData[] currentEquipment)
+    {
+        float totalWeight = 0f;
+        for (int i = 0; i < currentEquipment.Length; i++)
+        {
+            if (currentEquipment[i] != null)
+                totalWeight += currentEquipment[i].item.weight * currentEquipment[i].currentStackSize;
+        }
+
+        return totalWeight;
+    }
+
+    public float GetTotalVolume(List<ItemData> itemsList)
+    {
+        float totalVolume = 0f;
+        for (int i = 0; i < itemsList.Count; i++)
+        {
+            totalVolume += itemsList[i].item.volume * itemsList[i].currentStackSize;
+        }
+
+        return totalVolume;
+    }
+
+    public float GetTotalVolume(ItemData[] currentEquipment)
+    {
+        float totalVolume = 0f;
+        for (int i = 0; i < currentEquipment.Length; i++)
+        {
+            if (currentEquipment[i] != null)
+                totalVolume += currentEquipment[i].item.volume * currentEquipment[i].currentStackSize;
+        }
+
+        return totalVolume;
     }
 
     public bool IsRoomInInventory(ItemData itemData, int itemCount)

@@ -17,8 +17,6 @@ public class InventoryItem : InventoryItemBase
         containerInvUI = ContainerInventoryUI.instance;
 
         itemData = GetComponent<ItemData>();
-        if (transform.parent.parent.parent.name == "Player Inventory")
-            inventory = PlayerInventory.instance;
 
         UpdateStackSizeText();
     }

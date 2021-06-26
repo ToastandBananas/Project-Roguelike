@@ -17,7 +17,7 @@ MonoBehaviour:
   description: The sword...it's long.
   maxStackSize: 1
   weight: 3.15
-  volume: 0.1
+  volume: 12.25
   isUsable: 1
   minBaseValue: 8
   maxBaseValue: 20

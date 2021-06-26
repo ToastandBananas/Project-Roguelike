@@ -3,6 +3,9 @@ using System.Collections;
 
 public class CharacterStats : MonoBehaviour
 {
+    public Stat maxPersonalInvWeight;
+    public Stat maxPersonalInvVolume;
+
     public Stat maxHealth;
     public int currentHealth { get; private set; }
 

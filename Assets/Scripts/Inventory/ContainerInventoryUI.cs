@@ -4,6 +4,28 @@ using UnityEngine.UI;
 
 public class ContainerInventoryUI : InventoryUI
 {
+    [Header("Floor Icon")]
+    public Sprite floorIconSprite;
+
+    [Header("Side Bar Buttons")]
+    public Image playerPositionSideBarIcon;
+    public Image upSideBarIcon, downSideBarIcon, leftSideBarIcon, rightSideBarIcon, upLeftSideBarIcon, upRightSideBarIcon, downLeftSideBarIcon, downRightSideBarIcon;
+
+    [HideInInspector] public List<ItemData> playerPositionItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> leftItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> rightItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> upItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> downItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> upLeftItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> upRightItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> downLeftItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> downRightItems = new List<ItemData>();
+
+    [HideInInspector] Inventory leftInventory, rightInventory, upInventory, downInventory, upLeftInventory, upRightInventory, downLeftInventory, downRightInventory;
+
+    LayerMask interactableMask;
+    float emptyTileMaxVolume = 1000f;
+
     #region Singleton
     public static ContainerInventoryUI instance;
     void Awake()
@@ -20,34 +42,6 @@ public class ContainerInventoryUI : InventoryUI
             instance = this;
     }
     #endregion
-
-    [Header("Floor Icon")]
-    public Sprite floorIconSprite;
-
-    [Header("Side Bar Buttons")]
-    public Image playerPositionSideBarIcon;
-    public Image upSideBarIcon;
-    public Image downSideBarIcon;
-    public Image leftSideBarIcon;
-    public Image rightSideBarIcon;
-    public Image upLeftSideBarIcon;
-    public Image upRightSideBarIcon;
-    public Image downLeftSideBarIcon;
-    public Image downRightSideBarIcon;
-
-    [HideInInspector] public List<ItemData> playerPositionItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> leftItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> rightItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> upItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> downItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> upLeftItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> upRightItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> downLeftItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> downRightItems = new List<ItemData>();
-
-    [HideInInspector] Inventory leftInventory, rightInventory, upInventory, downInventory, upLeftInventory, upRightInventory, downLeftInventory, downRightInventory;
-
-    LayerMask interactableMask;
 
     public override void Start()
     {
@@ -77,83 +71,8 @@ public class ContainerInventoryUI : InventoryUI
             invItem.gameObject.SetActive(true);
         }
 
-        ResetContainerIcons();
-
-        switch (direction)
-        {
-            case Direction.Center:
-                break;
-            case Direction.Up:
-                if (upInventory != null)
-                {
-                    upSideBarIcon.sprite = GetContainerIcon(upInventory, true);
-                    upInventory.container.spriteRenderer.sprite = GetContainerIcon(upInventory, true);
-                }
-                break;
-            case Direction.Down:
-                if (downInventory != null)
-                {
-                    downSideBarIcon.sprite = GetContainerIcon(downInventory, true);
-                    downInventory.container.spriteRenderer.sprite = GetContainerIcon(downInventory, true);
-                }
-                break;
-            case Direction.Left:
-                if (leftInventory != null)
-                {
-                    leftSideBarIcon.sprite = GetContainerIcon(leftInventory, true);
-                    leftInventory.container.spriteRenderer.sprite = GetContainerIcon(leftInventory, true);
-                }
-                break;
-            case Direction.Right:
-                if (rightInventory != null)
-                {
-                    rightSideBarIcon.sprite = GetContainerIcon(rightInventory, true);
-                    rightInventory.container.spriteRenderer.sprite = GetContainerIcon(rightInventory, true);
-                }
-                break;
-            case Direction.UpLeft:
-                if (upLeftInventory != null)
-                {
-                    upLeftSideBarIcon.sprite = GetContainerIcon(upLeftInventory, true);
-                    upLeftInventory.container.spriteRenderer.sprite = GetContainerIcon(upLeftInventory, true);
-                }
-                break;
-            case Direction.UpRight:
-                if (upRightInventory != null)
-                {
-                    upRightSideBarIcon.sprite = GetContainerIcon(upRightInventory, true);
-                    upRightInventory.container.spriteRenderer.sprite = GetContainerIcon(upRightInventory, true);
-                }
-                break;
-            case Direction.DownLeft:
-                if (downLeftInventory != null)
-                {
-                    downLeftSideBarIcon.sprite = GetContainerIcon(downLeftInventory, true);
-                    downLeftInventory.container.spriteRenderer.sprite = GetContainerIcon(downLeftInventory, true);
-                }
-                break;
-            case Direction.DownRight:
-                if (downRightInventory != null)
-                {
-                    downRightSideBarIcon.sprite = GetContainerIcon(downRightInventory, true);
-                    downRightInventory.container.spriteRenderer.sprite = GetContainerIcon(downRightInventory, true);
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-    public void ClearInventoryUI()
-    {
-        for (int i = 0; i < inventoryItemObjectPool.pooledInventoryItems.Count; i++)
-        {
-            if (inventoryItemObjectPool.pooledInventoryItems[i].gameObject.activeSelf)
-            {
-                inventoryItemObjectPool.pooledInventoryItems[i].ClearItem();
-                inventoryItemObjectPool.pooledInventoryItems[i].gameObject.SetActive(false);
-            }
-        }
+        // Set container open icon sprite (when applicable) and header/volume/weight text
+        SetUpInventoryUI(direction);
     }
 
     public void GetItemsAroundPlayer()
@@ -181,7 +100,7 @@ public class ContainerInventoryUI : InventoryUI
         {
             if (hits[i].collider != null)
             {
-                if (hits[i].collider.TryGetComponent(out Inventory inventory) != false)
+                if (hits[i].collider.CompareTag("NPC") == false && hits[i].collider.TryGetComponent(out Inventory inventory) != false)
                 {
                     // Get each item in the container's inventory
                     for (int j = 0; j < inventory.items.Count; j++)
@@ -301,6 +220,150 @@ public class ContainerInventoryUI : InventoryUI
                 break;
             case Direction.DownRight:
                 downRightSideBarIcon.sprite = floorIconSprite;
+                break;
+            default:
+                break;
+        }
+    }
+
+    void SetUpInventoryUI(Direction direction)
+    {
+        ResetContainerIcons();
+
+        switch (direction)
+        {
+            case Direction.Center:
+                inventoryNameText.text = "Items Under Self";
+                weightText.text = GetTotalWeight(playerPositionItems).ToString();
+                volumeText.text = GetTotalVolume(playerPositionItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                break;
+            case Direction.Up:
+                if (upInventory != null)
+                {
+                    inventoryNameText.text = upInventory.container.name + " Inventory";
+                    upSideBarIcon.sprite = GetContainerIcon(upInventory, true);
+                    upInventory.container.spriteRenderer.sprite = GetContainerIcon(upInventory, true);
+                    weightText.text = GetTotalWeight(upItems).ToString() + "/" + upInventory.maxWeight.ToString();
+                    volumeText.text = GetTotalVolume(upItems).ToString() + "/" + upInventory.maxVolume.ToString();
+                }
+                else
+                {
+                    inventoryNameText.text = "Items Above Self";
+                    weightText.text = GetTotalWeight(upItems).ToString();
+                    volumeText.text = GetTotalVolume(upItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                }
+                break;
+            case Direction.Down:
+                if (downInventory != null)
+                {
+                    inventoryNameText.text = downInventory.container.name + " Inventory";
+                    downSideBarIcon.sprite = GetContainerIcon(downInventory, true);
+                    downInventory.container.spriteRenderer.sprite = GetContainerIcon(downInventory, true);
+                    weightText.text = GetTotalWeight(downItems).ToString() + "/" + downInventory.maxWeight.ToString();
+                    volumeText.text = GetTotalVolume(downItems).ToString() + "/" + downInventory.maxVolume.ToString();
+                }
+                else
+                {
+                    inventoryNameText.text = "Items Below Self";
+                    weightText.text = GetTotalWeight(downItems).ToString();
+                    volumeText.text = GetTotalVolume(downItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                }
+                break;
+            case Direction.Left:
+                if (leftInventory != null)
+                {
+                    inventoryNameText.text = leftInventory.container.name + " Inventory";
+                    leftSideBarIcon.sprite = GetContainerIcon(leftInventory, true);
+                    leftInventory.container.spriteRenderer.sprite = GetContainerIcon(leftInventory, true);
+                    weightText.text = GetTotalWeight(leftItems).ToString() + "/" + leftInventory.maxWeight.ToString();
+                    volumeText.text = GetTotalVolume(leftItems).ToString() + "/" + leftInventory.maxVolume.ToString();
+                }
+                else
+                {
+                    inventoryNameText.text = "Items Left of Self";
+                    weightText.text = GetTotalWeight(leftItems).ToString();
+                    volumeText.text = GetTotalVolume(leftItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                }
+                break;
+            case Direction.Right:
+                if (rightInventory != null)
+                {
+                    inventoryNameText.text = rightInventory.container.name + " Inventory";
+                    rightSideBarIcon.sprite = GetContainerIcon(rightInventory, true);
+                    rightInventory.container.spriteRenderer.sprite = GetContainerIcon(rightInventory, true);
+                    weightText.text = GetTotalWeight(rightItems).ToString() + "/" + rightInventory.maxWeight.ToString();
+                    volumeText.text = GetTotalVolume(rightItems).ToString() + "/" + rightInventory.maxVolume.ToString();
+                }
+                else
+                {
+                    inventoryNameText.text = "Items Right of Self";
+                    weightText.text = GetTotalWeight(rightItems).ToString();
+                    volumeText.text = GetTotalVolume(rightItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                }
+                break;
+            case Direction.UpLeft:
+                if (upLeftInventory != null)
+                {
+                    inventoryNameText.text = upLeftInventory.container.name + " Inventory";
+                    upLeftSideBarIcon.sprite = GetContainerIcon(upLeftInventory, true);
+                    upLeftInventory.container.spriteRenderer.sprite = GetContainerIcon(upLeftInventory, true);
+                    weightText.text = GetTotalWeight(upLeftItems).ToString() + "/" + upLeftInventory.maxWeight.ToString();
+                    volumeText.text = GetTotalVolume(upLeftItems).ToString() + "/" + upLeftInventory.maxVolume.ToString();
+                }
+                else
+                {
+                    inventoryNameText.text = "Items Above and Left of Self";
+                    weightText.text = GetTotalWeight(upLeftItems).ToString();
+                    volumeText.text = GetTotalVolume(upLeftItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                }
+                break;
+            case Direction.UpRight:
+                if (upRightInventory != null)
+                {
+                    inventoryNameText.text = upRightInventory.container.name + " Inventory";
+                    upRightSideBarIcon.sprite = GetContainerIcon(upRightInventory, true);
+                    upRightInventory.container.spriteRenderer.sprite = GetContainerIcon(upRightInventory, true);
+                    weightText.text = GetTotalWeight(upRightItems).ToString() + "/" + upRightInventory.maxWeight.ToString();
+                    volumeText.text = GetTotalVolume(upRightItems).ToString() + "/" + upRightInventory.maxVolume.ToString();
+                }
+                else
+                {
+                    inventoryNameText.text = "Items Above and Right of Self";
+                    weightText.text = GetTotalWeight(upRightItems).ToString();
+                    volumeText.text = GetTotalVolume(upRightItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                }
+                break;
+            case Direction.DownLeft:
+                if (downLeftInventory != null)
+                {
+                    inventoryNameText.text = downLeftInventory.container.name + " Inventory";
+                    downLeftSideBarIcon.sprite = GetContainerIcon(downLeftInventory, true);
+                    downLeftInventory.container.spriteRenderer.sprite = GetContainerIcon(downLeftInventory, true);
+                    weightText.text = GetTotalWeight(downLeftItems).ToString() + "/" + downLeftInventory.maxWeight.ToString();
+                    volumeText.text = GetTotalVolume(downLeftItems).ToString() + "/" + downLeftInventory.maxVolume.ToString();
+                }
+                else
+                {
+                    inventoryNameText.text = "Items Below and Left of Self";
+                    weightText.text = GetTotalWeight(downLeftItems).ToString();
+                    volumeText.text = GetTotalVolume(downLeftItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                }
+                break;
+            case Direction.DownRight:
+                if (downRightInventory != null)
+                {
+                    inventoryNameText.text = downRightInventory.container.name + " Inventory";
+                    downRightSideBarIcon.sprite = GetContainerIcon(downRightInventory, true);
+                    downRightInventory.container.spriteRenderer.sprite = GetContainerIcon(downRightInventory, true);
+                    weightText.text = GetTotalWeight(downRightItems).ToString() + "/" + downRightInventory.maxWeight.ToString();
+                    volumeText.text = GetTotalVolume(downRightItems).ToString() + "/" + downRightInventory.maxVolume.ToString();
+                }
+                else
+                {
+                    inventoryNameText.text = "Items Below and Right Self";
+                    weightText.text = GetTotalWeight(downRightItems).ToString();
+                    volumeText.text = GetTotalVolume(downRightItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                }
                 break;
             default:
                 break;
