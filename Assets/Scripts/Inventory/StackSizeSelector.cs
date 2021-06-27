@@ -91,10 +91,10 @@ public class StackSizeSelector : MonoBehaviour
         {
             // TODO: Create a new stack
 
-            selectedInventorySlot.currentStackSize -= currentValue;
+            selectedInventorySlot.itemData.currentStackSize -= currentValue;
 
-            if (selectedInventorySlot.currentStackSize > 0)
-                selectedInventorySlot.UpdateStackSizeText();
+            if (selectedInventorySlot.itemData.currentStackSize > 0)
+                selectedInventorySlot.UpdateItemTexts();
             else
                 selectedInventorySlot.ClearItem();
         }
@@ -110,7 +110,7 @@ public class StackSizeSelector : MonoBehaviour
         inputField.Select();
 
         selectedInventorySlot = inventorySlot;
-        maxValue = inventorySlot.currentStackSize - 1;
+        maxValue = inventorySlot.itemData.currentStackSize - 1;
         currentValue = 1;
         inputField.text = currentValue.ToString();
 

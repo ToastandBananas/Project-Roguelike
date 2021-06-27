@@ -284,7 +284,6 @@ GameObject:
   - component: {fileID: 5458695786222857487}
   - component: {fileID: 7413485683728190283}
   - component: {fileID: 7328691094049185224}
-  - component: {fileID: 2842008078425427683}
   m_Layer: 5
   m_Name: Item
   m_TagString: Untagged
@@ -437,40 +436,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemData: {fileID: 0}
+  currentStackSize: 0
+  originItemData: {fileID: 0}
   slotImage: {fileID: 0}
   rectTransform: {fileID: 0}
   uiManager: {fileID: 0}
   itemNameText: {fileID: 0}
+  itemAmountText: {fileID: 0}
   itemTypeText: {fileID: 0}
   itemWeightText: {fileID: 0}
   itemVolumeText: {fileID: 0}
-  currentStackSize: 0
-  inventory: {fileID: 0}
---- !u!114 &2842008078425427683
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5458695786222857491}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b61c9480aabd254c8018ae3e366aa00, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hasBeenRandomized: 0
-  item: {fileID: 0}
-  itemName: 
-  value: 0
-  currentStackSize: 1
-  maxDurability: 0
-  durability: 0
-  damage: 0
-  treeDamage: 0
-  defense: 0
-  shieldBashDamage: 0
-  freshness: 100
-  uses: 1
+  myInventory: {fileID: 0}
 --- !u!1 &5458695786379007275
 GameObject:
   m_ObjectHideFlags: 0

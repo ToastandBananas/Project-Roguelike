@@ -44,13 +44,13 @@ public class TooltipManager : MonoBehaviour
             {
                 tooltip.BuildTooltip(invItem.itemData);
 
-                if (invItem.IsInventorySlot())
-                {
+                //if (invItem.IsInventorySlot())
+                //{
                     tooltip.rectTransform.localPosition = inventoryTooltipPosition;
                     ShowMatchingEquipmentTooltip(invItem);
-                }
-                else
-                    tooltip.rectTransform.localPosition = equipmentTooltipPosition;
+                //}
+                //else
+                    //tooltip.rectTransform.localPosition = equipmentTooltipPosition;
             }
         }
     }

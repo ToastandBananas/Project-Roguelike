@@ -76,7 +76,7 @@ public class EquipmentManager : MonoBehaviour
     {
         if (shouldAddToInventory)
         {
-            if (characterManager.inventory.Add(oldItemData, 1, null) == false) // If we can't add it to the Inventory, drop it
+            if (characterManager.inventory.Add(null, oldItemData, 1, null) == false) // If we can't add it to the Inventory, drop it
                 dropItemController.DropEquipment(this, equipmentSlot, characterManager.transform.position, oldItemData, 1);
         }
 

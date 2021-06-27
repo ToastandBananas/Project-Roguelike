@@ -45,7 +45,7 @@ public class PlayerInventorySidebarButton : MonoBehaviour
                 playerInvUI.PopulateInventoryUI(playerInvUI.keysInventory.items, PlayerInventoryType.Keys);
                 break;
             case PlayerInventoryType.EquippedItems:
-                playerInvUI.PopulateInventoryUI(playerInvUI.playerManager.equipmentManager.currentEquipment, PlayerInventoryType.EquippedItems);
+                playerInvUI.PopulateInventoryUI(playerInvUI.gm.playerManager.equipmentManager.currentEquipment, PlayerInventoryType.EquippedItems);
                 break;
             default:
                 break;

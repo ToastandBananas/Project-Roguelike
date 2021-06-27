@@ -13,23 +13,17 @@ public class InventoryUI : MonoBehaviour
     public TextMeshProUGUI weightText;
     public TextMeshProUGUI volumeText;
 
-    [HideInInspector] public PlayerManager playerManager;
+    [HideInInspector] public GameManager gm;
     [HideInInspector] public Inventory activeInventory;
-
-    DropItemController dropItemController;
-    UIManager uiManager;
 
     public virtual void Start()
     {
-        dropItemController = DropItemController.instance;
-        uiManager = UIManager.instance;
+        gm = GameManager.instance;
 
         UpdateVisibleSlots();
 
         if (inventoryParent.activeSelf)
             inventoryParent.SetActive(false);
-
-        playerManager = PlayerManager.instance;
 
     }
 
@@ -39,7 +33,7 @@ public class InventoryUI : MonoBehaviour
         {
             if (inventoryItemObjectPool.pooledInventoryItems[i].gameObject.activeSelf)
             {
-                inventoryItemObjectPool.pooledInventoryItems[i].ClearUI();
+                inventoryItemObjectPool.pooledInventoryItems[i].Reset();
                 inventoryItemObjectPool.pooledInventoryItems[i].gameObject.SetActive(false);
             }
         }
@@ -48,8 +42,8 @@ public class InventoryUI : MonoBehaviour
     public InventoryItem ShowNewInventoryItem(ItemData newItemData)
     {
         InventoryItem invItem = inventoryItemObjectPool.GetPooledInventoryItem();
-        newItemData.TransferData(newItemData, invItem.itemData);
-        invItem.originItemData = newItemData;
+        //newItemData.TransferData(newItemData, invItem.itemData);
+        invItem.itemData = newItemData;
         invItem.itemNameText.text = invItem.itemData.itemName;
         invItem.itemAmountText.text = invItem.itemData.currentStackSize.ToString();
         invItem.itemTypeText.text = invItem.itemData.item.itemType.ToString();
@@ -134,5 +128,27 @@ public class InventoryUI : MonoBehaviour
     public void UpdateVisibleSlots()
     {
         // TODO
+    }
+
+    public InventoryItem GetItemDatasInventoryItem(ItemData itemData)
+    {
+        if (this == gm.playerInvUI)
+        {
+            for (int i = 0; i < gm.objectPoolManager.playerInventoryItemObjectPool.pooledInventoryItems.Count; i++)
+            {
+                if (gm.objectPoolManager.playerInventoryItemObjectPool.pooledInventoryItems[i].itemData == itemData)
+                    return gm.objectPoolManager.playerInventoryItemObjectPool.pooledInventoryItems[i];
+            }
+        }
+        else if (this == gm.containerInvUI)
+        {
+            for (int i = 0; i < gm.objectPoolManager.containerInventoryItemObjectPool.pooledInventoryItems.Count; i++)
+            {
+                if (gm.objectPoolManager.containerInventoryItemObjectPool.pooledInventoryItems[i].itemData == itemData)
+                    return gm.objectPoolManager.containerInventoryItemObjectPool.pooledInventoryItems[i];
+            }
+        }
+
+        return null;
     }
 }

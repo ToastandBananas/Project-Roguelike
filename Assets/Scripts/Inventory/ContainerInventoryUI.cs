@@ -77,15 +77,15 @@ public class ContainerInventoryUI : InventoryUI
     {
         ClearAllLists();
 
-        GetItemsAtPosition(playerManager.transform.position, playerPositionItems, Direction.Center);
-        GetItemsAtPosition(playerManager.transform.position + new Vector3(-1, 0), leftItems, Direction.Left);
-        GetItemsAtPosition(playerManager.transform.position + new Vector3(1, 0), rightItems, Direction.Right);
-        GetItemsAtPosition(playerManager.transform.position + new Vector3(0, 1), upItems, Direction.Up);
-        GetItemsAtPosition(playerManager.transform.position + new Vector3(0, -1), downItems, Direction.Down);
-        GetItemsAtPosition(playerManager.transform.position + new Vector3(-1, 1), upLeftItems, Direction.UpLeft);
-        GetItemsAtPosition(playerManager.transform.position + new Vector3(1, 1), upRightItems, Direction.UpRight);
-        GetItemsAtPosition(playerManager.transform.position + new Vector3(-1, -1), downLeftItems, Direction.DownLeft);
-        GetItemsAtPosition(playerManager.transform.position + new Vector3(1, -1), downRightItems, Direction.DownRight);
+        GetItemsAtPosition(gm.playerManager.transform.position, playerPositionItems, Direction.Center);
+        GetItemsAtPosition(gm.playerManager.transform.position + new Vector3(-1, 0), leftItems, Direction.Left);
+        GetItemsAtPosition(gm.playerManager.transform.position + new Vector3(1, 0), rightItems, Direction.Right);
+        GetItemsAtPosition(gm.playerManager.transform.position + new Vector3(0, 1), upItems, Direction.Up);
+        GetItemsAtPosition(gm.playerManager.transform.position + new Vector3(0, -1), downItems, Direction.Down);
+        GetItemsAtPosition(gm.playerManager.transform.position + new Vector3(-1, 1), upLeftItems, Direction.UpLeft);
+        GetItemsAtPosition(gm.playerManager.transform.position + new Vector3(1, 1), upRightItems, Direction.UpRight);
+        GetItemsAtPosition(gm.playerManager.transform.position + new Vector3(-1, -1), downLeftItems, Direction.DownLeft);
+        GetItemsAtPosition(gm.playerManager.transform.position + new Vector3(1, -1), downRightItems, Direction.DownRight);
     }
 
     void GetItemsAtPosition(Vector2 position, List<ItemData> itemsList, Direction direction)
@@ -355,6 +355,33 @@ public class ContainerInventoryUI : InventoryUI
         }
     }
 
+    public List<ItemData> GetItemsListFromActiveDirection()
+    {
+        switch (activeDirection)
+        {
+            case Direction.Center:
+                return playerPositionItems;
+            case Direction.Up:
+                return upItems;
+            case Direction.Down:
+                return downItems;
+            case Direction.Left:
+                return leftItems;
+            case Direction.Right:
+                return rightItems;
+            case Direction.UpLeft:
+                return upLeftItems;
+            case Direction.UpRight:
+                return upRightItems;
+            case Direction.DownLeft:
+                return downLeftItems;
+            case Direction.DownRight:
+                return downRightItems;
+            default:
+                return null;
+        }
+    }
+
     void SetupContainerUI(Inventory inventory, Image sideBarIcon, List<ItemData> itemsList)
     {
         inventoryNameText.text = inventory.container.name + " Inventory";
@@ -477,6 +504,42 @@ public class ContainerInventoryUI : InventoryUI
                 default:
                     break;
             }
+        }
+    }
+
+    public void AddItemToList(ItemData itemDataToAdd)
+    {
+        switch (activeDirection)
+        {
+            case Direction.Center:
+                playerPositionItems.Add(itemDataToAdd);
+                break;
+            case Direction.Up:
+                upItems.Add(itemDataToAdd);
+                break;
+            case Direction.Down:
+                downItems.Add(itemDataToAdd);
+                break;
+            case Direction.Left:
+                leftItems.Add(itemDataToAdd);
+                break;
+            case Direction.Right:
+                rightItems.Add(itemDataToAdd);
+                break;
+            case Direction.UpLeft:
+                upLeftItems.Add(itemDataToAdd);
+                break;
+            case Direction.UpRight:
+                upRightItems.Add(itemDataToAdd);
+                break;
+            case Direction.DownLeft:
+                downLeftItems.Add(itemDataToAdd);
+                break;
+            case Direction.DownRight:
+                downRightItems.Add(itemDataToAdd);
+                break;
+            default:
+                break;
         }
     }
 

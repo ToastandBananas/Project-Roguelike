@@ -59,7 +59,7 @@ public class ContextMenu : MonoBehaviour
             if (uiManager.activeInventorySlot.itemData.item.isUsable)
                 CreateUseItemButton();
 
-            if (uiManager.activeInventorySlot.currentStackSize > 1)
+            if (uiManager.activeInventorySlot.itemData.currentStackSize > 1)
                 CreateSplitStackButton();
 
             CreateDropItemButton();

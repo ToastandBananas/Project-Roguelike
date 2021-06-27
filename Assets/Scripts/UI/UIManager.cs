@@ -111,12 +111,12 @@ public class UIManager : MonoBehaviour
         // Split stack
         if (GameControls.gamePlayActions.menuSelect.WasPressed && GameControls.gamePlayActions.leftShift.IsPressed)
         {
-            if (activeInventorySlot != null && activeInventorySlot.itemData != null && activeInventorySlot.currentStackSize > 1 && activeInventorySlot != stackSizeSelector.selectedInventorySlot)
+            if (activeInventorySlot != null && activeInventorySlot.itemData != null && activeInventorySlot.itemData.currentStackSize > 1 && activeInventorySlot != stackSizeSelector.selectedInventorySlot)
             {
                 // Show the Stack Size Selector
                 stackSizeSelector.ShowStackSizeSelector(activeInventorySlot);
             }
-            else if (stackSizeSelector.isActive && (activeInventorySlot == null || activeInventorySlot.itemData == null || activeInventorySlot.currentStackSize == 1))
+            else if (stackSizeSelector.isActive && (activeInventorySlot == null || activeInventorySlot.itemData == null || activeInventorySlot.itemData.currentStackSize == 1))
             {
                 // Hide the Stack Size Selector
                 stackSizeSelector.HideStackSizeSelector();

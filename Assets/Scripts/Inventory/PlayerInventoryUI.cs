@@ -37,8 +37,8 @@ public class PlayerInventoryUI : InventoryUI
         inventoryItemObjectPool.Init();
         InitInventories();
 
-        personalInventory.maxWeight = playerManager.playerStats.maxPersonalInvWeight.GetValue();
-        personalInventory.maxVolume = playerManager.playerStats.maxPersonalInvVolume.GetValue();
+        personalInventory.maxWeight = gm.playerManager.playerStats.maxPersonalInvWeight.GetValue();
+        personalInventory.maxVolume = gm.playerManager.playerStats.maxPersonalInvVolume.GetValue();
         
         PopulateInventoryUI(personalInventory.items, PlayerInventoryType.Personal);
     }
@@ -81,8 +81,8 @@ public class PlayerInventoryUI : InventoryUI
         {
             case PlayerInventoryType.Personal:
                 inventoryNameText.text = "Personal Inventory";
-                weightText.text = GetTotalWeight(personalInventory.items).ToString() + "/" + playerManager.playerStats.maxPersonalInvWeight.GetValue().ToString();
-                volumeText.text = GetTotalVolume(personalInventory.items).ToString() + "/" + playerManager.playerStats.maxPersonalInvVolume.GetValue().ToString();
+                weightText.text = GetTotalWeight(personalInventory.items).ToString() + "/" + gm.playerManager.playerStats.maxPersonalInvWeight.GetValue().ToString();
+                volumeText.text = GetTotalVolume(personalInventory.items).ToString() + "/" + gm.playerManager.playerStats.maxPersonalInvVolume.GetValue().ToString();
                 activeInventory = personalInventory;
                 break;
             case PlayerInventoryType.Bag1:
@@ -123,8 +123,8 @@ public class PlayerInventoryUI : InventoryUI
                 break;
             case PlayerInventoryType.EquippedItems:
                 inventoryNameText.text = "Equipped Items";
-                weightText.text = GetTotalWeight(playerManager.equipmentManager.currentEquipment).ToString();
-                volumeText.text = GetTotalVolume(playerManager.equipmentManager.currentEquipment).ToString();
+                weightText.text = GetTotalWeight(gm.playerManager.equipmentManager.currentEquipment).ToString();
+                volumeText.text = GetTotalVolume(gm.playerManager.equipmentManager.currentEquipment).ToString();
                 activeInventory = null;
                 break;
             default:
@@ -185,8 +185,8 @@ public class PlayerInventoryUI : InventoryUI
         }
         else
         {
-            weightText.text = GetTotalWeight(playerManager.playerEquipmentManager.currentEquipment).ToString();
-            volumeText.text = GetTotalVolume(playerManager.playerEquipmentManager.currentEquipment).ToString();
+            weightText.text = GetTotalWeight(gm.playerManager.playerEquipmentManager.currentEquipment).ToString();
+            volumeText.text = GetTotalVolume(gm.playerManager.playerEquipmentManager.currentEquipment).ToString();
         }
 
         totalWeightText.text = GetTotalCarriedWeight().ToString();
@@ -249,10 +249,10 @@ public class PlayerInventoryUI : InventoryUI
             }
         }
 
-        for (int i = 0; i < playerManager.equipmentManager.currentEquipment.Length; i++)
+        for (int i = 0; i < gm.playerManager.equipmentManager.currentEquipment.Length; i++)
         {
-            if (playerManager.equipmentManager.currentEquipment[i] != null)
-                totalWeight += playerManager.equipmentManager.currentEquipment[i].item.weight * playerManager.equipmentManager.currentEquipment[i].currentStackSize;
+            if (gm.playerManager.equipmentManager.currentEquipment[i] != null)
+                totalWeight += gm.playerManager.equipmentManager.currentEquipment[i].item.weight * gm.playerManager.equipmentManager.currentEquipment[i].currentStackSize;
         }
 
         return Mathf.RoundToInt(totalWeight * 100f) / 100f;
@@ -314,10 +314,10 @@ public class PlayerInventoryUI : InventoryUI
             }
         }
 
-        for (int i = 0; i < playerManager.equipmentManager.currentEquipment.Length; i++)
+        for (int i = 0; i < gm.playerManager.equipmentManager.currentEquipment.Length; i++)
         {
-            if (playerManager.equipmentManager.currentEquipment[i] != null)
-                totalVolume += playerManager.equipmentManager.currentEquipment[i].item.volume * playerManager.equipmentManager.currentEquipment[i].currentStackSize;
+            if (gm.playerManager.equipmentManager.currentEquipment[i] != null)
+                totalVolume += gm.playerManager.equipmentManager.currentEquipment[i].item.volume * gm.playerManager.equipmentManager.currentEquipment[i].currentStackSize;
         }
 
         return Mathf.RoundToInt(totalVolume * 100f) / 100f;

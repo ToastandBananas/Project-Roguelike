@@ -12,7 +12,7 @@ public class Inventory : MonoBehaviour
     public float maxWeight = 20;
     public float maxVolume = 20;
 
-    [HideInInspector] public float currentWeight, currentVolume;
+    public float currentWeight, currentVolume;
 
     public List<ItemData> items = new List<ItemData>();
 
@@ -22,8 +22,8 @@ public class Inventory : MonoBehaviour
     [HideInInspector] public GameObject inventoryOwner;
 
     [HideInInspector] public bool hasBeenInitialized;
-
-    ItemDataObjectPool itemDataObjectPool;
+    
+    GameManager gm;
 
     public virtual void Start()
     {
@@ -34,7 +34,7 @@ public class Inventory : MonoBehaviour
     {
         if (hasBeenInitialized == false)
         {
-            itemDataObjectPool = (ItemDataObjectPool)ObjectPoolManager.instance.itemDataObjectPool;
+            gm = GameManager.instance;
             inventoryOwner = gameObject;
             itemsParent = transform.Find("Items");
             TryGetComponent(out container);
@@ -62,9 +62,10 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public bool Add(ItemData itemData, int itemCount, Inventory invComingFrom)
+    public bool Add(InventoryItem invItemComingFrom, ItemData itemDataComingFrom, int itemCount, Inventory invComingFrom)
     {
-        bool hasRoom = HasRoomInInventory(itemData, itemCount);
+        int startingStackSize = itemDataComingFrom.currentStackSize;
+        bool hasRoom = HasRoomInInventory(itemDataComingFrom, itemCount);
 
         if (hasRoom == false)
         {
@@ -72,19 +73,27 @@ public class Inventory : MonoBehaviour
             return false;
         }
 
-        currentWeight += itemData.item.weight * itemCount;
+        currentWeight += itemDataComingFrom.item.weight * itemCount;
         currentWeight = (currentWeight * 100f) / 100f;
-        currentVolume += itemData.item.volume * itemCount;
+        currentVolume += itemDataComingFrom.item.volume * itemCount;
         currentVolume = (currentVolume * 100f) / 100f;
 
-        if (itemData.item.maxStackSize > 1 && InventoryContainsSameItem(itemData)) // Try adding to existing stacks first
-            AddToExistingStacks(itemData, invComingFrom);
+        if (itemDataComingFrom.item.maxStackSize > 1 && InventoryContainsSameItem(itemDataComingFrom)) // Try adding to existing stacks first
+            AddToExistingStacks(itemDataComingFrom, itemCount, invComingFrom);
 
-        if (itemData.currentStackSize > 0) // If there's still some left to add
+        ///////////////////////////
+        // TODO: Account for when we're just adding one item and we don't want to add the rest yet
+        ///////////////////////////
+        if (itemDataComingFrom.currentStackSize > 0) // If there's still some left to add
         {
-            ItemData itemDataToAdd = itemDataObjectPool.GetPooledItemData();
-            itemDataToAdd.TransferData(itemData, itemDataToAdd);
+            if (invItemComingFrom != null)
+                invItemComingFrom.UpdateItemTexts();
+
+            ItemData itemDataToAdd = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData();
+            itemDataToAdd.TransferData(itemDataComingFrom, itemDataToAdd);
             items.Add(itemDataToAdd);
+            if (myInventoryUI == gm.containerInvUI)
+                gm.containerInvUI.AddItemToList(itemDataToAdd);
             itemDataToAdd.transform.SetParent(itemsParent);
             itemDataToAdd.gameObject.SetActive(true);
 
@@ -97,13 +106,16 @@ public class Inventory : MonoBehaviour
 
             if (invComingFrom != null)
             {
-                invComingFrom.currentWeight -= itemData.item.weight * itemData.currentStackSize;
+                invComingFrom.currentWeight -= itemDataComingFrom.item.weight * itemDataComingFrom.currentStackSize;
                 invComingFrom.currentWeight = Mathf.RoundToInt(invComingFrom.currentWeight * 100f) / 100f;
-                invComingFrom.currentVolume -= itemData.item.volume * itemData.currentStackSize;
+                invComingFrom.currentVolume -= itemDataComingFrom.item.volume * itemDataComingFrom.currentStackSize;
                 invComingFrom.currentVolume = Mathf.RoundToInt(invComingFrom.currentVolume * 100f) / 100f;
             }
 
-            itemData.currentStackSize = 0;
+            if (itemCount == 1)
+                itemDataComingFrom.currentStackSize--;
+            else
+                itemDataComingFrom.currentStackSize = 0;
         }
 
         return true;
@@ -114,28 +126,32 @@ public class Inventory : MonoBehaviour
         // TODO
     }
 
-    public void AddToExistingStacks(ItemData itemData, Inventory invComingFrom)
+    public void AddToExistingStacks(ItemData itemDataComingFrom, int itemCount, Inventory invComingFrom)
     {
-        for (int i = 0; i < items.Count; i++)
+        for (int i = 0; i < items.Count; i++) // The Items list refers to our ItemData GameObjects
         {
-            if (itemData.StackableItemsDataIsEqual(items[i], itemData))
+            if (itemDataComingFrom.StackableItemsDataIsEqual(items[i], itemDataComingFrom))
             {
-                for (int j = 0; j < itemData.currentStackSize; j++)
+                InventoryItem itemDatasInvItem = myInventoryUI.GetItemDatasInventoryItem(items[i]); // Get the InventoryItem using the ItemData we're adding to
+                for (int j = 0; j < itemCount; j++)
                 {
                     if (items[i].currentStackSize < items[i].item.maxStackSize)
                     {
                         items[i].currentStackSize++;
-                        itemData.currentStackSize--;
-                        
+                        itemDataComingFrom.currentStackSize--;
+
                         if (invComingFrom != null)
                         {
-                            invComingFrom.currentWeight -= itemData.item.weight;
+                            invComingFrom.currentWeight -= itemDataComingFrom.item.weight;
                             invComingFrom.currentWeight = Mathf.RoundToInt(invComingFrom.currentWeight * 100f) / 100f;
-                            invComingFrom.currentVolume -= itemData.item.volume;
+                            invComingFrom.currentVolume -= itemDataComingFrom.item.volume;
                             invComingFrom.currentVolume = Mathf.RoundToInt(invComingFrom.currentVolume * 100f) / 100f;
                         }
 
-                        if (itemData.currentStackSize == 0)
+                        if (itemDatasInvItem != null)
+                            itemDatasInvItem.UpdateItemTexts();
+
+                        if (itemDataComingFrom.currentStackSize == 0)
                             return;
                     }
                 }
@@ -171,8 +187,8 @@ public class Inventory : MonoBehaviour
         // Add up how much of this Item that we have in our Inventory
         for (int i = 0; i < myInventoryUI.inventoryItemObjectPool.pooledInventoryItems.Count; i++)
         {
-            if (myInventoryUI.inventoryItemObjectPool.pooledInventoryItems[i].itemData.item == itemData.item)
-                itemCountInInventory += myInventoryUI.inventoryItemObjectPool.pooledInventoryItems[i].currentStackSize;
+            if (myInventoryUI.inventoryItemObjectPool.pooledInventoryItems[i].itemData != null && myInventoryUI.inventoryItemObjectPool.pooledInventoryItems[i].itemData.item == itemData.item)
+                itemCountInInventory += myInventoryUI.inventoryItemObjectPool.pooledInventoryItems[i].itemData.currentStackSize;
         }
 
         if (itemCountInInventory >= itemAmountRequired)

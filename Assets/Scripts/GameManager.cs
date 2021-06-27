@@ -4,6 +4,13 @@ public enum Direction { Center, Up, Down, Left, Right, UpLeft, UpRight, DownLeft
 
 public class GameManager : MonoBehaviour
 {
+    [HideInInspector] public ContainerInventoryUI containerInvUI;
+    [HideInInspector] public PlayerInventoryUI playerInvUI;
+    [HideInInspector] public PlayerManager playerManager;
+    [HideInInspector] public DropItemController dropItemController;
+    [HideInInspector] public ObjectPoolManager objectPoolManager;
+    [HideInInspector] public UIManager uiManager;
+
     #region Singleton
     public static GameManager instance;
 
@@ -21,4 +28,14 @@ public class GameManager : MonoBehaviour
             instance = this;
     }
     #endregion
+
+    void Start()
+    {
+        containerInvUI = ContainerInventoryUI.instance;
+        playerInvUI = PlayerInventoryUI.instance;
+        playerManager = PlayerManager.instance;
+        dropItemController = DropItemController.instance;
+        objectPoolManager = ObjectPoolManager.instance;
+        uiManager = UIManager.instance;
+    }
 }

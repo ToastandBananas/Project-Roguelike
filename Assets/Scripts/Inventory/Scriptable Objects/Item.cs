@@ -27,8 +27,8 @@ public class Item : ScriptableObject
     {
         if (inventorySlot != null && isUsable)
         {
-            inventorySlot.currentStackSize -= itemCount;
-            inventorySlot.UpdateStackSizeText();
+            inventorySlot.itemData.currentStackSize -= itemCount;
+            inventorySlot.UpdateItemTexts();
         }
     }
 
