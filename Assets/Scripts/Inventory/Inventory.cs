@@ -44,7 +44,9 @@ public class Inventory : MonoBehaviour
                 ItemData itemData = itemsParent.GetChild(i).GetComponent<ItemData>();
                 items.Add(itemData);
                 currentWeight += itemData.item.weight * itemData.currentStackSize;
+                currentWeight = Mathf.RoundToInt(currentWeight * 100f) / 100f;
                 currentVolume += itemData.item.volume * itemData.currentStackSize;
+                currentVolume = Mathf.RoundToInt(currentVolume * 100f) / 100f;
             }
 
             if (items.Count > 0)
@@ -60,7 +62,7 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public bool Add(ItemData itemData, int itemCount)
+    public bool Add(ItemData itemData, int itemCount, Inventory invComingFrom)
     {
         bool hasRoom = HasRoomInInventory(itemData, itemCount);
 
@@ -71,10 +73,12 @@ public class Inventory : MonoBehaviour
         }
 
         currentWeight += itemData.item.weight * itemCount;
+        currentWeight = (currentWeight * 100f) / 100f;
         currentVolume += itemData.item.volume * itemCount;
+        currentVolume = (currentVolume * 100f) / 100f;
 
         if (itemData.item.maxStackSize > 1 && InventoryContainsSameItem(itemData)) // Try adding to existing stacks first
-            AddToExistingStacks(itemData);
+            AddToExistingStacks(itemData, invComingFrom);
 
         if (itemData.currentStackSize > 0) // If there's still some left to add
         {
@@ -91,19 +95,26 @@ public class Inventory : MonoBehaviour
                 itemDataToAdd.gameObject.name = itemDataToAdd.itemName;
             #endif
 
+            if (invComingFrom != null)
+            {
+                invComingFrom.currentWeight -= itemData.item.weight * itemData.currentStackSize;
+                invComingFrom.currentWeight = Mathf.RoundToInt(invComingFrom.currentWeight * 100f) / 100f;
+                invComingFrom.currentVolume -= itemData.item.volume * itemData.currentStackSize;
+                invComingFrom.currentVolume = Mathf.RoundToInt(invComingFrom.currentVolume * 100f) / 100f;
+            }
+
             itemData.currentStackSize = 0;
         }
 
         return true;
     }
 
-    public void Remove(ItemData itemData, int itemCount, InventoryItem inventorySlot)
+    public void Remove(ItemData itemData, int itemCount, InventoryItem invItem)
     {
-        if (onItemRemovedCallback != null)
-            onItemRemovedCallback.Invoke(itemData, itemCount, inventorySlot);
+        // TODO
     }
 
-    public void AddToExistingStacks(ItemData itemData)
+    public void AddToExistingStacks(ItemData itemData, Inventory invComingFrom)
     {
         for (int i = 0; i < items.Count; i++)
         {
@@ -115,6 +126,14 @@ public class Inventory : MonoBehaviour
                     {
                         items[i].currentStackSize++;
                         itemData.currentStackSize--;
+                        
+                        if (invComingFrom != null)
+                        {
+                            invComingFrom.currentWeight -= itemData.item.weight;
+                            invComingFrom.currentWeight = Mathf.RoundToInt(invComingFrom.currentWeight * 100f) / 100f;
+                            invComingFrom.currentVolume -= itemData.item.volume;
+                            invComingFrom.currentVolume = Mathf.RoundToInt(invComingFrom.currentVolume * 100f) / 100f;
+                        }
 
                         if (itemData.currentStackSize == 0)
                             return;

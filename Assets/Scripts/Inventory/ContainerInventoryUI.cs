@@ -11,15 +11,15 @@ public class ContainerInventoryUI : InventoryUI
     public Image playerPositionSideBarIcon;
     public Image upSideBarIcon, downSideBarIcon, leftSideBarIcon, rightSideBarIcon, upLeftSideBarIcon, upRightSideBarIcon, downLeftSideBarIcon, downRightSideBarIcon;
 
-    [HideInInspector] public List<ItemData> playerPositionItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> leftItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> rightItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> upItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> downItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> upLeftItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> upRightItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> downLeftItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> downRightItems = new List<ItemData>();
+    public List<ItemData> playerPositionItems = new List<ItemData>();
+    public List<ItemData> leftItems = new List<ItemData>();
+    public List<ItemData> rightItems = new List<ItemData>();
+    public List<ItemData> upItems = new List<ItemData>();
+    public List<ItemData> downItems = new List<ItemData>();
+    public List<ItemData> upLeftItems = new List<ItemData>();
+    public List<ItemData> upRightItems = new List<ItemData>();
+    public List<ItemData> downLeftItems = new List<ItemData>();
+    public List<ItemData> downRightItems = new List<ItemData>();
 
     [HideInInspector] Inventory leftInventory, rightInventory, upInventory, downInventory, upLeftInventory, upRightInventory, downLeftInventory, downRightInventory;
 
@@ -59,6 +59,7 @@ public class ContainerInventoryUI : InventoryUI
     // This method runs when the user clicks on a container side bar icon
     public void PopulateInventoryUI(List<ItemData> itemsList, Direction direction)
     {
+        activeInventory = null;
         ClearInventoryUI();
         activeDirection = direction;
 
@@ -428,12 +429,10 @@ public class ContainerInventoryUI : InventoryUI
 
     public override void UpdateUINumbers()
     {
-        Debug.Log(activeInventory);
-        Debug.Log(activeDirection);
         if (activeInventory != null)
         {
-            weightText.text = ((activeInventory.currentWeight * 100f) / 100f).ToString();
-            volumeText.text = ((activeInventory.currentVolume * 100f) / 100f).ToString();
+            weightText.text = (Mathf.RoundToInt(activeInventory.currentWeight * 100f) / 100f).ToString() + "/" + activeInventory.maxWeight.ToString();
+            volumeText.text = (Mathf.RoundToInt(activeInventory.currentVolume * 100f) / 100f).ToString() + "/" + activeInventory.maxVolume.ToString();
         }
         else
         {
@@ -441,43 +440,88 @@ public class ContainerInventoryUI : InventoryUI
             {
                 case Direction.Center:
                     weightText.text = GetTotalWeight(playerPositionItems).ToString();
-                    volumeText.text = GetTotalVolume(playerPositionItems).ToString();
+                    volumeText.text = GetTotalVolume(playerPositionItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
                 case Direction.Up:
                     weightText.text = GetTotalWeight(upItems).ToString();
-                    volumeText.text = GetTotalVolume(upItems).ToString();
+                    volumeText.text = GetTotalVolume(upItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
                 case Direction.Down:
                     weightText.text = GetTotalWeight(downItems).ToString();
-                    volumeText.text = GetTotalVolume(downItems).ToString();
+                    volumeText.text = GetTotalVolume(downItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
                 case Direction.Left:
                     weightText.text = GetTotalWeight(leftItems).ToString();
-                    volumeText.text = GetTotalVolume(leftItems).ToString();
+                    volumeText.text = GetTotalVolume(leftItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
                 case Direction.Right:
                     weightText.text = GetTotalWeight(rightItems).ToString();
-                    volumeText.text = GetTotalVolume(rightItems).ToString();
+                    volumeText.text = GetTotalVolume(rightItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
                 case Direction.UpLeft:
                     weightText.text = GetTotalWeight(upLeftItems).ToString();
-                    volumeText.text = GetTotalVolume(upLeftItems).ToString();
+                    volumeText.text = GetTotalVolume(upLeftItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
                 case Direction.UpRight:
                     weightText.text = GetTotalWeight(upRightItems).ToString();
-                    volumeText.text = GetTotalVolume(upRightItems).ToString();
+                    volumeText.text = GetTotalVolume(upRightItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
                 case Direction.DownLeft:
                     weightText.text = GetTotalWeight(downLeftItems).ToString();
-                    volumeText.text = GetTotalVolume(downLeftItems).ToString();
+                    volumeText.text = GetTotalVolume(downLeftItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
                 case Direction.DownRight:
                     weightText.text = GetTotalWeight(downRightItems).ToString();
-                    volumeText.text = GetTotalVolume(downRightItems).ToString();
+                    volumeText.text = GetTotalVolume(downRightItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
                 default:
                     break;
             }
+        }
+    }
+
+    public void RemoveItemFromList(ItemData itemDataToRemove)
+    {
+        switch (activeDirection)
+        {
+            case Direction.Center:
+                if (playerPositionItems.Contains(itemDataToRemove))
+                    playerPositionItems.Remove(itemDataToRemove);
+                break;
+            case Direction.Up:
+                if (upItems.Contains(itemDataToRemove))
+                    upItems.Remove(itemDataToRemove);
+                break;
+            case Direction.Down:
+                if (downItems.Contains(itemDataToRemove))
+                    downItems.Remove(itemDataToRemove);
+                break;
+            case Direction.Left:
+                if (leftItems.Contains(itemDataToRemove))
+                    leftItems.Remove(itemDataToRemove);
+                break;
+            case Direction.Right:
+                if (rightItems.Contains(itemDataToRemove))
+                    rightItems.Remove(itemDataToRemove);
+                break;
+            case Direction.UpLeft:
+                if (upLeftItems.Contains(itemDataToRemove))
+                    upLeftItems.Remove(itemDataToRemove);
+                break;
+            case Direction.UpRight:
+                if (upRightItems.Contains(itemDataToRemove))
+                    upRightItems.Remove(itemDataToRemove);
+                break;
+            case Direction.DownLeft:
+                if (downLeftItems.Contains(itemDataToRemove))
+                    downLeftItems.Remove(itemDataToRemove);
+                break;
+            case Direction.DownRight:
+                if (downRightItems.Contains(itemDataToRemove))
+                    downRightItems.Remove(itemDataToRemove);
+                break;
+            default:
+                break;
         }
     }
 

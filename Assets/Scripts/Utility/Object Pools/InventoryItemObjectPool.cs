@@ -43,7 +43,7 @@ public class InventoryItemObjectPool : ObjectPool
     {
         for (int i = 0; i < pooledObjects.Count; i++)
         {
-            if (pooledObjects[i].activeInHierarchy == false)
+            if (pooledInventoryItems[i].itemData.item == null)
                 return pooledInventoryItems[i];
         }
 

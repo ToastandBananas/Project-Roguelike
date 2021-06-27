@@ -33,18 +33,6 @@ public class InventoryUI : MonoBehaviour
 
     }
 
-    void AddItem(ItemData itemData, int itemCount)
-    {
-        int itemCountRemaining = itemCount;
-        // TODO
-    }
-
-    void RemoveItem(ItemData itemData, int itemCount, InventoryItem inventorySlot)
-    {
-        int itemCountRemaining = itemCount;
-        // TODO
-    }
-
     public void ClearInventoryUI()
     {
         for (int i = 0; i < inventoryItemObjectPool.pooledInventoryItems.Count; i++)
@@ -105,7 +93,7 @@ public class InventoryUI : MonoBehaviour
             totalWeight += itemsList[i].item.weight * itemsList[i].currentStackSize;
         }
 
-        return (totalWeight * 100f) / 100f;
+        return Mathf.RoundToInt(totalWeight * 100f) / 100f;
     }
 
     public float GetTotalWeight(ItemData[] currentEquipment)
@@ -117,7 +105,7 @@ public class InventoryUI : MonoBehaviour
                 totalWeight += currentEquipment[i].item.weight * currentEquipment[i].currentStackSize;
         }
 
-        return (totalWeight * 100f) / 100f;
+        return Mathf.RoundToInt(totalWeight * 100f) / 100f;
     }
 
     public float GetTotalVolume(List<ItemData> itemsList)
@@ -128,7 +116,7 @@ public class InventoryUI : MonoBehaviour
             totalVolume += itemsList[i].item.volume * itemsList[i].currentStackSize;
         }
 
-        return (totalVolume * 100f) / 100f;
+        return Mathf.RoundToInt(totalVolume * 100f) / 100f;
     }
 
     public float GetTotalVolume(ItemData[] currentEquipment)
@@ -140,7 +128,7 @@ public class InventoryUI : MonoBehaviour
                 totalVolume += currentEquipment[i].item.volume * currentEquipment[i].currentStackSize;
         }
 
-        return (totalVolume * 100f) / 100f;
+        return Mathf.RoundToInt(totalVolume * 100f) / 100f;
     }
 
     public void UpdateVisibleSlots()

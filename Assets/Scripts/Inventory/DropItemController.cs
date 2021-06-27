@@ -23,7 +23,7 @@ public class DropItemController : MonoBehaviour
             instance = this;
         #endregion
         
-        obstacleMask = LayerMask.GetMask("Objects", "Walls", "DeepWater");
+        obstacleMask = LayerMask.GetMask("Objects", "Walls", "Interactable Objects");
     }
 
     void Start()
@@ -31,40 +31,27 @@ public class DropItemController : MonoBehaviour
         itemPickupObjectPool = ObjectPoolManager.instance.pickupsPool;
     }
 
-    public void DropItem(Vector3 dropPosition, ItemData itemData, int amountToDrop, bool shouldDisableAutoPickup, bool shouldDropIndividually, bool shouldRotate, bool tossInAir)
+    public ItemPickup DropItem(Vector3 dropPosition, ItemData itemData, int amountToDrop)
     {
-        if (itemData != null)
-            Drop(dropPosition, itemData, amountToDrop, shouldDisableAutoPickup, shouldDropIndividually, shouldRotate, tossInAir);
+        return Drop(dropPosition, itemData, amountToDrop);
     }
 
-    public void DropEquipment(EquipmentManager equipmentManager, EquipmentSlot equipmentSlot, Vector3 dropPosition, ItemData itemData, int amountToDrop, bool shouldDisableAutoPickup, bool shouldDropIndividually, bool shouldRotate, bool tossInAir)
+    public void DropEquipment(EquipmentManager equipmentManager, EquipmentSlot equipmentSlot, Vector3 dropPosition, ItemData itemData, int amountToDrop)
     {
         if (itemData != null)
         {
-            Drop(dropPosition, itemData, amountToDrop, shouldDisableAutoPickup, shouldDropIndividually, shouldRotate, tossInAir);
+            Drop(dropPosition, itemData, amountToDrop);
 
             if (equipmentManager != null)
                 equipmentManager.Unequip(equipmentSlot, false);
         }
     }
 
-    void Drop(Vector3 dropPosition, ItemData itemData, int amountToDrop, bool shouldDisableAutoPickup, bool shouldDropIndividually, bool shouldRotate, bool tossInAir)
+    ItemPickup Drop(Vector3 dropPosition, ItemData itemData, int amountToDrop)
     {
-        if (shouldDropIndividually)
-        {
-            for (int i = 0; i < amountToDrop; i++)
-            {
-                ItemPickup newItemPickup = itemPickupObjectPool.GetPooledObject().GetComponent<ItemPickup>();
-               
-                SetupItemPickup(newItemPickup, itemData, 1, dropPosition);
-            }
-        }
-        else
-        {
-            ItemPickup newItemPickup = itemPickupObjectPool.GetPooledObject().GetComponent<ItemPickup>();
-
-            SetupItemPickup(newItemPickup, itemData, amountToDrop, dropPosition);
-        }
+        ItemPickup newItemPickup = itemPickupObjectPool.GetPooledObject().GetComponent<ItemPickup>();
+        SetupItemPickup(newItemPickup, itemData, amountToDrop, dropPosition);
+        return newItemPickup;
     }
 
     void SetupItemPickup(ItemPickup newItemPickup, ItemData itemData, int amountToDrop, Vector3 dropPosition)
@@ -78,7 +65,7 @@ public class DropItemController : MonoBehaviour
         else
             newItemPickup.spriteRenderer.sprite = itemData.item.defaultSprite;
 
-        newItemPickup.itemData = itemData;
+        itemData.TransferData(itemData, newItemPickup.itemData);
         newItemPickup.itemCount = amountToDrop;
         newItemPickup.interactionTransform = newItemPickup.transform;
 

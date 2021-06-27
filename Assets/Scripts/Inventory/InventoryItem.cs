@@ -23,9 +23,11 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler
     [HideInInspector] public Inventory myInventory;
 
     ContainerInventoryUI containerInvUI;
+    DropItemController dropItemController;
     ObjectPoolManager objectPoolManager;
     PlayerInventoryUI playerInvUI;
     PlayerEquipmentManager playerEquipmentManager;
+    PlayerManager playerManager;
 
     public void Init()
     {
@@ -42,9 +44,11 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler
         itemVolumeText = transform.GetChild(4).GetComponent<TextMeshProUGUI>();
 
         containerInvUI = ContainerInventoryUI.instance;
+        dropItemController = DropItemController.instance;
         objectPoolManager = ObjectPoolManager.instance;
         playerInvUI = PlayerInventoryUI.instance;
         playerEquipmentManager = PlayerEquipmentManager.instance;
+        playerManager = PlayerManager.instance;
 
         itemData = GetComponent<ItemData>();
     }
@@ -57,10 +61,12 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler
 
     public void ClearItem()
     {
-        containerInvUI.UpdateUINumbers();
+        containerInvUI.RemoveItemFromList(originItemData);
 
         if (myInventory != null)
             myInventory.items.Remove(originItemData);
+
+        containerInvUI.UpdateUINumbers();
 
         if (originItemData.CompareTag("Item Data Object"))
         {
@@ -136,73 +142,84 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler
                 if (playerInvUI.activeInventory != null && playerInvUI.activeInventory != playerInvUI.keysInventory // We don't want to add items directly to the keys inv (unless it's a key) or to the current equipment inv
                     || (playerInvUI.activeInventory == playerInvUI.keysInventory && itemData.item.itemType == ItemType.Key)) // If the item is a key and the key inventory is active
                 {
-                    if (playerInvUI.activeInventory.Add(itemData, itemData.currentStackSize)) // If there's room in the inventory
+                    if (playerInvUI.activeInventory.Add(itemData, itemData.currentStackSize, myInventory)) // If there's room in the inventory
                     {
                         ClearItem();
                     }
                     else // If there wasn't enough room in the inventory, try adding 1 at a time, until we can't fit anymore
                     {
                         if (itemData.item.maxStackSize > 1)
-                            AddItemToInventory_OneAtATime(playerInvUI.activeInventory, itemData);
+                            AddItemToInventory_OneAtATime(myInventory, playerInvUI.activeInventory, itemData);
 
                         // Now try to fit the item in other bags (if there are any)
                         if (itemData.currentStackSize > 0 && playerInvUI.bag1Active && playerInvUI.activeInventory != playerInvUI.bag1Inventory)
-                            AddItemToInventory_OneAtATime(playerInvUI.bag1Inventory, itemData);
+                            AddItemToInventory_OneAtATime(myInventory, playerInvUI.bag1Inventory, itemData);
                         
                         if (itemData.currentStackSize > 0 && playerInvUI.bag2Active && playerInvUI.activeInventory != playerInvUI.bag2Inventory)
-                            AddItemToInventory_OneAtATime(playerInvUI.bag2Inventory, itemData);
+                            AddItemToInventory_OneAtATime(myInventory, playerInvUI.bag2Inventory, itemData);
                         
                         if (itemData.currentStackSize > 0 && playerInvUI.bag3Active && playerInvUI.activeInventory != playerInvUI.bag3Inventory)
-                            AddItemToInventory_OneAtATime(playerInvUI.bag3Inventory, itemData);
+                            AddItemToInventory_OneAtATime(myInventory, playerInvUI.bag3Inventory, itemData);
                         
                         if (itemData.currentStackSize > 0 && playerInvUI.bag4Active && playerInvUI.activeInventory != playerInvUI.bag4Inventory)
-                            AddItemToInventory_OneAtATime(playerInvUI.bag4Inventory, itemData);
+                            AddItemToInventory_OneAtATime(myInventory, playerInvUI.bag4Inventory, itemData);
                         
                         if (itemData.currentStackSize > 0 && playerInvUI.bag5Active && playerInvUI.activeInventory != playerInvUI.bag5Inventory)
-                            AddItemToInventory_OneAtATime(playerInvUI.bag5Inventory, itemData);
+                            AddItemToInventory_OneAtATime(myInventory, playerInvUI.bag5Inventory, itemData);
 
                         // Now try to fit the item in the player's personal inventory
                         if (itemData.currentStackSize > 0 && playerInvUI.activeInventory != playerInvUI.personalInventory)
-                            AddItemToInventory_OneAtATime(playerInvUI.personalInventory, itemData);
+                            AddItemToInventory_OneAtATime(myInventory, playerInvUI.personalInventory, itemData);
                     }
                 }
                 else // Otherwise, add the item to the first available bag, or the personal inventory if there's no bag or no room in any of the bags
                 {
                     if (itemData.currentStackSize > 0 && playerInvUI.bag1Active)
-                        AddItemToInventory_OneAtATime(playerInvUI.bag1Inventory, itemData);
+                        AddItemToInventory_OneAtATime(myInventory, playerInvUI.bag1Inventory, itemData);
 
                     if (itemData.currentStackSize > 0 && playerInvUI.bag2Active)
-                        AddItemToInventory_OneAtATime(playerInvUI.bag2Inventory, itemData);
+                        AddItemToInventory_OneAtATime(myInventory, playerInvUI.bag2Inventory, itemData);
 
                     if (itemData.currentStackSize > 0 && playerInvUI.bag3Active)
-                        AddItemToInventory_OneAtATime(playerInvUI.bag3Inventory, itemData);
+                        AddItemToInventory_OneAtATime(myInventory, playerInvUI.bag3Inventory, itemData);
 
                     if (itemData.currentStackSize > 0 && playerInvUI.bag4Active)
-                        AddItemToInventory_OneAtATime(playerInvUI.bag4Inventory, itemData);
+                        AddItemToInventory_OneAtATime(myInventory, playerInvUI.bag4Inventory, itemData);
 
                     if (itemData.currentStackSize > 0 && playerInvUI.bag5Active)
-                        AddItemToInventory_OneAtATime(playerInvUI.bag5Inventory, itemData);
+                        AddItemToInventory_OneAtATime(myInventory, playerInvUI.bag5Inventory, itemData);
 
                     // Now try to fit the item in the player's personal inventory
                     if (itemData.currentStackSize > 0)
-                        AddItemToInventory_OneAtATime(playerInvUI.personalInventory, itemData);
+                        AddItemToInventory_OneAtATime(myInventory, playerInvUI.personalInventory, itemData);
                 }
 
                 playerInvUI.UpdateUINumbers();
             }
             else // If we're taking this item from the player's inventory
             {
-                // TODO: Place item in the inventory...or if not searching a container, then put item on ground
                 if (containerInvUI.activeInventory != null) // If we're trying to place the item in a container
                 {
-                    if (containerInvUI.activeInventory.Add(itemData, itemData.currentStackSize)) // Try adding the item's entire stack
+                    if (containerInvUI.activeInventory.Add(itemData, itemData.currentStackSize, myInventory)) // Try adding the item's entire stack
                         ClearItem();
                     else if (itemData.currentStackSize > 1) // If there wasn't room for all of the items, try adding them one at a time
-                        AddItemToInventory_OneAtATime(containerInvUI.activeInventory, itemData);
+                        AddItemToInventory_OneAtATime(myInventory, containerInvUI.activeInventory, itemData);
                 }
                 else // If we're trying to place the item on the ground
                 {
-                    Debug.Log("Placing on ground");
+                    ItemPickup newItemPickup = dropItemController.DropItem(playerManager.transform.position, itemData, itemData.currentStackSize);
+                    containerInvUI.playerPositionItems.Add(newItemPickup.itemData);
+
+                    if (containerInvUI.activeDirection == Direction.Center)
+                        containerInvUI.ShowNewInventoryItem(newItemPickup.itemData);
+
+                    playerInvUI.activeInventory.items.Remove(itemData);
+                    playerInvUI.activeInventory.currentWeight -= itemData.item.weight * itemData.currentStackSize;
+                    playerInvUI.activeInventory.currentWeight = Mathf.RoundToInt(playerInvUI.activeInventory.currentWeight * 100f) / 100f;
+                    playerInvUI.activeInventory.currentVolume -= itemData.item.volume * itemData.currentStackSize;
+                    playerInvUI.activeInventory.currentVolume = Mathf.RoundToInt(playerInvUI.activeInventory.currentVolume * 100f) / 100f;
+
+                    ClearItem();
                 }
 
                 playerInvUI.UpdateUINumbers();
@@ -210,17 +227,18 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    void AddItemToInventory_OneAtATime(Inventory inventory, ItemData itemData)
+    void AddItemToInventory_OneAtATime(Inventory invComingFrom, Inventory invAddingTo, ItemData itemData)
     {
         for (int i = 0; i < itemData.currentStackSize; i++)
         {
-            if (inventory.Add(itemData, 1))
+            if (invAddingTo.Add(itemData, 1, invComingFrom))
             {
                 if (itemData.currentStackSize == 0)
                     ClearItem();
             }
             else
             {
+                containerInvUI.UpdateUINumbers();
                 break; // If there's no longer any room, break out of the loop
             }
         }

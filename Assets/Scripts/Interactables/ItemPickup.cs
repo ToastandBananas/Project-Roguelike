@@ -46,10 +46,10 @@ public class ItemPickup : Interactable
                 wasPickedUp = true;
             }
             else
-                wasPickedUp = inventory.Add(itemData, itemCount);
+                wasPickedUp = inventory.Add(itemData, itemCount, null);
         }
         else
-            wasPickedUp = inventory.Add(itemData, itemCount);
+            wasPickedUp = inventory.Add(itemData, itemCount, null);
 
         if (wasPickedUp)
         {

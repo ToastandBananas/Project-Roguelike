@@ -10,7 +10,7 @@ public class Movement : MonoBehaviour
     [Header("Obstacle Mask")]
     public LayerMask movementObstacleMask;
 
-    ContainerInventoryUI containerInvUI;
+    [HideInInspector] public ContainerInventoryUI containerInvUI;
 
     float moveTime = 0.2f;
 

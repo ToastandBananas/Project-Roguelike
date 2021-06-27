@@ -119,9 +119,6 @@ public class ItemData : MonoBehaviour
                 defense = Random.Range(shield.minBaseDefense, shield.maxBaseDefense + 1);
                 shieldBashDamage = Random.Range(shield.minShieldBashDamage, shield.maxShieldBashDamage + 1);
             }
-
-            if (equipment.maxStackSize > 1)
-                currentStackSize = Random.Range(1, equipment.maxStackSize + 1);
         }
         // Consumable class data
         else if (item.IsConsumable())
@@ -143,6 +140,9 @@ public class ItemData : MonoBehaviour
                 }
             }
         }
+
+        if (item.maxStackSize > 1)
+            currentStackSize = Random.Range(1, item.maxStackSize + 1);
 
         value = CalculateItemValue();
 

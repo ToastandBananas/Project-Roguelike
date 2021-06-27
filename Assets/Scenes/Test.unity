@@ -1592,12 +1592,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cda60b4017cf0dd47b800985d6f34157, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryNameText: {fileID: 488818798}
-  weightText: {fileID: 1541563280}
-  volumeText: {fileID: 661034287}
   slotsParent: {fileID: 297821066}
   inventoryParent: {fileID: 1167777804}
   inventoryItemObjectPool: {fileID: 297821068}
+  inventoryNameText: {fileID: 488818798}
+  weightText: {fileID: 1541563280}
+  volumeText: {fileID: 661034287}
   playerManager: {fileID: 0}
   activeInventory: {fileID: 0}
   floorIconSprite: {fileID: 21300000, guid: 628175b38f4350c44823cf75aedd0b32, type: 3}
@@ -1619,6 +1619,7 @@ MonoBehaviour:
   upRightItems: []
   downLeftItems: []
   downRightItems: []
+  activeDirection: 0
 --- !u!1 &270830998
 GameObject:
   m_ObjectHideFlags: 0
@@ -3639,6 +3640,7 @@ MonoBehaviour:
   movementObstacleMask:
     serializedVersion: 2
     m_Bits: 12608
+  containerInvUI: {fileID: 0}
 --- !u!58 &549636868
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5325,6 +5327,7 @@ Transform:
   - {fileID: 995029608}
   - {fileID: 579993486}
   - {fileID: 1398127731}
+  - {fileID: 1210002083}
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5437,6 +5440,7 @@ GameObject:
   - component: {fileID: 840856817}
   - component: {fileID: 840856819}
   - component: {fileID: 840856820}
+  - component: {fileID: 840856821}
   m_Layer: 0
   m_Name: GM
   m_TagString: Untagged
@@ -5518,6 +5522,18 @@ MonoBehaviour:
   playerInventoryItemObjectPool: {fileID: 1132432444}
   pickupsPool: {fileID: 802752642}
   itemDataObjectPool: {fileID: 861536275}
+--- !u!114 &840856821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 840856815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd8d5c85846b9074c93911ecf959878a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &855631850
 GameObject:
   m_ObjectHideFlags: 0
@@ -8728,6 +8744,76 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   directionFromPlayer: 1
+--- !u!1001 &1210002082
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &1210002083 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 1210002082}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1217730146
 GameObject:
   m_ObjectHideFlags: 0
@@ -9983,6 +10069,7 @@ MonoBehaviour:
   movementObstacleMask:
     serializedVersion: 2
     m_Bits: 12608
+  containerInvUI: {fileID: 0}
   fleeObstacleMask:
     serializedVersion: 2
     m_Bits: 256
@@ -10518,12 +10605,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6aaa771f7d0dec4e89bab294e66c8c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryNameText: {fileID: 954276541}
-  weightText: {fileID: 1473345629}
-  volumeText: {fileID: 1078166790}
   slotsParent: {fileID: 1132432442}
   inventoryParent: {fileID: 44885701}
   inventoryItemObjectPool: {fileID: 1132432444}
+  inventoryNameText: {fileID: 954276541}
+  weightText: {fileID: 1473345629}
+  volumeText: {fileID: 1078166790}
   playerManager: {fileID: 0}
   activeInventory: {fileID: 0}
   totalWeightText: {fileID: 656325478}

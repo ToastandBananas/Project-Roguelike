@@ -172,8 +172,16 @@ public class PlayerInventoryUI : InventoryUI
     {
         if (activeInventory != null)
         {
-            weightText.text = ((activeInventory.currentWeight * 100f) / 100f).ToString();
-            volumeText.text = ((activeInventory.currentVolume * 100f) / 100f).ToString();
+            if (activeInventory == keysInventory)
+            {
+                weightText.text = (Mathf.RoundToInt(activeInventory.currentWeight * 100f) / 100f).ToString();
+                volumeText.text = (Mathf.RoundToInt(activeInventory.currentVolume * 100f) / 100f).ToString();
+            }
+            else
+            {
+                weightText.text = (Mathf.RoundToInt(activeInventory.currentWeight * 100f) / 100f).ToString() + "/" + activeInventory.maxWeight.ToString();
+                volumeText.text = (Mathf.RoundToInt(activeInventory.currentVolume * 100f) / 100f).ToString() + "/" + activeInventory.maxVolume.ToString();
+            }
         }
         else
         {
@@ -247,7 +255,7 @@ public class PlayerInventoryUI : InventoryUI
                 totalWeight += playerManager.equipmentManager.currentEquipment[i].item.weight * playerManager.equipmentManager.currentEquipment[i].currentStackSize;
         }
 
-        return (totalWeight * 100f) / 100f;
+        return Mathf.RoundToInt(totalWeight * 100f) / 100f;
     }
 
     float GetTotalCarriedVolume()
@@ -312,7 +320,7 @@ public class PlayerInventoryUI : InventoryUI
                 totalVolume += playerManager.equipmentManager.currentEquipment[i].item.volume * playerManager.equipmentManager.currentEquipment[i].currentStackSize;
         }
 
-        return (totalVolume * 100f) / 100f;
+        return Mathf.RoundToInt(totalVolume * 100f) / 100f;
     }
 
     void InitInventories()
