@@ -13,6 +13,8 @@ public class ContainerSideBarButton : MonoBehaviour
 
     public void ShowInventoryItems()
     {
+        containerInvUI.ResetContainerIcons();
+
         switch (directionFromPlayer)
         {
             case Direction.Center:

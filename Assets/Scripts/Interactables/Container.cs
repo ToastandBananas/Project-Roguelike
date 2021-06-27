@@ -23,6 +23,8 @@ public class Container : Interactable
         containerInvUI = ContainerInventoryUI.instance;
         playerInvUI = PlayerInventoryUI.instance;
         uiManager = UIManager.instance;
+
+        containerInventory.myInventoryUI = containerInvUI;
     }
 
     public override void Interact(EquipmentManager equipmentManager, Inventory inventory, Transform whoIsInteracting)

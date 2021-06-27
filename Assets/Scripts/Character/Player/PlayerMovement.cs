@@ -2,9 +2,13 @@ using UnityEngine;
 
 public class PlayerMovement : Movement
 {
+    ContainerInventoryUI containerInvUI;
+
     public override void Start()
     {
         base.Start();
+
+        containerInvUI = ContainerInventoryUI.instance;
     }
     
     void Update()
@@ -54,6 +58,8 @@ public class PlayerMovement : Movement
                 else if (horizontal > 0.3f) // Down-right
                     Move(1, -1, false);
             }
+
+            containerInvUI.ResetContainerIcons();
 
             turnManager.TakePlayersTurn();
         }

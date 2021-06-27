@@ -4,14 +4,17 @@ using System.Collections.Generic;
 
 public class InventoryUI : MonoBehaviour
 {
-    public TextMeshProUGUI inventoryNameText;
-    public TextMeshProUGUI weightText;
-    public TextMeshProUGUI volumeText;
     public Transform slotsParent;
     public GameObject inventoryParent;
     public InventoryItemObjectPool inventoryItemObjectPool;
-    
+
+    [Header("Texts")]
+    public TextMeshProUGUI inventoryNameText;
+    public TextMeshProUGUI weightText;
+    public TextMeshProUGUI volumeText;
+
     [HideInInspector] public PlayerManager playerManager;
+    [HideInInspector] public Inventory activeInventory;
 
     DropItemController dropItemController;
     UIManager uiManager;
@@ -48,10 +51,31 @@ public class InventoryUI : MonoBehaviour
         {
             if (inventoryItemObjectPool.pooledInventoryItems[i].gameObject.activeSelf)
             {
-                inventoryItemObjectPool.pooledInventoryItems[i].ClearItem();
+                inventoryItemObjectPool.pooledInventoryItems[i].ClearUI();
                 inventoryItemObjectPool.pooledInventoryItems[i].gameObject.SetActive(false);
             }
         }
+    }
+
+    public InventoryItem ShowNewInventoryItem(ItemData newItemData)
+    {
+        InventoryItem invItem = inventoryItemObjectPool.GetPooledInventoryItem();
+        newItemData.TransferData(newItemData, invItem.itemData);
+        invItem.originItemData = newItemData;
+        invItem.itemNameText.text = invItem.itemData.itemName;
+        invItem.itemAmountText.text = invItem.itemData.currentStackSize.ToString();
+        invItem.itemTypeText.text = invItem.itemData.item.itemType.ToString();
+        invItem.itemWeightText.text = (invItem.itemData.item.weight * invItem.itemData.currentStackSize).ToString();
+        invItem.itemVolumeText.text = (invItem.itemData.item.volume * invItem.itemData.currentStackSize).ToString();
+        invItem.myInventory = activeInventory;
+        invItem.gameObject.SetActive(true);
+
+        return invItem;
+    }
+
+    public virtual void UpdateUINumbers()
+    {
+        // This is just meant to be overridden
     }
 
     public void ToggleInventoryMenu()
@@ -81,7 +105,7 @@ public class InventoryUI : MonoBehaviour
             totalWeight += itemsList[i].item.weight * itemsList[i].currentStackSize;
         }
 
-        return totalWeight;
+        return (totalWeight * 100f) / 100f;
     }
 
     public float GetTotalWeight(ItemData[] currentEquipment)
@@ -93,7 +117,7 @@ public class InventoryUI : MonoBehaviour
                 totalWeight += currentEquipment[i].item.weight * currentEquipment[i].currentStackSize;
         }
 
-        return totalWeight;
+        return (totalWeight * 100f) / 100f;
     }
 
     public float GetTotalVolume(List<ItemData> itemsList)
@@ -104,7 +128,7 @@ public class InventoryUI : MonoBehaviour
             totalVolume += itemsList[i].item.volume * itemsList[i].currentStackSize;
         }
 
-        return totalVolume;
+        return (totalVolume * 100f) / 100f;
     }
 
     public float GetTotalVolume(ItemData[] currentEquipment)
@@ -116,38 +140,7 @@ public class InventoryUI : MonoBehaviour
                 totalVolume += currentEquipment[i].item.volume * currentEquipment[i].currentStackSize;
         }
 
-        return totalVolume;
-    }
-
-    public bool IsRoomInInventory(ItemData itemData, int itemCount)
-    {
-        /*if (item.maxStackSize == 1)
-        {
-            for (int i = 0; i < inventory.space; i++)
-            {
-                if (slots[i].gameObject.activeSelf && slots[i].IsEmpty())
-                    return true;
-            }
-        }
-        else
-        {
-            int remainingItemCount = itemCount;
-            for (int i = 0; i < slots.Length; i++)
-            {
-                if (slots[i].item == null)
-                    return true;
-                else if (item.maxStackSize > 1 && slots[i].item == item)
-                    remainingItemCount -= item.maxStackSize - slots[i].currentStackSize;
-            }
-
-            if (remainingItemCount <= 0)
-                return true;
-        }*/
-        
-        // TODO
-
-        Debug.Log("Not enough room in Inventory...");
-        return false;
+        return (totalVolume * 100f) / 100f;
     }
 
     public void UpdateVisibleSlots()

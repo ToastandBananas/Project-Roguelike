@@ -155,6 +155,14 @@ public class ItemData : MonoBehaviour
         RandomizeData();
     }
 
+    public bool StackableItemsDataIsEqual(ItemData itemData1, ItemData itemData2)
+    {
+        if (itemData1.item == itemData2.item && itemData1.value == itemData2.value && itemData1.freshness == itemData2.freshness)
+            return true;
+
+        return false;
+    }
+
     public void ClearData()
     {
         hasBeenRandomized = false;
@@ -163,7 +171,7 @@ public class ItemData : MonoBehaviour
         
         itemName = "";
         value = 0;
-        currentStackSize = 1;
+        currentStackSize = 0;
         maxDurability = 0;
         durability = 0;
         

@@ -5,7 +5,7 @@ public class InventoryItemObjectPool : ObjectPool
 {
     [HideInInspector] public List<InventoryItem> pooledInventoryItems = new List<InventoryItem>();
 
-    public override void Awake()
+    public override void Start()
     {
         Init();
     }

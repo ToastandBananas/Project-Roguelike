@@ -1,10 +1,8 @@
-using System.Collections;
 using UnityEngine;
 
 public class DropItemController : MonoBehaviour
 {
-    ObjectPool itemPickupObjectPool;
-    ObjectPoolManager objectPoolManager;
+    ItemPickupObjectPool itemPickupObjectPool;
 
     LayerMask obstacleMask;
 
@@ -30,8 +28,7 @@ public class DropItemController : MonoBehaviour
 
     void Start()
     {
-        objectPoolManager = ObjectPoolManager.instance;
-        itemPickupObjectPool = objectPoolManager.pickupsPool;
+        itemPickupObjectPool = ObjectPoolManager.instance.pickupsPool;
     }
 
     public void DropItem(Vector3 dropPosition, ItemData itemData, int amountToDrop, bool shouldDisableAutoPickup, bool shouldDropIndividually, bool shouldRotate, bool tossInAir)

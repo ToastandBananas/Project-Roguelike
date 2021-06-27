@@ -34,20 +34,20 @@ public class TooltipManager : MonoBehaviour
         HideAllTooltips();
     }
 
-    public void ShowInventoryTooltip(InventoryItemBase slot)
+    public void ShowInventoryTooltip(InventoryItem invItem)
     {
-        if (slot != null && slot.itemData != null)
+        if (invItem != null && invItem.itemData != null)
         {
             InventoryTooltip tooltip = GetNextAvailableInventoryTooltip();
 
             if (tooltip != null)
             {
-                tooltip.BuildTooltip(slot.itemData);
+                tooltip.BuildTooltip(invItem.itemData);
 
-                if (slot.IsInventorySlot())
+                if (invItem.IsInventorySlot())
                 {
                     tooltip.rectTransform.localPosition = inventoryTooltipPosition;
-                    ShowMatchingEquipmentTooltip(slot);
+                    ShowMatchingEquipmentTooltip(invItem);
                 }
                 else
                     tooltip.rectTransform.localPosition = equipmentTooltipPosition;
@@ -55,11 +55,11 @@ public class TooltipManager : MonoBehaviour
         }
     }
 
-    void ShowMatchingEquipmentTooltip(InventoryItemBase slot)
+    void ShowMatchingEquipmentTooltip(InventoryItem invItem)
     {
-        if (slot.itemData.item.IsEquipment())
+        if (invItem.itemData.item.IsEquipment())
         {
-            Equipment equipment = (Equipment)slot.itemData.item;
+            Equipment equipment = (Equipment)invItem.itemData.item;
             if (playerEquipmentManager.currentEquipment[(int)equipment.equipmentSlot] != null)
             {
                 InventoryTooltip tooltip = GetNextAvailableInventoryTooltip();

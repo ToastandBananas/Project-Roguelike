@@ -10,6 +10,8 @@ public class PlayerInventoryUI : InventoryUI
     [Header("Inventories")]
     public Inventory personalInventory;
     public Inventory bag1Inventory, bag2Inventory, bag3Inventory, bag4Inventory, bag5Inventory, keysInventory;
+    
+    public bool bag1Active, bag2Active, bag3Active, bag4Active, bag5Active;
 
     #region Singleton
     public static PlayerInventoryUI instance;
@@ -37,7 +39,7 @@ public class PlayerInventoryUI : InventoryUI
 
         personalInventory.maxWeight = playerManager.playerStats.maxPersonalInvWeight.GetValue();
         personalInventory.maxVolume = playerManager.playerStats.maxPersonalInvVolume.GetValue();
-
+        
         PopulateInventoryUI(personalInventory.items, PlayerInventoryType.Personal);
     }
 
@@ -48,16 +50,8 @@ public class PlayerInventoryUI : InventoryUI
 
         for (int i = 0; i < itemsList.Count; i++)
         {
-            InventoryItem invItem = inventoryItemObjectPool.GetPooledInventoryItem();
-            Debug.Log(itemsList);
-            Debug.Log(invItem.itemData);
-            itemsList[i].TransferData(itemsList[i], invItem.itemData);
-            invItem.itemNameText.text = invItem.itemData.itemName;
-            invItem.itemAmountText.text = invItem.itemData.currentStackSize.ToString();
-            invItem.itemTypeText.text = invItem.itemData.item.itemType.ToString();
-            invItem.itemWeightText.text = (invItem.itemData.item.weight * invItem.itemData.currentStackSize).ToString();
-            invItem.itemVolumeText.text = (invItem.itemData.item.volume * invItem.itemData.currentStackSize).ToString();
-            invItem.gameObject.SetActive(true);
+            InventoryItem invItem = ShowNewInventoryItem(itemsList[i]);
+            AssignInventoryToInventoryItem(invItem, playerInvType);
         }
 
         // Set header/volume/weight text
@@ -72,14 +66,8 @@ public class PlayerInventoryUI : InventoryUI
         {
             if (currentEquipment[i] != null)
             {
-                InventoryItem invItem = inventoryItemObjectPool.GetPooledInventoryItem();
-                currentEquipment[i].TransferData(currentEquipment[i], invItem.itemData);
-                invItem.itemNameText.text = invItem.itemData.itemName;
-                invItem.itemAmountText.text = invItem.itemData.currentStackSize.ToString();
-                invItem.itemTypeText.text = invItem.itemData.item.itemType.ToString();
-                invItem.itemWeightText.text = (invItem.itemData.item.weight * invItem.itemData.currentStackSize).ToString();
-                invItem.itemVolumeText.text = (invItem.itemData.item.volume * invItem.itemData.currentStackSize).ToString();
-                invItem.gameObject.SetActive(true);
+                InventoryItem invItem = ShowNewInventoryItem(currentEquipment[i]);
+                AssignInventoryToInventoryItem(invItem, playerInvType);
             }
         }
 
@@ -95,51 +83,109 @@ public class PlayerInventoryUI : InventoryUI
                 inventoryNameText.text = "Personal Inventory";
                 weightText.text = GetTotalWeight(personalInventory.items).ToString() + "/" + playerManager.playerStats.maxPersonalInvWeight.GetValue().ToString();
                 volumeText.text = GetTotalVolume(personalInventory.items).ToString() + "/" + playerManager.playerStats.maxPersonalInvVolume.GetValue().ToString();
+                activeInventory = personalInventory;
                 break;
             case PlayerInventoryType.Bag1:
                 inventoryNameText.text = "Bag 1 Inventory";
                 weightText.text = GetTotalWeight(bag1Inventory.items).ToString() + "/" + bag1Inventory.maxWeight.ToString();
                 volumeText.text = GetTotalVolume(bag1Inventory.items).ToString() + "/" + bag1Inventory.maxVolume.ToString();
+                activeInventory = bag1Inventory;
                 break;
             case PlayerInventoryType.Bag2:
                 inventoryNameText.text = "Bag 2  Inventory";
                 weightText.text = GetTotalWeight(bag2Inventory.items).ToString() + "/" + bag2Inventory.maxWeight.ToString();
                 volumeText.text = GetTotalVolume(bag2Inventory.items).ToString() + "/" + bag2Inventory.maxVolume.ToString();
+                activeInventory = bag2Inventory;
                 break;
             case PlayerInventoryType.Bag3:
                 inventoryNameText.text = "Bag 3  Inventory";
                 weightText.text = GetTotalWeight(bag3Inventory.items).ToString() + "/" + bag3Inventory.maxWeight.ToString();
                 volumeText.text = GetTotalVolume(bag3Inventory.items).ToString() + "/" + bag3Inventory.maxVolume.ToString();
+                activeInventory = bag3Inventory;
                 break;
             case PlayerInventoryType.Bag4:
                 inventoryNameText.text = "Bag 4  Inventory";
                 weightText.text = GetTotalWeight(bag4Inventory.items).ToString() + "/" + bag4Inventory.maxWeight.ToString();
                 volumeText.text = GetTotalVolume(bag4Inventory.items).ToString() + "/" + bag4Inventory.maxVolume.ToString();
+                activeInventory = bag4Inventory;
                 break;
             case PlayerInventoryType.Bag5:
                 inventoryNameText.text = "Bag 5  Inventory";
                 weightText.text = GetTotalWeight(bag5Inventory.items).ToString() + "/" + bag5Inventory.maxWeight.ToString();
                 volumeText.text = GetTotalVolume(bag5Inventory.items).ToString() + "/" + bag5Inventory.maxVolume.ToString();
+                activeInventory = bag5Inventory;
                 break;
             case PlayerInventoryType.Keys:
                 inventoryNameText.text = "Keys";
                 weightText.text = GetTotalWeight(keysInventory.items).ToString();
                 volumeText.text = GetTotalVolume(keysInventory.items).ToString();
+                activeInventory = keysInventory;
                 break;
             case PlayerInventoryType.EquippedItems:
                 inventoryNameText.text = "Equipped Items";
                 weightText.text = GetTotalWeight(playerManager.equipmentManager.currentEquipment).ToString();
                 volumeText.text = GetTotalVolume(playerManager.equipmentManager.currentEquipment).ToString();
+                activeInventory = null;
                 break;
             default:
                 break;
         }
 
-        totalWeightText.text = GetTotalCarredWeight().ToString();
+        totalWeightText.text = GetTotalCarriedWeight().ToString();
         totalVolumeText.text = GetTotalCarriedVolume().ToString();
     }
 
-    float GetTotalCarredWeight()
+    void AssignInventoryToInventoryItem(InventoryItem invItem, PlayerInventoryType playerInvType)
+    {
+        switch (playerInvType)
+        {
+            case PlayerInventoryType.Personal:
+                invItem.myInventory = personalInventory;
+                break;
+            case PlayerInventoryType.Bag1:
+                invItem.myInventory = bag1Inventory;
+                break;
+            case PlayerInventoryType.Bag2:
+                invItem.myInventory = bag2Inventory;
+                break;
+            case PlayerInventoryType.Bag3:
+                invItem.myInventory = bag3Inventory;
+                break;
+            case PlayerInventoryType.Bag4:
+                invItem.myInventory = bag4Inventory;
+                break;
+            case PlayerInventoryType.Bag5:
+                invItem.myInventory = bag5Inventory;
+                break;
+            case PlayerInventoryType.Keys:
+                invItem.myInventory = keysInventory;
+                break;
+            case PlayerInventoryType.EquippedItems:
+                invItem.myInventory = null;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public override void UpdateUINumbers()
+    {
+        if (activeInventory != null)
+        {
+            weightText.text = ((activeInventory.currentWeight * 100f) / 100f).ToString();
+            volumeText.text = ((activeInventory.currentVolume * 100f) / 100f).ToString();
+        }
+        else
+        {
+            weightText.text = GetTotalWeight(playerManager.playerEquipmentManager.currentEquipment).ToString();
+            volumeText.text = GetTotalVolume(playerManager.playerEquipmentManager.currentEquipment).ToString();
+        }
+
+        totalWeightText.text = GetTotalCarriedWeight().ToString();
+        totalVolumeText.text = GetTotalCarriedVolume().ToString();
+    }
+
+    float GetTotalCarriedWeight()
     {
         float totalWeight = 0;
         for (int i = 0; i < personalInventory.items.Count; i++)
@@ -201,7 +247,7 @@ public class PlayerInventoryUI : InventoryUI
                 totalWeight += playerManager.equipmentManager.currentEquipment[i].item.weight * playerManager.equipmentManager.currentEquipment[i].currentStackSize;
         }
 
-        return totalWeight;
+        return (totalWeight * 100f) / 100f;
     }
 
     float GetTotalCarriedVolume()
@@ -266,7 +312,7 @@ public class PlayerInventoryUI : InventoryUI
                 totalVolume += playerManager.equipmentManager.currentEquipment[i].item.volume * playerManager.equipmentManager.currentEquipment[i].currentStackSize;
         }
 
-        return totalVolume;
+        return (totalVolume * 100f) / 100f;
     }
 
     void InitInventories()
