@@ -99,16 +99,12 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.clickCount == 1) // Single click
-        {
-            
-        }
-        else if (eventData.clickCount == 2) // Double click (Transfer item)
+        if (eventData.clickCount == 1) // Double click (Transfer item)
         {
             if (myInventory == null || myInventory.myInventoryUI == gm.containerInvUI) // If we're taking this item from a container or the ground
             {
-                if (gm.playerInvUI.activeInventory != null && gm.playerInvUI.activeInventory != gm.playerInvUI.keysInventory // We don't want to add items directly to the keys inv (unless it's a key) or to the current equipment inv
-                    || (gm.playerInvUI.activeInventory == gm.playerInvUI.keysInventory && itemData.item.itemType == ItemType.Key)) // If the item is a key and the key inventory is active
+                // We don't want to add items directly to the keys inv (unless it's a key) or to the current equipment inv
+                if (gm.playerInvUI.activeInventory != null && gm.playerInvUI.activeInventory != gm.playerInvUI.keysInventory && itemData.item.itemType != ItemType.Key)
                 {
                     if (gm.playerInvUI.activeInventory.Add(this, itemData, itemData.currentStackSize, myInventory)) // If there's room in the inventory
                     {
@@ -139,6 +135,11 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler
                         if (itemData != null && itemData.currentStackSize > 0 && gm.playerInvUI.activeInventory != gm.playerInvUI.personalInventory)
                             AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.personalInventory, itemData);
                     }
+                }
+                else if (itemData.item.itemType == ItemType.Key) // If the item is a key, add it directly to the keys inventory
+                {
+                    gm.playerInvUI.keysInventory.Add(this, itemData, itemData.currentStackSize, myInventory);
+                    ClearItem();
                 }
                 else // Otherwise, add the item to the first available bag, or the personal inventory if there's no bag or no room in any of the bags
                 {
@@ -171,35 +172,44 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler
                     if (gm.containerInvUI.activeInventory.Add(this, itemData, itemData.currentStackSize, myInventory)) // Try adding the item's entire stack
                         ClearItem();
                     else if (itemData.currentStackSize > 1) // If there wasn't room for all of the items, try adding them one at a time
+                    {
                         AddItemToInventory_OneAtATime(myInventory, gm.containerInvUI.activeInventory, itemData);
+                        UpdateItemTexts();
+                    }
                 }
                 else // If we're trying to place the item on the ground
                 {
                     if (itemData.item.maxStackSize > 1) // Try adding to existing stacks first, if the item is stackable
                     {
                         AddToExistingStacksOnGround(itemData, itemData.currentStackSize, gm.playerInvUI.activeInventory);
+                        UpdateItemTexts();
+                        gm.containerInvUI.UpdateUINumbers();
                     }
 
                     if (itemData.currentStackSize > 0) // If there's still some left to drop
                     {
-                        ItemPickup newItemPickup = gm.dropItemController.DropItem(gm.playerManager.transform.position, itemData, itemData.currentStackSize);
-                        gm.containerInvUI.playerPositionItems.Add(newItemPickup.itemData);
+                        List<ItemData> itemsListAddingTo = gm.containerInvUI.GetItemsListFromActiveDirection();
+                        if (IsRoomOnGround(itemData, itemsListAddingTo))
+                        {
+                            ItemPickup newItemPickup = gm.dropItemController.DropItem(gm.playerManager.transform.position, itemData, itemData.currentStackSize);
+                            gm.containerInvUI.playerPositionItems.Add(newItemPickup.itemData);
 
-                        if (gm.containerInvUI.activeDirection == Direction.Center)
-                            gm.containerInvUI.ShowNewInventoryItem(newItemPickup.itemData);
+                            if (gm.containerInvUI.activeDirection == Direction.Center)
+                                gm.containerInvUI.ShowNewInventoryItem(newItemPickup.itemData);
 
-                        gm.playerInvUI.activeInventory.items.Remove(itemData);
-                        gm.playerInvUI.activeInventory.currentWeight -= itemData.item.weight * itemData.currentStackSize;
-                        gm.playerInvUI.activeInventory.currentWeight = Mathf.RoundToInt(gm.playerInvUI.activeInventory.currentWeight * 100f) / 100f;
-                        gm.playerInvUI.activeInventory.currentVolume -= itemData.item.volume * itemData.currentStackSize;
-                        gm.playerInvUI.activeInventory.currentVolume = Mathf.RoundToInt(gm.playerInvUI.activeInventory.currentVolume * 100f) / 100f;
+                            gm.playerInvUI.activeInventory.items.Remove(itemData);
+                            gm.playerInvUI.activeInventory.currentWeight -= itemData.item.weight * itemData.currentStackSize;
+                            gm.playerInvUI.activeInventory.currentWeight = Mathf.RoundToInt(gm.playerInvUI.activeInventory.currentWeight * 100f) / 100f;
+                            gm.playerInvUI.activeInventory.currentVolume -= itemData.item.volume * itemData.currentStackSize;
+                            gm.playerInvUI.activeInventory.currentVolume = Mathf.RoundToInt(gm.playerInvUI.activeInventory.currentVolume * 100f) / 100f;
 
-                        ClearItem();
+                            ClearItem();
+                        }
+                        else
+                            Debug.Log("Not enough room on ground to drop item...");
                     }
                     else
-                    {
                         ClearItem();
-                    }
                 }
 
                 gm.playerInvUI.UpdateUINumbers();
@@ -209,13 +219,16 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler
 
     void AddItemToInventory_OneAtATime(Inventory invComingFrom, Inventory invAddingTo, ItemData itemData)
     {
-        for (int i = 0; i < itemData.currentStackSize; i++)
+        int stackSize = itemData.currentStackSize;
+        for (int i = 0; i < stackSize; i++)
         {
             if (invAddingTo.Add(this, itemData, 1, invComingFrom))
             {
-                Debug.Log("Here");
                 if (itemData.currentStackSize == 0)
+                {
                     ClearItem();
+                    break;
+                }
             }
             else
             {
@@ -237,25 +250,43 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler
                 {
                     if (itemsListAddingTo[i].currentStackSize < itemsListAddingTo[i].item.maxStackSize)
                     {
-                        itemsListAddingTo[i].currentStackSize++;
-                        itemDataComingFrom.currentStackSize--;
-
-                        if (invComingFrom != null)
+                        if (IsRoomOnGround(itemDataComingFrom, itemsListAddingTo))
                         {
-                            invComingFrom.currentWeight -= itemDataComingFrom.item.weight;
-                            invComingFrom.currentWeight = Mathf.RoundToInt(invComingFrom.currentWeight * 100f) / 100f;
-                            invComingFrom.currentVolume -= itemDataComingFrom.item.volume;
-                            invComingFrom.currentVolume = Mathf.RoundToInt(invComingFrom.currentVolume * 100f) / 100f;
-                        }
-                        
-                        if (itemDatasInvItem != null)
-                            itemDatasInvItem.UpdateItemTexts();
+                            itemsListAddingTo[i].currentStackSize++;
+                            itemDataComingFrom.currentStackSize--;
 
-                        if (itemDataComingFrom.currentStackSize == 0)
+                            if (invComingFrom != null)
+                            {
+                                invComingFrom.currentWeight -= itemDataComingFrom.item.weight;
+                                invComingFrom.currentWeight = Mathf.RoundToInt(invComingFrom.currentWeight * 100f) / 100f;
+                                invComingFrom.currentVolume -= itemDataComingFrom.item.volume;
+                                invComingFrom.currentVolume = Mathf.RoundToInt(invComingFrom.currentVolume * 100f) / 100f;
+                            }
+
+                            if (itemDatasInvItem != null)
+                                itemDatasInvItem.UpdateItemTexts();
+
+                            if (itemDataComingFrom.currentStackSize == 0)
+                                return;
+                        }
+                        else
+                        {
+                            Debug.Log("Not enough room on ground to drop item...");
                             return;
+                        }
                     }
+                    else
+                        break;
                 }
             }
         }
+    }
+
+    bool IsRoomOnGround(ItemData itemDataComingFrom, List<ItemData> itemsListAddingTo)
+    {
+        if (gm.containerInvUI.emptyTileMaxVolume - gm.containerInvUI.GetTotalVolume(itemsListAddingTo) - itemDataComingFrom.item.volume >= 0)
+            return true;
+
+        return false;
     }
 }

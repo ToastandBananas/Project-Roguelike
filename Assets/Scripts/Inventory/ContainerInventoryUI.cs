@@ -11,6 +11,9 @@ public class ContainerInventoryUI : InventoryUI
     public Image playerPositionSideBarIcon;
     public Image upSideBarIcon, downSideBarIcon, leftSideBarIcon, rightSideBarIcon, upLeftSideBarIcon, upRightSideBarIcon, downLeftSideBarIcon, downRightSideBarIcon;
 
+    [Header("Max Ground Volume")]
+    public float emptyTileMaxVolume = 1000f;
+
     public List<ItemData> playerPositionItems = new List<ItemData>();
     public List<ItemData> leftItems = new List<ItemData>();
     public List<ItemData> rightItems = new List<ItemData>();
@@ -26,7 +29,6 @@ public class ContainerInventoryUI : InventoryUI
     [HideInInspector] public Direction activeDirection;
 
     LayerMask interactableMask;
-    float emptyTileMaxVolume = 1000f;
 
     #region Singleton
     public static ContainerInventoryUI instance;

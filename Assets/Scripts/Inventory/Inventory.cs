@@ -51,10 +51,13 @@ public class Inventory : MonoBehaviour
 
             if (items.Count > 0)
             {
-                // Clamp itemCount values if we accidentally set them over the Item's maxStackSize
+                // Clamp currentStackSize values if we accidentally set them over the Item's maxStackSize or less than 1
                 for (int i = 0; i < items.Count; i++)
                 {
-                    // TODO
+                    if (items[i].currentStackSize > items[i].item.maxStackSize)
+                        items[i].currentStackSize = items[i].item.maxStackSize;
+                    else if (items[i].currentStackSize <= 0)
+                        items[i].currentStackSize = 1;
                 }
             }
 
@@ -78,19 +81,21 @@ public class Inventory : MonoBehaviour
         currentVolume += itemDataComingFrom.item.volume * itemCount;
         currentVolume = (currentVolume * 100f) / 100f;
 
+        int amountAddedToExistingStacks = 0;
         if (itemDataComingFrom.item.maxStackSize > 1 && InventoryContainsSameItem(itemDataComingFrom)) // Try adding to existing stacks first
-            AddToExistingStacks(itemDataComingFrom, itemCount, invComingFrom);
+            amountAddedToExistingStacks = AddToExistingStacks(itemDataComingFrom, itemCount, invComingFrom);
 
-        ///////////////////////////
-        // TODO: Account for when we're just adding one item and we don't want to add the rest yet
-        ///////////////////////////
-        if (itemDataComingFrom.currentStackSize > 0) // If there's still some left to add
+        itemCount -= amountAddedToExistingStacks;
+
+        if ((itemCount == 1 && amountAddedToExistingStacks == 0) || (itemCount > 1 && itemDataComingFrom.currentStackSize > 0)) // If there's still some left to add
         {
             if (invItemComingFrom != null)
                 invItemComingFrom.UpdateItemTexts();
 
             ItemData itemDataToAdd = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData();
             itemDataToAdd.TransferData(itemDataComingFrom, itemDataToAdd);
+            if (itemCount == 1)
+                itemDataToAdd.currentStackSize = 1;
             items.Add(itemDataToAdd);
             if (myInventoryUI == gm.containerInvUI)
                 gm.containerInvUI.AddItemToList(itemDataToAdd);
@@ -106,9 +111,9 @@ public class Inventory : MonoBehaviour
 
             if (invComingFrom != null)
             {
-                invComingFrom.currentWeight -= itemDataComingFrom.item.weight * itemDataComingFrom.currentStackSize;
+                invComingFrom.currentWeight -= itemDataComingFrom.item.weight * itemCount;
                 invComingFrom.currentWeight = Mathf.RoundToInt(invComingFrom.currentWeight * 100f) / 100f;
-                invComingFrom.currentVolume -= itemDataComingFrom.item.volume * itemDataComingFrom.currentStackSize;
+                invComingFrom.currentVolume -= itemDataComingFrom.item.volume * itemCount;
                 invComingFrom.currentVolume = Mathf.RoundToInt(invComingFrom.currentVolume * 100f) / 100f;
             }
 
@@ -126,11 +131,12 @@ public class Inventory : MonoBehaviour
         // TODO
     }
 
-    public void AddToExistingStacks(ItemData itemDataComingFrom, int itemCount, Inventory invComingFrom)
+    public int AddToExistingStacks(ItemData itemDataComingFrom, int itemCount, Inventory invComingFrom)
     {
+        int amountAdded = 0;
         for (int i = 0; i < items.Count; i++) // The Items list refers to our ItemData GameObjects
         {
-            if (itemDataComingFrom.StackableItemsDataIsEqual(items[i], itemDataComingFrom))
+            if (itemDataComingFrom.StackableItemsDataIsEqual(items[i], itemDataComingFrom) && items[i].currentStackSize < items[i].item.maxStackSize)
             {
                 InventoryItem itemDatasInvItem = myInventoryUI.GetItemDatasInventoryItem(items[i]); // Get the InventoryItem using the ItemData we're adding to
                 for (int j = 0; j < itemCount; j++)
@@ -138,6 +144,7 @@ public class Inventory : MonoBehaviour
                     if (items[i].currentStackSize < items[i].item.maxStackSize)
                     {
                         items[i].currentStackSize++;
+                        amountAdded++;
                         itemDataComingFrom.currentStackSize--;
 
                         if (invComingFrom != null)
@@ -152,11 +159,15 @@ public class Inventory : MonoBehaviour
                             itemDatasInvItem.UpdateItemTexts();
 
                         if (itemDataComingFrom.currentStackSize == 0)
-                            return;
+                            return amountAdded;
                     }
+                    else
+                        break;
                 }
             }
         }
+
+        return amountAdded;
     }
 
     public bool InventoryContainsSameItem(ItemData itemData)

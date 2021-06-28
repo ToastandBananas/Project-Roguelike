@@ -61,4 +61,9 @@ public class Item : ScriptableObject
     {
         return false;
     }
+
+    public virtual bool IsKey()
+    {
+        return false;
+    }
 }
