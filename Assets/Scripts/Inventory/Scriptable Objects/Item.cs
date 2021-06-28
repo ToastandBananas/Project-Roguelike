@@ -25,16 +25,24 @@ public class Item : ScriptableObject
 
     public virtual void Use(EquipmentManager equipmentManager, Inventory inventory, InventoryItem inventorySlot, int itemCount)
     {
-        if (inventorySlot != null && isUsable)
+        if (inventorySlot != null)
         {
-            inventorySlot.itemData.currentStackSize -= itemCount;
-            inventorySlot.UpdateItemTexts();
+            if (isUsable)
+            {
+                inventorySlot.itemData.currentStackSize -= itemCount;
+                inventorySlot.UpdateItemTexts();
+            }
+            else
+            {
+                Debug.Log("You cannot use this item");
+                return;
+            }
         }
     }
 
-    public void RemoveFromInventory(Inventory inventory, int itemCount, InventoryItem inventorySlot)
+    public void RemoveFromInventory(Inventory inventory, int itemCount, InventoryItem invItems)
     {
-        inventory.Remove(inventorySlot.itemData, itemCount, inventorySlot);
+        inventory.Remove(invItem.itemData, itemCount, invItem);
     }
 
     public virtual bool IsEquipment()

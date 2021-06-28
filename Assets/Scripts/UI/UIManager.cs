@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    [HideInInspector] public InventoryItem activeInventorySlot;
+    [HideInInspector] public InventoryItem activeInvItem;
 
     [HideInInspector] public ContextMenu contextMenu;
     [HideInInspector] public StackSizeSelector stackSizeSelector;
@@ -69,8 +69,20 @@ public class UIManager : MonoBehaviour
         // Use Item
         if (GameControls.gamePlayActions.menuUseItem.WasPressed)
         {
-            if (activeInventorySlot != null)
-                activeInventorySlot.UseItem();
+            if (activeInvItem != null)
+                activeInvItem.UseItem();
+
+            if (contextMenu.isActive)
+                contextMenu.DisableContextMenu();
+
+            if (stackSizeSelector.isActive)
+                stackSizeSelector.HideStackSizeSelector();
+        }
+
+        // Transfer Item
+        if (GameControls.gamePlayActions.menuSelect.WasReleased && activeInvItem != null)
+        {
+            activeInvItem.TransferItem();
 
             if (contextMenu.isActive)
                 contextMenu.DisableContextMenu();
@@ -80,7 +92,7 @@ public class UIManager : MonoBehaviour
         }
 
         // If we have an active Inventory Item and we click outside of the Inventory screen, drop the Item
-        if (GameControls.gamePlayActions.menuSelect.WasPressed && activeInventorySlot == null)
+        if (GameControls.gamePlayActions.menuSelect.WasReleased && activeInvItem == null)
         {
             // TODO
         }
@@ -88,12 +100,12 @@ public class UIManager : MonoBehaviour
         // Build the context menu
         if (GameControls.gamePlayActions.menuContext.WasPressed)
         {
-            if (contextMenu.isActive == false && activeInventorySlot != null && activeInventorySlot.itemData != null)
+            if (contextMenu.isActive == false && activeInvItem != null && activeInvItem.itemData != null)
             {
-                if (contextMenu.isActive && contextMenu.activeInventorySlot != activeInventorySlot)
+                if (contextMenu.isActive && contextMenu.activeInvItem != activeInvItem)
                     contextMenu.DisableContextMenu();
 
-                contextMenu.BuildContextMenu(activeInventorySlot);
+                contextMenu.BuildContextMenu(activeInvItem);
             }
             else if (contextMenu.isActive)
                 contextMenu.DisableContextMenu();
@@ -103,7 +115,7 @@ public class UIManager : MonoBehaviour
         }
         
         // Disable the context menu
-        if (GameControls.gamePlayActions.menuSelect.WasPressed && contextMenu.isActive && ((activeInventorySlot != null && activeInventorySlot.itemData == null) || activeInventorySlot == null))
+        if (GameControls.gamePlayActions.menuSelect.WasPressed && contextMenu.isActive && ((activeInvItem != null && activeInvItem.itemData == null) || activeInvItem == null))
         {
             StartCoroutine(contextMenu.DelayDisableContextMenu());
         }
@@ -111,12 +123,12 @@ public class UIManager : MonoBehaviour
         // Split stack
         if (GameControls.gamePlayActions.menuSelect.WasPressed && GameControls.gamePlayActions.leftShift.IsPressed)
         {
-            if (activeInventorySlot != null && activeInventorySlot.itemData != null && activeInventorySlot.itemData.currentStackSize > 1 && activeInventorySlot != stackSizeSelector.selectedInventorySlot)
+            if (activeInvItem != null && activeInvItem.itemData != null && activeInvItem.itemData.currentStackSize > 1 && activeInvItem != stackSizeSelector.selectedInventorySlot)
             {
                 // Show the Stack Size Selector
-                stackSizeSelector.ShowStackSizeSelector(activeInventorySlot);
+                stackSizeSelector.ShowStackSizeSelector(activeInvItem);
             }
-            else if (stackSizeSelector.isActive && (activeInventorySlot == null || activeInventorySlot.itemData == null || activeInventorySlot.itemData.currentStackSize == 1))
+            else if (stackSizeSelector.isActive && (activeInvItem == null || activeInvItem.itemData == null || activeInvItem.itemData.currentStackSize == 1))
             {
                 // Hide the Stack Size Selector
                 stackSizeSelector.HideStackSizeSelector();

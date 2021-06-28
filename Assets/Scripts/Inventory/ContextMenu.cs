@@ -4,7 +4,7 @@ using UnityEngine;
 public class ContextMenu : MonoBehaviour
 {
     public bool isActive;
-    public InventoryItem activeInventorySlot;
+    public InventoryItem activeInvItem;
 
     public ContextMenuButton[] buttons;
 
@@ -54,18 +54,18 @@ public class ContextMenu : MonoBehaviour
             CreateUnequipButton();
             CreateDropItemButton();
         }
-        else if (uiManager.activeInventorySlot != null && uiManager.activeInventorySlot != activeInventorySlot)
+        else if (uiManager.activeInvItem != null && uiManager.activeInvItem != activeInvItem)
         {
-            if (uiManager.activeInventorySlot.itemData.item.isUsable)
+            if (uiManager.activeInvItem.itemData.item.isUsable)
                 CreateUseItemButton();
 
-            if (uiManager.activeInventorySlot.itemData.currentStackSize > 1)
+            if (uiManager.activeInvItem.itemData.currentStackSize > 1)
                 CreateSplitStackButton();
 
             CreateDropItemButton();
         }
         
-        activeInventorySlot = invSlot;
+        activeInvItem = invSlot;
 
         // Get the desired position
         RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, Input.mousePosition, canvas.worldCamera, out Vector2 pos);
@@ -81,7 +81,7 @@ public class ContextMenu : MonoBehaviour
         ContextMenuButton contextButton = GetNextInactiveButton();
         contextButton.gameObject.SetActive(true);
         
-        if (uiManager.activeInventorySlot.itemData.item.IsEquipment() == false)
+        if (uiManager.activeInvItem.itemData.item.IsEquipment() == false)
             contextButton.textMesh.text = "Use";
         else
             contextButton.textMesh.text = "Equip";
@@ -91,7 +91,7 @@ public class ContextMenu : MonoBehaviour
 
     void UseItem()
     {
-        activeInventorySlot.UseItem();
+        activeInvItem.UseItem();
         DisableContextMenu();
     }
 
@@ -107,7 +107,7 @@ public class ContextMenu : MonoBehaviour
 
     void Unequip()
     {
-        Equipment equipment = (Equipment)activeInventorySlot.itemData.item;
+        Equipment equipment = (Equipment)activeInvItem.itemData.item;
         playerManager.equipmentManager.Unequip(equipment.equipmentSlot, true);
     }
 
@@ -123,7 +123,7 @@ public class ContextMenu : MonoBehaviour
 
     void SplitStack()
     {
-        stackSizeSelector.ShowStackSizeSelector(activeInventorySlot);
+        stackSizeSelector.ShowStackSizeSelector(activeInvItem);
 
         DisableContextMenu();
     }
@@ -166,7 +166,7 @@ public class ContextMenu : MonoBehaviour
         }
 
         isActive = false;
-        activeInventorySlot = null;
+        activeInvItem = null;
     }
 
     public IEnumerator DelayDisableContextMenu()

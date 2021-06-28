@@ -67,41 +67,58 @@ public class Inventory : MonoBehaviour
 
     public bool Add(InventoryItem invItemComingFrom, ItemData itemDataComingFrom, int itemCount, Inventory invComingFrom)
     {
-        int startingStackSize = itemDataComingFrom.currentStackSize;
         bool hasRoom = HasRoomInInventory(itemDataComingFrom, itemCount);
 
+        // Make sure we have room, before we start adding the item
         if (hasRoom == false)
         {
             Debug.Log("Not enough room in Inventory...");
             return false;
         }
 
+        // Add to this Inventory's weight and volume
         currentWeight += itemDataComingFrom.item.weight * itemCount;
         currentWeight = (currentWeight * 100f) / 100f;
         currentVolume += itemDataComingFrom.item.volume * itemCount;
         currentVolume = (currentVolume * 100f) / 100f;
 
+        // Try adding to existing stacks first, while keeping track of how many we added to existing stacks
         int amountAddedToExistingStacks = 0;
-        if (itemDataComingFrom.item.maxStackSize > 1 && InventoryContainsSameItem(itemDataComingFrom)) // Try adding to existing stacks first
+        if (itemDataComingFrom.item.maxStackSize > 1 && InventoryContainsSameItem(itemDataComingFrom))
             amountAddedToExistingStacks = AddToExistingStacks(itemDataComingFrom, itemCount, invComingFrom);
 
+        // Subtract the amount we added to existing stacks from our itemCount
         itemCount -= amountAddedToExistingStacks;
 
-        if ((itemCount == 1 && amountAddedToExistingStacks == 0) || (itemCount > 1 && itemDataComingFrom.currentStackSize > 0)) // If there's still some left to add
+        // If there's still some left to add
+        if ((itemCount == 1 && amountAddedToExistingStacks == 0) || (itemCount > 1 && itemDataComingFrom.currentStackSize > 0))
         {
+            // Update the InventoryItem we're taking from's texts
             if (invItemComingFrom != null)
                 invItemComingFrom.UpdateItemTexts();
 
+            // Create a new ItemData Object
             ItemData itemDataToAdd = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData();
+
+            // Transfer data to the new ItemData
             itemDataToAdd.TransferData(itemDataComingFrom, itemDataToAdd);
+
+            // Since we transferred data from the old ItemData, we need to make sure to set the currentStackSize to 1 if we were only adding one of the item
             if (itemCount == 1)
                 itemDataToAdd.currentStackSize = 1;
+
+            // Add the new ItemData to this Inventory's items list
             items.Add(itemDataToAdd);
+
+            // If we're adding an item to a container, add the new ItemData to the appropriate list
             if (myInventoryUI == gm.containerInvUI)
                 gm.containerInvUI.AddItemToList(itemDataToAdd);
+
+            // Set the parent of this new ItemData to the Inventory's itemsParent and set the gameObject as active
             itemDataToAdd.transform.SetParent(itemsParent);
             itemDataToAdd.gameObject.SetActive(true);
 
+            // If this Inventory is active in the menu, create a new InventoryItem
             if (myInventoryUI.activeInventory == this)
                 myInventoryUI.ShowNewInventoryItem(itemDataToAdd);
 
@@ -109,6 +126,7 @@ public class Inventory : MonoBehaviour
                 itemDataToAdd.gameObject.name = itemDataToAdd.itemName;
             #endif
 
+            // If we're taking this item from another Inventory, update it's weight and volume
             if (invComingFrom != null)
             {
                 invComingFrom.currentWeight -= itemDataComingFrom.item.weight * itemCount;
@@ -117,6 +135,7 @@ public class Inventory : MonoBehaviour
                 invComingFrom.currentVolume = Mathf.RoundToInt(invComingFrom.currentVolume * 100f) / 100f;
             }
 
+            // If we're only taking 1 count of the item, subtract 1 from the currentStackSize, otherwise it should now be 0
             if (itemCount == 1)
                 itemDataComingFrom.currentStackSize--;
             else
@@ -128,7 +147,27 @@ public class Inventory : MonoBehaviour
 
     public void Remove(ItemData itemData, int itemCount, InventoryItem invItem)
     {
-        // TODO
+        // Subtract from current weight and volume
+        currentWeight -= itemData.item.weight * itemCount;
+        currentWeight = Mathf.RoundToInt(currentWeight * 100f) / 100f;
+        currentVolume -= itemData.item.volume * itemCount;
+        currentVolume = Mathf.RoundToInt(currentVolume * 100f) / 100f;
+
+        // Update InventoryUI
+        myInventoryUI.UpdateUINumbers();
+
+        // Subtract itemCount from the item's currentStackSize
+        itemData.currentStackSize -= itemCount;
+
+        // If there's none left:
+        if (itemData.currentStackSize <= 0)
+        {
+            // Remove from Items list
+            items.Remove(itemData);
+
+            // Clear out the InventoryItem
+            invItem.ClearItem();
+        }
     }
 
     public int AddToExistingStacks(ItemData itemDataComingFrom, int itemCount, Inventory invComingFrom)

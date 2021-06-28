@@ -10,8 +10,8 @@ public class EquipmentManager : MonoBehaviour
 
     public ItemData[] currentEquipment;
 
+    [HideInInspector] public GameManager gm;
     [HideInInspector] public CharacterManager characterManager;
-    [HideInInspector] public DropItemController dropItemController;
 
     public virtual void Start()
     {
@@ -20,7 +20,7 @@ public class EquipmentManager : MonoBehaviour
         else
             characterManager = PlayerManager.instance;
 
-        dropItemController = DropItemController.instance;
+        gm = GameManager.instance;
 
         int numSlots = System.Enum.GetNames(typeof(EquipmentSlot)).Length;
         currentEquipment = new ItemData[numSlots];
@@ -30,11 +30,16 @@ public class EquipmentManager : MonoBehaviour
     {
         AssignEquipment(newItemData, equipmentSlot);
 
+        if (gm.playerInvUI.activeInventory == null) // If the equipment inventory is active, show the item in the menu
+        {
+
+        }
+
         // If this is a Wearable item, assign the item's Animator Controller
         if (IsWeapon(equipmentSlot) == false)
-            EquipWearable(equipmentSlot, newItemData);
+            SetWearableSprite(equipmentSlot, newItemData);
         else
-            EquipWeapon(equipmentSlot, newItemData);
+            SetWeaponSprite(equipmentSlot, newItemData);
     }
 
     public virtual void Unequip(EquipmentSlot equipmentSlot, bool shouldAddToInventory)
@@ -77,7 +82,7 @@ public class EquipmentManager : MonoBehaviour
         if (shouldAddToInventory)
         {
             if (characterManager.inventory.Add(null, oldItemData, 1, null) == false) // If we can't add it to the Inventory, drop it
-                dropItemController.DropEquipment(this, equipmentSlot, characterManager.transform.position, oldItemData, 1);
+                gm.dropItemController.DropEquipment(this, equipmentSlot, characterManager.transform.position, oldItemData, 1);
         }
 
         currentEquipment[(int)equipmentSlot] = null;
@@ -97,7 +102,7 @@ public class EquipmentManager : MonoBehaviour
         }
     }
 
-    void EquipWearable(EquipmentSlot wearableSlot, ItemData wearable)
+    void SetWearableSprite(EquipmentSlot wearableSlot, ItemData wearable)
     {
         // TODO
     }
@@ -107,7 +112,7 @@ public class EquipmentManager : MonoBehaviour
         // TODO
     }
 
-    void EquipWeapon(EquipmentSlot weaponSlot, ItemData weapon)
+    void SetWeaponSprite(EquipmentSlot weaponSlot, ItemData weapon)
     {
         // TODO
     }
