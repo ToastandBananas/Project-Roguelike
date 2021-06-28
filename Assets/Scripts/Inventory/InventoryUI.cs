@@ -24,7 +24,6 @@ public class InventoryUI : MonoBehaviour
 
         if (inventoryParent.activeSelf)
             inventoryParent.SetActive(false);
-
     }
 
     public void ClearInventoryUI()
@@ -33,7 +32,7 @@ public class InventoryUI : MonoBehaviour
         {
             if (inventoryItemObjectPool.pooledInventoryItems[i].gameObject.activeSelf)
             {
-                inventoryItemObjectPool.pooledInventoryItems[i].Reset();
+                inventoryItemObjectPool.pooledInventoryItems[i].ResetInvItem();
                 inventoryItemObjectPool.pooledInventoryItems[i].gameObject.SetActive(false);
             }
         }
@@ -42,7 +41,6 @@ public class InventoryUI : MonoBehaviour
     public InventoryItem ShowNewInventoryItem(ItemData newItemData)
     {
         InventoryItem invItem = inventoryItemObjectPool.GetPooledInventoryItem();
-        //newItemData.TransferData(newItemData, invItem.itemData);
         invItem.itemData = newItemData;
         invItem.itemNameText.text = invItem.itemData.itemName;
         invItem.itemAmountText.text = invItem.itemData.currentStackSize.ToString();

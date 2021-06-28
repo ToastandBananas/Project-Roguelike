@@ -34,10 +34,15 @@ public class PlayerManager : CharacterManager
 
         playerGameObject = gameObject;
         playerController = GetComponent<PlayerController>();
-        playerEquipmentManager = GetComponent<PlayerEquipmentManager>();
         playerMovement = GetComponent<PlayerMovement>();
         playerStats = GetComponent<PlayerStats>();
         interactionCollider = GetComponent<CircleCollider2D>();
+    }
+
+    public override void Start()
+    {
+        playerEquipmentManager = PlayerEquipmentManager.instance;
+        equipmentManager = playerEquipmentManager;
     }
 
     public Interactable GetNearestInteractable()

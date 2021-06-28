@@ -23,14 +23,30 @@ public class Item : ScriptableObject
     public Sprite defaultSprite;
     public Sprite pickupSprite;
 
-    public virtual void Use(EquipmentManager equipmentManager, Inventory inventory, InventoryItem inventorySlot, int itemCount)
+    public virtual void Use(EquipmentManager equipmentManager, Inventory inventory, InventoryItem invItem, int itemCount)
     {
-        if (inventorySlot != null)
+        if (invItem != null && invItem.itemData != null)
         {
             if (isUsable)
             {
-                inventorySlot.itemData.currentStackSize -= itemCount;
-                inventorySlot.UpdateItemTexts();
+                invItem.itemData.currentStackSize -= itemCount;
+
+                // If there's none left, remove the item
+                if (invItem.itemData.currentStackSize <= 0)
+                {
+                    if (inventory != null) // If using an item that's inside and inventory
+                    {
+                        // Remove it from the inventory
+                        RemoveFromInventory(inventory, itemCount, invItem);
+                    }
+                    else if (invItem.myEquipmentManager == null) // If using an item that was on the ground
+                    {
+                        invItem.gm.containerInvUI.GetItemsListFromActiveDirection().Remove(invItem.itemData);
+                        invItem.ClearItem();
+                    }
+                }
+                else
+                    invItem.UpdateItemTexts();
             }
             else
             {
@@ -40,7 +56,7 @@ public class Item : ScriptableObject
         }
     }
 
-    public void RemoveFromInventory(Inventory inventory, int itemCount, InventoryItem invItems)
+    public void RemoveFromInventory(Inventory inventory, int itemCount, InventoryItem invItem)
     {
         inventory.Remove(invItem.itemData, itemCount, invItem);
     }

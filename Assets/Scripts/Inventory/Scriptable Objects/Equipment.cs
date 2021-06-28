@@ -12,13 +12,16 @@ public class Equipment : Item
 
     public override void Use(EquipmentManager equipmentManager, Inventory inventory, InventoryItem invItem, int itemCount)
     {
-        base.Use(equipmentManager, inventory, invItem, itemCount);
-
         // Equip the item
-        equipmentManager.Equip(invItem.itemData, equipmentSlot);
+        if (invItem.myEquipmentManager == null)
+            equipmentManager.Equip(invItem.itemData, equipmentSlot);
+        else
+        {
+            EquipmentSlot equipSlot = invItem.myEquipmentManager.GetEquipmentSlot(invItem.itemData);
+            equipmentManager.Unequip(equipSlot, true);
+        }
 
-        // Remove it from the equipment inventory
-        RemoveFromInventory(inventory, itemCount, invItem);
+        base.Use(equipmentManager, inventory, invItem, itemCount);
     }
 
     public override bool IsEquipment()

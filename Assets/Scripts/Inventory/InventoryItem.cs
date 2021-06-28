@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class InventoryItem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public ItemData itemData;
     
@@ -14,8 +14,8 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler, IPointerEnterH
     [HideInInspector] public TextMeshProUGUI itemNameText, itemAmountText, itemTypeText, itemWeightText, itemVolumeText;
 
     [HideInInspector] public Inventory myInventory;
-
-    GameManager gm;
+    [HideInInspector] public EquipmentManager myEquipmentManager;
+    [HideInInspector] public GameManager gm;
 
     public void Init()
     {
@@ -31,13 +31,16 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler, IPointerEnterH
         gm = GameManager.instance;
     }
 
-    public void Reset()
+    public void ResetInvItem()
     {
         itemData = null;
     }
 
     public void ClearItem()
     {
+        if (gm.uiManager.activeInvItem == this)
+            gm.uiManager.activeInvItem = null;
+
         gm.containerInvUI.RemoveItemFromList(itemData);
 
         if (myInventory != null)
@@ -56,7 +59,7 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler, IPointerEnterH
         itemData.ClearData();
         itemData.gameObject.SetActive(false);
 
-        Reset();
+        ResetInvItem();
         gm.containerInvUI.UpdateUINumbers();
         gameObject.SetActive(false);
     }
@@ -101,14 +104,6 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler, IPointerEnterH
     {
         if (gm.uiManager.activeInvItem == this)
             gm.uiManager.activeInvItem = null;
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        /*if (eventData.clickCount == 1) // Double click (Transfer item)
-        {
-            TransferItem();
-        }*/
     }
 
     public void TransferItem()

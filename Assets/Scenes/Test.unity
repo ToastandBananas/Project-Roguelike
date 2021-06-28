@@ -3845,7 +3845,6 @@ GameObject:
   - component: {fileID: 549636865}
   - component: {fileID: 549636866}
   - component: {fileID: 549636867}
-  - component: {fileID: 549636871}
   - component: {fileID: 549636872}
   m_Layer: 6
   m_Name: Player
@@ -4039,21 +4038,6 @@ MonoBehaviour:
   interactionCollider: {fileID: 0}
   nearbyInteractables: []
   focusedInteractable: {fileID: 0}
---- !u!114 &549636871
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 549636862}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c2e5930d8cb45d4ca91f59b44855bbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentEquipment: []
-  characterManager: {fileID: 0}
-  dropItemController: {fileID: 0}
 --- !u!114 &549636872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6108,7 +6092,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d9e007bfcece2c43837147d800a56bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeInventorySlot: {fileID: 0}
+  activeInvItem: {fileID: 0}
   contextMenu: {fileID: 0}
   stackSizeSelector: {fileID: 0}
   tooltipManager: {fileID: 0}
@@ -11083,8 +11067,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentEquipment: []
+  gm: {fileID: 0}
   characterManager: {fileID: 0}
-  dropItemController: {fileID: 0}
 --- !u!114 &1347319902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12157,19 +12141,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1479651095}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58a0fbbcc54e72a449c3c52866bf4d2a, type: 3}
+  m_Script: {fileID: 11500000, guid: 3c2e5930d8cb45d4ca91f59b44855bbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxWeight: 20
-  maxVolume: 20
-  currentWeight: 0
-  currentVolume: 0
-  items: []
-  itemsParent: {fileID: 0}
-  container: {fileID: 0}
-  myInventoryUI: {fileID: 0}
-  inventoryOwner: {fileID: 0}
-  hasBeenInitialized: 0
+  currentEquipment: []
+  gm: {fileID: 0}
+  characterManager: {fileID: 0}
 --- !u!1 &1482783562
 GameObject:
   m_ObjectHideFlags: 0

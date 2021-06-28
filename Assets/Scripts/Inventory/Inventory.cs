@@ -154,7 +154,8 @@ public class Inventory : MonoBehaviour
         currentVolume = Mathf.RoundToInt(currentVolume * 100f) / 100f;
 
         // Update InventoryUI
-        myInventoryUI.UpdateUINumbers();
+        if (myInventoryUI.activeInventory == this)
+            myInventoryUI.UpdateUINumbers();
 
         // Subtract itemCount from the item's currentStackSize
         itemData.currentStackSize -= itemCount;

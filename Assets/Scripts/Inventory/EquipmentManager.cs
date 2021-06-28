@@ -10,17 +10,28 @@ public class EquipmentManager : MonoBehaviour
 
     public ItemData[] currentEquipment;
 
+    public float currentWeight, currentVolume;
+
     [HideInInspector] public GameManager gm;
     [HideInInspector] public CharacterManager characterManager;
+    [HideInInspector] public Transform itemsParent;
+    [HideInInspector] public bool isPlayer;
 
     public virtual void Start()
     {
         if (gameObject.CompareTag("NPC"))
+        {
             characterManager = GetComponent<CharacterManager>();
+            isPlayer = false;
+        }
         else
+        {
             characterManager = PlayerManager.instance;
+            isPlayer = true;
+        }
 
         gm = GameManager.instance;
+        itemsParent = transform.Find("Items");
 
         int numSlots = System.Enum.GetNames(typeof(EquipmentSlot)).Length;
         currentEquipment = new ItemData[numSlots];
@@ -28,18 +39,33 @@ public class EquipmentManager : MonoBehaviour
 
     public virtual void Equip(ItemData newItemData, EquipmentSlot equipmentSlot)
     {
-        AssignEquipment(newItemData, equipmentSlot);
+        ItemData equipmentItemData = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData();
+        newItemData.TransferData(newItemData, equipmentItemData);
+        equipmentItemData.currentStackSize = 1;
+        equipmentItemData.transform.SetParent(itemsParent);
+        equipmentItemData.gameObject.SetActive(true);
 
-        if (gm.playerInvUI.activeInventory == null) // If the equipment inventory is active, show the item in the menu
+        #if UNITY_EDITOR
+            equipmentItemData.gameObject.name = equipmentItemData.itemName;
+        #endif
+
+        currentWeight += Mathf.RoundToInt(equipmentItemData.item.weight * 100f) / 100f;
+        currentVolume += Mathf.RoundToInt(equipmentItemData.item.volume * 100f) / 100f;
+
+        AssignEquipment(equipmentItemData, equipmentSlot);
+
+        // If the equipment inventory is active, show the item in the menu
+        if (gm.playerInvUI.activeInventory == null && isPlayer)
         {
-
+            gm.playerInvUI.ShowNewInventoryItem(equipmentItemData);
+            gm.playerInvUI.UpdateUINumbers();
         }
 
         // If this is a Wearable item, assign the item's Animator Controller
-        if (IsWeapon(equipmentSlot) == false)
-            SetWearableSprite(equipmentSlot, newItemData);
+        if (equipmentItemData.item.IsWeapon() == false)
+            SetWearableSprite(equipmentSlot, equipmentItemData);
         else
-            SetWeaponSprite(equipmentSlot, newItemData);
+            SetWeaponSprite(equipmentSlot, equipmentItemData);
     }
 
     public virtual void Unequip(EquipmentSlot equipmentSlot, bool shouldAddToInventory)
@@ -52,9 +78,9 @@ public class EquipmentManager : MonoBehaviour
 
             // If this is a Wearable Item, set the scriptableObject to null
             if (oldItemData.item.IsWeapon() == false)
-                UnequipWearable(equipmentSlot);
+                RemoveWearableSprite(equipmentSlot);
             else  // If this is a Weapon Item, get rid of the weapon's gameobject
-                UnequipWeapon(equipmentSlot, oldItemData);
+                RemoveWeaponSprite(equipmentSlot, oldItemData);
         }
     }
 
@@ -102,97 +128,50 @@ public class EquipmentManager : MonoBehaviour
         }
     }
 
+    public EquipmentSlot GetEquipmentSlot(ItemData itemData)
+    {
+        for (int i = 0; i < currentEquipment.Length; i++)
+        {
+            if (currentEquipment[i] != null && currentEquipment[i] == itemData)
+                return (EquipmentSlot)i;
+        }
+
+        return 0;
+    }
+
     void SetWearableSprite(EquipmentSlot wearableSlot, ItemData wearable)
     {
         // TODO
+        Debug.Log("Setting wearable sprite");
     }
 
-    void UnequipWearable(EquipmentSlot wearableSlot)
+    void RemoveWearableSprite(EquipmentSlot wearableSlot)
     {
         // TODO
+        Debug.Log("Removing wearable sprite");
     }
 
     void SetWeaponSprite(EquipmentSlot weaponSlot, ItemData weapon)
     {
         // TODO
+        Debug.Log("Setting weapon sprite");
     }
 
-    void UnequipWeapon(EquipmentSlot weaponSlot, ItemData weapon)
+    void RemoveWeaponSprite(EquipmentSlot weaponSlot, ItemData weapon)
     {
         // TODO
+        Debug.Log("Removing weapon sprite");
     }
 
     public void SheathWeapon(EquipmentSlot weaponSlot)
     {
-        
+        // TODO
+        Debug.Log("Sheathing weapon");
     }
 
     public void UnsheathWeapon(EquipmentSlot weaponSlot)
     {
-        
+        // TODO
+        Debug.Log("Unsheathing weapon");
     }
-
-    bool IsWeapon(EquipmentSlot equipSlot)
-    {
-        if (equipSlot == EquipmentSlot.LeftWeapon || equipSlot == EquipmentSlot.RightWeapon || equipSlot == EquipmentSlot.Ranged)
-            return true;
-
-        return false;
-    }
-
-    #region Old Wearable Animation Method
-    /*void SetWearableAnim(EquipmentSlot equipSlot, Wearable newItem)
-    {
-        switch (equipSlot)
-        {
-            case EquipmentSlot.Helmet:
-                break;
-            case EquipmentSlot.Shirt:
-                characterManager.charAnimController.SetAnimatorController(characterManager.charAnimController.shirtAnim, newItem.animatorController);
-                break;
-            case EquipmentSlot.Pants:
-                characterManager.charAnimController.SetAnimatorController(characterManager.charAnimController.pantsAnim, newItem.animatorController);
-                break;
-            case EquipmentSlot.Boots:
-                break;
-            case EquipmentSlot.Gloves:
-                break;
-            case EquipmentSlot.BodyArmor:
-                break;
-            case EquipmentSlot.LegArmor:
-                break;
-            case EquipmentSlot.Quiver:
-                break;
-            default:
-                break;
-        }
-    }
-
-    void RemoveWearableAnim(EquipmentSlot equipSlot)
-    {
-        switch (equipSlot)
-        {
-            case EquipmentSlot.Helmet:
-                break;
-            case EquipmentSlot.Shirt:
-                characterManager.charAnimController.RemoveAnimController(characterManager.charAnimController.shirtAnim, characterManager.charAnimController.shirtSpriteRenderer);
-                break;
-            case EquipmentSlot.Pants:
-                characterManager.charAnimController.RemoveAnimController(characterManager.charAnimController.pantsAnim, characterManager.charAnimController.pantsSpriteRenderer);
-                break;
-            case EquipmentSlot.Boots:
-                break;
-            case EquipmentSlot.Gloves:
-                break;
-            case EquipmentSlot.BodyArmor:
-                break;
-            case EquipmentSlot.LegArmor:
-                break;
-            case EquipmentSlot.Quiver:
-                break;
-            default:
-                break;
-        }
-    }*/
-    #endregion
 }

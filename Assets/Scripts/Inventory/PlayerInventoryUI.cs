@@ -51,7 +51,7 @@ public class PlayerInventoryUI : InventoryUI
         for (int i = 0; i < itemsList.Count; i++)
         {
             InventoryItem invItem = ShowNewInventoryItem(itemsList[i]);
-            AssignInventoryToInventoryItem(invItem, playerInvType);
+            AssignInventoryOrEquipmentManagerToInventoryItem(invItem, playerInvType);
         }
 
         // Set header/volume/weight text
@@ -67,7 +67,7 @@ public class PlayerInventoryUI : InventoryUI
             if (currentEquipment[i] != null)
             {
                 InventoryItem invItem = ShowNewInventoryItem(currentEquipment[i]);
-                AssignInventoryToInventoryItem(invItem, playerInvType);
+                AssignInventoryOrEquipmentManagerToInventoryItem(invItem, playerInvType);
             }
         }
 
@@ -135,32 +135,40 @@ public class PlayerInventoryUI : InventoryUI
         totalVolumeText.text = GetTotalCarriedVolume().ToString();
     }
 
-    void AssignInventoryToInventoryItem(InventoryItem invItem, PlayerInventoryType playerInvType)
+    void AssignInventoryOrEquipmentManagerToInventoryItem(InventoryItem invItem, PlayerInventoryType playerInvType)
     {
         switch (playerInvType)
         {
             case PlayerInventoryType.Personal:
+                invItem.myEquipmentManager = null;
                 invItem.myInventory = personalInventory;
                 break;
             case PlayerInventoryType.Bag1:
+                invItem.myEquipmentManager = null;
                 invItem.myInventory = bag1Inventory;
                 break;
             case PlayerInventoryType.Bag2:
+                invItem.myEquipmentManager = null;
                 invItem.myInventory = bag2Inventory;
                 break;
             case PlayerInventoryType.Bag3:
+                invItem.myEquipmentManager = null;
                 invItem.myInventory = bag3Inventory;
                 break;
             case PlayerInventoryType.Bag4:
+                invItem.myEquipmentManager = null;
                 invItem.myInventory = bag4Inventory;
                 break;
             case PlayerInventoryType.Bag5:
+                invItem.myEquipmentManager = null;
                 invItem.myInventory = bag5Inventory;
                 break;
             case PlayerInventoryType.Keys:
+                invItem.myEquipmentManager = null;
                 invItem.myInventory = keysInventory;
                 break;
             case PlayerInventoryType.EquippedItems:
+                invItem.myEquipmentManager = gm.playerManager.playerEquipmentManager;
                 invItem.myInventory = null;
                 break;
             default:

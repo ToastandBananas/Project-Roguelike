@@ -18,9 +18,9 @@ public class Consumable : Item
     public int staminaRecoveryAmount;
     public int manaRecoveryAmount;
 
-    public override void Use(EquipmentManager equipmentManager, Inventory inventory, InventoryItem inventorySlot, int itemCount)
+    public override void Use(EquipmentManager equipmentManager, Inventory inventory, InventoryItem invItem, int itemCount)
     {
-        base.Use(equipmentManager, inventory, inventorySlot, itemCount);
+        base.Use(equipmentManager, inventory, invItem, itemCount);
     }
 
     public override bool IsConsumable()
