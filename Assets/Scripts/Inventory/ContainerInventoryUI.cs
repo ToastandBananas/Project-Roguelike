@@ -8,8 +8,8 @@ public class ContainerInventoryUI : InventoryUI
     public Sprite floorIconSprite;
 
     [Header("Side Bar Buttons")]
-    public Image playerPositionSideBarIcon;
-    public Image upSideBarIcon, downSideBarIcon, leftSideBarIcon, rightSideBarIcon, upLeftSideBarIcon, upRightSideBarIcon, downLeftSideBarIcon, downRightSideBarIcon;
+    public ContainerSideBarButton playerPositionSideBarButton;
+    public ContainerSideBarButton upSideBarButton, downSideBarButton, leftSideBarButton, rightSideBarButton, upLeftSideBarButton, upRightSideBarButton, downLeftSideBarButton, downRightSideBarButton;
 
     [Header("Max Ground Volume")]
     public float emptyTileMaxVolume = 1000f;
@@ -196,31 +196,31 @@ public class ContainerInventoryUI : InventoryUI
         switch (direction)
         {
             case Direction.Center:
-                playerPositionSideBarIcon.sprite = GetContainerIcon(inventory, false);
+                playerPositionSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
                 break;
             case Direction.Up:
-                upSideBarIcon.sprite = GetContainerIcon(inventory, false);
+                upSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
                 break;
             case Direction.Down:
-                downSideBarIcon.sprite = GetContainerIcon(inventory, false);
+                downSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
                 break;
             case Direction.Left:
-                leftSideBarIcon.sprite = GetContainerIcon(inventory, false);
+                leftSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
                 break;
             case Direction.Right:
-                rightSideBarIcon.sprite = GetContainerIcon(inventory, false);
+                rightSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
                 break;
             case Direction.UpLeft:
-                upLeftSideBarIcon.sprite = GetContainerIcon(inventory, false);
+                upLeftSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
                 break;
             case Direction.UpRight:
-                upRightSideBarIcon.sprite = GetContainerIcon(inventory, false);
+                upRightSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
                 break;
             case Direction.DownLeft:
-                downLeftSideBarIcon.sprite = GetContainerIcon(inventory, false);
+                downLeftSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
                 break;
             case Direction.DownRight:
-                downRightSideBarIcon.sprite = GetContainerIcon(inventory, false);
+                downRightSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
                 break;
             default:
                 break;
@@ -232,31 +232,31 @@ public class ContainerInventoryUI : InventoryUI
         switch (direction)
         {
             case Direction.Center:
-                playerPositionSideBarIcon.sprite = floorIconSprite;
+                playerPositionSideBarButton.icon.sprite = floorIconSprite;
                 break;
             case Direction.Up:
-                upSideBarIcon.sprite = floorIconSprite;
+                upSideBarButton.icon.sprite = floorIconSprite;
                 break;
             case Direction.Down:
-                downSideBarIcon.sprite = floorIconSprite;
+                downSideBarButton.icon.sprite = floorIconSprite;
                 break;
             case Direction.Left:
-                leftSideBarIcon.sprite = floorIconSprite;
+                leftSideBarButton.icon.sprite = floorIconSprite;
                 break;
             case Direction.Right:
-                rightSideBarIcon.sprite = floorIconSprite;
+                rightSideBarButton.icon.sprite = floorIconSprite;
                 break;
             case Direction.UpLeft:
-                upLeftSideBarIcon.sprite = floorIconSprite;
+                upLeftSideBarButton.icon.sprite = floorIconSprite;
                 break;
             case Direction.UpRight:
-                upRightSideBarIcon.sprite = floorIconSprite;
+                upRightSideBarButton.icon.sprite = floorIconSprite;
                 break;
             case Direction.DownLeft:
-                downLeftSideBarIcon.sprite = floorIconSprite;
+                downLeftSideBarButton.icon.sprite = floorIconSprite;
                 break;
             case Direction.DownRight:
-                downRightSideBarIcon.sprite = floorIconSprite;
+                downRightSideBarButton.icon.sprite = floorIconSprite;
                 break;
             default:
                 break;
@@ -274,7 +274,7 @@ public class ContainerInventoryUI : InventoryUI
                 break;
             case Direction.Up:
                 if (upInventory != null)
-                    SetupContainerUI(upInventory, upSideBarIcon, upItems);
+                    SetupContainerUI(upInventory, upSideBarButton.icon, upItems);
                 else
                 {
                     inventoryNameText.text = "Items Above Self";
@@ -284,7 +284,7 @@ public class ContainerInventoryUI : InventoryUI
                 break;
             case Direction.Down:
                 if (downInventory != null)
-                    SetupContainerUI(downInventory, downSideBarIcon, downItems);
+                    SetupContainerUI(downInventory, downSideBarButton.icon, downItems);
                 else
                 {
                     inventoryNameText.text = "Items Below Self";
@@ -294,7 +294,7 @@ public class ContainerInventoryUI : InventoryUI
                 break;
             case Direction.Left:
                 if (leftInventory != null)
-                    SetupContainerUI(leftInventory, leftSideBarIcon, leftItems);
+                    SetupContainerUI(leftInventory, leftSideBarButton.icon, leftItems);
                 else
                 {
                     inventoryNameText.text = "Items Left of Self";
@@ -304,7 +304,7 @@ public class ContainerInventoryUI : InventoryUI
                 break;
             case Direction.Right:
                 if (rightInventory != null)
-                    SetupContainerUI(rightInventory, rightSideBarIcon, rightItems);
+                    SetupContainerUI(rightInventory, rightSideBarButton.icon, rightItems);
                 else
                 {
                     inventoryNameText.text = "Items Right of Self";
@@ -314,7 +314,7 @@ public class ContainerInventoryUI : InventoryUI
                 break;
             case Direction.UpLeft:
                 if (upLeftInventory != null)
-                    SetupContainerUI(upLeftInventory, upLeftSideBarIcon, upLeftItems);
+                    SetupContainerUI(upLeftInventory, upLeftSideBarButton.icon, upLeftItems);
                 else
                 {
                     inventoryNameText.text = "Items Above and Left of Self";
@@ -324,7 +324,7 @@ public class ContainerInventoryUI : InventoryUI
                 break;
             case Direction.UpRight:
                 if (upRightInventory != null)
-                    SetupContainerUI(upRightInventory, upRightSideBarIcon, upRightItems);
+                    SetupContainerUI(upRightInventory, upRightSideBarButton.icon, upRightItems);
                 else
                 {
                     inventoryNameText.text = "Items Above and Right of Self";
@@ -334,7 +334,7 @@ public class ContainerInventoryUI : InventoryUI
                 break;
             case Direction.DownLeft:
                 if (downLeftInventory != null)
-                    SetupContainerUI(downLeftInventory, downLeftSideBarIcon, downLeftItems);
+                    SetupContainerUI(downLeftInventory, downLeftSideBarButton.icon, downLeftItems);
                 else
                 {
                     inventoryNameText.text = "Items Below and Left of Self";
@@ -344,7 +344,7 @@ public class ContainerInventoryUI : InventoryUI
                 break;
             case Direction.DownRight:
                 if (downRightInventory != null)
-                    SetupContainerUI(downRightInventory, downRightSideBarIcon, downRightItems);
+                    SetupContainerUI(downRightInventory, downRightSideBarButton.icon, downRightItems);
                 else
                 {
                     inventoryNameText.text = "Items Below and Right Self";
@@ -405,54 +405,65 @@ public class ContainerInventoryUI : InventoryUI
         return inventory.container.sidebarSpriteClosed;
     }
 
-    public void ResetContainerIcons()
+    public void ResetContainerIcons(Direction newDirection)
     {
+        upSideBarButton.ResetDirectionIconColor();
+        downSideBarButton.ResetDirectionIconColor();
+        leftSideBarButton.ResetDirectionIconColor();
+        rightSideBarButton.ResetDirectionIconColor();
+        upLeftSideBarButton.ResetDirectionIconColor();
+        upRightSideBarButton.ResetDirectionIconColor();
+        downLeftSideBarButton.ResetDirectionIconColor();
+        downRightSideBarButton.ResetDirectionIconColor();
+        if (activeDirection != Direction.Center || newDirection != Direction.Center)
+            playerPositionSideBarButton.ResetDirectionIconColor();
+
         if (upInventory != null)
         {
             upInventory.container.spriteRenderer.sprite = GetContainerIcon(upInventory, false);
-            upSideBarIcon.sprite = GetContainerIcon(upInventory, false);
+            upSideBarButton.icon.sprite = GetContainerIcon(upInventory, false);
         }
 
         if (downInventory != null)
         {
             downInventory.container.spriteRenderer.sprite = GetContainerIcon(downInventory, false);
-            downSideBarIcon.sprite = GetContainerIcon(downInventory, false);
+            downSideBarButton.icon.sprite = GetContainerIcon(downInventory, false);
         }
 
         if (leftInventory != null)
         {
             leftInventory.container.spriteRenderer.sprite = GetContainerIcon(leftInventory, false);
-            leftSideBarIcon.sprite = GetContainerIcon(leftInventory, false);
+            leftSideBarButton.icon.sprite = GetContainerIcon(leftInventory, false);
         }
 
         if (rightInventory != null)
         {
             rightInventory.container.spriteRenderer.sprite = GetContainerIcon(rightInventory, false);
-            rightSideBarIcon.sprite = GetContainerIcon(rightInventory, false);
+            rightSideBarButton.icon.sprite = GetContainerIcon(rightInventory, false);
         }
 
         if (upLeftInventory != null)
         {
             upLeftInventory.container.spriteRenderer.sprite = GetContainerIcon(upLeftInventory, false);
-            upLeftSideBarIcon.sprite = GetContainerIcon(upLeftInventory, false);
+            upLeftSideBarButton.icon.sprite = GetContainerIcon(upLeftInventory, false);
         }
 
         if (upRightInventory != null)
         {
             upRightInventory.container.spriteRenderer.sprite = GetContainerIcon(upRightInventory, false);
-            upRightSideBarIcon.sprite = GetContainerIcon(upRightInventory, false);
+            upRightSideBarButton.icon.sprite = GetContainerIcon(upRightInventory, false);
         }
 
         if (downLeftInventory != null)
         {
             downLeftInventory.container.spriteRenderer.sprite = GetContainerIcon(downLeftInventory, false);
-            downLeftSideBarIcon.sprite = GetContainerIcon(downLeftInventory, false);
+            downLeftSideBarButton.icon.sprite = GetContainerIcon(downLeftInventory, false);
         }
 
         if (downRightInventory != null)
         {
             downRightInventory.container.spriteRenderer.sprite = GetContainerIcon(downRightInventory, false);
-            downRightSideBarIcon.sprite = GetContainerIcon(downRightInventory, false);
+            downRightSideBarButton.icon.sprite = GetContainerIcon(downRightInventory, false);
         }
     }
 

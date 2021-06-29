@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public PlayerManager playerManager;
     [HideInInspector] public DropItemController dropItemController;
     [HideInInspector] public ObjectPoolManager objectPoolManager;
+    [HideInInspector] public StackSizeSelector stackSizeSelector;
     [HideInInspector] public UIManager uiManager;
 
     #region Singleton
@@ -36,6 +37,7 @@ public class GameManager : MonoBehaviour
         playerManager = PlayerManager.instance;
         dropItemController = DropItemController.instance;
         objectPoolManager = ObjectPoolManager.instance;
+        stackSizeSelector = StackSizeSelector.instance;
         uiManager = UIManager.instance;
     }
 }

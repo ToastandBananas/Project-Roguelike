@@ -80,6 +80,7 @@ public class Movement : MonoBehaviour
         {
             containerInvUI.GetItemsAroundPlayer();
             containerInvUI.PopulateInventoryUI(containerInvUI.playerPositionItems, Direction.Center);
+            containerInvUI.playerPositionSideBarButton.HighlightDirectionIcon();
         }
 
         isMoving = false;

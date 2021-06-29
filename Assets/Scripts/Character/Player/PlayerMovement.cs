@@ -54,8 +54,8 @@ public class PlayerMovement : Movement
                 else if (horizontal > 0.3f) // Down-right
                     Move(1, -1, false);
             }
-
-            containerInvUI.ResetContainerIcons();
+            
+            containerInvUI.ResetContainerIcons(Direction.Center);
 
             turnManager.TakePlayersTurn();
         }

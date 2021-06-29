@@ -3,13 +3,11 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    [HideInInspector] public InventoryItem activeInvItem;
+    public InventoryItem activeInvItem;
 
     [HideInInspector] public ContextMenu contextMenu;
     [HideInInspector] public StackSizeSelector stackSizeSelector;
     [HideInInspector] public TooltipManager tooltipManager;
-
-    [HideInInspector] public bool equippedItemsInventoryActive;
 
     DropItemController dropItemController;
     PlayerManager playerManager;
@@ -82,9 +80,9 @@ public class UIManager : MonoBehaviour
         // Transfer Item
         if (GameControls.gamePlayActions.menuSelect.WasReleased && activeInvItem != null)
         {
-            activeInvItem.TransferItem();
-
-            if (contextMenu.isActive)
+            if (contextMenu.isActive == false)
+                activeInvItem.TransferItem();
+            else
                 contextMenu.DisableContextMenu();
 
             if (stackSizeSelector.isActive)

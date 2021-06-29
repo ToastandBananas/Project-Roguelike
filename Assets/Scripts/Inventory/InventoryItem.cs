@@ -6,9 +6,10 @@ using System.Collections.Generic;
 
 public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    public Sprite defaultSprite, highlightedSprite;
     public ItemData itemData;
     
-    [HideInInspector] public Image slotImage;
+    [HideInInspector] public Image invItemImage;
     [HideInInspector] public RectTransform rectTransform;
 
     [HideInInspector] public TextMeshProUGUI itemNameText, itemAmountText, itemTypeText, itemWeightText, itemVolumeText;
@@ -19,7 +20,7 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void Init()
     {
-        slotImage = GetComponent<Image>();
+        invItemImage = GetComponent<Image>();
         rectTransform = GetComponent<RectTransform>();
 
         itemNameText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
@@ -39,7 +40,10 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void ClearItem()
     {
         if (gm.uiManager.activeInvItem == this)
+        {
             gm.uiManager.activeInvItem = null;
+            invItemImage.sprite = defaultSprite;
+        }
 
         gm.containerInvUI.RemoveItemFromList(itemData);
 
@@ -91,12 +95,16 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void OnPointerEnter(PointerEventData eventData)
     {
         gm.uiManager.activeInvItem = this;
+        invItemImage.sprite = highlightedSprite;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         if (gm.uiManager.activeInvItem == this)
+        {
             gm.uiManager.activeInvItem = null;
+            invItemImage.sprite = defaultSprite;
+        }
     }
 
     public void TransferItem()

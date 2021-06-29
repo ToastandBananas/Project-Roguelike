@@ -3,16 +3,13 @@ using UnityEngine;
 
 public class ContextMenu : MonoBehaviour
 {
-    public bool isActive;
-    public InventoryItem activeInvItem;
-
     public ContextMenuButton[] buttons;
 
+    [HideInInspector] public InventoryItem activeInvItem;
+    [HideInInspector] public bool isActive;
+
     Canvas canvas;
-    DropItemController dropItemController;
-    PlayerManager playerManager;
-    StackSizeSelector stackSizeSelector;
-    UIManager uiManager;
+    GameManager gm;
 
     #region Singleton
     public static ContextMenu instance;
@@ -39,33 +36,33 @@ public class ContextMenu : MonoBehaviour
         }
 
         canvas = GetComponentInParent<Canvas>();
-        dropItemController = DropItemController.instance;
-        playerManager = PlayerManager.instance;
-        stackSizeSelector = StackSizeSelector.instance;
-        uiManager = UIManager.instance;
+        gm = GameManager.instance;
     }
 
-    public void BuildContextMenu(InventoryItem invSlot)
+    public void BuildContextMenu(InventoryItem invItem)
     {
         isActive = true;
+        activeInvItem = invItem;
 
-        if (uiManager.equippedItemsInventoryActive)
+        if (activeInvItem.myEquipmentManager != null)
         {
             CreateUnequipButton();
+            CreateTransferButton();
             CreateDropItemButton();
         }
-        else if (uiManager.activeInvItem != null && uiManager.activeInvItem != activeInvItem)
+        else if (gm.uiManager.activeInvItem != null)// && gm.uiManager.activeInvItem != activeInvItem)
         {
-            if (uiManager.activeInvItem.itemData.item.isUsable)
+            if (gm.uiManager.activeInvItem.itemData.item.isUsable)
                 CreateUseItemButton();
 
-            if (uiManager.activeInvItem.itemData.currentStackSize > 1)
+            if (gm.uiManager.activeInvItem.itemData.currentStackSize > 1)
                 CreateSplitStackButton();
 
-            CreateDropItemButton();
+            CreateTransferButton();
+
+            if ((activeInvItem.myInventory != null && activeInvItem.myInventory.myInventoryUI == gm.playerInvUI) || activeInvItem.myEquipmentManager != null)
+                CreateDropItemButton();
         }
-        
-        activeInvItem = invSlot;
 
         // Get the desired position
         RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, Input.mousePosition, canvas.worldCamera, out Vector2 pos);
@@ -81,8 +78,16 @@ public class ContextMenu : MonoBehaviour
         ContextMenuButton contextButton = GetNextInactiveButton();
         contextButton.gameObject.SetActive(true);
         
-        if (uiManager.activeInvItem.itemData.item.IsEquipment() == false)
+        if (gm.uiManager.activeInvItem.itemData.item.IsEquipment() == false && gm.uiManager.activeInvItem.itemData.item.IsConsumable() == false)
             contextButton.textMesh.text = "Use";
+        else if (gm.uiManager.activeInvItem.itemData.item.IsConsumable())
+        {
+            Consumable consumable = (Consumable)gm.uiManager.activeInvItem.itemData.item;
+            if (consumable.consumableType == ConsumableType.Food)
+                contextButton.textMesh.text = "Eat";
+            else
+                contextButton.textMesh.text = "Drink";
+        }
         else
             contextButton.textMesh.text = "Equip";
 
@@ -108,7 +113,25 @@ public class ContextMenu : MonoBehaviour
     void Unequip()
     {
         Equipment equipment = (Equipment)activeInvItem.itemData.item;
-        playerManager.equipmentManager.Unequip(equipment.equipmentSlot, true);
+        gm.playerManager.equipmentManager.Unequip(equipment.equipmentSlot, true);
+    }
+
+    void CreateTransferButton()
+    {
+        ContextMenuButton contextButton = GetNextInactiveButton();
+        contextButton.gameObject.SetActive(true);
+
+        if ((activeInvItem.myInventory != null && activeInvItem.myInventory.myInventoryUI == gm.playerInvUI) || activeInvItem.myEquipmentManager != null)
+            contextButton.textMesh.text = "Transfer";
+        else
+            contextButton.textMesh.text = "Take";
+
+        contextButton.button.onClick.AddListener(TransferItem);
+    }
+
+    void TransferItem()
+    {
+        activeInvItem.TransferItem();
     }
 
     void CreateSplitStackButton()
@@ -123,8 +146,7 @@ public class ContextMenu : MonoBehaviour
 
     void SplitStack()
     {
-        stackSizeSelector.ShowStackSizeSelector(activeInvItem);
-
+        gm.stackSizeSelector.ShowStackSizeSelector(activeInvItem);
         DisableContextMenu();
     }
 
@@ -140,7 +162,13 @@ public class ContextMenu : MonoBehaviour
 
     void DropItem()
     {
-        // TODO
+        gm.dropItemController.DropItem(gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromActiveDirection(), activeInvItem.itemData, activeInvItem.itemData.currentStackSize);
+        gm.containerInvUI.AddItemToList(activeInvItem.itemData);
+
+        if (activeInvItem.myEquipmentManager != null)
+            Unequip();
+        else
+            activeInvItem.ClearItem();
 
         DisableContextMenu();
     }
