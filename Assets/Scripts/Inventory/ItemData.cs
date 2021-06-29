@@ -32,12 +32,19 @@ public class ItemData : MonoBehaviour
     public int freshness = 100;
     public int uses = 1;
 
+    GameManager gm;
+
     void Awake()
     {
         if (hasBeenRandomized)
             value = CalculateItemValue();
         else if (item != null)
             RandomizeData();
+    }
+
+    void Start()
+    {
+        gm = GameManager.instance;
     }
 
     public void TransferData(ItemData dataGiver, ItemData dataReceiver)
@@ -345,6 +352,16 @@ public class ItemData : MonoBehaviour
                 else if (uses < 0)
                     uses = 0;
             }
+        }
+    }
+
+    public void ReturnToObjectPool()
+    {
+        transform.SetParent(gm.objectPoolManager.itemDataObjectPool.transform);
+        if (gm.objectPoolManager.itemDataObjectPool.pooledObjects.Contains(gameObject) == false)
+        {
+            gm.objectPoolManager.itemDataObjectPool.pooledObjects.Add(gameObject);
+            gm.objectPoolManager.itemDataObjectPool.pooledItemDatas.Add(this);
         }
     }
 }

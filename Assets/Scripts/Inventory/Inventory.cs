@@ -43,10 +43,8 @@ public class Inventory : MonoBehaviour
             {
                 ItemData itemData = itemsParent.GetChild(i).GetComponent<ItemData>();
                 items.Add(itemData);
-                currentWeight += itemData.item.weight * itemData.currentStackSize;
-                currentWeight = Mathf.RoundToInt(currentWeight * 100f) / 100f;
-                currentVolume += itemData.item.volume * itemData.currentStackSize;
-                currentVolume = Mathf.RoundToInt(currentVolume * 100f) / 100f;
+                currentWeight += Mathf.RoundToInt(itemData.item.weight * itemData.currentStackSize * 100f) / 100f;
+                currentVolume += Mathf.RoundToInt(itemData.item.volume * itemData.currentStackSize * 100f) / 100f;
             }
 
             if (items.Count > 0)
@@ -68,7 +66,7 @@ public class Inventory : MonoBehaviour
     public bool Add(InventoryItem invItemComingFrom, ItemData itemDataComingFrom, int itemCount, Inventory invComingFrom)
     {
         bool hasRoom = HasRoomInInventory(itemDataComingFrom, itemCount);
-
+        
         // Make sure we have room, before we start adding the item
         if (hasRoom == false)
         {
@@ -129,10 +127,8 @@ public class Inventory : MonoBehaviour
             // If we're taking this item from another Inventory, update it's weight and volume
             if (invComingFrom != null)
             {
-                invComingFrom.currentWeight -= itemDataComingFrom.item.weight * itemCount;
-                invComingFrom.currentWeight = Mathf.RoundToInt(invComingFrom.currentWeight * 100f) / 100f;
-                invComingFrom.currentVolume -= itemDataComingFrom.item.volume * itemCount;
-                invComingFrom.currentVolume = Mathf.RoundToInt(invComingFrom.currentVolume * 100f) / 100f;
+                invComingFrom.currentWeight -= Mathf.RoundToInt(itemDataComingFrom.item.weight * itemCount * 100f) / 100f;
+                invComingFrom.currentVolume -= Mathf.RoundToInt(itemDataComingFrom.item.volume * itemCount * 100f) / 100f;
             }
 
             // If we're only taking 1 count of the item, subtract 1 from the currentStackSize, otherwise it should now be 0
@@ -148,10 +144,8 @@ public class Inventory : MonoBehaviour
     public void Remove(ItemData itemData, int itemCount, InventoryItem invItem)
     {
         // Subtract from current weight and volume
-        currentWeight -= itemData.item.weight * itemCount;
-        currentWeight = Mathf.RoundToInt(currentWeight * 100f) / 100f;
-        currentVolume -= itemData.item.volume * itemCount;
-        currentVolume = Mathf.RoundToInt(currentVolume * 100f) / 100f;
+        currentWeight -= Mathf.RoundToInt(itemData.item.weight * itemCount * 100f) / 100f;
+        currentVolume -= Mathf.RoundToInt(itemData.item.volume * itemCount * 100f) / 100f;
 
         // Update InventoryUI
         if (myInventoryUI.activeInventory == this)
@@ -189,10 +183,8 @@ public class Inventory : MonoBehaviour
 
                         if (invComingFrom != null)
                         {
-                            invComingFrom.currentWeight -= itemDataComingFrom.item.weight;
-                            invComingFrom.currentWeight = Mathf.RoundToInt(invComingFrom.currentWeight * 100f) / 100f;
-                            invComingFrom.currentVolume -= itemDataComingFrom.item.volume;
-                            invComingFrom.currentVolume = Mathf.RoundToInt(invComingFrom.currentVolume * 100f) / 100f;
+                            invComingFrom.currentWeight -= Mathf.RoundToInt(itemDataComingFrom.item.weight * 100f) / 100f;
+                            invComingFrom.currentVolume -= Mathf.RoundToInt(itemDataComingFrom.item.volume * 100f) / 100f;
                         }
 
                         if (itemDatasInvItem != null)

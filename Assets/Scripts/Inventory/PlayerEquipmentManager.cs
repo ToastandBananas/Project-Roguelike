@@ -23,24 +23,4 @@ public class PlayerEquipmentManager : EquipmentManager
     {
         base.Start();
     }
-
-    public override void Equip(ItemData newItemData, EquipmentSlot equipmentSlot)
-    {
-        base.Equip(newItemData, equipmentSlot);
-    }
-
-    public override void Unequip(EquipmentSlot equipmentSlot, bool shouldAddToInventory)
-    {
-        base.Unequip(equipmentSlot, shouldAddToInventory);
-    }
-
-    public override void AssignEquipment(ItemData newItemData, EquipmentSlot equipmentSlot)
-    {
-        base.AssignEquipment(newItemData, equipmentSlot);
-    }
-
-    public override void UnassignEquipment(ItemData oldItemData, EquipmentSlot equipmentSlot, bool shouldAddToInventory)
-    {
-        base.UnassignEquipment(oldItemData, equipmentSlot, shouldAddToInventory);
-    }
 }

@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class DropItemController : MonoBehaviour
 {
+    GameManager gm;
     ItemPickupObjectPool itemPickupObjectPool;
 
     LayerMask obstacleMask;
@@ -28,30 +29,32 @@ public class DropItemController : MonoBehaviour
 
     void Start()
     {
+        gm = GameManager.instance;
         itemPickupObjectPool = ObjectPoolManager.instance.pickupsPool;
     }
 
-    public ItemPickup DropItem(Vector3 dropPosition, ItemData itemData, int amountToDrop)
+    public void DropItem(Vector3 dropPosition, ItemData itemData, int amountToDrop)
     {
-        return Drop(dropPosition, itemData, amountToDrop);
+        ItemPickup newItemPickup = itemPickupObjectPool.GetPooledObject().GetComponent<ItemPickup>();
+        SetupItemPickup(newItemPickup, itemData, amountToDrop, dropPosition);
+
+        if (dropPosition == gm.playerManager.transform.position + GetDropPositionFromActiveDirection())
+        {
+            gm.containerInvUI.ShowNewInventoryItem(newItemPickup.itemData);
+            gm.containerInvUI.AddItemToList(newItemPickup.itemData);
+            gm.containerInvUI.UpdateUINumbers();
+        }
     }
 
     public void DropEquipment(EquipmentManager equipmentManager, EquipmentSlot equipmentSlot, Vector3 dropPosition, ItemData itemData, int amountToDrop)
     {
         if (itemData != null)
         {
-            Drop(dropPosition, itemData, amountToDrop);
+            DropItem(dropPosition, itemData, amountToDrop);
 
             if (equipmentManager != null)
                 equipmentManager.Unequip(equipmentSlot, false);
         }
-    }
-
-    ItemPickup Drop(Vector3 dropPosition, ItemData itemData, int amountToDrop)
-    {
-        ItemPickup newItemPickup = itemPickupObjectPool.GetPooledObject().GetComponent<ItemPickup>();
-        SetupItemPickup(newItemPickup, itemData, amountToDrop, dropPosition);
-        return newItemPickup;
     }
 
     void SetupItemPickup(ItemPickup newItemPickup, ItemData itemData, int amountToDrop, Vector3 dropPosition)
@@ -72,5 +75,32 @@ public class DropItemController : MonoBehaviour
         #if UNITY_EDITOR
             newItemPickup.name = itemData.name + " Pickup";
         #endif
+    }
+
+    public Vector3 GetDropPositionFromActiveDirection()
+    {
+        switch (gm.containerInvUI.activeDirection)
+        {
+            case Direction.Center:
+                return Vector3.zero;
+            case Direction.Up:
+                return new Vector3(0, 1);
+            case Direction.Down:
+                return new Vector3(0, -1);
+            case Direction.Left:
+                return new Vector3(-1, 0);
+            case Direction.Right:
+                return new Vector3(1, 0);
+            case Direction.UpLeft:
+                return new Vector3(-1, 1);
+            case Direction.UpRight:
+                return new Vector3(1, 1);
+            case Direction.DownLeft:
+                return new Vector3(-1, -1);
+            case Direction.DownRight:
+                return new Vector3(1, -1);
+            default:
+                return Vector3.zero;
+        }
     }
 }

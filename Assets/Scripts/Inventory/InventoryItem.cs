@@ -47,14 +47,7 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             myInventory.items.Remove(itemData);
 
         if (itemData.CompareTag("Item Data Object"))
-        {
-            itemData.transform.SetParent(gm.objectPoolManager.itemDataObjectPool.transform);
-            if (gm.objectPoolManager.itemDataObjectPool.pooledObjects.Contains(itemData.gameObject) == false)
-            {
-                gm.objectPoolManager.itemDataObjectPool.pooledObjects.Add(itemData.gameObject);
-                gm.objectPoolManager.itemDataObjectPool.pooledItemDatas.Add(itemData);
-            }
-        }
+            itemData.ReturnToObjectPool();
 
         itemData.ClearData();
         itemData.gameObject.SetActive(false);
@@ -108,7 +101,7 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void TransferItem()
     {
-        if (myInventory == null || myInventory.myInventoryUI == gm.containerInvUI) // If we're taking this item from a container or the ground
+        if (myEquipmentManager == null && (myInventory == null || myInventory.myInventoryUI == gm.containerInvUI)) // If we're taking this item from a container or the ground
         {
             // We don't want to add items directly to the keys inv (unless it's a key) or to the current equipment inv
             if (gm.playerInvUI.activeInventory != null && gm.playerInvUI.activeInventory != gm.playerInvUI.keysInventory && itemData.item.itemType != ItemType.Key)
@@ -177,7 +170,15 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             if (gm.containerInvUI.activeInventory != null) // If we're trying to place the item in a container
             {
                 if (gm.containerInvUI.activeInventory.Add(this, itemData, itemData.currentStackSize, myInventory)) // Try adding the item's entire stack
-                    ClearItem();
+                {
+                    if (myEquipmentManager != null)
+                    {
+                        EquipmentSlot equipmentSlot = myEquipmentManager.GetEquipmentSlot(itemData);
+                        myEquipmentManager.Unequip(equipmentSlot, false);
+                    }
+                    else
+                        ClearItem();
+                }
                 else if (itemData.currentStackSize > 1) // If there wasn't room for all of the items, try adding them one at a time
                 {
                     AddItemToInventory_OneAtATime(myInventory, gm.containerInvUI.activeInventory, itemData);
@@ -193,24 +194,27 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                     gm.containerInvUI.UpdateUINumbers();
                 }
 
-                if (itemData.currentStackSize > 0) // If there's still some left to drop
+                if (itemData.currentStackSize > 0) // If there's still some left to drop or if the item's maxStackSize is 1
                 {
                     List<ItemData> itemsListAddingTo = gm.containerInvUI.GetItemsListFromActiveDirection();
                     if (IsRoomOnGround(itemData, itemsListAddingTo))
                     {
-                        ItemPickup newItemPickup = gm.dropItemController.DropItem(gm.playerManager.transform.position, itemData, itemData.currentStackSize);
-                        gm.containerInvUI.playerPositionItems.Add(newItemPickup.itemData);
+                        gm.dropItemController.DropItem(gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromActiveDirection(), itemData, itemData.currentStackSize);
 
-                        if (gm.containerInvUI.activeDirection == Direction.Center)
-                            gm.containerInvUI.ShowNewInventoryItem(newItemPickup.itemData);
+                        if (gm.playerInvUI.activeInventory != null)
+                        {
+                            gm.playerInvUI.activeInventory.items.Remove(itemData);
+                            gm.playerInvUI.activeInventory.currentWeight -= Mathf.RoundToInt(itemData.item.weight * itemData.currentStackSize * 100f) / 100f;
+                            gm.playerInvUI.activeInventory.currentVolume -= Mathf.RoundToInt(itemData.item.volume * itemData.currentStackSize * 100f) / 100f;
+                        }
 
-                        gm.playerInvUI.activeInventory.items.Remove(itemData);
-                        gm.playerInvUI.activeInventory.currentWeight -= itemData.item.weight * itemData.currentStackSize;
-                        gm.playerInvUI.activeInventory.currentWeight = Mathf.RoundToInt(gm.playerInvUI.activeInventory.currentWeight * 100f) / 100f;
-                        gm.playerInvUI.activeInventory.currentVolume -= itemData.item.volume * itemData.currentStackSize;
-                        gm.playerInvUI.activeInventory.currentVolume = Mathf.RoundToInt(gm.playerInvUI.activeInventory.currentVolume * 100f) / 100f;
-
-                        ClearItem();
+                        if (myEquipmentManager != null)
+                        {
+                            EquipmentSlot equipmentSlot = myEquipmentManager.GetEquipmentSlot(itemData);
+                            myEquipmentManager.Unequip(equipmentSlot, false);
+                        }
+                        else
+                            ClearItem();
                     }
                     else
                         Debug.Log("Not enough room on ground to drop item...");
@@ -263,10 +267,8 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
                             if (invComingFrom != null)
                             {
-                                invComingFrom.currentWeight -= itemDataComingFrom.item.weight;
-                                invComingFrom.currentWeight = Mathf.RoundToInt(invComingFrom.currentWeight * 100f) / 100f;
-                                invComingFrom.currentVolume -= itemDataComingFrom.item.volume;
-                                invComingFrom.currentVolume = Mathf.RoundToInt(invComingFrom.currentVolume * 100f) / 100f;
+                                invComingFrom.currentWeight -= Mathf.RoundToInt(itemDataComingFrom.item.weight * 100f) / 100f;
+                                invComingFrom.currentVolume -= Mathf.RoundToInt(itemDataComingFrom.item.volume * 100f) / 100f;
                             }
 
                             if (itemDatasInvItem != null)

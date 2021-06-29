@@ -73,14 +73,65 @@ public class EquipmentManager : MonoBehaviour
         if (currentEquipment[(int)equipmentSlot] != null)
         {
             ItemData oldItemData = currentEquipment[(int)equipmentSlot];
+            InventoryItem invItemComingFrom = gm.playerInvUI.GetItemDatasInventoryItem(oldItemData);
+            bool shouldDropItem = false;
 
-            UnassignEquipment(oldItemData, equipmentSlot, shouldAddToInventory);
+            if (shouldAddToInventory)
+            {
+                if (isPlayer) // If this is the player's equipment
+                {
+                    // Try adding to the player's inventory
+                    if (gm.playerInvUI.bag1Active == false || (gm.playerInvUI.bag1Active && gm.playerInvUI.bag1Inventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null) == false))
+                    {
+                        if (gm.playerInvUI.bag2Active == false || (gm.playerInvUI.bag2Active && gm.playerInvUI.bag2Inventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null) == false))
+                        {
+                            if (gm.playerInvUI.bag3Active == false || (gm.playerInvUI.bag3Active && gm.playerInvUI.bag3Inventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null) == false))
+                            {
+                                if (gm.playerInvUI.bag4Active == false || (gm.playerInvUI.bag4Active && gm.playerInvUI.bag4Inventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null) == false))
+                                {
+                                    if (gm.playerInvUI.bag5Active == false || (gm.playerInvUI.bag5Active && gm.playerInvUI.bag5Inventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null) == false))
+                                    {
+                                        if (gm.playerInvUI.personalInventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null) == false)
+                                        {
+                                            // If we can't add it to the Inventory, drop it, but first we need to run the rest of the code in this method, so we'll just set a bool
+                                            shouldDropItem = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else // If this is an NPC's equipment
+                {
+                    // Try adding to the NPC's inventory, else drop the item at their feet
+                    if (characterManager.inventory.Add(null, oldItemData, oldItemData.currentStackSize, null) == false)
+                        shouldDropItem = true;
+                }
+            }
+
+            // Adjust the equipment manager's weight and volume
+            currentWeight -= Mathf.RoundToInt(oldItemData.item.weight * oldItemData.currentStackSize * 100f) / 100f;
+            currentVolume -= Mathf.RoundToInt(oldItemData.item.volume * oldItemData.currentStackSize * 100f) / 100f;
 
             // If this is a Wearable Item, set the scriptableObject to null
             if (oldItemData.item.IsWeapon() == false)
                 RemoveWearableSprite(equipmentSlot);
             else  // If this is a Weapon Item, get rid of the weapon's gameobject
                 RemoveWeaponSprite(equipmentSlot, oldItemData);
+
+            UnassignEquipment(oldItemData, equipmentSlot);
+
+            if (shouldDropItem)
+                gm.dropItemController.DropItem(characterManager.transform.position, oldItemData, oldItemData.currentStackSize);
+
+            if (invItemComingFrom != null)
+                invItemComingFrom.ClearItem();
+            else
+                oldItemData.ReturnToObjectPool();
+
+            if (isPlayer)
+                gm.playerInvUI.UpdateUINumbers();
         }
     }
 
@@ -103,14 +154,8 @@ public class EquipmentManager : MonoBehaviour
         currentEquipment[(int)equipmentSlot] = newItemData;
     }
 
-    public virtual void UnassignEquipment(ItemData oldItemData, EquipmentSlot equipmentSlot, bool shouldAddToInventory)
+    public virtual void UnassignEquipment(ItemData oldItemData, EquipmentSlot equipmentSlot)
     {
-        if (shouldAddToInventory)
-        {
-            if (characterManager.inventory.Add(null, oldItemData, 1, null) == false) // If we can't add it to the Inventory, drop it
-                gm.dropItemController.DropEquipment(this, equipmentSlot, characterManager.transform.position, oldItemData, 1);
-        }
-
         currentEquipment[(int)equipmentSlot] = null;
 
         if (onWearableChanged != null && oldItemData.item.IsWeapon() == false)
