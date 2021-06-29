@@ -99,6 +99,7 @@ public class GameControls : MonoBehaviour
         gamePlayActions.leftCtrl.AddDefaultBinding(Key.LeftControl);
         gamePlayActions.leftShift.AddDefaultBinding(Key.LeftShift);
         gamePlayActions.enter.AddDefaultBinding(Key.Return);
+        gamePlayActions.enter.AddDefaultBinding(Key.PadEnter);
         gamePlayActions.tab.AddDefaultBinding(Key.Tab);
     }
 }

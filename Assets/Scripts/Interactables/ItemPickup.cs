@@ -42,7 +42,6 @@ public class ItemPickup : Interactable
             if (equipmentManager.currentEquipment[(int)equipment.equipmentSlot] == null)
             {
                 equipmentManager.Equip(itemData, equipment.equipmentSlot);
-                // TODO: Put in equipment inventory
                 wasPickedUp = true;
             }
             else

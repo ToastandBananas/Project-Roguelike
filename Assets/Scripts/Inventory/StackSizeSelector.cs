@@ -9,11 +9,11 @@ public class StackSizeSelector : MonoBehaviour
     public Button leftArrowButton, rightArrowButton, submitButton;
     public TMP_InputField inputField;
 
-    [HideInInspector] public InventoryItem selectedInventorySlot;
+    [HideInInspector] public InventoryItem selectedInvItem;
 
     [HideInInspector] public bool isActive;
 
-    UIManager uiManager;
+    GameManager gm;
 
     int currentValue;
     int maxValue;
@@ -41,14 +41,23 @@ public class StackSizeSelector : MonoBehaviour
 
     void Start()
     {
-        uiManager = UIManager.instance;
+        gm = GameManager.instance;
         inputField.selectionColor = new Color(0, 0, 0, 0);
     }
 
     void Update()
     {
-        if (GameControls.gamePlayActions.enter.WasPressed && isActive)
-            Submit();
+        if (isActive)
+        {
+            if (GameControls.gamePlayActions.enter.WasPressed)
+                Submit();
+
+            if (GameControls.gamePlayActions.menuLeft.WasPressed)
+                SubtractFromCurrentValue();
+
+            if (GameControls.gamePlayActions.menuRight.WasPressed)
+                AddToCurrentValue();
+        }
     }
 
     public void AddToCurrentValue()
@@ -87,16 +96,55 @@ public class StackSizeSelector : MonoBehaviour
     
     public void Submit()
     {
-        if (selectedInventorySlot != null && currentValue > 0)
+        if (selectedInvItem != null && currentValue > 0)
         {
-            // TODO: Create a new stack
+            selectedInvItem.itemData.currentStackSize -= currentValue;
+            selectedInvItem.UpdateItemTexts();
 
-            selectedInventorySlot.itemData.currentStackSize -= currentValue;
+            ItemData newItemData = null;
+            if (selectedInvItem.myInventory != null) // If the item is in an inventory
+            {
+                newItemData = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData();
+                newItemData.transform.SetParent(selectedInvItem.myInventory.itemsParent);
+                newItemData.gameObject.SetActive(true);
 
-            if (selectedInventorySlot.itemData.currentStackSize > 0)
-                selectedInventorySlot.UpdateItemTexts();
+                selectedInvItem.myInventory.items.Add(newItemData);
+                if (selectedInvItem.myInventory.myInventoryUI == gm.containerInvUI)
+                    gm.containerInvUI.AddItemToList(newItemData);
+
+                #if UNITY_EDITOR
+                    newItemData.name = selectedInvItem.itemData.itemName;
+                #endif
+            }
+            else // If the item is on the ground
+            {
+                ItemPickup newItemPickup = gm.objectPoolManager.pickupsPool.GetPooledItemPickup();
+                newItemData = newItemPickup.itemData;
+                newItemPickup.spriteRenderer.sprite = selectedInvItem.itemData.item.pickupSprite;
+                newItemPickup.transform.position = gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromActiveDirection();
+                newItemPickup.gameObject.SetActive(true);
+                gm.containerInvUI.AddItemToList(newItemData);
+
+                #if UNITY_EDITOR
+                    newItemPickup.name = selectedInvItem.itemData.itemName;
+                #endif
+            }
+
+            selectedInvItem.itemData.TransferData(selectedInvItem.itemData, newItemData);
+            newItemData.currentStackSize = currentValue;
+
+            InventoryItem newInvItem = null;
+            if ((selectedInvItem.myInventory != null && selectedInvItem.myInventory.myInventoryUI == gm.containerInvUI) || (selectedInvItem.myInventory == null && selectedInvItem.myEquipmentManager == null))
+                newInvItem = gm.containerInvUI.ShowNewInventoryItem(newItemData);
             else
-                selectedInventorySlot.ClearItem();
+                newInvItem = gm.playerInvUI.ShowNewInventoryItem(newItemData);
+            
+            //newInvItem.UpdateItemTexts();
+
+            if (selectedInvItem.itemData.currentStackSize > 0)
+                selectedInvItem.UpdateItemTexts();
+            else
+                selectedInvItem.ClearItem();
         }
 
         HideStackSizeSelector();
@@ -109,7 +157,7 @@ public class StackSizeSelector : MonoBehaviour
 
         inputField.Select();
 
-        selectedInventorySlot = inventorySlot;
+        selectedInvItem = inventorySlot;
         maxValue = inventorySlot.itemData.currentStackSize - 1;
         currentValue = 1;
         inputField.text = currentValue.ToString();
@@ -135,6 +183,6 @@ public class StackSizeSelector : MonoBehaviour
     {
         currentValue = 1;
         inputField.text = currentValue.ToString();
-        selectedInventorySlot = null;
+        selectedInvItem = null;
     }
 }

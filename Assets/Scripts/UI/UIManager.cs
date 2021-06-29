@@ -121,7 +121,7 @@ public class UIManager : MonoBehaviour
         // Split stack
         if (GameControls.gamePlayActions.menuSelect.WasPressed && GameControls.gamePlayActions.leftShift.IsPressed)
         {
-            if (activeInvItem != null && activeInvItem.itemData != null && activeInvItem.itemData.currentStackSize > 1 && activeInvItem != stackSizeSelector.selectedInventorySlot)
+            if (activeInvItem != null && activeInvItem.itemData != null && activeInvItem.itemData.currentStackSize > 1 && activeInvItem != stackSizeSelector.selectedInvItem)
             {
                 // Show the Stack Size Selector
                 stackSizeSelector.ShowStackSizeSelector(activeInvItem);
