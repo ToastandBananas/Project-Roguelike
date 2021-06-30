@@ -181,7 +181,7 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                 {
                     if (myEquipmentManager != null)
                     {
-                        EquipmentSlot equipmentSlot = myEquipmentManager.GetEquipmentSlot(itemData);
+                        EquipmentSlot equipmentSlot = myEquipmentManager.GetEquipmentSlotFromItemData(itemData);
                         myEquipmentManager.Unequip(equipmentSlot, false);
                     }
                     else
@@ -218,7 +218,7 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
                         if (myEquipmentManager != null)
                         {
-                            EquipmentSlot equipmentSlot = myEquipmentManager.GetEquipmentSlot(itemData);
+                            EquipmentSlot equipmentSlot = myEquipmentManager.GetEquipmentSlotFromItemData(itemData);
                             myEquipmentManager.Unequip(equipmentSlot, false);
                         }
                         else

@@ -39,7 +39,7 @@ public class PlayerInventoryUI : InventoryUI
 
         personalInventory.maxWeight = gm.playerManager.playerStats.maxPersonalInvWeight.GetValue();
         personalInventory.maxVolume = gm.playerManager.playerStats.maxPersonalInvVolume.GetValue();
-        
+
         PopulateInventoryUI(personalInventory.items, PlayerInventoryType.Personal);
     }
 
@@ -73,6 +73,20 @@ public class PlayerInventoryUI : InventoryUI
 
         // Set container open icon sprite (when applicable) and header/volume/weight text
         SetUpInventoryUI(playerInvType);
+    }
+
+    public void TransferAll()
+    {
+        if (gm.containerInvUI.inventoryParent.activeSelf == false)
+            gm.containerInvUI.ToggleInventoryMenu();
+        else if (gm.containerInvUI.background.activeSelf == false)
+            gm.containerInvUI.ToggleMinimization();
+
+        for (int i = 0; i < gm.objectPoolManager.playerInventoryItemObjectPool.pooledInventoryItems.Count; i++)
+        {
+            if (gm.objectPoolManager.playerInventoryItemObjectPool.pooledInventoryItems[i].gameObject.activeSelf)
+                gm.objectPoolManager.playerInventoryItemObjectPool.pooledInventoryItems[i].TransferItem();
+        }
     }
 
     void SetUpInventoryUI(PlayerInventoryType playerInvType)

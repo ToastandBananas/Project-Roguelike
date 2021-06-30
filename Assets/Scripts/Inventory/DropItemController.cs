@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DropItemController : MonoBehaviour
@@ -44,16 +45,10 @@ public class DropItemController : MonoBehaviour
             gm.containerInvUI.AddItemToList(newItemPickup.itemData);
             gm.containerInvUI.UpdateUINumbers();
         }
-    }
-
-    public void DropEquipment(EquipmentManager equipmentManager, EquipmentSlot equipmentSlot, Vector3 dropPosition, ItemData itemData, int amountToDrop)
-    {
-        if (itemData != null)
+        else
         {
-            DropItem(dropPosition, itemData, amountToDrop);
-
-            if (equipmentManager != null)
-                equipmentManager.Unequip(equipmentSlot, false);
+            List<ItemData> itemsList = gm.containerInvUI.GetItemsListFromDirection(GetDirectionFromDropPosition(dropPosition));
+            itemsList.Add(newItemPickup.itemData);
         }
     }
 
@@ -81,8 +76,6 @@ public class DropItemController : MonoBehaviour
     {
         switch (gm.containerInvUI.activeDirection)
         {
-            case Direction.Center:
-                return Vector3.zero;
             case Direction.Up:
                 return new Vector3(0, 1);
             case Direction.Down:
@@ -102,5 +95,54 @@ public class DropItemController : MonoBehaviour
             default:
                 return Vector3.zero;
         }
+    }
+
+    public Vector3 GetDropPositionFromDirection(Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.Up:
+                return new Vector3(0, 1);
+            case Direction.Down:
+                return new Vector3(0, -1);
+            case Direction.Left:
+                return new Vector3(-1, 0);
+            case Direction.Right:
+                return new Vector3(1, 0);
+            case Direction.UpLeft:
+                return new Vector3(-1, 1);
+            case Direction.UpRight:
+                return new Vector3(1, 1);
+            case Direction.DownLeft:
+                return new Vector3(-1, -1);
+            case Direction.DownRight:
+                return new Vector3(1, -1);
+            default:
+                return Vector3.zero;
+        }
+    }
+
+    public Direction GetDirectionFromDropPosition(Vector3 dropPosition)
+    {
+        if (dropPosition == gm.playerManager.transform.position)
+            return Direction.Center;
+        else if (dropPosition == gm.playerManager.transform.position + new Vector3(0, 1))
+            return Direction.Up;
+        else if (dropPosition == gm.playerManager.transform.position + new Vector3(0, -1))
+            return Direction.Down;
+        else if (dropPosition == gm.playerManager.transform.position + new Vector3(-1, 0))
+            return Direction.Left;
+        else if (dropPosition == gm.playerManager.transform.position + new Vector3(1, 0))
+            return Direction.Right;
+        else if (dropPosition == gm.playerManager.transform.position + new Vector3(-1, 1))
+            return Direction.UpLeft;
+        else if (dropPosition == gm.playerManager.transform.position + new Vector3(1, 1))
+            return Direction.UpRight;
+        else if (dropPosition == gm.playerManager.transform.position + new Vector3(-1, -1))
+            return Direction.DownLeft;
+        else if (dropPosition == gm.playerManager.transform.position + new Vector3(1, -1))
+            return Direction.DownRight;
+        else
+            return Direction.Center;
     }
 }

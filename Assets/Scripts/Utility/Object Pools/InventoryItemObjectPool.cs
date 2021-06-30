@@ -44,7 +44,10 @@ public class InventoryItemObjectPool : ObjectPool
         for (int i = 0; i < pooledObjects.Count; i++)
         {
             if (pooledInventoryItems[i].itemData == null)
+            {
+                pooledInventoryItems[i].transform.SetAsLastSibling();
                 return pooledInventoryItems[i];
+            }
         }
 
         InventoryItem invItem = Instantiate(objectToPool).GetComponent<InventoryItem>();

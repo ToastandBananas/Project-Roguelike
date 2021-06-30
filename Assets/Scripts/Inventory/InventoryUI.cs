@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class InventoryUI : MonoBehaviour
 {
     public Transform slotsParent;
-    public GameObject inventoryParent;
+    public GameObject inventoryParent, background, sideBarParent, minimizeButtonText;
     public InventoryItemObjectPool inventoryItemObjectPool;
 
     [Header("Texts")]
@@ -32,8 +32,8 @@ public class InventoryUI : MonoBehaviour
         {
             if (inventoryItemObjectPool.pooledInventoryItems[i].gameObject.activeSelf)
             {
-                inventoryItemObjectPool.pooledInventoryItems[i].ResetInvItem();
                 inventoryItemObjectPool.pooledInventoryItems[i].gameObject.SetActive(false);
+                inventoryItemObjectPool.pooledInventoryItems[i].ResetInvItem();
             }
         }
     }
@@ -66,15 +66,51 @@ public class InventoryUI : MonoBehaviour
         if (inventoryParent.activeSelf == false)
         {
             // Close the Context Menu
-            //if (uiManager.contextMenu.isActive)
-                //uiManager.contextMenu.DisableContextMenu();
+            if (gm.contextMenu.isActive)
+                gm.contextMenu.DisableContextMenu();
 
             // Close the Stack Size Selector
-            //if (uiManager.stackSizeSelector.isActive)
-                //uiManager.stackSizeSelector.HideStackSizeSelector();
+            if (gm.stackSizeSelector.isActive)
+                gm.stackSizeSelector.HideStackSizeSelector();
 
-            //uiManager.tooltipManager.HideAllTooltips();
+            //gm.tooltipManager.HideAllTooltips();
+
+            if (gm.containerInvUI == this)
+                gm.uiManager.activeContainerSideBarButton = null;
+            else if (gm.playerInvUI == this)
+                gm.uiManager.activePlayerInvSideBarButton = null;
         }
+        else if (background.activeSelf == false)
+        {
+            // Make sure these are active, in case the inventory had been minimized previously
+            background.SetActive(true);
+            sideBarParent.SetActive(true);
+            minimizeButtonText.transform.rotation = Quaternion.Euler(0, 0, 180);
+        }
+    }
+
+    public void ToggleMinimization()
+    {
+        background.SetActive(!background.activeSelf);
+        sideBarParent.SetActive(!sideBarParent.activeSelf);
+
+        // If the inventory was minimized
+        if (background.activeSelf == false)
+        {
+            minimizeButtonText.transform.rotation = Quaternion.Euler(Vector3.zero);
+
+            // Close the Context Menu
+            if (gm.contextMenu.isActive)
+                gm.contextMenu.DisableContextMenu();
+
+            // Close the Stack Size Selector
+            if (gm.stackSizeSelector.isActive)
+                gm.stackSizeSelector.HideStackSizeSelector();
+
+            //gm.tooltipManager.HideAllTooltips();
+        }
+        else
+            minimizeButtonText.transform.rotation = Quaternion.Euler(0, 0, 180);
     }
 
     public float GetTotalWeight(List<ItemData> itemsList)

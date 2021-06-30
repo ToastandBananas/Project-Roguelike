@@ -47,8 +47,11 @@ public class ContextMenu : MonoBehaviour
         if (activeInvItem.myEquipmentManager != null)
         {
             CreateUnequipButton();
-            CreateTransferButton();
-            CreateDropItemButton();
+
+            if (gm.containerInvUI.activeInventory != null)
+                CreateTransferButton();
+            else
+                CreateDropItemButton();
         }
         else if (gm.uiManager.activeInvItem != null)// && gm.uiManager.activeInvItem != activeInvItem)
         {
@@ -58,10 +61,13 @@ public class ContextMenu : MonoBehaviour
             if (gm.uiManager.activeInvItem.itemData.currentStackSize > 1)
                 CreateSplitStackButton();
 
-            CreateTransferButton();
-
             if ((activeInvItem.myInventory != null && activeInvItem.myInventory.myInventoryUI == gm.playerInvUI) || activeInvItem.myEquipmentManager != null)
-                CreateDropItemButton();
+            {
+                if (gm.containerInvUI.activeInventory != null)
+                    CreateTransferButton();
+                else
+                    CreateDropItemButton();
+            }
         }
 
         // Get the desired position
@@ -166,9 +172,25 @@ public class ContextMenu : MonoBehaviour
         gm.containerInvUI.AddItemToList(activeInvItem.itemData);
 
         if (activeInvItem.myEquipmentManager != null)
-            Unequip();
+        {
+            gm.playerInvUI.UpdateUINumbers();
+
+            Equipment equipment = (Equipment)activeInvItem.itemData.item;
+            gm.playerManager.equipmentManager.Unequip(equipment.equipmentSlot, false);
+        }
         else
+        {
+            if (activeInvItem.myInventory != null)
+            {
+                activeInvItem.myInventory.currentWeight -= Mathf.RoundToInt(activeInvItem.itemData.item.weight * activeInvItem.itemData.currentStackSize * 100f) / 100f;
+                activeInvItem.myInventory.currentVolume -= Mathf.RoundToInt(activeInvItem.itemData.item.volume * activeInvItem.itemData.currentStackSize * 100f) / 100f;
+                activeInvItem.myInventory.myInventoryUI.UpdateUINumbers();
+            }
+            else
+                gm.containerInvUI.UpdateUINumbers();
+
             activeInvItem.ClearItem();
+        }
 
         DisableContextMenu();
     }

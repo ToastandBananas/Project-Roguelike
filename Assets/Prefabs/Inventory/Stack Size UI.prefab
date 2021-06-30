@@ -493,7 +493,7 @@ MonoBehaviour:
   rightArrowButton: {fileID: 7091190729602766929}
   submitButton: {fileID: 5144432973925178598}
   inputField: {fileID: 7091190729873620828}
-  selectedInventorySlot: {fileID: 0}
+  selectedInvItem: {fileID: 0}
   isActive: 0
 --- !u!1 &7091190729602766931
 GameObject:
@@ -924,7 +924,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}

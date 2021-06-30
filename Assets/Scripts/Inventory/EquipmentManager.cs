@@ -74,6 +74,7 @@ public class EquipmentManager : MonoBehaviour
         {
             ItemData oldItemData = currentEquipment[(int)equipmentSlot];
             InventoryItem invItemComingFrom = gm.playerInvUI.GetItemDatasInventoryItem(oldItemData);
+            int stackSize = oldItemData.currentStackSize;
             bool shouldDropItem = false;
 
             if (shouldAddToInventory)
@@ -111,6 +112,7 @@ public class EquipmentManager : MonoBehaviour
             }
 
             // Adjust the equipment manager's weight and volume
+            oldItemData.currentStackSize = stackSize;
             currentWeight -= Mathf.RoundToInt(oldItemData.item.weight * oldItemData.currentStackSize * 100f) / 100f;
             currentVolume -= Mathf.RoundToInt(oldItemData.item.volume * oldItemData.currentStackSize * 100f) / 100f;
 
@@ -168,12 +170,15 @@ public class EquipmentManager : MonoBehaviour
     {
         for (int i = 0; i < currentEquipment.Length; i++)
         {
-            Equipment equipment = (Equipment)currentEquipment[i].item;
-            Unequip(equipment.equipmentSlot, shouldAddEquipmentToInventory);
+            if (currentEquipment[i] != null)
+            {
+                Equipment equipment = (Equipment)currentEquipment[i].item;
+                Unequip(equipment.equipmentSlot, shouldAddEquipmentToInventory);
+            }
         }
     }
 
-    public EquipmentSlot GetEquipmentSlot(ItemData itemData)
+    public EquipmentSlot GetEquipmentSlotFromItemData(ItemData itemData)
     {
         for (int i = 0; i < currentEquipment.Length; i++)
         {

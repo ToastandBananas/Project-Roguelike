@@ -24,7 +24,7 @@ public class ContainerInventoryUI : InventoryUI
     public List<ItemData> downLeftItems = new List<ItemData>();
     public List<ItemData> downRightItems = new List<ItemData>();
 
-    [HideInInspector] Inventory leftInventory, rightInventory, upInventory, downInventory, upLeftInventory, upRightInventory, downLeftInventory, downRightInventory;
+    [HideInInspector] public Inventory leftInventory, rightInventory, upInventory, downInventory, upLeftInventory, upRightInventory, downLeftInventory, downRightInventory;
 
     [HideInInspector] public Direction activeDirection;
 
@@ -117,6 +117,20 @@ public class ContainerInventoryUI : InventoryUI
                     itemsList.Add(hits[i].collider.GetComponent<ItemData>());
                 }
             }
+        }
+    }
+
+    public void TakeAll()
+    {
+        if (gm.playerInvUI.inventoryParent.activeSelf == false)
+            gm.playerInvUI.ToggleInventoryMenu();
+        else if (gm.playerInvUI.background.activeSelf == false)
+            gm.playerInvUI.ToggleMinimization();
+
+        for (int i = 0; i < gm.objectPoolManager.containerInventoryItemObjectPool.pooledInventoryItems.Count; i++)
+        {
+            if (gm.objectPoolManager.containerInventoryItemObjectPool.pooledInventoryItems[i].gameObject.activeSelf)
+                gm.objectPoolManager.containerInventoryItemObjectPool.pooledInventoryItems[i].TransferItem();
         }
     }
 
@@ -384,6 +398,33 @@ public class ContainerInventoryUI : InventoryUI
         }
     }
 
+    public List<ItemData> GetItemsListFromDirection(Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.Center:
+                return playerPositionItems;
+            case Direction.Up:
+                return upItems;
+            case Direction.Down:
+                return downItems;
+            case Direction.Left:
+                return leftItems;
+            case Direction.Right:
+                return rightItems;
+            case Direction.UpLeft:
+                return upLeftItems;
+            case Direction.UpRight:
+                return upRightItems;
+            case Direction.DownLeft:
+                return downLeftItems;
+            case Direction.DownRight:
+                return downRightItems;
+            default:
+                return null;
+        }
+    }
+
     void SetupContainerUI(Inventory inventory, Image sideBarIcon, List<ItemData> itemsList)
     {
         inventoryNameText.text = inventory.container.name + " Inventory";
@@ -407,6 +448,7 @@ public class ContainerInventoryUI : InventoryUI
 
     public void ResetContainerIcons(Direction newDirection)
     {
+        gm.uiManager.activeInvItem = null;
         upSideBarButton.ResetDirectionIconColor();
         downSideBarButton.ResetDirectionIconColor();
         leftSideBarButton.ResetDirectionIconColor();
@@ -523,6 +565,42 @@ public class ContainerInventoryUI : InventoryUI
     public void AddItemToList(ItemData itemDataToAdd)
     {
         switch (activeDirection)
+        {
+            case Direction.Center:
+                playerPositionItems.Add(itemDataToAdd);
+                break;
+            case Direction.Up:
+                upItems.Add(itemDataToAdd);
+                break;
+            case Direction.Down:
+                downItems.Add(itemDataToAdd);
+                break;
+            case Direction.Left:
+                leftItems.Add(itemDataToAdd);
+                break;
+            case Direction.Right:
+                rightItems.Add(itemDataToAdd);
+                break;
+            case Direction.UpLeft:
+                upLeftItems.Add(itemDataToAdd);
+                break;
+            case Direction.UpRight:
+                upRightItems.Add(itemDataToAdd);
+                break;
+            case Direction.DownLeft:
+                downLeftItems.Add(itemDataToAdd);
+                break;
+            case Direction.DownRight:
+                downRightItems.Add(itemDataToAdd);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void AddItemToListFromDirection(ItemData itemDataToAdd, Direction direction)
+    {
+        switch (direction)
         {
             case Direction.Center:
                 playerPositionItems.Add(itemDataToAdd);

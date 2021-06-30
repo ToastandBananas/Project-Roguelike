@@ -47,7 +47,7 @@ public class NPCMovement : Movement
     bool roamPositionSet;
     bool needsFleeDestination = true;
 
-    public override void Awake()
+    void Awake()
     {
         characterManager = GetComponent<CharacterManager>();
 

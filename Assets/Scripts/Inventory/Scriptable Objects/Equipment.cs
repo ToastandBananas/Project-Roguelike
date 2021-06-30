@@ -18,7 +18,7 @@ public class Equipment : Item
         else
         {
             // Unequip the item
-            EquipmentSlot equipSlot = invItem.myEquipmentManager.GetEquipmentSlot(invItem.itemData);
+            EquipmentSlot equipSlot = invItem.myEquipmentManager.GetEquipmentSlotFromItemData(invItem.itemData);
             equipmentManager.Unequip(equipSlot, true);
         }
 

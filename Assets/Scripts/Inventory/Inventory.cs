@@ -75,10 +75,8 @@ public class Inventory : MonoBehaviour
         }
 
         // Add to this Inventory's weight and volume
-        currentWeight += itemDataComingFrom.item.weight * itemCount;
-        currentWeight = (currentWeight * 100f) / 100f;
-        currentVolume += itemDataComingFrom.item.volume * itemCount;
-        currentVolume = (currentVolume * 100f) / 100f;
+        currentWeight += Mathf.RoundToInt(itemDataComingFrom.item.weight * itemCount * 100f) / 100f;
+        currentVolume += Mathf.RoundToInt(itemDataComingFrom.item.volume * itemCount * 100f) / 100f;
 
         // Try adding to existing stacks first, while keeping track of how many we added to existing stacks
         int amountAddedToExistingStacks = 0;
@@ -109,7 +107,9 @@ public class Inventory : MonoBehaviour
             items.Add(itemDataToAdd);
 
             // If we're adding an item to a container, add the new ItemData to the appropriate list
-            if (myInventoryUI == gm.containerInvUI)
+            if (gm.uiManager.activeContainerSideBarButton != null && this == gm.uiManager.activeContainerSideBarButton.GetInventory())
+                gm.containerInvUI.AddItemToListFromDirection(itemDataToAdd, gm.uiManager.activeContainerSideBarButton.directionFromPlayer);
+            else if (myInventoryUI == gm.containerInvUI)
                 gm.containerInvUI.AddItemToList(itemDataToAdd);
 
             // Set the parent of this new ItemData to the Inventory's itemsParent and set the gameObject as active
@@ -168,11 +168,12 @@ public class Inventory : MonoBehaviour
     public int AddToExistingStacks(ItemData itemDataComingFrom, int itemCount, Inventory invComingFrom)
     {
         int amountAdded = 0;
-        for (int i = 0; i < items.Count; i++) // The Items list refers to our ItemData GameObjects
+        for (int i = 0; i < items.Count; i++) // The "items" list refers to our ItemData GameObjects
         {
             if (itemDataComingFrom.StackableItemsDataIsEqual(items[i], itemDataComingFrom) && items[i].currentStackSize < items[i].item.maxStackSize)
             {
-                InventoryItem itemDatasInvItem = myInventoryUI.GetItemDatasInventoryItem(items[i]); // Get the InventoryItem using the ItemData we're adding to
+                // Get the InventoryItem using the ItemData we're adding to
+                InventoryItem itemDatasInvItem = myInventoryUI.GetItemDatasInventoryItem(items[i]);
                 for (int j = 0; j < itemCount; j++)
                 {
                     if (items[i].currentStackSize < items[i].item.maxStackSize)

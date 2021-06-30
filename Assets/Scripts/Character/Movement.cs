@@ -14,11 +14,6 @@ public class Movement : MonoBehaviour
 
     float moveTime = 0.2f;
 
-    public virtual void Awake()
-    {
-
-    }
-
     public virtual void Start()
     {
         containerInvUI = ContainerInventoryUI.instance;
@@ -78,6 +73,7 @@ public class Movement : MonoBehaviour
             FinishTurn();
         else
         {
+            containerInvUI.ResetContainerIcons(Direction.Center);
             containerInvUI.GetItemsAroundPlayer();
             containerInvUI.PopulateInventoryUI(containerInvUI.playerPositionItems, Direction.Center);
             containerInvUI.playerPositionSideBarButton.HighlightDirectionIcon();
