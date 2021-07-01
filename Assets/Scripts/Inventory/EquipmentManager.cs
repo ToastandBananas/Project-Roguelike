@@ -111,11 +111,6 @@ public class EquipmentManager : MonoBehaviour
                 }
             }
 
-            // Adjust the equipment manager's weight and volume
-            oldItemData.currentStackSize = stackSize;
-            currentWeight -= Mathf.RoundToInt(oldItemData.item.weight * oldItemData.currentStackSize * 100f) / 100f;
-            currentVolume -= Mathf.RoundToInt(oldItemData.item.volume * oldItemData.currentStackSize * 100f) / 100f;
-
             // If this is a Wearable Item, set the scriptableObject to null
             if (oldItemData.item.IsWeapon() == false)
                 RemoveWearableSprite(equipmentSlot);
@@ -126,6 +121,11 @@ public class EquipmentManager : MonoBehaviour
 
             if (shouldDropItem)
                 gm.dropItemController.DropItem(characterManager.transform.position, oldItemData, oldItemData.currentStackSize);
+
+            // Adjust the equipment manager's weight and volume
+            oldItemData.currentStackSize = stackSize;
+            currentWeight -= Mathf.RoundToInt(oldItemData.item.weight * oldItemData.currentStackSize * 100f) / 100f;
+            currentVolume -= Mathf.RoundToInt(oldItemData.item.volume * oldItemData.currentStackSize * 100f) / 100f;
 
             if (invItemComingFrom != null)
                 invItemComingFrom.ClearItem();

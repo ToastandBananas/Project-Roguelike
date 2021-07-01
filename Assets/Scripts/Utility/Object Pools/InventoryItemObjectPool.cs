@@ -4,6 +4,7 @@ using UnityEngine;
 public class InventoryItemObjectPool : ObjectPool
 {
     [HideInInspector] public List<InventoryItem> pooledInventoryItems = new List<InventoryItem>();
+    [HideInInspector] public List<InventoryItem> activePooledInventoryItems = new List<InventoryItem>();
 
     public override void Start()
     {
@@ -46,6 +47,7 @@ public class InventoryItemObjectPool : ObjectPool
             if (pooledInventoryItems[i].itemData == null)
             {
                 pooledInventoryItems[i].transform.SetAsLastSibling();
+                activePooledInventoryItems.Add(pooledInventoryItems[i]);
                 return pooledInventoryItems[i];
             }
         }
@@ -54,6 +56,7 @@ public class InventoryItemObjectPool : ObjectPool
         invItem.transform.SetParent(transform);
         pooledInventoryItems.Add(invItem);
         pooledObjects.Add(invItem.gameObject);
+        activePooledInventoryItems.Add(invItem);
         return invItem;
     }
 }

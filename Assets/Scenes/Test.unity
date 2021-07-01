@@ -408,7 +408,7 @@ GameObject:
   - component: {fileID: 85766086}
   - component: {fileID: 85766088}
   m_Layer: 5
-  m_Name: Down Left Inventory
+  m_Name: Southwest Inventory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -769,6 +769,7 @@ GameObject:
   - component: {fileID: 137578930}
   - component: {fileID: 137578932}
   - component: {fileID: 137578931}
+  - component: {fileID: 137578933}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -836,6 +837,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 137578929}
   m_CullTransparentMesh: 1
+--- !u!114 &137578933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 137578929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72474eee28a8e374795bcc0807bc3faf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myInvUI: {fileID: 1403562116}
 --- !u!1001 &146648295
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1926,24 +1940,32 @@ MonoBehaviour:
   activeInventory: {fileID: 0}
   floorIconSprite: {fileID: 21300000, guid: 628175b38f4350c44823cf75aedd0b32, type: 3}
   playerPositionSideBarButton: {fileID: 855631854}
-  upSideBarButton: {fileID: 1206380382}
-  downSideBarButton: {fileID: 1864087889}
-  leftSideBarButton: {fileID: 868000243}
-  rightSideBarButton: {fileID: 1292415928}
-  upLeftSideBarButton: {fileID: 788565934}
-  upRightSideBarButton: {fileID: 1397364507}
-  downLeftSideBarButton: {fileID: 85766088}
-  downRightSideBarButton: {fileID: 1312161031}
+  northSideBarButton: {fileID: 1206380382}
+  southSideBarButton: {fileID: 1864087889}
+  westSideBarButton: {fileID: 868000243}
+  eastSideBarButton: {fileID: 1292415928}
+  northwestSideBarButton: {fileID: 788565934}
+  northeastSideBarButton: {fileID: 1397364507}
+  southwestSideBarButton: {fileID: 85766088}
+  southeastSideBarButton: {fileID: 1312161031}
   emptyTileMaxVolume: 1000
   playerPositionItems: []
-  leftItems: []
-  rightItems: []
-  upItems: []
-  downItems: []
-  upLeftItems: []
-  upRightItems: []
-  downLeftItems: []
-  downRightItems: []
+  northItems: []
+  southItems: []
+  westItems: []
+  eastItems: []
+  northwestItems: []
+  northeastItems: []
+  southwestItems: []
+  southeastItems: []
+  northInventory: {fileID: 0}
+  southInventory: {fileID: 0}
+  westInventory: {fileID: 0}
+  eastInventory: {fileID: 0}
+  northwestInventory: {fileID: 0}
+  northeastInventory: {fileID: 0}
+  southwestInventory: {fileID: 0}
+  southeastInventory: {fileID: 0}
   activeDirection: 0
 --- !u!1 &270830998
 GameObject:
@@ -5946,6 +5968,86 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 689353863}
   m_CullTransparentMesh: 1
+--- !u!1 &699163113
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 699163114}
+  - component: {fileID: 699163116}
+  - component: {fileID: 699163115}
+  m_Layer: 5
+  m_Name: Ghost Image Inventory Items
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &699163114
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 699163113}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1117274219}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 710, y: 32}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &699163115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 699163113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67930e3de89d05748bb42b7cab73d98d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectToPool: {fileID: 5458695786222857491, guid: 0cd316072378adf47b4f415a8f10cffd, type: 3}
+  amountToPool: 25
+  pooledObjects: []
+  hasBeenInitialized: 0
+  pooledInventoryItems: []
+--- !u!114 &699163116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 699163113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 1
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1001 &762055251
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6339,7 +6441,7 @@ GameObject:
   - component: {fileID: 788565932}
   - component: {fileID: 788565934}
   m_Layer: 5
-  m_Name: Up Left Inventory
+  m_Name: Northwest Inventory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6595,8 +6697,8 @@ GameObject:
   m_Component:
   - component: {fileID: 840856816}
   - component: {fileID: 840856818}
-  - component: {fileID: 840856817}
   - component: {fileID: 840856819}
+  - component: {fileID: 840856817}
   - component: {fileID: 840856820}
   - component: {fileID: 840856821}
   m_Layer: 0
@@ -6668,7 +6770,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d9e007bfcece2c43837147d800a56bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeContainerSideBarButton: {fileID: 0}
+  activePlayerInvSideBarButton: {fileID: 0}
   activeInvItem: {fileID: 0}
+  activeGhostInvItem: {fileID: 0}
+  activeInvUI: {fileID: 0}
+  activeContextMenuButton: {fileID: 0}
 --- !u!114 &840856820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6683,6 +6790,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   containerInventoryItemObjectPool: {fileID: 297821068}
   playerInventoryItemObjectPool: {fileID: 1132432444}
+  ghostImageInventoryItemObjectPool: {fileID: 699163115}
   pickupsPool: {fileID: 802752642}
   itemDataObjectPool: {fileID: 861536275}
 --- !u!114 &840856821
@@ -7059,7 +7167,7 @@ GameObject:
   - component: {fileID: 868000241}
   - component: {fileID: 868000243}
   m_Layer: 5
-  m_Name: Left Inventory
+  m_Name: West Inventory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9993,6 +10101,7 @@ RectTransform:
   - {fileID: 266385948}
   - {fileID: 1997841274}
   - {fileID: 604750579}
+  - {fileID: 699163114}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10737,7 +10846,7 @@ GameObject:
   - component: {fileID: 1206380380}
   - component: {fileID: 1206380382}
   m_Layer: 5
-  m_Name: Up Inventory
+  m_Name: North Inventory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11387,6 +11496,7 @@ GameObject:
   - component: {fileID: 1264365995}
   - component: {fileID: 1264365997}
   - component: {fileID: 1264365996}
+  - component: {fileID: 1264365998}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -11454,6 +11564,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1264365994}
   m_CullTransparentMesh: 1
+--- !u!114 &1264365998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1264365994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72474eee28a8e374795bcc0807bc3faf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myInvUI: {fileID: 266385949}
 --- !u!1 &1270312679
 GameObject:
   m_ObjectHideFlags: 0
@@ -11548,7 +11671,7 @@ GameObject:
   - component: {fileID: 1292415926}
   - component: {fileID: 1292415928}
   m_Layer: 5
-  m_Name: Right Inventory
+  m_Name: East Inventory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11978,7 +12101,7 @@ GameObject:
   - component: {fileID: 1312161029}
   - component: {fileID: 1312161031}
   m_Layer: 5
-  m_Name: Down Right Inventory
+  m_Name: Southeast Inventory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12576,7 +12699,7 @@ GameObject:
   - component: {fileID: 1397364505}
   - component: {fileID: 1397364507}
   m_Layer: 5
-  m_Name: Up Right Inventory
+  m_Name: Northeast Inventory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84121,7 +84244,7 @@ GameObject:
   - component: {fileID: 1864087887}
   - component: {fileID: 1864087889}
   m_Layer: 5
-  m_Name: Down Inventory
+  m_Name: South Inventory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84844,11 +84967,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4237178433494171497, guid: 027e949e899ca394da0c8ed245bdfb6d, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 4237178433494171497, guid: 027e949e899ca394da0c8ed245bdfb6d, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 125
+      value: 160
       objectReference: {fileID: 0}
     - target: {fileID: 4237178433494171497, guid: 027e949e899ca394da0c8ed245bdfb6d, type: 3}
       propertyPath: m_LocalPosition.x

@@ -1,7 +1,5 @@
 using UnityEngine;
 
-public enum Direction { Center, Up, Down, Left, Right, UpLeft, UpRight, DownLeft, DownRight }
-
 public class GameManager : MonoBehaviour
 {
     [HideInInspector] public ContextMenu contextMenu;

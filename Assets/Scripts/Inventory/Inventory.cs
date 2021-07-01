@@ -91,7 +91,7 @@ public class Inventory : MonoBehaviour
         {
             // Update the InventoryItem we're taking from's texts
             if (invItemComingFrom != null)
-                invItemComingFrom.UpdateItemTexts();
+                invItemComingFrom.UpdateItemNumberTexts();
 
             // Create a new ItemData Object
             ItemData itemDataToAdd = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData();
@@ -189,7 +189,7 @@ public class Inventory : MonoBehaviour
                         }
 
                         if (itemDatasInvItem != null)
-                            itemDatasInvItem.UpdateItemTexts();
+                            itemDatasInvItem.UpdateItemNumberTexts();
 
                         if (itemDataComingFrom.currentStackSize == 0)
                             return amountAdded;

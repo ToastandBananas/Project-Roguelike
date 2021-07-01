@@ -46,7 +46,7 @@ public class Item : ScriptableObject
                     }
                 }
                 else
-                    invItem.UpdateItemTexts();
+                    invItem.UpdateItemNumberTexts();
             }
             else
             {

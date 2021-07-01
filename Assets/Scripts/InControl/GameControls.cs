@@ -87,7 +87,7 @@ public class GameControls : MonoBehaviour
         gamePlayActions.menuRight.AddDefaultBinding(Key.RightArrow);
         gamePlayActions.menuRight.AddDefaultBinding(InputControlType.DPadRight);
 
-        gamePlayActions.menuContainerTakeAll.AddDefaultBinding(Key.R);
+        gamePlayActions.menuContainerTakeAll.AddDefaultBinding(Key.T);
         gamePlayActions.menuContainerTakeAll.AddDefaultBinding(InputControlType.LeftStickButton);
 
         gamePlayActions.menuTakeItem.AddDefaultBinding(InputControlType.Action4);
@@ -96,8 +96,10 @@ public class GameControls : MonoBehaviour
         gamePlayActions.menuUseItem.AddDefaultBinding(InputControlType.RightBumper);
 
         // Specific Key Actions
+        gamePlayActions.a.AddDefaultBinding(Key.A);
         gamePlayActions.leftCtrl.AddDefaultBinding(Key.LeftControl);
         gamePlayActions.leftShift.AddDefaultBinding(Key.LeftShift);
+        gamePlayActions.leftAlt.AddDefaultBinding(Key.LeftAlt);
         gamePlayActions.enter.AddDefaultBinding(Key.Return);
         gamePlayActions.enter.AddDefaultBinding(Key.PadEnter);
         gamePlayActions.tab.AddDefaultBinding(Key.Tab);

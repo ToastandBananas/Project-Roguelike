@@ -45,6 +45,16 @@ public class DropItemController : MonoBehaviour
             gm.containerInvUI.AddItemToList(newItemPickup.itemData);
             gm.containerInvUI.UpdateUINumbers();
         }
+        else if (dropPosition == gm.playerManager.transform.position)
+        {
+            if (gm.containerInvUI.activeDirection == Direction.Center)
+                gm.containerInvUI.ShowNewInventoryItem(newItemPickup.itemData);
+
+            gm.containerInvUI.AddItemToListFromDirection(newItemPickup.itemData, Direction.Center);
+
+            if (gm.containerInvUI.activeDirection == Direction.Center)
+                gm.containerInvUI.UpdateUINumbers();
+        }
         else
         {
             List<ItemData> itemsList = gm.containerInvUI.GetItemsListFromDirection(GetDirectionFromDropPosition(dropPosition));
@@ -76,21 +86,21 @@ public class DropItemController : MonoBehaviour
     {
         switch (gm.containerInvUI.activeDirection)
         {
-            case Direction.Up:
+            case Direction.North:
                 return new Vector3(0, 1);
-            case Direction.Down:
+            case Direction.South:
                 return new Vector3(0, -1);
-            case Direction.Left:
+            case Direction.West:
                 return new Vector3(-1, 0);
-            case Direction.Right:
+            case Direction.East:
                 return new Vector3(1, 0);
-            case Direction.UpLeft:
+            case Direction.Northwest:
                 return new Vector3(-1, 1);
-            case Direction.UpRight:
+            case Direction.Northeast:
                 return new Vector3(1, 1);
-            case Direction.DownLeft:
+            case Direction.Southwest:
                 return new Vector3(-1, -1);
-            case Direction.DownRight:
+            case Direction.Southeast:
                 return new Vector3(1, -1);
             default:
                 return Vector3.zero;
@@ -101,21 +111,21 @@ public class DropItemController : MonoBehaviour
     {
         switch (direction)
         {
-            case Direction.Up:
+            case Direction.North:
                 return new Vector3(0, 1);
-            case Direction.Down:
+            case Direction.South:
                 return new Vector3(0, -1);
-            case Direction.Left:
+            case Direction.West:
                 return new Vector3(-1, 0);
-            case Direction.Right:
+            case Direction.East:
                 return new Vector3(1, 0);
-            case Direction.UpLeft:
+            case Direction.Northwest:
                 return new Vector3(-1, 1);
-            case Direction.UpRight:
+            case Direction.Northeast:
                 return new Vector3(1, 1);
-            case Direction.DownLeft:
+            case Direction.Southwest:
                 return new Vector3(-1, -1);
-            case Direction.DownRight:
+            case Direction.Southeast:
                 return new Vector3(1, -1);
             default:
                 return Vector3.zero;
@@ -127,21 +137,21 @@ public class DropItemController : MonoBehaviour
         if (dropPosition == gm.playerManager.transform.position)
             return Direction.Center;
         else if (dropPosition == gm.playerManager.transform.position + new Vector3(0, 1))
-            return Direction.Up;
+            return Direction.North;
         else if (dropPosition == gm.playerManager.transform.position + new Vector3(0, -1))
-            return Direction.Down;
+            return Direction.South;
         else if (dropPosition == gm.playerManager.transform.position + new Vector3(-1, 0))
-            return Direction.Left;
+            return Direction.West;
         else if (dropPosition == gm.playerManager.transform.position + new Vector3(1, 0))
-            return Direction.Right;
+            return Direction.East;
         else if (dropPosition == gm.playerManager.transform.position + new Vector3(-1, 1))
-            return Direction.UpLeft;
+            return Direction.Northwest;
         else if (dropPosition == gm.playerManager.transform.position + new Vector3(1, 1))
-            return Direction.UpRight;
+            return Direction.Northeast;
         else if (dropPosition == gm.playerManager.transform.position + new Vector3(-1, -1))
-            return Direction.DownLeft;
+            return Direction.Southwest;
         else if (dropPosition == gm.playerManager.transform.position + new Vector3(1, -1))
-            return Direction.DownRight;
+            return Direction.Southeast;
         else
             return Direction.Center;
     }

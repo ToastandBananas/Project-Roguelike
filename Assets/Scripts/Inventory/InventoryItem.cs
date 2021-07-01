@@ -9,18 +9,21 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public Sprite defaultSprite, highlightedSprite;
     public ItemData itemData;
     
-    [HideInInspector] public Image invItemImage;
+    [HideInInspector] public Image backgroundImage;
     [HideInInspector] public RectTransform rectTransform;
 
     [HideInInspector] public TextMeshProUGUI itemNameText, itemAmountText, itemTypeText, itemWeightText, itemVolumeText;
 
+    [HideInInspector] public InventoryUI myInvUI;
     [HideInInspector] public Inventory myInventory;
     [HideInInspector] public EquipmentManager myEquipmentManager;
     [HideInInspector] public GameManager gm;
 
+    [HideInInspector] public bool isHidden, isGhostItem;
+
     public void Init()
     {
-        invItemImage = GetComponent<Image>();
+        backgroundImage = GetComponent<Image>();
         rectTransform = GetComponent<RectTransform>();
 
         itemNameText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
@@ -39,10 +42,15 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void ClearItem()
     {
+        if (isHidden)
+            Show();
+
+        myInvUI.inventoryItemObjectPool.activePooledInventoryItems.Remove(this);
+
         if (gm.uiManager.activeInvItem == this)
         {
             gm.uiManager.activeInvItem = null;
-            invItemImage.sprite = defaultSprite;
+            backgroundImage.sprite = defaultSprite;
         }
 
         gm.containerInvUI.RemoveItemFromList(itemData);
@@ -75,17 +83,14 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             itemData.item.Use(gm.playerManager.playerEquipmentManager, myInventory, this, amountToUse);
     }
 
-    public void SelectItem()
+    public void UpdateAllItemTexts()
     {
-        // TODO
+        itemNameText.text = itemData.itemName;
+        itemTypeText.text = itemData.item.itemType.ToString();
+        UpdateItemNumberTexts();
     }
 
-    public void PlaceSelectedItem()
-    {
-        // TODO
-    }
-
-    public void UpdateItemTexts()
+    public void UpdateItemNumberTexts()
     {
         itemAmountText.text = itemData.currentStackSize.ToString();
         itemWeightText.text = (Mathf.RoundToInt(itemData.item.weight * itemData.currentStackSize * 100f) / 100f).ToString();
@@ -94,17 +99,30 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        gm.uiManager.activeInvItem = this;
-        invItemImage.sprite = highlightedSprite;
+        if (isGhostItem == false)
+        {
+            gm.uiManager.activeInvItem = this;
+            Highlight();
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (gm.uiManager.activeInvItem == this)
+        if (isGhostItem == false && gm.uiManager.activeInvItem == this && gm.uiManager.selectedItems.Contains(this) == false)
         {
             gm.uiManager.activeInvItem = null;
-            invItemImage.sprite = defaultSprite;
+            RemoveHighlight();
         }
+    }
+
+    public void Highlight()
+    {
+        backgroundImage.sprite = highlightedSprite;
+    }
+
+    public void RemoveHighlight()
+    {
+        backgroundImage.sprite = defaultSprite;
     }
 
     public void TransferItem()
@@ -190,7 +208,7 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                 else if (itemData.currentStackSize > 1) // If there wasn't room for all of the items, try adding them one at a time
                 {
                     AddItemToInventory_OneAtATime(myInventory, gm.containerInvUI.activeInventory, itemData);
-                    UpdateItemTexts();
+                    UpdateItemNumberTexts();
                 }
             }
             else // If we're trying to place the item on the ground
@@ -198,7 +216,7 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                 if (itemData.item.maxStackSize > 1) // Try adding to existing stacks first, if the item is stackable
                 {
                     AddToExistingStacksOnGround(itemData, itemData.currentStackSize, gm.playerInvUI.activeInventory);
-                    UpdateItemTexts();
+                    UpdateItemNumberTexts();
                     gm.containerInvUI.UpdateUINumbers();
                 }
 
@@ -280,7 +298,7 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                             }
 
                             if (itemDatasInvItem != null)
-                                itemDatasInvItem.UpdateItemTexts();
+                                itemDatasInvItem.UpdateItemNumberTexts();
 
                             if (itemDataComingFrom.currentStackSize == 0)
                                 return;
@@ -296,6 +314,29 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                 }
             }
         }
+    }
+
+    public void Hide()
+    {
+        isHidden = true;
+        backgroundImage.enabled = false;
+        itemNameText.enabled = false;
+        itemAmountText.enabled = false;
+        itemTypeText.enabled = false;
+        itemWeightText.enabled = false;
+        itemVolumeText.enabled = false;
+    }
+
+    public void Show()
+    {
+        isHidden = false;
+        backgroundImage.enabled = true;
+        itemNameText.enabled = true;
+        itemAmountText.enabled = true;
+        itemTypeText.enabled = true;
+        itemWeightText.enabled = true;
+        itemVolumeText.enabled = true;
+        RemoveHighlight();
     }
 
     bool IsRoomOnGround(ItemData itemDataComingFrom, List<ItemData> itemsListAddingTo)

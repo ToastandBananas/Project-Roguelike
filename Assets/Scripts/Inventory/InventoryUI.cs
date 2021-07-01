@@ -36,17 +36,15 @@ public class InventoryUI : MonoBehaviour
                 inventoryItemObjectPool.pooledInventoryItems[i].ResetInvItem();
             }
         }
+
+        inventoryItemObjectPool.activePooledInventoryItems.Clear();
     }
 
     public InventoryItem ShowNewInventoryItem(ItemData newItemData)
     {
         InventoryItem invItem = inventoryItemObjectPool.GetPooledInventoryItem();
         invItem.itemData = newItemData;
-        invItem.itemNameText.text = invItem.itemData.itemName;
-        invItem.itemAmountText.text = invItem.itemData.currentStackSize.ToString();
-        invItem.itemTypeText.text = invItem.itemData.item.itemType.ToString();
-        invItem.itemWeightText.text = (invItem.itemData.item.weight * invItem.itemData.currentStackSize).ToString();
-        invItem.itemVolumeText.text = (invItem.itemData.item.volume * invItem.itemData.currentStackSize).ToString();
+        invItem.UpdateAllItemTexts();
         invItem.myInventory = activeInventory;
         invItem.gameObject.SetActive(true);
 
@@ -65,15 +63,8 @@ public class InventoryUI : MonoBehaviour
         // If the Inventory was menu was closed
         if (inventoryParent.activeSelf == false)
         {
-            // Close the Context Menu
-            if (gm.contextMenu.isActive)
-                gm.contextMenu.DisableContextMenu();
-
-            // Close the Stack Size Selector
-            if (gm.stackSizeSelector.isActive)
-                gm.stackSizeSelector.HideStackSizeSelector();
-
-            //gm.tooltipManager.HideAllTooltips();
+            // Close the context menu, stackSizeSelector and any active tooltips
+            gm.uiManager.DisableInventoryUIComponents();
 
             if (gm.containerInvUI == this)
                 gm.uiManager.activeContainerSideBarButton = null;
@@ -99,15 +90,8 @@ public class InventoryUI : MonoBehaviour
         {
             minimizeButtonText.transform.rotation = Quaternion.Euler(Vector3.zero);
 
-            // Close the Context Menu
-            if (gm.contextMenu.isActive)
-                gm.contextMenu.DisableContextMenu();
-
-            // Close the Stack Size Selector
-            if (gm.stackSizeSelector.isActive)
-                gm.stackSizeSelector.HideStackSizeSelector();
-
-            //gm.tooltipManager.HideAllTooltips();
+            // Close the context menu, stackSizeSelector and any active tooltips
+            gm.uiManager.DisableInventoryUIComponents();
         }
         else
             minimizeButtonText.transform.rotation = Quaternion.Euler(0, 0, 180);

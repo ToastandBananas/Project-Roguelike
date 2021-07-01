@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class TurnManager : MonoBehaviour
 {
-    public List<NPCMovement> npcs = new List<NPCMovement>();
-    public int npcsFinishedTakingTurnCount;
+    [HideInInspector] public List<NPCMovement> npcs = new List<NPCMovement>();
+    [HideInInspector] public int npcsFinishedTakingTurnCount;
 
-    public bool isPlayerTurn = true;
+    [HideInInspector] public bool isPlayerTurn = true;
 
     #region Singleton
     public static TurnManager instance;

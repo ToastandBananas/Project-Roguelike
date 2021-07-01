@@ -4,6 +4,7 @@ public class ObjectPoolManager : MonoBehaviour
 {
     public InventoryItemObjectPool containerInventoryItemObjectPool;
     public InventoryItemObjectPool playerInventoryItemObjectPool;
+    public InventoryItemObjectPool ghostImageInventoryItemObjectPool;
     public ItemPickupObjectPool pickupsPool;
     public ItemDataObjectPool itemDataObjectPool;
     // public ObjectPool treePool, weaponTrailsPool, bloodEffectsPool, woodEffectsPool;

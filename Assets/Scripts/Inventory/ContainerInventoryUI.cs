@@ -9,22 +9,22 @@ public class ContainerInventoryUI : InventoryUI
 
     [Header("Side Bar Buttons")]
     public ContainerSideBarButton playerPositionSideBarButton;
-    public ContainerSideBarButton upSideBarButton, downSideBarButton, leftSideBarButton, rightSideBarButton, upLeftSideBarButton, upRightSideBarButton, downLeftSideBarButton, downRightSideBarButton;
+    public ContainerSideBarButton northSideBarButton, southSideBarButton, westSideBarButton, eastSideBarButton, northwestSideBarButton, northeastSideBarButton, southwestSideBarButton, southeastSideBarButton;
 
     [Header("Max Ground Volume")]
     public float emptyTileMaxVolume = 1000f;
 
     public List<ItemData> playerPositionItems = new List<ItemData>();
-    public List<ItemData> leftItems = new List<ItemData>();
-    public List<ItemData> rightItems = new List<ItemData>();
-    public List<ItemData> upItems = new List<ItemData>();
-    public List<ItemData> downItems = new List<ItemData>();
-    public List<ItemData> upLeftItems = new List<ItemData>();
-    public List<ItemData> upRightItems = new List<ItemData>();
-    public List<ItemData> downLeftItems = new List<ItemData>();
-    public List<ItemData> downRightItems = new List<ItemData>();
+    public List<ItemData> northItems = new List<ItemData>();
+    public List<ItemData> southItems = new List<ItemData>();
+    public List<ItemData> westItems = new List<ItemData>();
+    public List<ItemData> eastItems = new List<ItemData>();
+    public List<ItemData> northwestItems = new List<ItemData>();
+    public List<ItemData> northeastItems = new List<ItemData>();
+    public List<ItemData> southwestItems = new List<ItemData>();
+    public List<ItemData> southeastItems = new List<ItemData>();
 
-    [HideInInspector] public Inventory leftInventory, rightInventory, upInventory, downInventory, upLeftInventory, upRightInventory, downLeftInventory, downRightInventory;
+    [HideInInspector] public Inventory northInventory, southInventory, westInventory, eastInventory, northwestInventory, northeastInventory, southwestInventory, southeastInventory;
 
     [HideInInspector] public Direction activeDirection;
 
@@ -54,6 +54,12 @@ public class ContainerInventoryUI : InventoryUI
         interactableMask = LayerMask.GetMask("Interactable", "Interactable Objects");
 
         inventoryItemObjectPool.Init();
+
+        for (int i = 0; i < inventoryItemObjectPool.pooledInventoryItems.Count; i++)
+        {
+            inventoryItemObjectPool.pooledInventoryItems[i].myInvUI = this;
+        }
+
         GetItemsAroundPlayer();
         PopulateInventoryUI(playerPositionItems, Direction.Center);
     }
@@ -80,14 +86,14 @@ public class ContainerInventoryUI : InventoryUI
         ClearAllLists();
 
         GetItemsAtPosition(gm.playerManager.transform.position, playerPositionItems, Direction.Center);
-        GetItemsAtPosition(gm.playerManager.transform.position + new Vector3(-1, 0), leftItems, Direction.Left);
-        GetItemsAtPosition(gm.playerManager.transform.position + new Vector3(1, 0), rightItems, Direction.Right);
-        GetItemsAtPosition(gm.playerManager.transform.position + new Vector3(0, 1), upItems, Direction.Up);
-        GetItemsAtPosition(gm.playerManager.transform.position + new Vector3(0, -1), downItems, Direction.Down);
-        GetItemsAtPosition(gm.playerManager.transform.position + new Vector3(-1, 1), upLeftItems, Direction.UpLeft);
-        GetItemsAtPosition(gm.playerManager.transform.position + new Vector3(1, 1), upRightItems, Direction.UpRight);
-        GetItemsAtPosition(gm.playerManager.transform.position + new Vector3(-1, -1), downLeftItems, Direction.DownLeft);
-        GetItemsAtPosition(gm.playerManager.transform.position + new Vector3(1, -1), downRightItems, Direction.DownRight);
+        GetItemsAtPosition(gm.playerManager.transform.position + new Vector3(-1, 0), westItems, Direction.West);
+        GetItemsAtPosition(gm.playerManager.transform.position + new Vector3(1, 0), eastItems, Direction.East);
+        GetItemsAtPosition(gm.playerManager.transform.position + new Vector3(0, 1), northItems, Direction.North);
+        GetItemsAtPosition(gm.playerManager.transform.position + new Vector3(0, -1), southItems, Direction.South);
+        GetItemsAtPosition(gm.playerManager.transform.position + new Vector3(-1, 1), northwestItems, Direction.Northwest);
+        GetItemsAtPosition(gm.playerManager.transform.position + new Vector3(1, 1), northeastItems, Direction.Northeast);
+        GetItemsAtPosition(gm.playerManager.transform.position + new Vector3(-1, -1), southwestItems, Direction.Southwest);
+        GetItemsAtPosition(gm.playerManager.transform.position + new Vector3(1, -1), southeastItems, Direction.Southeast);
     }
 
     void GetItemsAtPosition(Vector2 position, List<ItemData> itemsList, Direction direction)
@@ -140,29 +146,29 @@ public class ContainerInventoryUI : InventoryUI
         {
             case Direction.Center:
                 break;
-            case Direction.Up:
-                if (inventory != null) upInventory = inventory;
+            case Direction.North:
+                if (inventory != null) northInventory = inventory;
                 break;
-            case Direction.Down:
-                if (inventory != null) downInventory = inventory;
+            case Direction.South:
+                if (inventory != null) southInventory = inventory;
                 break;
-            case Direction.Left:
-                if (inventory != null) leftInventory = inventory;
+            case Direction.West:
+                if (inventory != null) westInventory = inventory;
                 break;
-            case Direction.Right:
-                if (inventory != null) rightInventory = inventory;
+            case Direction.East:
+                if (inventory != null) eastInventory = inventory;
                 break;
-            case Direction.UpLeft:
-                if (inventory != null) upLeftInventory = inventory;
+            case Direction.Northwest:
+                if (inventory != null) northwestInventory = inventory;
                 break;
-            case Direction.UpRight:
-                if (inventory != null) upRightInventory = inventory;
+            case Direction.Northeast:
+                if (inventory != null) northeastInventory = inventory;
                 break;
-            case Direction.DownLeft:
-                if (inventory != null) downLeftInventory = inventory;
+            case Direction.Southwest:
+                if (inventory != null) southwestInventory = inventory;
                 break;
-            case Direction.DownRight:
-                if (inventory != null) downRightInventory = inventory;
+            case Direction.Southeast:
+                if (inventory != null) southeastInventory = inventory;
                 break;
             default:
                 break;
@@ -176,29 +182,29 @@ public class ContainerInventoryUI : InventoryUI
             case Direction.Center:
                 invItem.myInventory = null;
                 break;
-            case Direction.Up:
-                invItem.myInventory = upInventory;
+            case Direction.North:
+                invItem.myInventory = northInventory;
                 break;
-            case Direction.Down:
-                invItem.myInventory = downInventory;
+            case Direction.South:
+                invItem.myInventory = southInventory;
                 break;
-            case Direction.Left:
-                invItem.myInventory = leftInventory;
+            case Direction.West:
+                invItem.myInventory = westInventory;
                 break;
-            case Direction.Right:
-                invItem.myInventory = rightInventory;
+            case Direction.East:
+                invItem.myInventory = eastInventory;
                 break;
-            case Direction.UpLeft:
-                invItem.myInventory = upLeftInventory;
+            case Direction.Northwest:
+                invItem.myInventory = northwestInventory;
                 break;
-            case Direction.UpRight:
-                invItem.myInventory = upRightInventory;
+            case Direction.Northeast:
+                invItem.myInventory = northeastInventory;
                 break;
-            case Direction.DownLeft:
-                invItem.myInventory = downLeftInventory;
+            case Direction.Southwest:
+                invItem.myInventory = southwestInventory;
                 break;
-            case Direction.DownRight:
-                invItem.myInventory = downRightInventory;
+            case Direction.Southeast:
+                invItem.myInventory = southeastInventory;
                 break;
             default:
                 break;
@@ -212,29 +218,29 @@ public class ContainerInventoryUI : InventoryUI
             case Direction.Center:
                 playerPositionSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
                 break;
-            case Direction.Up:
-                upSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
+            case Direction.North:
+                northSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
                 break;
-            case Direction.Down:
-                downSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
+            case Direction.South:
+                southSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
                 break;
-            case Direction.Left:
-                leftSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
+            case Direction.West:
+                westSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
                 break;
-            case Direction.Right:
-                rightSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
+            case Direction.East:
+                eastSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
                 break;
-            case Direction.UpLeft:
-                upLeftSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
+            case Direction.Northwest:
+                northwestSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
                 break;
-            case Direction.UpRight:
-                upRightSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
+            case Direction.Northeast:
+                northeastSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
                 break;
-            case Direction.DownLeft:
-                downLeftSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
+            case Direction.Southwest:
+                southwestSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
                 break;
-            case Direction.DownRight:
-                downRightSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
+            case Direction.Southeast:
+                southeastSideBarButton.icon.sprite = GetContainerIcon(inventory, false);
                 break;
             default:
                 break;
@@ -248,29 +254,29 @@ public class ContainerInventoryUI : InventoryUI
             case Direction.Center:
                 playerPositionSideBarButton.icon.sprite = floorIconSprite;
                 break;
-            case Direction.Up:
-                upSideBarButton.icon.sprite = floorIconSprite;
+            case Direction.North:
+                northSideBarButton.icon.sprite = floorIconSprite;
                 break;
-            case Direction.Down:
-                downSideBarButton.icon.sprite = floorIconSprite;
+            case Direction.South:
+                southSideBarButton.icon.sprite = floorIconSprite;
                 break;
-            case Direction.Left:
-                leftSideBarButton.icon.sprite = floorIconSprite;
+            case Direction.West:
+                westSideBarButton.icon.sprite = floorIconSprite;
                 break;
-            case Direction.Right:
-                rightSideBarButton.icon.sprite = floorIconSprite;
+            case Direction.East:
+                eastSideBarButton.icon.sprite = floorIconSprite;
                 break;
-            case Direction.UpLeft:
-                upLeftSideBarButton.icon.sprite = floorIconSprite;
+            case Direction.Northwest:
+                northwestSideBarButton.icon.sprite = floorIconSprite;
                 break;
-            case Direction.UpRight:
-                upRightSideBarButton.icon.sprite = floorIconSprite;
+            case Direction.Northeast:
+                northeastSideBarButton.icon.sprite = floorIconSprite;
                 break;
-            case Direction.DownLeft:
-                downLeftSideBarButton.icon.sprite = floorIconSprite;
+            case Direction.Southwest:
+                southwestSideBarButton.icon.sprite = floorIconSprite;
                 break;
-            case Direction.DownRight:
-                downRightSideBarButton.icon.sprite = floorIconSprite;
+            case Direction.Southeast:
+                southeastSideBarButton.icon.sprite = floorIconSprite;
                 break;
             default:
                 break;
@@ -286,84 +292,84 @@ public class ContainerInventoryUI : InventoryUI
                 weightText.text = GetTotalWeight(playerPositionItems).ToString();
                 volumeText.text = GetTotalVolume(playerPositionItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                 break;
-            case Direction.Up:
-                if (upInventory != null)
-                    SetupContainerUI(upInventory, upSideBarButton.icon, upItems);
+            case Direction.North:
+                if (northInventory != null)
+                    SetupContainerUI(northInventory, northSideBarButton.icon, northItems);
                 else
                 {
                     inventoryNameText.text = "Items Above Self";
-                    weightText.text = GetTotalWeight(upItems).ToString();
-                    volumeText.text = GetTotalVolume(upItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    weightText.text = GetTotalWeight(northItems).ToString();
+                    volumeText.text = GetTotalVolume(northItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                 }
                 break;
-            case Direction.Down:
-                if (downInventory != null)
-                    SetupContainerUI(downInventory, downSideBarButton.icon, downItems);
+            case Direction.South:
+                if (southInventory != null)
+                    SetupContainerUI(southInventory, southSideBarButton.icon, southItems);
                 else
                 {
                     inventoryNameText.text = "Items Below Self";
-                    weightText.text = GetTotalWeight(downItems).ToString();
-                    volumeText.text = GetTotalVolume(downItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    weightText.text = GetTotalWeight(southItems).ToString();
+                    volumeText.text = GetTotalVolume(southItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                 }
                 break;
-            case Direction.Left:
-                if (leftInventory != null)
-                    SetupContainerUI(leftInventory, leftSideBarButton.icon, leftItems);
+            case Direction.West:
+                if (westInventory != null)
+                    SetupContainerUI(westInventory, westSideBarButton.icon, westItems);
                 else
                 {
                     inventoryNameText.text = "Items Left of Self";
-                    weightText.text = GetTotalWeight(leftItems).ToString();
-                    volumeText.text = GetTotalVolume(leftItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    weightText.text = GetTotalWeight(westItems).ToString();
+                    volumeText.text = GetTotalVolume(westItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                 }
                 break;
-            case Direction.Right:
-                if (rightInventory != null)
-                    SetupContainerUI(rightInventory, rightSideBarButton.icon, rightItems);
+            case Direction.East:
+                if (eastInventory != null)
+                    SetupContainerUI(eastInventory, eastSideBarButton.icon, eastItems);
                 else
                 {
                     inventoryNameText.text = "Items Right of Self";
-                    weightText.text = GetTotalWeight(rightItems).ToString();
-                    volumeText.text = GetTotalVolume(rightItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    weightText.text = GetTotalWeight(eastItems).ToString();
+                    volumeText.text = GetTotalVolume(eastItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                 }
                 break;
-            case Direction.UpLeft:
-                if (upLeftInventory != null)
-                    SetupContainerUI(upLeftInventory, upLeftSideBarButton.icon, upLeftItems);
+            case Direction.Northwest:
+                if (northwestInventory != null)
+                    SetupContainerUI(northwestInventory, northwestSideBarButton.icon, northwestItems);
                 else
                 {
                     inventoryNameText.text = "Items Above and Left of Self";
-                    weightText.text = GetTotalWeight(upLeftItems).ToString();
-                    volumeText.text = GetTotalVolume(upLeftItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    weightText.text = GetTotalWeight(northwestItems).ToString();
+                    volumeText.text = GetTotalVolume(northwestItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                 }
                 break;
-            case Direction.UpRight:
-                if (upRightInventory != null)
-                    SetupContainerUI(upRightInventory, upRightSideBarButton.icon, upRightItems);
+            case Direction.Northeast:
+                if (northeastInventory != null)
+                    SetupContainerUI(northeastInventory, northeastSideBarButton.icon, northeastItems);
                 else
                 {
                     inventoryNameText.text = "Items Above and Right of Self";
-                    weightText.text = GetTotalWeight(upRightItems).ToString();
-                    volumeText.text = GetTotalVolume(upRightItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    weightText.text = GetTotalWeight(northeastItems).ToString();
+                    volumeText.text = GetTotalVolume(northeastItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                 }
                 break;
-            case Direction.DownLeft:
-                if (downLeftInventory != null)
-                    SetupContainerUI(downLeftInventory, downLeftSideBarButton.icon, downLeftItems);
+            case Direction.Southwest:
+                if (southwestInventory != null)
+                    SetupContainerUI(southwestInventory, southwestSideBarButton.icon, southwestItems);
                 else
                 {
                     inventoryNameText.text = "Items Below and Left of Self";
-                    weightText.text = GetTotalWeight(downLeftItems).ToString();
-                    volumeText.text = GetTotalVolume(downLeftItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    weightText.text = GetTotalWeight(southwestItems).ToString();
+                    volumeText.text = GetTotalVolume(southwestItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                 }
                 break;
-            case Direction.DownRight:
-                if (downRightInventory != null)
-                    SetupContainerUI(downRightInventory, downRightSideBarButton.icon, downRightItems);
+            case Direction.Southeast:
+                if (southeastInventory != null)
+                    SetupContainerUI(southeastInventory, southeastSideBarButton.icon, southeastItems);
                 else
                 {
                     inventoryNameText.text = "Items Below and Right Self";
-                    weightText.text = GetTotalWeight(downRightItems).ToString();
-                    volumeText.text = GetTotalVolume(downRightItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    weightText.text = GetTotalWeight(southeastItems).ToString();
+                    volumeText.text = GetTotalVolume(southeastItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                 }
                 break;
             default:
@@ -377,22 +383,22 @@ public class ContainerInventoryUI : InventoryUI
         {
             case Direction.Center:
                 return playerPositionItems;
-            case Direction.Up:
-                return upItems;
-            case Direction.Down:
-                return downItems;
-            case Direction.Left:
-                return leftItems;
-            case Direction.Right:
-                return rightItems;
-            case Direction.UpLeft:
-                return upLeftItems;
-            case Direction.UpRight:
-                return upRightItems;
-            case Direction.DownLeft:
-                return downLeftItems;
-            case Direction.DownRight:
-                return downRightItems;
+            case Direction.North:
+                return northItems;
+            case Direction.South:
+                return southItems;
+            case Direction.West:
+                return westItems;
+            case Direction.East:
+                return eastItems;
+            case Direction.Northwest:
+                return northwestItems;
+            case Direction.Northeast:
+                return northeastItems;
+            case Direction.Southwest:
+                return southwestItems;
+            case Direction.Southeast:
+                return southeastItems;
             default:
                 return null;
         }
@@ -404,22 +410,22 @@ public class ContainerInventoryUI : InventoryUI
         {
             case Direction.Center:
                 return playerPositionItems;
-            case Direction.Up:
-                return upItems;
-            case Direction.Down:
-                return downItems;
-            case Direction.Left:
-                return leftItems;
-            case Direction.Right:
-                return rightItems;
-            case Direction.UpLeft:
-                return upLeftItems;
-            case Direction.UpRight:
-                return upRightItems;
-            case Direction.DownLeft:
-                return downLeftItems;
-            case Direction.DownRight:
-                return downRightItems;
+            case Direction.North:
+                return northItems;
+            case Direction.South:
+                return southItems;
+            case Direction.West:
+                return westItems;
+            case Direction.East:
+                return eastItems;
+            case Direction.Northwest:
+                return northwestItems;
+            case Direction.Northeast:
+                return northeastItems;
+            case Direction.Southwest:
+                return southwestItems;
+            case Direction.Southeast:
+                return southeastItems;
             default:
                 return null;
         }
@@ -449,63 +455,63 @@ public class ContainerInventoryUI : InventoryUI
     public void ResetContainerIcons(Direction newDirection)
     {
         gm.uiManager.activeInvItem = null;
-        upSideBarButton.ResetDirectionIconColor();
-        downSideBarButton.ResetDirectionIconColor();
-        leftSideBarButton.ResetDirectionIconColor();
-        rightSideBarButton.ResetDirectionIconColor();
-        upLeftSideBarButton.ResetDirectionIconColor();
-        upRightSideBarButton.ResetDirectionIconColor();
-        downLeftSideBarButton.ResetDirectionIconColor();
-        downRightSideBarButton.ResetDirectionIconColor();
+        northSideBarButton.ResetDirectionIconColor();
+        southSideBarButton.ResetDirectionIconColor();
+        westSideBarButton.ResetDirectionIconColor();
+        eastSideBarButton.ResetDirectionIconColor();
+        northwestSideBarButton.ResetDirectionIconColor();
+        northeastSideBarButton.ResetDirectionIconColor();
+        southwestSideBarButton.ResetDirectionIconColor();
+        southeastSideBarButton.ResetDirectionIconColor();
         if (activeDirection != Direction.Center || newDirection != Direction.Center)
             playerPositionSideBarButton.ResetDirectionIconColor();
 
-        if (upInventory != null)
+        if (northInventory != null)
         {
-            upInventory.container.spriteRenderer.sprite = GetContainerIcon(upInventory, false);
-            upSideBarButton.icon.sprite = GetContainerIcon(upInventory, false);
+            northInventory.container.spriteRenderer.sprite = GetContainerIcon(northInventory, false);
+            northSideBarButton.icon.sprite = GetContainerIcon(northInventory, false);
         }
 
-        if (downInventory != null)
+        if (southInventory != null)
         {
-            downInventory.container.spriteRenderer.sprite = GetContainerIcon(downInventory, false);
-            downSideBarButton.icon.sprite = GetContainerIcon(downInventory, false);
+            southInventory.container.spriteRenderer.sprite = GetContainerIcon(southInventory, false);
+            southSideBarButton.icon.sprite = GetContainerIcon(southInventory, false);
         }
 
-        if (leftInventory != null)
+        if (westInventory != null)
         {
-            leftInventory.container.spriteRenderer.sprite = GetContainerIcon(leftInventory, false);
-            leftSideBarButton.icon.sprite = GetContainerIcon(leftInventory, false);
+            westInventory.container.spriteRenderer.sprite = GetContainerIcon(westInventory, false);
+            westSideBarButton.icon.sprite = GetContainerIcon(westInventory, false);
         }
 
-        if (rightInventory != null)
+        if (eastInventory != null)
         {
-            rightInventory.container.spriteRenderer.sprite = GetContainerIcon(rightInventory, false);
-            rightSideBarButton.icon.sprite = GetContainerIcon(rightInventory, false);
+            eastInventory.container.spriteRenderer.sprite = GetContainerIcon(eastInventory, false);
+            eastSideBarButton.icon.sprite = GetContainerIcon(eastInventory, false);
         }
 
-        if (upLeftInventory != null)
+        if (northwestInventory != null)
         {
-            upLeftInventory.container.spriteRenderer.sprite = GetContainerIcon(upLeftInventory, false);
-            upLeftSideBarButton.icon.sprite = GetContainerIcon(upLeftInventory, false);
+            northwestInventory.container.spriteRenderer.sprite = GetContainerIcon(northwestInventory, false);
+            northwestSideBarButton.icon.sprite = GetContainerIcon(northwestInventory, false);
         }
 
-        if (upRightInventory != null)
+        if (northeastInventory != null)
         {
-            upRightInventory.container.spriteRenderer.sprite = GetContainerIcon(upRightInventory, false);
-            upRightSideBarButton.icon.sprite = GetContainerIcon(upRightInventory, false);
+            northeastInventory.container.spriteRenderer.sprite = GetContainerIcon(northeastInventory, false);
+            northeastSideBarButton.icon.sprite = GetContainerIcon(northeastInventory, false);
         }
 
-        if (downLeftInventory != null)
+        if (southwestInventory != null)
         {
-            downLeftInventory.container.spriteRenderer.sprite = GetContainerIcon(downLeftInventory, false);
-            downLeftSideBarButton.icon.sprite = GetContainerIcon(downLeftInventory, false);
+            southwestInventory.container.spriteRenderer.sprite = GetContainerIcon(southwestInventory, false);
+            southwestSideBarButton.icon.sprite = GetContainerIcon(southwestInventory, false);
         }
 
-        if (downRightInventory != null)
+        if (southeastInventory != null)
         {
-            downRightInventory.container.spriteRenderer.sprite = GetContainerIcon(downRightInventory, false);
-            downRightSideBarButton.icon.sprite = GetContainerIcon(downRightInventory, false);
+            southeastInventory.container.spriteRenderer.sprite = GetContainerIcon(southeastInventory, false);
+            southeastSideBarButton.icon.sprite = GetContainerIcon(southeastInventory, false);
         }
     }
 
@@ -524,37 +530,37 @@ public class ContainerInventoryUI : InventoryUI
                     weightText.text = GetTotalWeight(playerPositionItems).ToString();
                     volumeText.text = GetTotalVolume(playerPositionItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
-                case Direction.Up:
-                    weightText.text = GetTotalWeight(upItems).ToString();
-                    volumeText.text = GetTotalVolume(upItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                case Direction.North:
+                    weightText.text = GetTotalWeight(northItems).ToString();
+                    volumeText.text = GetTotalVolume(northItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
-                case Direction.Down:
-                    weightText.text = GetTotalWeight(downItems).ToString();
-                    volumeText.text = GetTotalVolume(downItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                case Direction.South:
+                    weightText.text = GetTotalWeight(southItems).ToString();
+                    volumeText.text = GetTotalVolume(southItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
-                case Direction.Left:
-                    weightText.text = GetTotalWeight(leftItems).ToString();
-                    volumeText.text = GetTotalVolume(leftItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                case Direction.West:
+                    weightText.text = GetTotalWeight(westItems).ToString();
+                    volumeText.text = GetTotalVolume(westItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
-                case Direction.Right:
-                    weightText.text = GetTotalWeight(rightItems).ToString();
-                    volumeText.text = GetTotalVolume(rightItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                case Direction.East:
+                    weightText.text = GetTotalWeight(eastItems).ToString();
+                    volumeText.text = GetTotalVolume(eastItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
-                case Direction.UpLeft:
-                    weightText.text = GetTotalWeight(upLeftItems).ToString();
-                    volumeText.text = GetTotalVolume(upLeftItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                case Direction.Northwest:
+                    weightText.text = GetTotalWeight(northwestItems).ToString();
+                    volumeText.text = GetTotalVolume(northwestItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
-                case Direction.UpRight:
-                    weightText.text = GetTotalWeight(upRightItems).ToString();
-                    volumeText.text = GetTotalVolume(upRightItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                case Direction.Northeast:
+                    weightText.text = GetTotalWeight(northeastItems).ToString();
+                    volumeText.text = GetTotalVolume(northeastItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
-                case Direction.DownLeft:
-                    weightText.text = GetTotalWeight(downLeftItems).ToString();
-                    volumeText.text = GetTotalVolume(downLeftItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                case Direction.Southwest:
+                    weightText.text = GetTotalWeight(southwestItems).ToString();
+                    volumeText.text = GetTotalVolume(southwestItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
-                case Direction.DownRight:
-                    weightText.text = GetTotalWeight(downRightItems).ToString();
-                    volumeText.text = GetTotalVolume(downRightItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                case Direction.Southeast:
+                    weightText.text = GetTotalWeight(southeastItems).ToString();
+                    volumeText.text = GetTotalVolume(southeastItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
                 default:
                     break;
@@ -569,29 +575,29 @@ public class ContainerInventoryUI : InventoryUI
             case Direction.Center:
                 playerPositionItems.Add(itemDataToAdd);
                 break;
-            case Direction.Up:
-                upItems.Add(itemDataToAdd);
+            case Direction.North:
+                northItems.Add(itemDataToAdd);
                 break;
-            case Direction.Down:
-                downItems.Add(itemDataToAdd);
+            case Direction.South:
+                southItems.Add(itemDataToAdd);
                 break;
-            case Direction.Left:
-                leftItems.Add(itemDataToAdd);
+            case Direction.West:
+                westItems.Add(itemDataToAdd);
                 break;
-            case Direction.Right:
-                rightItems.Add(itemDataToAdd);
+            case Direction.East:
+                eastItems.Add(itemDataToAdd);
                 break;
-            case Direction.UpLeft:
-                upLeftItems.Add(itemDataToAdd);
+            case Direction.Northwest:
+                northwestItems.Add(itemDataToAdd);
                 break;
-            case Direction.UpRight:
-                upRightItems.Add(itemDataToAdd);
+            case Direction.Northeast:
+                northeastItems.Add(itemDataToAdd);
                 break;
-            case Direction.DownLeft:
-                downLeftItems.Add(itemDataToAdd);
+            case Direction.Southwest:
+                southwestItems.Add(itemDataToAdd);
                 break;
-            case Direction.DownRight:
-                downRightItems.Add(itemDataToAdd);
+            case Direction.Southeast:
+                southeastItems.Add(itemDataToAdd);
                 break;
             default:
                 break;
@@ -605,29 +611,29 @@ public class ContainerInventoryUI : InventoryUI
             case Direction.Center:
                 playerPositionItems.Add(itemDataToAdd);
                 break;
-            case Direction.Up:
-                upItems.Add(itemDataToAdd);
+            case Direction.North:
+                northItems.Add(itemDataToAdd);
                 break;
-            case Direction.Down:
-                downItems.Add(itemDataToAdd);
+            case Direction.South:
+                southItems.Add(itemDataToAdd);
                 break;
-            case Direction.Left:
-                leftItems.Add(itemDataToAdd);
+            case Direction.West:
+                westItems.Add(itemDataToAdd);
                 break;
-            case Direction.Right:
-                rightItems.Add(itemDataToAdd);
+            case Direction.East:
+                eastItems.Add(itemDataToAdd);
                 break;
-            case Direction.UpLeft:
-                upLeftItems.Add(itemDataToAdd);
+            case Direction.Northwest:
+                northwestItems.Add(itemDataToAdd);
                 break;
-            case Direction.UpRight:
-                upRightItems.Add(itemDataToAdd);
+            case Direction.Northeast:
+                northeastItems.Add(itemDataToAdd);
                 break;
-            case Direction.DownLeft:
-                downLeftItems.Add(itemDataToAdd);
+            case Direction.Southwest:
+                southwestItems.Add(itemDataToAdd);
                 break;
-            case Direction.DownRight:
-                downRightItems.Add(itemDataToAdd);
+            case Direction.Southeast:
+                southeastItems.Add(itemDataToAdd);
                 break;
             default:
                 break;
@@ -642,37 +648,37 @@ public class ContainerInventoryUI : InventoryUI
                 if (playerPositionItems.Contains(itemDataToRemove))
                     playerPositionItems.Remove(itemDataToRemove);
                 break;
-            case Direction.Up:
-                if (upItems.Contains(itemDataToRemove))
-                    upItems.Remove(itemDataToRemove);
+            case Direction.North:
+                if (northItems.Contains(itemDataToRemove))
+                    northItems.Remove(itemDataToRemove);
                 break;
-            case Direction.Down:
-                if (downItems.Contains(itemDataToRemove))
-                    downItems.Remove(itemDataToRemove);
+            case Direction.South:
+                if (southItems.Contains(itemDataToRemove))
+                    southItems.Remove(itemDataToRemove);
                 break;
-            case Direction.Left:
-                if (leftItems.Contains(itemDataToRemove))
-                    leftItems.Remove(itemDataToRemove);
+            case Direction.West:
+                if (westItems.Contains(itemDataToRemove))
+                    westItems.Remove(itemDataToRemove);
                 break;
-            case Direction.Right:
-                if (rightItems.Contains(itemDataToRemove))
-                    rightItems.Remove(itemDataToRemove);
+            case Direction.East:
+                if (eastItems.Contains(itemDataToRemove))
+                    eastItems.Remove(itemDataToRemove);
                 break;
-            case Direction.UpLeft:
-                if (upLeftItems.Contains(itemDataToRemove))
-                    upLeftItems.Remove(itemDataToRemove);
+            case Direction.Northwest:
+                if (northwestItems.Contains(itemDataToRemove))
+                    northwestItems.Remove(itemDataToRemove);
                 break;
-            case Direction.UpRight:
-                if (upRightItems.Contains(itemDataToRemove))
-                    upRightItems.Remove(itemDataToRemove);
+            case Direction.Northeast:
+                if (northeastItems.Contains(itemDataToRemove))
+                    northeastItems.Remove(itemDataToRemove);
                 break;
-            case Direction.DownLeft:
-                if (downLeftItems.Contains(itemDataToRemove))
-                    downLeftItems.Remove(itemDataToRemove);
+            case Direction.Southwest:
+                if (southwestItems.Contains(itemDataToRemove))
+                    southwestItems.Remove(itemDataToRemove);
                 break;
-            case Direction.DownRight:
-                if (downRightItems.Contains(itemDataToRemove))
-                    downRightItems.Remove(itemDataToRemove);
+            case Direction.Southeast:
+                if (southeastItems.Contains(itemDataToRemove))
+                    southeastItems.Remove(itemDataToRemove);
                 break;
             default:
                 break;
@@ -682,22 +688,22 @@ public class ContainerInventoryUI : InventoryUI
     void ClearAllLists()
     {
         playerPositionItems.Clear();
-        leftItems.Clear();
-        rightItems.Clear();
-        upItems.Clear();
-        downItems.Clear();
-        upLeftItems.Clear();
-        upRightItems.Clear();
-        downLeftItems.Clear();
-        downRightItems.Clear();
+        westItems.Clear();
+        eastItems.Clear();
+        northItems.Clear();
+        southItems.Clear();
+        northwestItems.Clear();
+        northeastItems.Clear();
+        southwestItems.Clear();
+        southeastItems.Clear();
 
-        upInventory = null;
-        downInventory = null;
-        leftInventory = null;
-        rightInventory = null;
-        upLeftInventory = null;
-        upRightInventory = null;
-        downLeftInventory = null;
-        downRightInventory = null;
+        northInventory = null;
+        southInventory = null;
+        westInventory = null;
+        eastInventory = null;
+        northwestInventory = null;
+        northeastInventory = null;
+        southwestInventory = null;
+        southeastInventory = null;
     }
 }

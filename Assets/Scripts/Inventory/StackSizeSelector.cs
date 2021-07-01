@@ -99,7 +99,7 @@ public class StackSizeSelector : MonoBehaviour
         if (selectedInvItem != null && currentValue > 0)
         {
             selectedInvItem.itemData.currentStackSize -= currentValue;
-            selectedInvItem.UpdateItemTexts();
+            selectedInvItem.UpdateItemNumberTexts();
 
             ItemData newItemData = null;
             if (selectedInvItem.myInventory != null) // If the item is in an inventory
@@ -142,7 +142,7 @@ public class StackSizeSelector : MonoBehaviour
             //newInvItem.UpdateItemTexts();
 
             if (selectedInvItem.itemData.currentStackSize > 0)
-                selectedInvItem.UpdateItemTexts();
+                selectedInvItem.UpdateItemNumberTexts();
             else
                 selectedInvItem.ClearItem();
         }

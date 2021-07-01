@@ -28,22 +28,22 @@ public class ContainerSideBarButton : MonoBehaviour, IPointerEnterHandler, IPoin
     {
         switch (directionFromPlayer)
         {
-            case Direction.Up:
-                return gm.containerInvUI.upInventory;
-            case Direction.Down:
-                return gm.containerInvUI.downInventory;
-            case Direction.Left:
-                return gm.containerInvUI.leftInventory;
-            case Direction.Right:
-                return gm.containerInvUI.rightInventory;
-            case Direction.UpLeft:
-                return gm.containerInvUI.upLeftInventory;
-            case Direction.UpRight:
-                return gm.containerInvUI.upRightInventory;
-            case Direction.DownLeft:
-                return gm.containerInvUI.downLeftInventory;
-            case Direction.DownRight:
-                return gm.containerInvUI.downRightInventory;
+            case Direction.North:
+                return gm.containerInvUI.northInventory;
+            case Direction.South:
+                return gm.containerInvUI.southInventory;
+            case Direction.West:
+                return gm.containerInvUI.westInventory;
+            case Direction.East:
+                return gm.containerInvUI.eastInventory;
+            case Direction.Northwest:
+                return gm.containerInvUI.northwestInventory;
+            case Direction.Northeast:
+                return gm.containerInvUI.northeastInventory;
+            case Direction.Southwest:
+                return gm.containerInvUI.southwestInventory;
+            case Direction.Southeast:
+                return gm.containerInvUI.southeastInventory;
             default:
                 return null;
         }
@@ -55,22 +55,22 @@ public class ContainerSideBarButton : MonoBehaviour, IPointerEnterHandler, IPoin
         {
             case Direction.Center:
                 return gm.containerInvUI.playerPositionItems;
-            case Direction.Up:
-                return gm.containerInvUI.upItems;
-            case Direction.Down:
-                return gm.containerInvUI.downItems;
-            case Direction.Left:
-                return gm.containerInvUI.leftItems;
-            case Direction.Right:
-                return gm.containerInvUI.rightItems;
-            case Direction.UpLeft:
-                return gm.containerInvUI.upLeftItems;
-            case Direction.UpRight:
-                return gm.containerInvUI.upRightItems;
-            case Direction.DownLeft:
-                return gm.containerInvUI.downLeftItems;
-            case Direction.DownRight:
-                return gm.containerInvUI.downRightItems;
+            case Direction.North:
+                return gm.containerInvUI.northItems;
+            case Direction.South:
+                return gm.containerInvUI.southItems;
+            case Direction.West:
+                return gm.containerInvUI.westItems;
+            case Direction.East:
+                return gm.containerInvUI.eastItems;
+            case Direction.Northwest:
+                return gm.containerInvUI.northwestItems;
+            case Direction.Northeast:
+                return gm.containerInvUI.northeastItems;
+            case Direction.Southwest:
+                return gm.containerInvUI.southwestItems;
+            case Direction.Southeast:
+                return gm.containerInvUI.southeastItems;
             default:
                 return null;
         }
@@ -86,36 +86,36 @@ public class ContainerSideBarButton : MonoBehaviour, IPointerEnterHandler, IPoin
                 gm.containerInvUI.PopulateInventoryUI(gm.containerInvUI.playerPositionItems, directionFromPlayer);
                 HighlightDirectionIcon();
                 break;
-            case Direction.Up:
-                gm.containerInvUI.PopulateInventoryUI(gm.containerInvUI.upItems, directionFromPlayer);
+            case Direction.North:
+                gm.containerInvUI.PopulateInventoryUI(gm.containerInvUI.northItems, directionFromPlayer);
                 HighlightDirectionIcon();
                 break;
-            case Direction.Down:
-                gm.containerInvUI.PopulateInventoryUI(gm.containerInvUI.downItems, directionFromPlayer);
+            case Direction.South:
+                gm.containerInvUI.PopulateInventoryUI(gm.containerInvUI.southItems, directionFromPlayer);
                 HighlightDirectionIcon();
                 break;
-            case Direction.Left:
-                gm.containerInvUI.PopulateInventoryUI(gm.containerInvUI.leftItems, directionFromPlayer);
+            case Direction.West:
+                gm.containerInvUI.PopulateInventoryUI(gm.containerInvUI.westItems, directionFromPlayer);
                 HighlightDirectionIcon();
                 break;
-            case Direction.Right:
-                gm.containerInvUI.PopulateInventoryUI(gm.containerInvUI.rightItems, directionFromPlayer);
+            case Direction.East:
+                gm.containerInvUI.PopulateInventoryUI(gm.containerInvUI.eastItems, directionFromPlayer);
                 HighlightDirectionIcon();
                 break;
-            case Direction.UpLeft:
-                gm.containerInvUI.PopulateInventoryUI(gm.containerInvUI.upLeftItems, directionFromPlayer);
+            case Direction.Northwest:
+                gm.containerInvUI.PopulateInventoryUI(gm.containerInvUI.northwestItems, directionFromPlayer);
                 HighlightDirectionIcon();
                 break;
-            case Direction.UpRight:
-                gm.containerInvUI.PopulateInventoryUI(gm.containerInvUI.upRightItems, directionFromPlayer);
+            case Direction.Northeast:
+                gm.containerInvUI.PopulateInventoryUI(gm.containerInvUI.northeastItems, directionFromPlayer);
                 HighlightDirectionIcon();
                 break;
-            case Direction.DownLeft:
-                gm.containerInvUI.PopulateInventoryUI(gm.containerInvUI.downLeftItems, directionFromPlayer);
+            case Direction.Southwest:
+                gm.containerInvUI.PopulateInventoryUI(gm.containerInvUI.southwestItems, directionFromPlayer);
                 HighlightDirectionIcon();
                 break;
-            case Direction.DownRight:
-                gm.containerInvUI.PopulateInventoryUI(gm.containerInvUI.downRightItems, directionFromPlayer);
+            case Direction.Southeast:
+                gm.containerInvUI.PopulateInventoryUI(gm.containerInvUI.southeastItems, directionFromPlayer);
                 HighlightDirectionIcon();
                 break;
             default:

@@ -20,7 +20,7 @@ public class GamePlayActions : PlayerActionSet
     public PlayerAction menuContainerTakeAll, menuTakeItem, menuUseItem;
 
     // Specific Keys
-    public PlayerAction leftCtrl, leftShift, enter, tab;
+    public PlayerAction a, leftCtrl, leftShift, leftAlt, enter, tab;
 
     public GamePlayActions()
     {
@@ -67,8 +67,10 @@ public class GamePlayActions : PlayerActionSet
         menuUseItem = CreatePlayerAction("MenuUseItem");
 
         // Specific Key Actions
+        a = CreatePlayerAction("A");
         leftCtrl = CreatePlayerAction("LeftCtrl");
         leftShift = CreatePlayerAction("LeftShift");
+        leftAlt = CreatePlayerAction("LeftAlt");
         enter = CreatePlayerAction("Enter");
         tab = CreatePlayerAction("Tab");
     }

@@ -5,7 +5,7 @@ public class ContextMenu : MonoBehaviour
 {
     public ContextMenuButton[] buttons;
 
-    [HideInInspector] public InventoryItem activeInvItem;
+    [HideInInspector] public InventoryItem contextActiveInvItem;
     [HideInInspector] public bool isActive;
 
     Canvas canvas;
@@ -42,9 +42,9 @@ public class ContextMenu : MonoBehaviour
     public void BuildContextMenu(InventoryItem invItem)
     {
         isActive = true;
-        activeInvItem = invItem;
+        contextActiveInvItem = invItem;
 
-        if (activeInvItem.myEquipmentManager != null)
+        if (contextActiveInvItem.myEquipmentManager != null)
         {
             CreateUnequipButton();
 
@@ -53,7 +53,7 @@ public class ContextMenu : MonoBehaviour
             else
                 CreateDropItemButton();
         }
-        else if (gm.uiManager.activeInvItem != null)// && gm.uiManager.activeInvItem != activeInvItem)
+        else if (gm.uiManager.activeInvItem != null)
         {
             if (gm.uiManager.activeInvItem.itemData.item.isUsable)
                 CreateUseItemButton();
@@ -61,13 +61,16 @@ public class ContextMenu : MonoBehaviour
             if (gm.uiManager.activeInvItem.itemData.currentStackSize > 1)
                 CreateSplitStackButton();
 
-            if ((activeInvItem.myInventory != null && activeInvItem.myInventory.myInventoryUI == gm.playerInvUI) || activeInvItem.myEquipmentManager != null)
+            // If selecting the player's inventory or equipment menu
+            if ((contextActiveInvItem.myInventory != null && contextActiveInvItem.myInventory.myInventoryUI == gm.playerInvUI) || contextActiveInvItem.myEquipmentManager != null)
             {
                 if (gm.containerInvUI.activeInventory != null)
                     CreateTransferButton();
                 else
                     CreateDropItemButton();
             }
+            else
+                CreateTransferButton();
         }
 
         // Get the desired position
@@ -102,7 +105,7 @@ public class ContextMenu : MonoBehaviour
 
     void UseItem()
     {
-        activeInvItem.UseItem();
+        contextActiveInvItem.UseItem();
         DisableContextMenu();
     }
 
@@ -118,8 +121,9 @@ public class ContextMenu : MonoBehaviour
 
     void Unequip()
     {
-        Equipment equipment = (Equipment)activeInvItem.itemData.item;
+        Equipment equipment = (Equipment)contextActiveInvItem.itemData.item;
         gm.playerManager.equipmentManager.Unequip(equipment.equipmentSlot, true);
+        DisableContextMenu();
     }
 
     void CreateTransferButton()
@@ -127,7 +131,7 @@ public class ContextMenu : MonoBehaviour
         ContextMenuButton contextButton = GetNextInactiveButton();
         contextButton.gameObject.SetActive(true);
 
-        if ((activeInvItem.myInventory != null && activeInvItem.myInventory.myInventoryUI == gm.playerInvUI) || activeInvItem.myEquipmentManager != null)
+        if ((contextActiveInvItem.myInventory != null && contextActiveInvItem.myInventory.myInventoryUI == gm.playerInvUI) || contextActiveInvItem.myEquipmentManager != null)
             contextButton.textMesh.text = "Transfer";
         else
             contextButton.textMesh.text = "Take";
@@ -137,7 +141,8 @@ public class ContextMenu : MonoBehaviour
 
     void TransferItem()
     {
-        activeInvItem.TransferItem();
+        contextActiveInvItem.TransferItem();
+        DisableContextMenu();
     }
 
     void CreateSplitStackButton()
@@ -152,7 +157,7 @@ public class ContextMenu : MonoBehaviour
 
     void SplitStack()
     {
-        gm.stackSizeSelector.ShowStackSizeSelector(activeInvItem);
+        gm.stackSizeSelector.ShowStackSizeSelector(contextActiveInvItem);
         DisableContextMenu();
     }
 
@@ -168,28 +173,28 @@ public class ContextMenu : MonoBehaviour
 
     void DropItem()
     {
-        gm.dropItemController.DropItem(gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromActiveDirection(), activeInvItem.itemData, activeInvItem.itemData.currentStackSize);
-        gm.containerInvUI.AddItemToList(activeInvItem.itemData);
+        gm.dropItemController.DropItem(gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromActiveDirection(), contextActiveInvItem.itemData, contextActiveInvItem.itemData.currentStackSize);
+        gm.containerInvUI.AddItemToList(contextActiveInvItem.itemData);
 
-        if (activeInvItem.myEquipmentManager != null)
+        if (contextActiveInvItem.myEquipmentManager != null)
         {
             gm.playerInvUI.UpdateUINumbers();
 
-            Equipment equipment = (Equipment)activeInvItem.itemData.item;
+            Equipment equipment = (Equipment)contextActiveInvItem.itemData.item;
             gm.playerManager.equipmentManager.Unequip(equipment.equipmentSlot, false);
         }
         else
         {
-            if (activeInvItem.myInventory != null)
+            if (contextActiveInvItem.myInventory != null)
             {
-                activeInvItem.myInventory.currentWeight -= Mathf.RoundToInt(activeInvItem.itemData.item.weight * activeInvItem.itemData.currentStackSize * 100f) / 100f;
-                activeInvItem.myInventory.currentVolume -= Mathf.RoundToInt(activeInvItem.itemData.item.volume * activeInvItem.itemData.currentStackSize * 100f) / 100f;
-                activeInvItem.myInventory.myInventoryUI.UpdateUINumbers();
+                contextActiveInvItem.myInventory.currentWeight -= Mathf.RoundToInt(contextActiveInvItem.itemData.item.weight * contextActiveInvItem.itemData.currentStackSize * 100f) / 100f;
+                contextActiveInvItem.myInventory.currentVolume -= Mathf.RoundToInt(contextActiveInvItem.itemData.item.volume * contextActiveInvItem.itemData.currentStackSize * 100f) / 100f;
+                contextActiveInvItem.myInventory.myInventoryUI.UpdateUINumbers();
             }
             else
                 gm.containerInvUI.UpdateUINumbers();
 
-            activeInvItem.ClearItem();
+            contextActiveInvItem.ClearItem();
         }
 
         DisableContextMenu();
@@ -216,7 +221,8 @@ public class ContextMenu : MonoBehaviour
         }
 
         isActive = false;
-        activeInvItem = null;
+        contextActiveInvItem = null;
+        gm.uiManager.activeContextMenuButton = null;
     }
 
     public IEnumerator DelayDisableContextMenu()

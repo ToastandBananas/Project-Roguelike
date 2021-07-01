@@ -35,6 +35,12 @@ public class PlayerInventoryUI : InventoryUI
         base.Start();
 
         inventoryItemObjectPool.Init();
+
+        for (int i = 0; i < inventoryItemObjectPool.pooledInventoryItems.Count; i++)
+        {
+            inventoryItemObjectPool.pooledInventoryItems[i].myInvUI = this;
+        }
+
         InitInventories();
 
         personalInventory.maxWeight = gm.playerManager.playerStats.maxPersonalInvWeight.GetValue();
