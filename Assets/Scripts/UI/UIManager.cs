@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,15 +12,16 @@ public class UIManager : MonoBehaviour
     [HideInInspector] public ContextMenuButton activeContextMenuButton;
 
     public List<InventoryItem> selectedItems = new List<InventoryItem>();
-    public List<InventoryItem> invItemsDragging = new List<InventoryItem>();
-    public List<InventoryItem> activeGhostInvItems = new List<InventoryItem>();
+    List<InventoryItem> invItemsDragging = new List<InventoryItem>();
+    List<InventoryItem> activeGhostInvItems = new List<InventoryItem>();
+
+    InventoryItem firstSelectedItem;
 
     GameManager gm;
 
     float dragTimer;
     float minDragTime = 0.1f;
     int activeInvItemCount;
-    bool onSelectionCooldown;
 
     #region Singleton
     public static UIManager instance;
@@ -123,19 +123,22 @@ public class UIManager : MonoBehaviour
                 invItemsDragging.Clear();
                 selectedItems.Clear();
                 activeGhostInvItems.Clear();
+                firstSelectedItem = null;
+                activeInvItem = null;
                 dragTimer = 0;
                 activeInvItemCount = 0;
             }
-            else if (activeInvItem != null && GameControls.gamePlayActions.leftShift.IsPressed) // If left clicking while holding down left shift
+            else if (activeInvItem != null)
             {
-
-            }
-            else if (activeInvItem != null && GameControls.gamePlayActions.leftCtrl.IsPressed) // If left clicking while holding down left ctrl
-            {
-                if (selectedItems.Contains(activeInvItem) == false)
-                    SelectActiveItem();
-                else
-                    DeselectActiveItem();
+                if (GameControls.gamePlayActions.leftShift.IsPressed) // If left clicking while holding down left shift
+                    ShiftSelect();
+                else if (activeInvItem != null && GameControls.gamePlayActions.leftCtrl.IsPressed) // If left clicking while holding down left ctrl
+                {
+                    if (selectedItems.Contains(activeInvItem) == false)
+                        SelectActiveItem();
+                    else
+                        DeselectActiveItem();
+                }
             }
         }
 
@@ -215,20 +218,47 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    void SelectItem(InventoryItem invItem)
+    {
+        if (firstSelectedItem == null)
+            firstSelectedItem = invItem;
+
+        selectedItems.Add(invItem);
+        invItem.Highlight();
+
+        DisableInventoryUIComponents();
+    }
+
     void SelectActiveItem()
     {
-        selectedItems.Add(activeInvItem);
-        activeInvItem.Highlight();
+        SelectItem(activeInvItem);
+    }
+
+    void DeselectItem(InventoryItem invItem)
+    {
+        if (invItem == firstSelectedItem)
+            firstSelectedItem = null;
+
+        selectedItems.Remove(invItem);
+        invItem.RemoveHighlight();
 
         DisableInventoryUIComponents();
     }
 
     void DeselectActiveItem()
     {
-        selectedItems.Remove(activeInvItem);
-        activeInvItem.RemoveHighlight();
+        DeselectItem(activeInvItem);
+    }
 
-        DisableInventoryUIComponents();
+    void ClearSelectedItems()
+    {
+        for (int i = 0; i < selectedItems.Count; i++)
+        {
+            selectedItems[i].RemoveHighlight();
+        }
+
+        firstSelectedItem = null;
+        selectedItems.Clear();
     }
 
     void SelectAll()
@@ -250,14 +280,51 @@ public class UIManager : MonoBehaviour
         DisableInventoryUIComponents();
     }
 
-    void ClearSelectedItems()
+    void ShiftSelect()
     {
-        for (int i = 0; i < selectedItems.Count; i++)
+        if (selectedItems.Count == 0) // If we haven't selected an item yet, select the item we just selected and highlight the item
+            SelectActiveItem();
+        else if (activeInvItem != null)
         {
-            selectedItems[i].RemoveHighlight();
+            if (activeInvItem == firstSelectedItem) // If the item we selected is the same as the fist item we selected, clear the selected items list and remove highlighting
+                ClearSelectedItems();
+            else if (activeInvItem.transform.position.y > firstSelectedItem.transform.position.y) // If the item we selected is above the first item we selected
+            {
+                for (int i = 0; i < activeInvUI.inventoryItemObjectPool.pooledInventoryItems.Count; i++) // Go through our pooled inventory items
+                {
+                    // If the pooled inventory item is active and is not the first inventory item we selected
+                    if (activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i].gameObject.activeSelf && firstSelectedItem != activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i])
+                    {
+                        // If the mouse pointer is below the pooled inventory item
+                        if (Input.mousePosition.y > activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i].transform.position.y)
+                        {
+                            if (selectedItems.Contains(activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i]))
+                                DeselectItem(activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i]);
+                            else
+                                SelectItem(activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i]);
+                        }
+                    }
+                }
+            }
+            else if (activeInvItem.transform.position.y < firstSelectedItem.transform.position.y) // If the item we selected is below the first item we selected
+            {
+                for (int i = 0; i < activeInvUI.inventoryItemObjectPool.pooledInventoryItems.Count; i++) // Go through our pooled inventory items
+                {
+                    // If the pooled inventory item is active and is not the first inventory item we selected
+                    if (activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i].gameObject.activeSelf && firstSelectedItem != activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i])
+                    {
+                        // If the mouse pointer is above the pooled inventory item
+                        if (Input.mousePosition.y > activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i].transform.position.y)
+                        {
+                            if (selectedItems.Contains(activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i]))
+                                DeselectItem(activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i]);
+                            else
+                                SelectItem(activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i]);
+                        }
+                    }
+                }
+            }
         }
-
-        selectedItems.Clear();
     }
 
     void DragAndDrop_DragItem(InventoryItem draggedInvItem)
@@ -479,13 +546,6 @@ public class UIManager : MonoBehaviour
             return true;
 
         return false;
-    }
-
-    IEnumerator SelectionCooldown()
-    {
-        onSelectionCooldown = true;
-        yield return new WaitForSeconds(0.1f);
-        onSelectionCooldown = false;
     }
 
     public void ToggleInventory()

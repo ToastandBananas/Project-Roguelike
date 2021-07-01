@@ -108,10 +108,12 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (isGhostItem == false && gm.uiManager.activeInvItem == this && gm.uiManager.selectedItems.Contains(this) == false)
+        if (isGhostItem == false && gm.uiManager.activeInvItem == this)
         {
+            if (gm.uiManager.selectedItems.Contains(this) == false)
+                RemoveHighlight();
+
             gm.uiManager.activeInvItem = null;
-            RemoveHighlight();
         }
     }
 
