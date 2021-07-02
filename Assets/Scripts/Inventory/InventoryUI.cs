@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using System.Collections;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class InventoryUI : MonoBehaviour
 
     [HideInInspector] public GameManager gm;
     [HideInInspector] public Inventory activeInventory;
+
+    int addItemEffectsPlayCount;
 
     public virtual void Start()
     {
@@ -168,5 +171,22 @@ public class InventoryUI : MonoBehaviour
         }
 
         return null;
+    }
+
+    public IEnumerator PlayAddItemEffect(Sprite itemSprite, ContainerSideBarButton containerSideBarButton, PlayerInventorySidebarButton playerInvSideBarButton)
+    {
+        addItemEffectsPlayCount++;
+        AddItemEffect addItemEffect = gm.objectPoolManager.addItemEffectObjectPool.GetPooledAddItemEffect();
+        addItemEffect.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(0.1f * (addItemEffectsPlayCount - 1));
+
+        if (containerSideBarButton != null)
+            addItemEffect.DoEffect_Left(itemSprite, containerSideBarButton.transform.position.y);
+        else
+            addItemEffect.DoEffect_Right(itemSprite, playerInvSideBarButton.transform.position.y);
+
+        yield return new WaitForSeconds(addItemEffect.anim.GetCurrentAnimatorStateInfo(0).length);
+        addItemEffectsPlayCount--;
     }
 }

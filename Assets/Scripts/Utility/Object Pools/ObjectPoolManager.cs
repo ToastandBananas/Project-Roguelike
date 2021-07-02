@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class ObjectPoolManager : MonoBehaviour
 {
+    public AddItemEffectObjectPool addItemEffectObjectPool;
     public InventoryItemObjectPool containerInventoryItemObjectPool;
     public InventoryItemObjectPool playerInventoryItemObjectPool;
     public InventoryItemObjectPool ghostImageInventoryItemObjectPool;
     public ItemPickupObjectPool pickupsPool;
     public ItemDataObjectPool itemDataObjectPool;
-    // public ObjectPool treePool, weaponTrailsPool, bloodEffectsPool, woodEffectsPool;
 
     #region Singleton
     public static ObjectPoolManager instance;

@@ -54,6 +54,8 @@ public class EquipmentManager : MonoBehaviour
 
         AssignEquipment(equipmentItemData, equipmentSlot);
 
+        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(newItemData.item.pickupSprite, null, gm.playerInvUI.equipmentSideBarButton));
+
         // If the equipment inventory is active, show the item in the menu
         if (gm.playerInvUI.activeInventory == null && isPlayer)
         {
@@ -61,7 +63,7 @@ public class EquipmentManager : MonoBehaviour
             gm.playerInvUI.UpdateUINumbers();
         }
 
-        // If this is a Wearable item, assign the item's Animator Controller
+        // If this is a Wearable item, show the equipment's sprite on the player
         if (equipmentItemData.item.IsWeapon() == false)
             SetWearableSprite(equipmentSlot, equipmentItemData);
         else
@@ -81,27 +83,57 @@ public class EquipmentManager : MonoBehaviour
             {
                 if (isPlayer) // If this is the player's equipment
                 {
-                    // Try adding to the player's inventory
-                    if (gm.playerInvUI.bag1Active == false || (gm.playerInvUI.bag1Active && gm.playerInvUI.bag1Inventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null) == false))
+                    bool itemAddedToInv = false;
+                    bool addItemEffectPlayed = false;
+                    
+                    // Try adding to the player's inventory and if it is added, play the add item effect
+                    if (gm.playerInvUI.bag1Active)
+                        itemAddedToInv = gm.playerInvUI.bag1Inventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null);
+                    
+                    if (itemAddedToInv)
                     {
-                        if (gm.playerInvUI.bag2Active == false || (gm.playerInvUI.bag2Active && gm.playerInvUI.bag2Inventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null) == false))
-                        {
-                            if (gm.playerInvUI.bag3Active == false || (gm.playerInvUI.bag3Active && gm.playerInvUI.bag3Inventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null) == false))
-                            {
-                                if (gm.playerInvUI.bag4Active == false || (gm.playerInvUI.bag4Active && gm.playerInvUI.bag4Inventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null) == false))
-                                {
-                                    if (gm.playerInvUI.bag5Active == false || (gm.playerInvUI.bag5Active && gm.playerInvUI.bag5Inventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null) == false))
-                                    {
-                                        if (gm.playerInvUI.personalInventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null) == false)
-                                        {
-                                            // If we can't add it to the Inventory, drop it, but first we need to run the rest of the code in this method, so we'll just set a bool
-                                            shouldDropItem = true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.bag1SideBarButton));
+                        addItemEffectPlayed = true;
                     }
+                    else if (gm.playerInvUI.bag2Active)
+                        itemAddedToInv = gm.playerInvUI.bag2Inventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null);
+
+                    if (itemAddedToInv && addItemEffectPlayed == false)
+                    {
+                        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.bag2SideBarButton));
+                        addItemEffectPlayed = true;
+                    }
+                    else if (itemAddedToInv == false && gm.playerInvUI.bag3Active)
+                        itemAddedToInv = gm.playerInvUI.bag3Inventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null);
+
+                    if (itemAddedToInv && addItemEffectPlayed == false)
+                    {
+                        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.bag3SideBarButton));
+                        addItemEffectPlayed = true;
+                    }
+                    else if (itemAddedToInv == false && gm.playerInvUI.bag4Active)
+                        itemAddedToInv = gm.playerInvUI.bag4Inventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null);
+
+                    if (itemAddedToInv && addItemEffectPlayed == false)
+                    {
+                        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.bag4SideBarButton));
+                        addItemEffectPlayed = true;
+                    }
+                    else if (itemAddedToInv == false && gm.playerInvUI.bag5Active)
+                        itemAddedToInv = gm.playerInvUI.bag5Inventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null);
+
+                    if (itemAddedToInv && addItemEffectPlayed == false)
+                    {
+                        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.bag5SideBarButton));
+                        addItemEffectPlayed = true;
+                    }
+                    else if (itemAddedToInv == false)
+                        itemAddedToInv = gm.playerInvUI.personalInventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null);
+                    
+                    if (itemAddedToInv && addItemEffectPlayed == false)
+                        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.personalInventorySideBarButton));
+                    else if (itemAddedToInv == false) // If we can't add it to the Inventory, drop it, but first we need to run the rest of the code in this method, so we'll just set a bool for now
+                        shouldDropItem = true;
                 }
                 else // If this is an NPC's equipment
                 {

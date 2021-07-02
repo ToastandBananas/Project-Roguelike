@@ -20,7 +20,6 @@ public class Item : ScriptableObject
     public int staticValue = 1;
 
     [Header("Sprites")]
-    public Sprite defaultSprite;
     public Sprite pickupSprite;
 
     public virtual void Use(EquipmentManager equipmentManager, Inventory inventory, InventoryItem invItem, int itemCount)

@@ -13,6 +13,12 @@ public class PlayerInventoryUI : InventoryUI
     
     public bool bag1Active, bag2Active, bag3Active, bag4Active, bag5Active;
 
+    [Header("Side Bar Buttons")]
+    public PlayerInventorySidebarButton personalInventorySideBarButton;
+    public PlayerInventorySidebarButton bag1SideBarButton, bag2SideBarButton, bag3SideBarButton, bag4SideBarButton, bag5SideBarButton, keysSideBarButton, equipmentSideBarButton;
+
+    [HideInInspector] public PlayerInventorySidebarButton activePlayerInvSideBarButton;
+
     #region Singleton
     public static PlayerInventoryUI instance;
     void Awake()
@@ -104,48 +110,56 @@ public class PlayerInventoryUI : InventoryUI
                 weightText.text = GetTotalWeight(personalInventory.items).ToString() + "/" + gm.playerManager.playerStats.maxPersonalInvWeight.GetValue().ToString();
                 volumeText.text = GetTotalVolume(personalInventory.items).ToString() + "/" + gm.playerManager.playerStats.maxPersonalInvVolume.GetValue().ToString();
                 activeInventory = personalInventory;
+                activePlayerInvSideBarButton = personalInventorySideBarButton;
                 break;
             case PlayerInventoryType.Bag1:
                 inventoryNameText.text = "Bag 1 Inventory";
                 weightText.text = GetTotalWeight(bag1Inventory.items).ToString() + "/" + bag1Inventory.maxWeight.ToString();
                 volumeText.text = GetTotalVolume(bag1Inventory.items).ToString() + "/" + bag1Inventory.maxVolume.ToString();
                 activeInventory = bag1Inventory;
+                activePlayerInvSideBarButton = bag1SideBarButton;
                 break;
             case PlayerInventoryType.Bag2:
                 inventoryNameText.text = "Bag 2  Inventory";
                 weightText.text = GetTotalWeight(bag2Inventory.items).ToString() + "/" + bag2Inventory.maxWeight.ToString();
                 volumeText.text = GetTotalVolume(bag2Inventory.items).ToString() + "/" + bag2Inventory.maxVolume.ToString();
                 activeInventory = bag2Inventory;
+                activePlayerInvSideBarButton = bag2SideBarButton;
                 break;
             case PlayerInventoryType.Bag3:
                 inventoryNameText.text = "Bag 3  Inventory";
                 weightText.text = GetTotalWeight(bag3Inventory.items).ToString() + "/" + bag3Inventory.maxWeight.ToString();
                 volumeText.text = GetTotalVolume(bag3Inventory.items).ToString() + "/" + bag3Inventory.maxVolume.ToString();
                 activeInventory = bag3Inventory;
+                activePlayerInvSideBarButton = bag3SideBarButton;
                 break;
             case PlayerInventoryType.Bag4:
                 inventoryNameText.text = "Bag 4  Inventory";
                 weightText.text = GetTotalWeight(bag4Inventory.items).ToString() + "/" + bag4Inventory.maxWeight.ToString();
                 volumeText.text = GetTotalVolume(bag4Inventory.items).ToString() + "/" + bag4Inventory.maxVolume.ToString();
                 activeInventory = bag4Inventory;
+                activePlayerInvSideBarButton = bag4SideBarButton;
                 break;
             case PlayerInventoryType.Bag5:
                 inventoryNameText.text = "Bag 5  Inventory";
                 weightText.text = GetTotalWeight(bag5Inventory.items).ToString() + "/" + bag5Inventory.maxWeight.ToString();
                 volumeText.text = GetTotalVolume(bag5Inventory.items).ToString() + "/" + bag5Inventory.maxVolume.ToString();
                 activeInventory = bag5Inventory;
+                activePlayerInvSideBarButton = bag5SideBarButton;
                 break;
             case PlayerInventoryType.Keys:
                 inventoryNameText.text = "Keys";
                 weightText.text = GetTotalWeight(keysInventory.items).ToString();
                 volumeText.text = GetTotalVolume(keysInventory.items).ToString();
                 activeInventory = keysInventory;
+                activePlayerInvSideBarButton = keysSideBarButton;
                 break;
             case PlayerInventoryType.EquippedItems:
                 inventoryNameText.text = "Equipped Items";
                 weightText.text = GetTotalWeight(gm.playerManager.equipmentManager.currentEquipment).ToString();
                 volumeText.text = GetTotalVolume(gm.playerManager.equipmentManager.currentEquipment).ToString();
                 activeInventory = null;
+                activePlayerInvSideBarButton = equipmentSideBarButton;
                 break;
             default:
                 break;

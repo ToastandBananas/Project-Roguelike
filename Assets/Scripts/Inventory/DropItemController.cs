@@ -41,12 +41,15 @@ public class DropItemController : MonoBehaviour
 
         if (dropPosition == gm.playerManager.transform.position + GetDropPositionFromActiveDirection())
         {
+            StartCoroutine(gm.containerInvUI.PlayAddItemEffect(itemData.item.pickupSprite, gm.containerInvUI.GetSideBarButtonFromDirection(gm.containerInvUI.activeDirection), null));
             gm.containerInvUI.ShowNewInventoryItem(newItemPickup.itemData);
             gm.containerInvUI.AddItemToList(newItemPickup.itemData);
             gm.containerInvUI.UpdateUINumbers();
         }
         else if (dropPosition == gm.playerManager.transform.position)
         {
+            StartCoroutine(gm.containerInvUI.PlayAddItemEffect(itemData.item.pickupSprite, gm.containerInvUI.playerPositionSideBarButton, null));
+
             if (gm.containerInvUI.activeDirection == Direction.Center)
                 gm.containerInvUI.ShowNewInventoryItem(newItemPickup.itemData);
 
@@ -57,7 +60,9 @@ public class DropItemController : MonoBehaviour
         }
         else
         {
-            List<ItemData> itemsList = gm.containerInvUI.GetItemsListFromDirection(GetDirectionFromDropPosition(dropPosition));
+            Direction direction = GetDirectionFromDropPosition(dropPosition);
+            StartCoroutine(gm.containerInvUI.PlayAddItemEffect(itemData.item.pickupSprite, gm.containerInvUI.GetSideBarButtonFromDirection(direction), null));
+            List<ItemData> itemsList = gm.containerInvUI.GetItemsListFromDirection(direction);
             itemsList.Add(newItemPickup.itemData);
         }
     }
@@ -65,13 +70,8 @@ public class DropItemController : MonoBehaviour
     void SetupItemPickup(ItemPickup newItemPickup, ItemData itemData, int amountToDrop, Vector3 dropPosition)
     {
         newItemPickup.gameObject.SetActive(true);
-
         newItemPickup.transform.position = dropPosition;
-
-        if (itemData.item.pickupSprite != null)
-            newItemPickup.spriteRenderer.sprite = itemData.item.pickupSprite;
-        else
-            newItemPickup.spriteRenderer.sprite = itemData.item.defaultSprite;
+        newItemPickup.spriteRenderer.sprite = itemData.item.pickupSprite;
 
         itemData.TransferData(itemData, newItemPickup.itemData);
         newItemPickup.itemCount = amountToDrop;

@@ -11,7 +11,7 @@ public class UIManager : MonoBehaviour
     [HideInInspector] public InventoryUI activeInvUI;
     [HideInInspector] public ContextMenuButton activeContextMenuButton;
 
-    public List<InventoryItem> selectedItems = new List<InventoryItem>();
+    [HideInInspector] public List<InventoryItem> selectedItems = new List<InventoryItem>();
     List<InventoryItem> invItemsDragging = new List<InventoryItem>();
     List<InventoryItem> activeGhostInvItems = new List<InventoryItem>();
 
@@ -47,36 +47,82 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
-        // Toggle the Player's Inventory
-        if (GameControls.gamePlayActions.playerInventory.WasPressed)
+        // Skip these button presses if we're currently dragging items
+        if (invItemsDragging.Count == 0)
         {
-            ClearSelectedItems();
-            ToggleInventory();
-        }
+            // Toggle the Player's Inventory
+            if (GameControls.gamePlayActions.playerInventory.WasPressed)
+            {
+                ClearSelectedItems(false);
+                ToggleInventory();
+            }
 
-        // Disable Inventory menus if they are open and tab is pressed
-        if (GameControls.gamePlayActions.tab.WasPressed)
-        {
-            ClearSelectedItems();
-            DisableInventoryMenus();
-        }
+            // Disable Inventory menus if they are open and tab is pressed
+            if (GameControls.gamePlayActions.tab.WasPressed)
+            {
+                ClearSelectedItems(false);
+                DisableInventoryMenus();
+            }
 
-        // Take everything from an open container or the ground
-        if (GameControls.gamePlayActions.menuContainerTakeAll.WasPressed && gm.containerInvUI.inventoryParent.activeSelf)
-        {
-            ClearSelectedItems();
-            gm.containerInvUI.TakeAll();
-        }
+            // Take everything from an open container or the ground
+            if (GameControls.gamePlayActions.menuContainerTakeAll.WasPressed && gm.containerInvUI.inventoryParent.activeSelf)
+            {
+                ClearSelectedItems(false);
+                gm.containerInvUI.TakeAll();
+            }
 
-        // Use Item
-        if (GameControls.gamePlayActions.menuUseItem.WasPressed)
-        {
-            ClearSelectedItems();
+            // Build the context menu
+            if (GameControls.gamePlayActions.menuContext.WasPressed)
+            {
+                ClearSelectedItems(false);
 
-            if (activeInvItem != null)
-                activeInvItem.UseItem();
+                if (gm.contextMenu.isActive == false && activeInvItem != null && activeInvItem.itemData != null)
+                    gm.contextMenu.BuildContextMenu(activeInvItem);
+                else if (gm.contextMenu.isActive)
+                    gm.contextMenu.DisableContextMenu();
 
-            DisableInventoryUIComponents();
+                if (gm.stackSizeSelector.isActive)
+                    gm.stackSizeSelector.HideStackSizeSelector();
+            }
+
+            // Split stack
+            if (GameControls.gamePlayActions.menuSelect.WasPressed && GameControls.gamePlayActions.leftAlt.IsPressed)
+            {
+                ClearSelectedItems(false);
+
+                if (activeInvItem != null && activeInvItem.itemData != null && activeInvItem.itemData.currentStackSize > 1 && activeInvItem != gm.stackSizeSelector.selectedInvItem)
+                {
+                    // Show the Stack Size Selector
+                    gm.stackSizeSelector.ShowStackSizeSelector(activeInvItem);
+                }
+                else if (gm.stackSizeSelector.isActive && (activeInvItem == null || activeInvItem.itemData == null || activeInvItem.itemData.currentStackSize == 1))
+                {
+                    // Hide the Stack Size Selector
+                    gm.stackSizeSelector.HideStackSizeSelector();
+                }
+            }
+
+            // Use Item
+            if (GameControls.gamePlayActions.menuUseItem.WasPressed)
+            {
+                ClearSelectedItems(false);
+
+                if (activeInvItem != null)
+                    activeInvItem.UseItem();
+
+                DisableInventoryUIComponents();
+            }
+
+            // Select all
+            if (GameControls.gamePlayActions.leftCtrl.IsPressed && GameControls.gamePlayActions.a.WasPressed)
+                SelectAll();
+
+            // Clear selected items if we only left click on an item that's not already selected
+            if (GameControls.gamePlayActions.menuSelect.WasPressed && GameControls.gamePlayActions.leftCtrl.IsPressed == false && GameControls.gamePlayActions.leftShift.IsPressed == false
+                && selectedItems.Contains(activeInvItem) == false)
+            {
+                ClearSelectedItems(false);
+            }
         }
         
         // Transfer or drop item
@@ -152,15 +198,12 @@ public class UIManager : MonoBehaviour
             // Setup the image for the item we're dragging
             if (activeGhostInvItems.Count == 0)
             {
-                for (int i = 0; i < invItemsDragging.Count; i++)
+                if (invItemsDragging.Contains(activeInvItem))
                 {
-                    InventoryItem newGhostInvItem = gm.objectPoolManager.ghostImageInventoryItemObjectPool.GetPooledInventoryItem();
-                    activeGhostInvItems.Add(newGhostInvItem);
-                    newGhostInvItem.isGhostItem = true;
-                    newGhostInvItem.itemData = invItemsDragging[i].itemData;
-                    newGhostInvItem.UpdateAllItemTexts();
-                    newGhostInvItem.gameObject.SetActive(true);
-                    invItemsDragging[i].Hide();
+                    for (int i = 0; i < invItemsDragging.Count; i++)
+                    {
+                        CreateNewGhostItem(invItemsDragging[i]);
+                    }
                 }
             }
 
@@ -178,44 +221,21 @@ public class UIManager : MonoBehaviour
             else
                 DragAndDrop_DragItem(activeInvItem);
         }
-
-        if (GameControls.gamePlayActions.leftCtrl.IsPressed && GameControls.gamePlayActions.a.WasPressed)
-            SelectAll();
-
-        // Build the context menu
-        if (GameControls.gamePlayActions.menuContext.WasPressed)
-        {
-            ClearSelectedItems();
-
-            if (gm.contextMenu.isActive == false && activeInvItem != null && activeInvItem.itemData != null)
-                gm.contextMenu.BuildContextMenu(activeInvItem);
-            else if (gm.contextMenu.isActive)
-                gm.contextMenu.DisableContextMenu();
-
-            if (gm.stackSizeSelector.isActive)
-                gm.stackSizeSelector.HideStackSizeSelector();
-        }
         
         // Disable the context menu
         if (GameControls.gamePlayActions.menuSelect.WasPressed && gm.contextMenu.isActive && activeContextMenuButton == null)
             StartCoroutine(gm.contextMenu.DelayDisableContextMenu());
+    }
 
-        // Split stack
-        if (GameControls.gamePlayActions.menuSelect.WasPressed && GameControls.gamePlayActions.leftAlt.IsPressed)
-        {
-            ClearSelectedItems();
-
-            if (activeInvItem != null && activeInvItem.itemData != null && activeInvItem.itemData.currentStackSize > 1 && activeInvItem != gm.stackSizeSelector.selectedInvItem)
-            {
-                // Show the Stack Size Selector
-                gm.stackSizeSelector.ShowStackSizeSelector(activeInvItem);
-            }
-            else if (gm.stackSizeSelector.isActive && (activeInvItem == null || activeInvItem.itemData == null || activeInvItem.itemData.currentStackSize == 1))
-            {
-                // Hide the Stack Size Selector
-                gm.stackSizeSelector.HideStackSizeSelector();
-            }
-        }
+    void CreateNewGhostItem(InventoryItem originalItem)
+    {
+        InventoryItem newGhostInvItem = gm.objectPoolManager.ghostImageInventoryItemObjectPool.GetPooledInventoryItem();
+        activeGhostInvItems.Add(newGhostInvItem);
+        newGhostInvItem.isGhostItem = true;
+        newGhostInvItem.itemData = originalItem.itemData;
+        newGhostInvItem.UpdateAllItemTexts();
+        newGhostInvItem.gameObject.SetActive(true);
+        originalItem.Hide();
     }
 
     void SelectItem(InventoryItem invItem)
@@ -236,11 +256,15 @@ public class UIManager : MonoBehaviour
 
     void DeselectItem(InventoryItem invItem)
     {
-        if (invItem == firstSelectedItem)
-            firstSelectedItem = null;
-
         selectedItems.Remove(invItem);
         invItem.RemoveHighlight();
+
+        if (invItem == firstSelectedItem)
+        {
+            firstSelectedItem = null;
+            if (selectedItems.Count > 0)
+                firstSelectedItem = selectedItems[0];
+        }
 
         DisableInventoryUIComponents();
     }
@@ -250,20 +274,24 @@ public class UIManager : MonoBehaviour
         DeselectItem(activeInvItem);
     }
 
-    void ClearSelectedItems()
+    void ClearSelectedItems(bool keepFirstSelectedItem)
     {
         for (int i = 0; i < selectedItems.Count; i++)
         {
             selectedItems[i].RemoveHighlight();
         }
 
-        firstSelectedItem = null;
         selectedItems.Clear();
+
+        if (keepFirstSelectedItem == false)
+            firstSelectedItem = null;
+        else if (firstSelectedItem != null)
+            SelectItem(firstSelectedItem);
     }
 
     void SelectAll()
     {
-        ClearSelectedItems();
+        ClearSelectedItems(false);
 
         if (activeInvUI != null)
         {
@@ -284,42 +312,47 @@ public class UIManager : MonoBehaviour
     {
         if (selectedItems.Count == 0) // If we haven't selected an item yet, select the item we just selected and highlight the item
             SelectActiveItem();
-        else if (activeInvItem != null)
+        else
         {
             if (activeInvItem == firstSelectedItem) // If the item we selected is the same as the fist item we selected, clear the selected items list and remove highlighting
-                ClearSelectedItems();
+                ClearSelectedItems(false);
             else if (activeInvItem.transform.position.y > firstSelectedItem.transform.position.y) // If the item we selected is above the first item we selected
             {
-                for (int i = 0; i < activeInvUI.inventoryItemObjectPool.pooledInventoryItems.Count; i++) // Go through our pooled inventory items
+                // Clear out the selected items (but not the first selected item), so that we can recalculate which items to select
+                ClearSelectedItems(true);
+
+                // Go through our pooled inventory items
+                for (int i = 0; i < activeInvUI.inventoryItemObjectPool.activePooledInventoryItems.Count; i++)
                 {
                     // If the pooled inventory item is active and is not the first inventory item we selected
-                    if (activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i].gameObject.activeSelf && firstSelectedItem != activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i])
+                    if (activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i] != firstSelectedItem)
                     {
-                        // If the mouse pointer is below the pooled inventory item
-                        if (Input.mousePosition.y > activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i].transform.position.y)
+                        // If the mouse pointer is above the pooled inventory item and the pooled item is above the first item we selected
+                        if (activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i] == activeInvItem 
+                            || (Input.mousePosition.y > activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i].transform.position.y 
+                            && activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i].transform.position.y > firstSelectedItem.transform.position.y))
                         {
-                            if (selectedItems.Contains(activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i]))
-                                DeselectItem(activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i]);
-                            else
-                                SelectItem(activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i]);
+                            SelectItem(activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i]);
                         }
                     }
                 }
             }
-            else if (activeInvItem.transform.position.y < firstSelectedItem.transform.position.y) // If the item we selected is below the first item we selected
+            else // If the item we selected is below the first item we selected
             {
-                for (int i = 0; i < activeInvUI.inventoryItemObjectPool.pooledInventoryItems.Count; i++) // Go through our pooled inventory items
+                // Clear out the selected items (but not the first selected item), so that we can recalculate which items to select
+                ClearSelectedItems(true);
+
+                for (int i = 0; i < activeInvUI.inventoryItemObjectPool.activePooledInventoryItems.Count; i++) // Go through our pooled inventory items
                 {
                     // If the pooled inventory item is active and is not the first inventory item we selected
-                    if (activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i].gameObject.activeSelf && firstSelectedItem != activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i])
+                    if (activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i] != firstSelectedItem)
                     {
-                        // If the mouse pointer is above the pooled inventory item
-                        if (Input.mousePosition.y > activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i].transform.position.y)
+                        // If the mouse pointer is below the pooled inventory item and the pooled item is below the first item we selected
+                        if (activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i] == activeInvItem 
+                            || (Input.mousePosition.y < activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i].transform.position.y
+                            && activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i].transform.position.y < firstSelectedItem.transform.position.y))
                         {
-                            if (selectedItems.Contains(activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i]))
-                                DeselectItem(activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i]);
-                            else
-                                SelectItem(activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i]);
+                            SelectItem(activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i]);
                         }
                     }
                 }
@@ -329,6 +362,13 @@ public class UIManager : MonoBehaviour
 
     void DragAndDrop_DragItem(InventoryItem draggedInvItem)
     {
+        // Failsafe in case the dragged item is somehow null
+        if (draggedInvItem == null)
+        {
+            ClearSelectedItems(false);
+            return;
+        }
+
         // Once the timer is above the minDragTime, start dragging
         if (dragTimer >= minDragTime)
         {
@@ -439,6 +479,9 @@ public class UIManager : MonoBehaviour
                 if (inv.Add(draggedInvItem, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory))
                 {
                     // If the item was added to the inventory:
+                    // Play the add item effect
+                    StartCoroutine(gm.containerInvUI.PlayAddItemEffect(draggedInvItem.itemData.item.pickupSprite, activeContainerSideBarButton, null));
+
                     // If we took the item from an inventory, remove the item
                     RemoveDraggedItem(draggedInvItem, startingItemCount);
 
@@ -471,6 +514,9 @@ public class UIManager : MonoBehaviour
             if (inv.Add(draggedInvItem, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory))
             {
                 // If the item was added to the inventory:
+                // Play the add item effect
+                StartCoroutine(gm.playerInvUI.PlayAddItemEffect(draggedInvItem.itemData.item.pickupSprite, null, activePlayerInvSideBarButton));
+
                 // Remove, unequip or clear the item we were dragging, depending where it's coming from
                 RemoveDraggedItem(draggedInvItem, startingItemCount);
 
@@ -500,6 +546,12 @@ public class UIManager : MonoBehaviour
 
             if (wasAddedToInventory)
             {
+                // Play the add item effect
+                if (activeInvUI == gm.containerInvUI)
+                    StartCoroutine(gm.containerInvUI.PlayAddItemEffect(draggedInvItem.itemData.item.pickupSprite, gm.containerInvUI.activeContainerSideBarButton, null));
+                else
+                    StartCoroutine(gm.containerInvUI.PlayAddItemEffect(draggedInvItem.itemData.item.pickupSprite, null, gm.playerInvUI.activePlayerInvSideBarButton));
+
                 // Remove, unequip or clear the item we were dragging, depending where it's coming from
                 RemoveDraggedItem(draggedInvItem, startingItemCount);
 
@@ -520,7 +572,7 @@ public class UIManager : MonoBehaviour
             draggedInvItem.myInvUI.UpdateUINumbers();
         }
 
-        // Renable components for the dragged item
+        // Re-enable components for the dragged item, since they were disabled previously
         if (draggedInvItem != null)
             draggedInvItem.Show();
     }

@@ -27,6 +27,7 @@ public class ContainerInventoryUI : InventoryUI
     [HideInInspector] public Inventory northInventory, southInventory, westInventory, eastInventory, northwestInventory, northeastInventory, southwestInventory, southeastInventory;
 
     [HideInInspector] public Direction activeDirection;
+    [HideInInspector] public ContainerSideBarButton activeContainerSideBarButton;
 
     LayerMask interactableMask;
 
@@ -291,8 +292,10 @@ public class ContainerInventoryUI : InventoryUI
                 inventoryNameText.text = "Items Under Self";
                 weightText.text = GetTotalWeight(playerPositionItems).ToString();
                 volumeText.text = GetTotalVolume(playerPositionItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                activeContainerSideBarButton = playerPositionSideBarButton;
                 break;
             case Direction.North:
+                activeContainerSideBarButton = northSideBarButton;
                 if (northInventory != null)
                     SetupContainerUI(northInventory, northSideBarButton.icon, northItems);
                 else
@@ -303,6 +306,7 @@ public class ContainerInventoryUI : InventoryUI
                 }
                 break;
             case Direction.South:
+                activeContainerSideBarButton = southSideBarButton;
                 if (southInventory != null)
                     SetupContainerUI(southInventory, southSideBarButton.icon, southItems);
                 else
@@ -313,6 +317,7 @@ public class ContainerInventoryUI : InventoryUI
                 }
                 break;
             case Direction.West:
+                activeContainerSideBarButton = westSideBarButton;
                 if (westInventory != null)
                     SetupContainerUI(westInventory, westSideBarButton.icon, westItems);
                 else
@@ -323,6 +328,7 @@ public class ContainerInventoryUI : InventoryUI
                 }
                 break;
             case Direction.East:
+                activeContainerSideBarButton = eastSideBarButton;
                 if (eastInventory != null)
                     SetupContainerUI(eastInventory, eastSideBarButton.icon, eastItems);
                 else
@@ -333,6 +339,7 @@ public class ContainerInventoryUI : InventoryUI
                 }
                 break;
             case Direction.Northwest:
+                activeContainerSideBarButton = northwestSideBarButton;
                 if (northwestInventory != null)
                     SetupContainerUI(northwestInventory, northwestSideBarButton.icon, northwestItems);
                 else
@@ -343,6 +350,7 @@ public class ContainerInventoryUI : InventoryUI
                 }
                 break;
             case Direction.Northeast:
+                activeContainerSideBarButton = northeastSideBarButton;
                 if (northeastInventory != null)
                     SetupContainerUI(northeastInventory, northeastSideBarButton.icon, northeastItems);
                 else
@@ -353,6 +361,7 @@ public class ContainerInventoryUI : InventoryUI
                 }
                 break;
             case Direction.Southwest:
+                activeContainerSideBarButton = southwestSideBarButton;
                 if (southwestInventory != null)
                     SetupContainerUI(southwestInventory, southwestSideBarButton.icon, southwestItems);
                 else
@@ -363,6 +372,7 @@ public class ContainerInventoryUI : InventoryUI
                 }
                 break;
             case Direction.Southeast:
+                activeContainerSideBarButton = southeastSideBarButton;
                 if (southeastInventory != null)
                     SetupContainerUI(southeastInventory, southeastSideBarButton.icon, southeastItems);
                 else
@@ -682,6 +692,33 @@ public class ContainerInventoryUI : InventoryUI
                 break;
             default:
                 break;
+        }
+    }
+
+    public ContainerSideBarButton GetSideBarButtonFromDirection(Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.Center:
+                return playerPositionSideBarButton;
+            case Direction.North:
+                return northSideBarButton;
+            case Direction.South:
+                return southSideBarButton;
+            case Direction.West:
+                return westSideBarButton;
+            case Direction.East:
+                return eastSideBarButton;
+            case Direction.Northwest:
+                return northwestSideBarButton;
+            case Direction.Northeast:
+                return northeastSideBarButton;
+            case Direction.Southwest:
+                return southwestSideBarButton;
+            case Direction.Southeast:
+                return southeastSideBarButton;
+            default:
+                return null;
         }
     }
 

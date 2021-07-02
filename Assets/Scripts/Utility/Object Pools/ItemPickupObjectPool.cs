@@ -39,9 +39,9 @@ public class ItemPickupObjectPool : ObjectPool
 
     public ItemPickup GetPooledItemPickup()
     {
-        for (int i = 0; i < pooledObjects.Count; i++)
+        for (int i = 0; i < pooledItemPickups.Count; i++)
         {
-            if (pooledObjects[i].activeInHierarchy == false)
+            if (pooledItemPickups[i].gameObject.activeSelf == false)
                 return pooledItemPickups[i];
         }
 

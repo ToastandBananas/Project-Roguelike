@@ -42,7 +42,7 @@ public class InventoryItemObjectPool : ObjectPool
 
     public InventoryItem GetPooledInventoryItem()
     {
-        for (int i = 0; i < pooledObjects.Count; i++)
+        for (int i = 0; i < pooledInventoryItems.Count; i++)
         {
             if (pooledInventoryItems[i].itemData == null)
             {
