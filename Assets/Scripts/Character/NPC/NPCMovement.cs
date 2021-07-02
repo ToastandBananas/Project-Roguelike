@@ -64,7 +64,7 @@ public class NPCMovement : Movement
     {
         base.Start();
 
-        turnManager.npcs.Add(this);
+        gm.turnManager.npcs.Add(this);
     }
 
     public void TakeTurn()
@@ -110,7 +110,7 @@ public class NPCMovement : Movement
             else
                 return transform.position;
 
-            if (gameTiles.gridGraph.GetNearest(nextPos).node.Tag == 31)
+            if (gm.gameTiles.gridGraph.GetNearest(nextPos).node.Tag == 31)
                 return transform.position;
             else
             {

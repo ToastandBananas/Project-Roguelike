@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler
 {
     public Sprite defaultSprite, highlightedSprite;
     public ItemData itemData;
@@ -33,6 +33,26 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         itemVolumeText = transform.GetChild(4).GetComponent<TextMeshProUGUI>();
 
         gm = GameManager.instance;
+    }
+
+    public void OnPointerMove(PointerEventData eventData)
+    {
+        if (isGhostItem == false && gm.uiManager.activeInvItem != this)
+        {
+            gm.uiManager.activeInvItem = this;
+            Highlight();
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (isGhostItem == false && gm.uiManager.activeInvItem == this)
+        {
+            if (gm.uiManager.selectedItems.Contains(this) == false)
+                RemoveHighlight();
+
+            gm.uiManager.activeInvItem = null;
+        }
     }
 
     public void ResetInvItem()
@@ -95,26 +115,6 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         itemAmountText.text = itemData.currentStackSize.ToString();
         itemWeightText.text = (Mathf.RoundToInt(itemData.item.weight * itemData.currentStackSize * 100f) / 100f).ToString();
         itemVolumeText.text = (Mathf.RoundToInt(itemData.item.volume * itemData.currentStackSize * 100f) / 100f).ToString();
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        if (isGhostItem == false)
-        {
-            gm.uiManager.activeInvItem = this;
-            Highlight();
-        }
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        if (isGhostItem == false && gm.uiManager.activeInvItem == this)
-        {
-            if (gm.uiManager.selectedItems.Contains(this) == false)
-                RemoveHighlight();
-
-            gm.uiManager.activeInvItem = null;
-        }
     }
 
     public void Highlight()

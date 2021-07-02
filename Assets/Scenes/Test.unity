@@ -189,7 +189,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &44885702
 RectTransform:
   m_ObjectHideFlags: 0
@@ -248,9 +248,9 @@ RectTransform:
   m_Father: {fileID: 780142222}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 37.5, y: -37.5}
   m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &46217351
@@ -335,7 +335,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_RootOrder
-      value: 17
+      value: 44
       objectReference: {fileID: 0}
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_LocalPosition.x
@@ -430,9 +430,9 @@ RectTransform:
   m_Father: {fileID: 374535750}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 37.5, y: -562.5}
   m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &85766086
@@ -487,6 +487,96 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   directionFromPlayer: 7
   icon: {fileID: 0}
+--- !u!1001 &92947422
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 23
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (17)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &92947423 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 92947422}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &102659237
 GameObject:
   m_ObjectHideFlags: 0
@@ -520,7 +610,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -859,7 +949,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1069,6 +1159,89 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 155621157}
   m_CullTransparentMesh: 1
+--- !u!1 &156264625
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 156264626}
+  - component: {fileID: 156264627}
+  m_Layer: 6
+  m_Name: Pants
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &156264626
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 156264625}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 893358598}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &156264627
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 156264625}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 792488805
+  m_SortingLayer: 6
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &167861813
 GameObject:
   m_ObjectHideFlags: 0
@@ -1201,6 +1374,89 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 167861813}
   m_CullTransparentMesh: 1
+--- !u!1 &180187422
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 180187423}
+  - component: {fileID: 180187424}
+  m_Layer: 6
+  m_Name: Boots
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &180187423
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 180187422}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 893358598}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &180187424
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 180187422}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 792488805
+  m_SortingLayer: 6
+  m_SortingOrder: 2
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &193172372
 GameObject:
   m_ObjectHideFlags: 0
@@ -1333,6 +1589,96 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 193172372}
   m_CullTransparentMesh: 1
+--- !u!1001 &204552607
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (26)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &204552608 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 204552607}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &211498756
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1342,7 +1688,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1418,6 +1764,172 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!1 &218378755
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 218378756}
+  - component: {fileID: 218378757}
+  m_Layer: 6
+  m_Name: Gloves
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &218378756
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218378755}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1850000026}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &218378757
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218378755}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 792488805
+  m_SortingLayer: 6
+  m_SortingOrder: 5
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!1 &223936559
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 223936560}
+  - component: {fileID: 223936561}
+  m_Layer: 6
+  m_Name: Helmet
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &223936560
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223936559}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1850000026}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &223936561
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223936559}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 792488805
+  m_SortingLayer: 6
+  m_SortingOrder: 7
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &225630627
 GameObject:
   m_ObjectHideFlags: 0
@@ -1555,6 +2067,96 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
   m_PrefabInstance: {fileID: 1048482991}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &231167817
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (24)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &231167818 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 231167817}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &252370508
 GameObject:
   m_ObjectHideFlags: 0
@@ -1666,9 +2268,9 @@ RectTransform:
   m_Father: {fileID: 780142222}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 37.5, y: -337.5}
   m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &258920317
@@ -1744,6 +2346,89 @@ MonoBehaviour:
   myInventoryUI: {fileID: 0}
   inventoryOwner: {fileID: 0}
   hasBeenInitialized: 0
+--- !u!1 &260916206
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 260916207}
+  - component: {fileID: 260916208}
+  m_Layer: 6
+  m_Name: Left Weapon/Shield
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &260916207
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260916206}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 893358598}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &260916208
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260916206}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 792488805
+  m_SortingLayer: 6
+  m_SortingOrder: 4
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &261717451
 GameObject:
   m_ObjectHideFlags: 0
@@ -1776,9 +2461,9 @@ RectTransform:
   m_Father: {fileID: 1706839991}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 459, y: -17.5}
   m_SizeDelta: {x: 105, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &261717453
@@ -2324,9 +3009,9 @@ RectTransform:
   m_Father: {fileID: 780142222}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 37.5, y: -187.5}
   m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &339075287
@@ -2794,6 +3479,96 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 383303779}
   m_CullTransparentMesh: 1
+--- !u!1001 &399191783
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 39
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (33)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &399191784 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 399191783}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &407343483
 GameObject:
   m_ObjectHideFlags: 0
@@ -3161,6 +3936,96 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &454587464
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (12)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &454587465 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 454587464}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &468830051
 GameObject:
   m_ObjectHideFlags: 0
@@ -3501,6 +4366,96 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1001 &501447047
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (18)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &501447048 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 501447047}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &514569382
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3566,6 +4521,96 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 3749062138308843613, guid: b3e2231364fb8e14ba521ef01c6406c4, type: 3}
   m_PrefabInstance: {fileID: 514569382}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &518640071
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (28)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &518640072 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 518640071}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &519101911
 GameObject:
@@ -3833,9 +4878,9 @@ RectTransform:
   m_Father: {fileID: 348165657}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 158.25, y: -17.5}
   m_SizeDelta: {x: 316.5, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &535248451
@@ -3935,6 +4980,96 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 535248449}
   m_CullTransparentMesh: 1
+--- !u!1001 &535562570
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (22)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &535562571 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 535562570}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &541307255
 GameObject:
   m_ObjectHideFlags: 0
@@ -4007,6 +5142,96 @@ RectTransform:
   m_AnchoredPosition: {x: 3, y: 0}
   m_SizeDelta: {x: 160, y: 21.7}
   m_Pivot: {x: 0.5, y: 1}
+--- !u!1001 &548021053
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 42
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (36)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &548021054 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 548021053}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &549636862
 GameObject:
   m_ObjectHideFlags: 0
@@ -4092,10 +5317,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 549636862}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 7.5, z: 0}
+  m_LocalPosition: {x: 1.5, y: 7.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1231082239}
+  - {fileID: 893358598}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4143,12 +5369,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isMoving: 0
   onCooldown: 0
-  gameTiles: {fileID: 519101914}
-  turnManager: {fileID: 0}
   movementObstacleMask:
     serializedVersion: 2
     m_Bits: 12608
-  containerInvUI: {fileID: 0}
+  gm: {fileID: 0}
 --- !u!58 &549636868
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4199,6 +5423,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   alliances: {fileID: 0}
+  equippedItemsSpriteManager: {fileID: 0}
   equipmentManager: {fileID: 0}
   inventory: {fileID: 0}
   movement: {fileID: 0}
@@ -4273,7 +5498,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_RootOrder
-      value: 15
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4989,6 +6214,96 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7091190729595735504, guid: 2dc8b065fb3d2194faf6beefc11766fc, type: 3}
   m_PrefabInstance: {fileID: 604750578}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &651870760
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 37
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (31)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &651870761 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 651870760}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &656325476
 GameObject:
   m_ObjectHideFlags: 0
@@ -5257,6 +6572,96 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 661034285}
   m_CullTransparentMesh: 1
+--- !u!1001 &667269023
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (34)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &667269024 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 667269023}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &667730162
 GameObject:
   m_ObjectHideFlags: 0
@@ -5293,9 +6698,9 @@ RectTransform:
   m_Father: {fileID: 780142222}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 37.5, y: -487.5}
   m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &667730164
@@ -5371,6 +6776,96 @@ MonoBehaviour:
   myInventoryUI: {fileID: 0}
   inventoryOwner: {fileID: 0}
   hasBeenInitialized: 0
+--- !u!1001 &672116282
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (13)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &672116283 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 672116282}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &673320866
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5380,7 +6875,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5697,9 +7192,9 @@ RectTransform:
   m_Father: {fileID: 348165657}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 459, y: -17.5}
   m_SizeDelta: {x: 105, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &679516707
@@ -6051,6 +7546,179 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1001 &733662104
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (15)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &733662105 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 733662104}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &740054740
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 740054741}
+  - component: {fileID: 740054742}
+  m_Layer: 6
+  m_Name: Pants
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &740054741
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740054740}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1850000026}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &740054742
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740054740}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 792488805
+  m_SortingLayer: 6
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1001 &762055251
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6060,7 +7728,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6136,6 +7804,96 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!1001 &767260023
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (19)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &767260024 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 767260023}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &778039913
 GameObject:
   m_ObjectHideFlags: 0
@@ -6431,6 +8189,96 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 784989889}
   m_CullTransparentMesh: 1
+--- !u!1001 &788477200
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (10)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &788477201 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 788477200}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &788565930
 GameObject:
   m_ObjectHideFlags: 0
@@ -6466,9 +8314,9 @@ RectTransform:
   m_Father: {fileID: 374535750}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 37.5, y: -412.5}
   m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &788565932
@@ -6583,12 +8431,39 @@ Transform:
   - {fileID: 227473640}
   - {fileID: 1519758761}
   - {fileID: 992283576}
+  - {fileID: 1662779842}
+  - {fileID: 733662105}
   - {fileID: 2002137458}
   - {fileID: 2093282655}
-  - {fileID: 1662779842}
   - {fileID: 1859289227}
   - {fileID: 1820506296}
   - {fileID: 1000842339}
+  - {fileID: 788477201}
+  - {fileID: 966305652}
+  - {fileID: 454587465}
+  - {fileID: 672116283}
+  - {fileID: 1724187675}
+  - {fileID: 1803704908}
+  - {fileID: 92947423}
+  - {fileID: 501447048}
+  - {fileID: 767260024}
+  - {fileID: 911892937}
+  - {fileID: 1389290901}
+  - {fileID: 535562571}
+  - {fileID: 1538945030}
+  - {fileID: 231167818}
+  - {fileID: 1630647588}
+  - {fileID: 204552608}
+  - {fileID: 883681017}
+  - {fileID: 518640072}
+  - {fileID: 1852145731}
+  - {fileID: 905170757}
+  - {fileID: 651870761}
+  - {fileID: 1970942604}
+  - {fileID: 399191784}
+  - {fileID: 667269024}
+  - {fileID: 1131499904}
+  - {fileID: 548021054}
   - {fileID: 1558640265}
   - {fileID: 795916320}
   m_Father: {fileID: 0}
@@ -6754,12 +8629,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextMenu: {fileID: 0}
   containerInvUI: {fileID: 0}
+  gameTiles: {fileID: 0}
   playerInvUI: {fileID: 0}
   playerManager: {fileID: 0}
   dropItemController: {fileID: 0}
   objectPoolManager: {fileID: 0}
   stackSizeSelector: {fileID: 0}
   tooltipManager: {fileID: 0}
+  turnManager: {fileID: 0}
   uiManager: {fileID: 0}
 --- !u!114 &840856819
 MonoBehaviour:
@@ -7053,9 +8930,9 @@ RectTransform:
   m_Father: {fileID: 374535750}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 37.5, y: -37.5}
   m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &855631852
@@ -7158,6 +9035,89 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &863907236
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 863907237}
+  - component: {fileID: 863907238}
+  m_Layer: 6
+  m_Name: Leg Armor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &863907237
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 863907236}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1850000026}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &863907238
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 863907236}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 792488805
+  m_SortingLayer: 6
+  m_SortingOrder: 3
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &868000239
 GameObject:
   m_ObjectHideFlags: 0
@@ -7193,9 +9153,9 @@ RectTransform:
   m_Father: {fileID: 374535750}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 37.5, y: -262.5}
   m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &868000241
@@ -7418,6 +9378,96 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!1001 &883681016
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 33
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (27)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &883681017 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 883681016}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &887206277
 GameObject:
   m_ObjectHideFlags: 0
@@ -7513,6 +9563,67 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 887206277}
   m_CullTransparentMesh: 1
+--- !u!1 &893358597
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 893358598}
+  - component: {fileID: 893358599}
+  m_Layer: 6
+  m_Name: Equipped Item Sprites
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &893358598
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 893358597}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 260916207}
+  - {fileID: 2054815690}
+  - {fileID: 1942553740}
+  - {fileID: 1053763792}
+  - {fileID: 2056517706}
+  - {fileID: 156264626}
+  - {fileID: 1582947965}
+  - {fileID: 180187423}
+  - {fileID: 1180910944}
+  m_Father: {fileID: 549636864}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &893358599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 893358597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d018885c3a5ed140a4b2b694334ef09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftWeapon: {fileID: 260916208}
+  rightWeapon: {fileID: 260916208}
+  helmet: {fileID: 1942553741}
+  shirt: {fileID: 1053763793}
+  bodyArmor: {fileID: 2056517707}
+  pants: {fileID: 156264627}
+  legArmor: {fileID: 1582947966}
+  boots: {fileID: 180187424}
+  gloves: {fileID: 1180910945}
 --- !u!1 &897516210
 GameObject:
   m_ObjectHideFlags: 0
@@ -7647,6 +9758,96 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 897516210}
   m_CullTransparentMesh: 1
+--- !u!1001 &905170756
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (30)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &905170757 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 905170756}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &906846102
 GameObject:
   m_ObjectHideFlags: 0
@@ -7848,6 +10049,96 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 909946529}
   m_CullTransparentMesh: 1
+--- !u!1001 &911892936
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (20)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &911892937 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 911892936}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &922356756
 GameObject:
   m_ObjectHideFlags: 0
@@ -8184,9 +10475,9 @@ RectTransform:
   m_Father: {fileID: 348165657}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 564, y: -17.5}
   m_SizeDelta: {x: 105, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &964968685
@@ -8286,6 +10577,96 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 964968683}
   m_CullTransparentMesh: 1
+--- !u!1001 &966305651
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (11)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &966305652 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 966305651}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &966907902
 GameObject:
   m_ObjectHideFlags: 0
@@ -9185,9 +11566,9 @@ RectTransform:
   m_Father: {fileID: 1706839991}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 361.5, y: -17.5}
   m_SizeDelta: {x: 90, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &986774936
@@ -9338,9 +11719,9 @@ RectTransform:
   m_Father: {fileID: 780142222}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 37.5, y: -112.5}
   m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1018013451
@@ -9501,6 +11882,89 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!1 &1053763791
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1053763792}
+  - component: {fileID: 1053763793}
+  m_Layer: 6
+  m_Name: Shirt
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1053763792
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053763791}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 893358598}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1053763793
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053763791}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 792488805
+  m_SortingLayer: 6
+  m_SortingOrder: 4
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1001 &1057419817
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9732,9 +12196,9 @@ RectTransform:
   m_Father: {fileID: 780142222}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 37.5, y: -412.5}
   m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1081208291
@@ -10148,7 +12612,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -10190,6 +12654,96 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1123691230}
   m_CullTransparentMesh: 1
+--- !u!1001 &1131499903
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 41
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (35)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &1131499904 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 1131499903}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1132432441
 GameObject:
   m_ObjectHideFlags: 0
@@ -10405,6 +12959,89 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1154408671}
   m_CullTransparentMesh: 1
+--- !u!1 &1159966797
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1159966798}
+  - component: {fileID: 1159966799}
+  m_Layer: 6
+  m_Name: Body Armor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1159966798
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1159966797}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1850000026}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1159966799
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1159966797}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 792488805
+  m_SortingLayer: 6
+  m_SortingOrder: 6
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &1164145248
 GameObject:
   m_ObjectHideFlags: 0
@@ -10607,7 +13244,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1167777805
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10666,6 +13303,89 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1180910943
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1180910944}
+  - component: {fileID: 1180910945}
+  m_Layer: 6
+  m_Name: Gloves
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1180910944
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1180910943}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 893358598}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1180910945
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1180910943}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 792488805
+  m_SortingLayer: 6
+  m_SortingOrder: 5
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &1193374489
 GameObject:
   m_ObjectHideFlags: 0
@@ -10759,6 +13479,89 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!1 &1194366748
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1194366749}
+  - component: {fileID: 1194366750}
+  m_Layer: 6
+  m_Name: Shirt
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1194366749
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194366748}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1850000026}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1194366750
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194366748}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 792488805
+  m_SortingLayer: 6
+  m_SortingOrder: 4
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &1202828428
 GameObject:
   m_ObjectHideFlags: 0
@@ -10927,9 +13730,9 @@ RectTransform:
   m_Father: {fileID: 374535750}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 37.5, y: -112.5}
   m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1206380380
@@ -11106,9 +13909,9 @@ RectTransform:
   m_Father: {fileID: 1706839991}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 669, y: -17.5}
   m_SizeDelta: {x: 105, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1217730148
@@ -11752,9 +14555,9 @@ RectTransform:
   m_Father: {fileID: 374535750}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 37.5, y: -337.5}
   m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1292415926
@@ -12182,9 +14985,9 @@ RectTransform:
   m_Father: {fileID: 374535750}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 37.5, y: -637.5}
   m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1312161029
@@ -12324,7 +15127,7 @@ GameObject:
   - component: {fileID: 1347319898}
   - component: {fileID: 1347319894}
   m_Layer: 6
-  m_Name: NPC
+  m_Name: Goblin
   m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12344,12 +15147,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isMoving: 0
   onCooldown: 0
-  gameTiles: {fileID: 0}
-  turnManager: {fileID: 0}
   movementObstacleMask:
     serializedVersion: 2
     m_Bits: 12608
-  containerInvUI: {fileID: 0}
+  gm: {fileID: 0}
   fleeObstacleMask:
     serializedVersion: 2
     m_Bits: 256
@@ -12456,6 +15257,7 @@ Transform:
   m_Children:
   - {fileID: 1843916194}
   - {fileID: 906846103}
+  - {fileID: 1850000026}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -12604,6 +15406,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   alliances: {fileID: 0}
+  equippedItemsSpriteManager: {fileID: 0}
   equipmentManager: {fileID: 0}
   inventory: {fileID: 0}
   movement: {fileID: 0}
@@ -12694,6 +15497,96 @@ MonoBehaviour:
   characterManager: {fileID: 0}
   hitCollider: {fileID: 0}
   canTakeDamage: 1
+--- !u!1001 &1389290900
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 27
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (21)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &1389290901 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 1389290900}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1395917814
 GameObject:
   m_ObjectHideFlags: 0
@@ -12780,9 +15673,9 @@ RectTransform:
   m_Father: {fileID: 374535750}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 37.5, y: -487.5}
   m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1397364505
@@ -13424,7 +16317,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_LocalPosition.x
@@ -13668,9 +16561,9 @@ RectTransform:
   m_Father: {fileID: 780142222}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 37.5, y: -562.5}
   m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1479651097
@@ -13779,9 +16672,9 @@ RectTransform:
   m_Father: {fileID: 780142222}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 37.5, y: -262.5}
   m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1482783564
@@ -13923,6 +16816,89 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
   m_PrefabInstance: {fileID: 379496307}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1527874947
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1527874948}
+  - component: {fileID: 1527874949}
+  m_Layer: 6
+  m_Name: Boots
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1527874948
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1527874947}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1850000026}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1527874949
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1527874947}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 792488805
+  m_SortingLayer: 6
+  m_SortingOrder: 2
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &1531877140
 GameObject:
   m_ObjectHideFlags: 0
@@ -15102,6 +18078,96 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1001 &1538945029
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (23)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &1538945030 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 1538945029}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1541563278
 GameObject:
   m_ObjectHideFlags: 0
@@ -15268,9 +18334,9 @@ RectTransform:
   m_Father: {fileID: 348165657}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 669, y: -17.5}
   m_SizeDelta: {x: 105, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1549006626
@@ -15428,7 +18494,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_RootOrder
-      value: 16
+      value: 43
       objectReference: {fileID: 0}
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_LocalPosition.x
@@ -15493,6 +18559,89 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
   m_PrefabInstance: {fileID: 1558640264}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1582947964
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1582947965}
+  - component: {fileID: 1582947966}
+  m_Layer: 6
+  m_Name: Leg Armor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1582947965
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1582947964}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 893358598}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1582947966
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1582947964}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 792488805
+  m_SortingLayer: 6
+  m_SortingOrder: 3
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!4 &1595004721 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3749062138308843613, guid: b3e2231364fb8e14ba521ef01c6406c4, type: 3}
@@ -15530,9 +18679,9 @@ RectTransform:
   m_Father: {fileID: 348165657}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 361.5, y: -17.5}
   m_SizeDelta: {x: 90, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1597767761
@@ -15744,6 +18893,96 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1610212897}
   m_CullTransparentMesh: 1
+--- !u!1001 &1630647587
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (25)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &1630647588 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 1630647587}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1633727875
 GameObject:
   m_ObjectHideFlags: 0
@@ -83259,6 +86498,89 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!1 &1639515231
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1639515232}
+  - component: {fileID: 1639515233}
+  m_Layer: 6
+  m_Name: Right Weapon/Shield
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1639515232
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1639515231}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1850000026}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1639515233
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1639515231}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 792488805
+  m_SortingLayer: 6
+  m_SortingOrder: 4
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &1657931524
 GameObject:
   m_ObjectHideFlags: 0
@@ -83682,6 +87004,96 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1001 &1724187674
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (14)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &1724187675 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 1724187674}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1725526648
 GameObject:
   m_ObjectHideFlags: 0
@@ -83989,9 +87401,9 @@ RectTransform:
   m_Father: {fileID: 1706839991}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 158.25, y: -17.5}
   m_SizeDelta: {x: 316.5, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1798017143
@@ -84091,6 +87503,96 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1798017141}
   m_CullTransparentMesh: 1
+--- !u!1001 &1803704907
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (16)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &1803704908 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 1803704907}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1808916412
 GameObject:
   m_ObjectHideFlags: 0
@@ -84294,6 +87796,157 @@ Transform:
   m_Father: {fileID: 1347319892}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1850000025
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1850000026}
+  - component: {fileID: 1850000027}
+  m_Layer: 6
+  m_Name: Equipped Item Sprites
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1850000026
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1850000025}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1917457865}
+  - {fileID: 1639515232}
+  - {fileID: 223936560}
+  - {fileID: 1194366749}
+  - {fileID: 1159966798}
+  - {fileID: 740054741}
+  - {fileID: 863907237}
+  - {fileID: 1527874948}
+  - {fileID: 218378756}
+  m_Father: {fileID: 1347319892}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1850000027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1850000025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d018885c3a5ed140a4b2b694334ef09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftWeapon: {fileID: 1917457866}
+  rightWeapon: {fileID: 1639515233}
+  helmet: {fileID: 223936561}
+  shirt: {fileID: 1194366750}
+  bodyArmor: {fileID: 1159966799}
+  pants: {fileID: 740054742}
+  legArmor: {fileID: 863907238}
+  boots: {fileID: 1527874949}
+  gloves: {fileID: 218378757}
+--- !u!1001 &1852145730
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (29)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &1852145731 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 1852145730}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1859289227 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
@@ -84334,9 +87987,9 @@ RectTransform:
   m_Father: {fileID: 374535750}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 37.5, y: -187.5}
   m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1864087887
@@ -84657,6 +88310,89 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1884609472}
   m_CullTransparentMesh: 1
+--- !u!1 &1917457864
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1917457865}
+  - component: {fileID: 1917457866}
+  m_Layer: 6
+  m_Name: Left Weapon/Shield
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1917457865
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1917457864}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1850000026}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1917457866
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1917457864}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 792488805
+  m_SortingLayer: 6
+  m_SortingOrder: 4
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &1930156511
 GameObject:
   m_ObjectHideFlags: 0
@@ -84689,9 +88425,9 @@ RectTransform:
   m_Father: {fileID: 1706839991}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 564, y: -17.5}
   m_SizeDelta: {x: 105, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1930156513
@@ -84791,6 +88527,89 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1930156511}
   m_CullTransparentMesh: 1
+--- !u!1 &1942553739
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1942553740}
+  - component: {fileID: 1942553741}
+  m_Layer: 6
+  m_Name: Helmet
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1942553740
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1942553739}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 893358598}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1942553741
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1942553739}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 792488805
+  m_SortingLayer: 6
+  m_SortingOrder: 7
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &1945826462
 GameObject:
   m_ObjectHideFlags: 0
@@ -84923,6 +88742,96 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1945826462}
   m_CullTransparentMesh: 1
+--- !u!1001 &1970942603
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 38
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: itemName
+      value: Roast Chicken Leg
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: freshness
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: currentStackSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: hasBeenRandomized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Roast Chicken Leg (32)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &1970942604 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 1970942603}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1975683147
 GameObject:
   m_ObjectHideFlags: 0
@@ -85007,11 +88916,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4237178433494171497, guid: 027e949e899ca394da0c8ed245bdfb6d, type: 3}
       propertyPath: m_Pivot.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4237178433494171497, guid: 027e949e899ca394da0c8ed245bdfb6d, type: 3}
       propertyPath: m_Pivot.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4237178433494171497, guid: 027e949e899ca394da0c8ed245bdfb6d, type: 3}
       propertyPath: m_RootOrder
@@ -85019,19 +88928,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4237178433494171497, guid: 027e949e899ca394da0c8ed245bdfb6d, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4237178433494171497, guid: 027e949e899ca394da0c8ed245bdfb6d, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4237178433494171497, guid: 027e949e899ca394da0c8ed245bdfb6d, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4237178433494171497, guid: 027e949e899ca394da0c8ed245bdfb6d, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4237178433494171497, guid: 027e949e899ca394da0c8ed245bdfb6d, type: 3}
       propertyPath: m_SizeDelta.x
@@ -85071,11 +88980,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4237178433494171497, guid: 027e949e899ca394da0c8ed245bdfb6d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1161
+      value: 2066
       objectReference: {fileID: 0}
     - target: {fileID: 4237178433494171497, guid: 027e949e899ca394da0c8ed245bdfb6d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -99
+      value: -559
       objectReference: {fileID: 0}
     - target: {fileID: 4237178433494171497, guid: 027e949e899ca394da0c8ed245bdfb6d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -85309,6 +89218,172 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2047278413}
   m_CullTransparentMesh: 1
+--- !u!1 &2054815689
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2054815690}
+  - component: {fileID: 2054815691}
+  m_Layer: 6
+  m_Name: Right Weapon/Shield
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2054815690
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054815689}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 893358598}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &2054815691
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054815689}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 792488805
+  m_SortingLayer: 6
+  m_SortingOrder: 4
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!1 &2056517705
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2056517706}
+  - component: {fileID: 2056517707}
+  m_Layer: 6
+  m_Name: Body Armor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2056517706
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2056517705}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 893358598}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &2056517707
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2056517705}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 792488805
+  m_SortingLayer: 6
+  m_SortingOrder: 6
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!4 &2070364907 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}

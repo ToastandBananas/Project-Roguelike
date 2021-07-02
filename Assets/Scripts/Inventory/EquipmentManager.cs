@@ -54,7 +54,7 @@ public class EquipmentManager : MonoBehaviour
 
         AssignEquipment(equipmentItemData, equipmentSlot);
 
-        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(newItemData.item.pickupSprite, null, gm.playerInvUI.equipmentSideBarButton));
+        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(equipmentItemData.item.pickupSprite, null, gm.playerInvUI.equipmentSideBarButton));
 
         // If the equipment inventory is active, show the item in the menu
         if (gm.playerInvUI.activeInventory == null && isPlayer)
@@ -65,9 +65,9 @@ public class EquipmentManager : MonoBehaviour
 
         // If this is a Wearable item, show the equipment's sprite on the player
         if (equipmentItemData.item.IsWeapon() == false)
-            SetWearableSprite(equipmentSlot, equipmentItemData);
+            SetWearableSprite(equipmentSlot, (Equipment)equipmentItemData.item);
         else
-            SetWeaponSprite(equipmentSlot, equipmentItemData);
+            SetWeaponSprite(equipmentSlot, (Equipment)equipmentItemData.item);
     }
 
     public virtual void Unequip(EquipmentSlot equipmentSlot, bool shouldAddToInventory)
@@ -147,7 +147,7 @@ public class EquipmentManager : MonoBehaviour
             if (oldItemData.item.IsWeapon() == false)
                 RemoveWearableSprite(equipmentSlot);
             else  // If this is a Weapon Item, get rid of the weapon's gameobject
-                RemoveWeaponSprite(equipmentSlot, oldItemData);
+                RemoveWeaponSprite(equipmentSlot);
 
             UnassignEquipment(oldItemData, equipmentSlot);
 
@@ -221,28 +221,24 @@ public class EquipmentManager : MonoBehaviour
         return 0;
     }
 
-    void SetWearableSprite(EquipmentSlot wearableSlot, ItemData wearable)
+    void SetWearableSprite(EquipmentSlot wearableSlot, Equipment equipment)
     {
-        // TODO
-        Debug.Log("Setting wearable sprite");
+        characterManager.equippedItemsSpriteManager.AssignSprite(wearableSlot, equipment);
     }
 
     void RemoveWearableSprite(EquipmentSlot wearableSlot)
     {
-        // TODO
-        Debug.Log("Removing wearable sprite");
+        characterManager.equippedItemsSpriteManager.RemoveSprite(wearableSlot);
     }
 
-    void SetWeaponSprite(EquipmentSlot weaponSlot, ItemData weapon)
+    void SetWeaponSprite(EquipmentSlot weaponSlot, Equipment equipment)
     {
-        // TODO
-        Debug.Log("Setting weapon sprite");
+        characterManager.equippedItemsSpriteManager.AssignSprite(weaponSlot, equipment);
     }
 
-    void RemoveWeaponSprite(EquipmentSlot weaponSlot, ItemData weapon)
+    void RemoveWeaponSprite(EquipmentSlot weaponSlot)
     {
-        // TODO
-        Debug.Log("Removing weapon sprite");
+        characterManager.equippedItemsSpriteManager.RemoveSprite(weaponSlot);
     }
 
     public void SheathWeapon(EquipmentSlot weaponSlot)

@@ -15,7 +15,7 @@ public class PlayerMovement : Movement
     void CheckForMovement()
     {
         // Do nothing if the Player is still moving
-        if (turnManager.isPlayerTurn == false || isMoving || onCooldown || GameControls.gamePlayActions.leftCtrl.IsPressed)
+        if (gm.turnManager.isPlayerTurn == false || isMoving || onCooldown || GameControls.gamePlayActions.leftCtrl.IsPressed)
             return;
 
         Vector2 movementInput = GameControls.gamePlayActions.playerMovementAxis.Value;
@@ -26,6 +26,8 @@ public class PlayerMovement : Movement
 
         if (horizontal > 0.3f || horizontal < -0.3f || vertical > 0.3f || vertical < -0.3f) // Account for stick drift (which is quite common)
         {
+            gm.uiManager.DisableInventoryUIComponents();
+
             if (horizontal <= 0.3f && horizontal >= -0.3f)
             {
                 if (vertical > 0.3f) // Up
@@ -55,27 +57,31 @@ public class PlayerMovement : Movement
                     Move(1, -1, false);
             }
 
-            turnManager.TakePlayersTurn();
+            gm.turnManager.TakePlayersTurn();
         }
         else if (GameControls.gamePlayActions.playerMoveUpLeft.WasPressed) // Up-left
         {
+            gm.uiManager.DisableInventoryUIComponents();
             Move(-1, 1, false);
-            turnManager.TakePlayersTurn();
+            gm.turnManager.TakePlayersTurn();
         }
         else if (GameControls.gamePlayActions.playerMoveUpRight.WasPressed) // Up-right
         {
+            gm.uiManager.DisableInventoryUIComponents();
             Move(1, 1, false);
-            turnManager.TakePlayersTurn();
+            gm.turnManager.TakePlayersTurn();
         }
         else if (GameControls.gamePlayActions.playerMoveDownLeft.WasPressed) // Down-left
         {
+            gm.uiManager.DisableInventoryUIComponents();
             Move(-1, -1, false);
-            turnManager.TakePlayersTurn();
+            gm.turnManager.TakePlayersTurn();
         }
         else if (GameControls.gamePlayActions.playerMoveDownRight.WasPressed) // Down-right
         {
+            gm.uiManager.DisableInventoryUIComponents();
             Move(1, -1, false);
-            turnManager.TakePlayersTurn();
+            gm.turnManager.TakePlayersTurn();
         }
     }
 }

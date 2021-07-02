@@ -11,6 +11,9 @@ public class ContextMenu : MonoBehaviour
     Canvas canvas;
     GameManager gm;
 
+    readonly float buttonHeight = 32f;
+    readonly float buttonWidth = 110f;
+
     #region Singleton
     public static ContextMenu instance;
     void Awake()
@@ -73,13 +76,19 @@ public class ContextMenu : MonoBehaviour
                 CreateTransferButton();
         }
 
-        // Get the desired position
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, Input.mousePosition, canvas.worldCamera, out Vector2 pos);
-        transform.position = canvas.transform.TransformPoint(pos) + new Vector3(1, -3f, 0);
+        float xPosAddon = 0;
+        float yPosAddon = 0;
 
-        // If this slot is on the very bottom of the screen
-        if (pos.y < -420f)
-            transform.position += new Vector3(0, 4f, 0);
+        // Get the desired position:
+        // If the mouse position is too close to the bottom of the screen
+        if (Input.mousePosition.y <= 190f)
+            yPosAddon = GetActiveButtonCount() * buttonHeight;
+
+        // If the mouse position is too far to the right of the screen
+        if (Input.mousePosition.x >= 1780f)
+            xPosAddon = -buttonWidth;
+
+        transform.position = Input.mousePosition + new Vector3(xPosAddon, yPosAddon);
     }
 
     void CreateUseItemButton()
@@ -230,5 +239,17 @@ public class ContextMenu : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         if (isActive)
             DisableContextMenu();
+    }
+
+    int GetActiveButtonCount()
+    {
+        int activeCount = 0;
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            if (buttons[i].gameObject.activeSelf)
+                activeCount++;
+        }
+
+        return activeCount;
     }
 }

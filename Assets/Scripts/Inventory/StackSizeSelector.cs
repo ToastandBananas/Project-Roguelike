@@ -138,8 +138,6 @@ public class StackSizeSelector : MonoBehaviour
                 newInvItem = gm.containerInvUI.ShowNewInventoryItem(newItemData);
             else
                 newInvItem = gm.playerInvUI.ShowNewInventoryItem(newItemData);
-            
-            //newInvItem.UpdateItemTexts();
 
             if (selectedInvItem.itemData.currentStackSize > 0)
                 selectedInvItem.UpdateItemNumberTexts();
@@ -162,7 +160,18 @@ public class StackSizeSelector : MonoBehaviour
         currentValue = 1;
         inputField.text = currentValue.ToString();
 
-        transform.position = inventorySlot.transform.position;
+        float xPosAddon = 0;
+        float yPosAddon = 0;
+
+        if (Input.mousePosition.y < 65f)
+            yPosAddon = 20f;
+
+        if (Input.mousePosition.x <= 85)
+            xPosAddon = 100f;
+        else if (Input.mousePosition.x >= 1830)
+            xPosAddon = -100f;
+
+        transform.position = new Vector2(Input.mousePosition.x + xPosAddon, inventorySlot.transform.position.y + yPosAddon);
     }
 
     public void HideStackSizeSelector()

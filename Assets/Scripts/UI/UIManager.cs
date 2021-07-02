@@ -19,8 +19,8 @@ public class UIManager : MonoBehaviour
 
     GameManager gm;
 
+    readonly float minDragTime = 0.1f;
     float dragTimer;
-    float minDragTime = 0.1f;
     int activeInvItemCount;
 
     #region Singleton
@@ -74,7 +74,12 @@ public class UIManager : MonoBehaviour
             // Build the context menu
             if (GameControls.gamePlayActions.menuContext.WasPressed)
             {
+                Debug.Log(Input.mousePosition);
                 ClearSelectedItems(false);
+                dragTimer = 0;
+
+                if (activeInvItem != null)
+                    SelectActiveItem();
 
                 if (gm.contextMenu.isActive == false && activeInvItem != null && activeInvItem.itemData != null)
                     gm.contextMenu.BuildContextMenu(activeInvItem);
@@ -89,6 +94,7 @@ public class UIManager : MonoBehaviour
             if (GameControls.gamePlayActions.menuSelect.WasPressed && GameControls.gamePlayActions.leftAlt.IsPressed)
             {
                 ClearSelectedItems(false);
+                dragTimer = 0;
 
                 if (activeInvItem != null && activeInvItem.itemData != null && activeInvItem.itemData.currentStackSize > 1 && activeInvItem != gm.stackSizeSelector.selectedInvItem)
                 {
@@ -124,12 +130,12 @@ public class UIManager : MonoBehaviour
                 ClearSelectedItems(false);
             }
         }
-        
+
         // Transfer or drop item
         if (GameControls.gamePlayActions.menuSelect.WasReleased)
         {
-            if (GameControls.gamePlayActions.leftCtrl.IsPressed == false && GameControls.gamePlayActions.leftShift.IsPressed == false 
-                && (GameControls.gamePlayActions.leftAlt.IsPressed == false || (activeInvItem != null && activeInvItem.itemData.currentStackSize == 1)))
+            if ((GameControls.gamePlayActions.leftCtrl.IsPressed == false && GameControls.gamePlayActions.leftShift.IsPressed == false && GameControls.gamePlayActions.leftAlt.IsPressed == false) 
+                || activeGhostInvItems.Count > 0)
             {
                 // Transfer Item
                 if (dragTimer < minDragTime && activeInvItem != null)
@@ -186,40 +192,46 @@ public class UIManager : MonoBehaviour
                         DeselectActiveItem();
                 }
             }
+
+            dragTimer = 0;
         }
 
         // Drag Item
-        if (GameControls.gamePlayActions.menuSelect.IsPressed && GameControls.gamePlayActions.leftCtrl.IsPressed == false && GameControls.gamePlayActions.leftShift.IsPressed == false 
-            && (activeInvItem != null || activeGhostInvItems.Count > 0))
+        if (GameControls.gamePlayActions.menuSelect.IsPressed 
+            && ((GameControls.gamePlayActions.leftCtrl.IsPressed == false && GameControls.gamePlayActions.leftShift.IsPressed == false && activeInvItem != null) || activeGhostInvItems.Count > 0))
         {
             // Add to the drag timer each frame
             dragTimer += Time.deltaTime;
 
-            // Setup the image for the item we're dragging
-            if (activeGhostInvItems.Count == 0)
+            // Once the timer is above the minDragTime, start dragging
+            if (dragTimer >= minDragTime)
             {
-                if (invItemsDragging.Contains(activeInvItem))
+                // Setup the image for the item we're dragging
+                if (activeGhostInvItems.Count == 0)
                 {
-                    for (int i = 0; i < invItemsDragging.Count; i++)
+                    if (invItemsDragging.Contains(activeInvItem))
                     {
-                        CreateNewGhostItem(invItemsDragging[i]);
+                        for (int i = 0; i < invItemsDragging.Count; i++)
+                        {
+                            CreateNewGhostItem(invItemsDragging[i]);
+                        }
                     }
                 }
-            }
 
-            // Have the item we're dragging follow the mouse cursor
-            if (activeGhostInvItems.Count > 0)
-                activeGhostInvItems[0].transform.parent.position = Input.mousePosition;
+                // Have the item we're dragging follow the mouse cursor
+                if (activeGhostInvItems.Count > 0)
+                    activeGhostInvItems[0].transform.parent.position = Input.mousePosition;
 
-            if (selectedItems.Count > 0)
-            {
-                for (int i = 0; i < selectedItems.Count; i++)
+                if (selectedItems.Count > 0)
                 {
-                    DragAndDrop_DragItem(selectedItems[i]);
+                    for (int i = 0; i < selectedItems.Count; i++)
+                    {
+                        DragAndDrop_DragItem(selectedItems[i]);
+                    }
                 }
+                else
+                    DragAndDrop_DragItem(activeInvItem);
             }
-            else
-                DragAndDrop_DragItem(activeInvItem);
         }
         
         // Disable the context menu
@@ -325,14 +337,14 @@ public class UIManager : MonoBehaviour
                 for (int i = 0; i < activeInvUI.inventoryItemObjectPool.activePooledInventoryItems.Count; i++)
                 {
                     // If the pooled inventory item is active and is not the first inventory item we selected
-                    if (activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i] != firstSelectedItem)
+                    if (activeInvUI.inventoryItemObjectPool.activePooledInventoryItems[i] != firstSelectedItem)
                     {
-                        // If the mouse pointer is above the pooled inventory item and the pooled item is above the first item we selected
-                        if (activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i] == activeInvItem 
-                            || (Input.mousePosition.y > activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i].transform.position.y 
-                            && activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i].transform.position.y > firstSelectedItem.transform.position.y))
+                        // If the mouse pointer is above the pooled inventory item and the pooled inventory item is above the first item we selected, or if the pooled inventory item is the item we clicked on
+                        if (activeInvUI.inventoryItemObjectPool.activePooledInventoryItems[i] == activeInvItem 
+                            || (Input.mousePosition.y > activeInvUI.inventoryItemObjectPool.activePooledInventoryItems[i].transform.position.y 
+                            && activeInvUI.inventoryItemObjectPool.activePooledInventoryItems[i].transform.position.y > firstSelectedItem.transform.position.y))
                         {
-                            SelectItem(activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i]);
+                            SelectItem(activeInvUI.inventoryItemObjectPool.activePooledInventoryItems[i]);
                         }
                     }
                 }
@@ -345,14 +357,14 @@ public class UIManager : MonoBehaviour
                 for (int i = 0; i < activeInvUI.inventoryItemObjectPool.activePooledInventoryItems.Count; i++) // Go through our pooled inventory items
                 {
                     // If the pooled inventory item is active and is not the first inventory item we selected
-                    if (activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i] != firstSelectedItem)
+                    if (activeInvUI.inventoryItemObjectPool.activePooledInventoryItems[i] != firstSelectedItem)
                     {
-                        // If the mouse pointer is below the pooled inventory item and the pooled item is below the first item we selected
-                        if (activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i] == activeInvItem 
-                            || (Input.mousePosition.y < activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i].transform.position.y
-                            && activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i].transform.position.y < firstSelectedItem.transform.position.y))
+                        // If the mouse pointer is below the pooled inventory item and the pooled inventory item is below the first item we selected, or if the pooled inventory item is the item we clicked on
+                        if (activeInvUI.inventoryItemObjectPool.activePooledInventoryItems[i] == activeInvItem 
+                            || (Input.mousePosition.y < activeInvUI.inventoryItemObjectPool.activePooledInventoryItems[i].transform.position.y
+                            && activeInvUI.inventoryItemObjectPool.activePooledInventoryItems[i].transform.position.y < firstSelectedItem.transform.position.y))
                         {
-                            SelectItem(activeInvUI.inventoryItemObjectPool.pooledInventoryItems[i]);
+                            SelectItem(activeInvUI.inventoryItemObjectPool.activePooledInventoryItems[i]);
                         }
                     }
                 }
@@ -369,93 +381,91 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        // Once the timer is above the minDragTime, start dragging
-        if (dragTimer >= minDragTime)
+        DisableInventoryUIComponents();
+
+        // If we're just trying to drag one item, add it to our invItemsDragging list
+        if (selectedItems.Count == 0)
         {
-            // If we're just trying to drag one item, add it to our invItemsDragging list
-            if (selectedItems.Count == 0)
+            selectedItems.Add(draggedInvItem);
+            invItemsDragging.Add(draggedInvItem);
+        }
+        else if (selectedItems.Count != invItemsDragging.Count)
+        {
+            // Otherwise, add the selected items to our invItemsDragging list
+            for (int i = 0; i < selectedItems.Count; i++)
             {
-                selectedItems.Add(draggedInvItem);
-                invItemsDragging.Add(draggedInvItem);
+                invItemsDragging.Add(selectedItems[i]);
             }
-            else if (selectedItems.Count != invItemsDragging.Count)
+        }
+
+        // Calculate the activeInvItemCount if we haven't done so already
+        if (activeInvItemCount == 0)
+        {
+            for (int i = 0; i < draggedInvItem.transform.parent.childCount; i++)
             {
-                // Otherwise, add the selected items to our invItemsDragging list
-                for (int i = 0; i < selectedItems.Count; i++)
-                {
-                    invItemsDragging.Add(selectedItems[i]);
-                }
+                if (draggedInvItem.transform.parent.GetChild(i).gameObject.activeSelf)
+                    activeInvItemCount++;
             }
+        }
 
-            // Calculate the activeInvItemCount if we haven't done so already
-            if (activeInvItemCount == 0)
+        // If the mouse cursor is over an InventoryItem
+        if (activeInvItem != null && activeGhostInvItems.Count == 1)
+        {
+            // Drag the InventoryItem up if the mouse position is above the draggedItem
+            if (draggedInvItem.transform.GetSiblingIndex() != 0 && Input.mousePosition.y > draggedInvItem.transform.position.y + 16)
             {
-                for (int i = 0; i < draggedInvItem.transform.parent.childCount; i++)
-                {
-                    if (draggedInvItem.transform.parent.GetChild(i).gameObject.activeSelf)
-                        activeInvItemCount++;
-                }
-            }
+                // Set the new sibling index of the item
+                draggedInvItem.transform.SetSiblingIndex(draggedInvItem.transform.GetSiblingIndex() - 1);
 
-            // If the mouse cursor is over an InventoryItem
-            if (activeInvItem != null && activeGhostInvItems.Count == 1)
-            {
-                // Drag the InventoryItem up if the mouse position is above the draggedItem
-                if (draggedInvItem.transform.GetSiblingIndex() != 0 && Input.mousePosition.y > draggedInvItem.transform.position.y + 16)
+                // Rearrange the inventory list if it has one
+                if (draggedInvItem.myInventory != null)
                 {
-                    // Set the new sibling index of the item
-                    draggedInvItem.transform.SetSiblingIndex(draggedInvItem.transform.GetSiblingIndex() - 1);
-
-                    // Rearrange the inventory list if it has one
-                    if (draggedInvItem.myInventory != null)
+                    int index = draggedInvItem.myInventory.items.IndexOf(draggedInvItem.itemData);
+                    if (index > 0)
                     {
-                        int index = draggedInvItem.myInventory.items.IndexOf(draggedInvItem.itemData);
-                        if (index > 0)
-                        {
-                            draggedInvItem.myInventory.items.RemoveAt(index);
-                            draggedInvItem.myInventory.items.Insert(index - 1, draggedInvItem.itemData);
-                        }
-                    }
-
-                    // If this is a container UI item, rearrange the appropriate containerUI's directional items list
-                    if (draggedInvItem.myInvUI == gm.containerInvUI)
-                    {
-                        List<ItemData> itemsList = gm.containerInvUI.GetItemsListFromActiveDirection();
-                        int index = itemsList.IndexOf(draggedInvItem.itemData);
-                        if (index > 0)
-                        {
-                            itemsList.RemoveAt(index);
-                            itemsList.Insert(index - 1, draggedInvItem.itemData);
-                        }
+                        draggedInvItem.myInventory.items.RemoveAt(index);
+                        draggedInvItem.myInventory.items.Insert(index - 1, draggedInvItem.itemData);
                     }
                 }
-                // Drag the InventoryItem down
-                else if (draggedInvItem.transform.GetSiblingIndex() != activeInvItemCount - 1 && Input.mousePosition.y < draggedInvItem.transform.position.y - 16)
+
+                // If this is a container UI item, rearrange the appropriate containerUI's directional items list
+                if (draggedInvItem.myInvUI == gm.containerInvUI)
                 {
-                    // Set the new sibling index of the item
-                    draggedInvItem.transform.SetSiblingIndex(draggedInvItem.transform.GetSiblingIndex() + 1);
-
-                    // Rearrange the inventory list if it has one
-                    if (draggedInvItem.myInventory != null)
+                    List<ItemData> itemsList = gm.containerInvUI.GetItemsListFromActiveDirection();
+                    int index = itemsList.IndexOf(draggedInvItem.itemData);
+                    if (index > 0)
                     {
-                        int index = draggedInvItem.myInventory.items.IndexOf(draggedInvItem.itemData);
-                        if (index < activeInvItemCount - 1)
-                        {
-                            draggedInvItem.myInventory.items.RemoveAt(index);
-                            draggedInvItem.myInventory.items.Insert(index + 1, draggedInvItem.itemData);
-                        }
+                        itemsList.RemoveAt(index);
+                        itemsList.Insert(index - 1, draggedInvItem.itemData);
                     }
+                }
+            }
+            // Drag the InventoryItem down
+            else if (draggedInvItem.transform.GetSiblingIndex() != activeInvItemCount - 1 && Input.mousePosition.y < draggedInvItem.transform.position.y - 16)
+            {
+                // Set the new sibling index of the item
+                draggedInvItem.transform.SetSiblingIndex(draggedInvItem.transform.GetSiblingIndex() + 1);
 
-                    // If this is a container UI item, rearrange the appropriate containerUI's directional list
-                    if (draggedInvItem.myInvUI == gm.containerInvUI)
+                // Rearrange the inventory list if it has one
+                if (draggedInvItem.myInventory != null)
+                {
+                    int index = draggedInvItem.myInventory.items.IndexOf(draggedInvItem.itemData);
+                    if (index < activeInvItemCount - 1)
                     {
-                        List<ItemData> itemsList = gm.containerInvUI.GetItemsListFromActiveDirection();
-                        int index = itemsList.IndexOf(draggedInvItem.itemData);
-                        if (index < activeInvItemCount - 1)
-                        {
-                            itemsList.RemoveAt(index);
-                            itemsList.Insert(index + 1, draggedInvItem.itemData);
-                        }
+                        draggedInvItem.myInventory.items.RemoveAt(index);
+                        draggedInvItem.myInventory.items.Insert(index + 1, draggedInvItem.itemData);
+                    }
+                }
+
+                // If this is a container UI item, rearrange the appropriate containerUI's directional list
+                if (draggedInvItem.myInvUI == gm.containerInvUI)
+                {
+                    List<ItemData> itemsList = gm.containerInvUI.GetItemsListFromActiveDirection();
+                    int index = itemsList.IndexOf(draggedInvItem.itemData);
+                    if (index < activeInvItemCount - 1)
+                    {
+                        itemsList.RemoveAt(index);
+                        itemsList.Insert(index + 1, draggedInvItem.itemData);
                     }
                 }
             }

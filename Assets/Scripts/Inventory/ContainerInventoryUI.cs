@@ -113,9 +113,9 @@ public class ContainerInventoryUI : InventoryUI
                     for (int j = 0; j < inventory.items.Count; j++)
                     {
                         itemsList.Add(inventory.items[j]);
-                        SetSideBarIcon_Container(direction, inventory);
                     }
 
+                    SetSideBarIcon_Container(direction, inventory);
                     AssignInventory(direction, inventory);
                 }
                 else

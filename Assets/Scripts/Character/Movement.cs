@@ -4,21 +4,17 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     [HideInInspector] public bool isMoving, onCooldown;
-    [HideInInspector] public GameTiles gameTiles;
-    [HideInInspector] public TurnManager turnManager;
 
     [Header("Obstacle Mask")]
     public LayerMask movementObstacleMask;
 
-    [HideInInspector] public ContainerInventoryUI containerInvUI;
+    [HideInInspector] public GameManager gm;
 
     float moveTime = 0.2f;
 
     public virtual void Start()
     {
-        containerInvUI = ContainerInventoryUI.instance;
-        gameTiles = GameTiles.instance;
-        turnManager = TurnManager.instance;
+        gm = GameManager.instance;
     }
 
     public void Move(int xDir, int yDir, bool isNPC)
@@ -50,8 +46,8 @@ public class Movement : MonoBehaviour
         FaceForward(endPos);
 
         // Set pathfinding grid graph tags for current and end position nodes
-        gameTiles.SetTagForNode(gameTiles.gridGraph.GetNearest(transform.position).node);
-        gameTiles.gridGraph.GetNearest(endPos).node.Tag = 31; // Character tag
+        gm.gameTiles.SetTagForNode(gm.gameTiles.gridGraph.GetNearest(transform.position).node);
+        gm.gameTiles.gridGraph.GetNearest(endPos).node.Tag = 31; // Character tag
 
         float sqrRemainingDistance = ((Vector2)transform.position - endPos).sqrMagnitude;
 
@@ -73,10 +69,10 @@ public class Movement : MonoBehaviour
             FinishTurn();
         else
         {
-            containerInvUI.ResetContainerIcons(Direction.Center);
-            containerInvUI.GetItemsAroundPlayer();
-            containerInvUI.PopulateInventoryUI(containerInvUI.playerPositionItems, Direction.Center);
-            containerInvUI.playerPositionSideBarButton.HighlightDirectionIcon();
+            gm.containerInvUI.ResetContainerIcons(Direction.Center);
+            gm.containerInvUI.GetItemsAroundPlayer();
+            gm.containerInvUI.PopulateInventoryUI(gm.containerInvUI.playerPositionItems, Direction.Center);
+            gm.containerInvUI.playerPositionSideBarButton.HighlightDirectionIcon();
         }
 
         isMoving = false;
@@ -92,9 +88,9 @@ public class Movement : MonoBehaviour
 
     public void FinishTurn()
     {
-        turnManager.npcsFinishedTakingTurnCount++;
-        if (turnManager.npcsFinishedTakingTurnCount == turnManager.npcs.Count)
-            turnManager.ReadyPlayersTurn();
+        gm.turnManager.npcsFinishedTakingTurnCount++;
+        if (gm.turnManager.npcsFinishedTakingTurnCount == gm.turnManager.npcs.Count)
+            gm.turnManager.ReadyPlayersTurn();
     }
 
     // Blocked Animation
@@ -141,7 +137,7 @@ public class Movement : MonoBehaviour
 
     bool TargetTileIsWalkable(Vector2 targetCell)
     {
-        if (gameTiles.GetCell(gameTiles.groundTilemap, targetCell) != null || gameTiles.GetCell(gameTiles.shallowWaterTilemap, targetCell) != null)
+        if (gm.gameTiles.GetCell(gm.gameTiles.groundTilemap, targetCell) != null || gm.gameTiles.GetCell(gm.gameTiles.shallowWaterTilemap, targetCell) != null)
             return true;
 
         return false;
