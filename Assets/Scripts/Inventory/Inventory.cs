@@ -14,12 +14,12 @@ public class Inventory : MonoBehaviour
 
     public float currentWeight, currentVolume;
 
+    [Header("Items")]
+    public Transform itemsParent;
     public List<ItemData> items = new List<ItemData>();
 
-    [HideInInspector] public Transform itemsParent;
     [HideInInspector] public Container container;
     [HideInInspector] public InventoryUI myInventoryUI;
-    [HideInInspector] public GameObject inventoryOwner;
 
     [HideInInspector] public bool hasBeenInitialized;
     
@@ -35,10 +35,8 @@ public class Inventory : MonoBehaviour
         if (hasBeenInitialized == false)
         {
             gm = GameManager.instance;
-            inventoryOwner = gameObject;
-            itemsParent = transform.Find("Items");
             TryGetComponent(out container);
-
+            
             for (int i = 0; i < itemsParent.childCount; i++)
             {
                 ItemData itemData = itemsParent.GetChild(i).GetComponent<ItemData>();
@@ -94,7 +92,11 @@ public class Inventory : MonoBehaviour
                 invItemComingFrom.UpdateItemNumberTexts();
 
             // Create a new ItemData Object
-            ItemData itemDataToAdd = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData();
+            ItemData itemDataToAdd = null;
+            if (itemDataComingFrom.item.IsBag())
+                itemDataToAdd = gm.objectPoolManager.itemDataContainerObjectPool.GetPooledItemData();
+            else
+                itemDataToAdd = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData();
 
             // Transfer data to the new ItemData
             itemDataToAdd.TransferData(itemDataComingFrom, itemDataToAdd);
@@ -115,6 +117,52 @@ public class Inventory : MonoBehaviour
             // Set the parent of this new ItemData to the Inventory's itemsParent and set the gameObject as active
             itemDataToAdd.transform.SetParent(itemsParent);
             itemDataToAdd.gameObject.SetActive(true);
+
+            // If the item is a bag, add any items it had to the new bag's Inventory
+            if (itemDataComingFrom.item.IsBag())
+            {
+                Inventory newBagsInv = itemDataToAdd.GetComponent<Inventory>();
+                //Inventory itemDataComingFromsInv = itemDataComingFrom.GetComponent<Inventory>();
+
+                // If this is a bag we're picking up from the ground
+                if (itemDataComingFrom.CompareTag("Item Pickup"))
+                {
+                    for (int i = 0; i < invComingFrom.items.Count; i++)
+                    {
+                        // Add new ItemData Objects to the items parent of the new bag and transfer data to them
+                        ItemData newItemDataObject = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData();
+                        newItemDataObject.transform.SetParent(newBagsInv.itemsParent);
+                        newItemDataObject.gameObject.SetActive(true);
+                        invComingFrom.items[i].TransferData(invComingFrom.items[i], newItemDataObject);
+
+                        // Return the item we took out of the bag back to it's object pool
+                        invComingFrom.items[i].ReturnToItemDataObjectPool();
+
+                        // Populate the new bag's inventory
+                        newBagsInv.items.Add(newItemDataObject);
+
+                        #if UNITY_EDITOR
+                            newItemDataObject.name = newItemDataObject.itemName;
+                        #endif
+                    }
+
+                    invComingFrom.items.Clear();
+                }
+                else // If this is a bag we're grabbing from an inventory
+                {
+                    //////////
+                    // TODO //
+                    //////////
+
+                    // Transfer invComingFrom's items to the new bag's inventory
+
+                    // Add new ItemData Objects to the items parent of the new bag and transfer data to them
+
+                    // Return the item we took out of the bag back to it's object pool
+
+                    // Populate the new bag's inventory
+                }
+            }
 
             // If this Inventory is active in the menu, create a new InventoryItem
             if (myInventoryUI.activeInventory == this)

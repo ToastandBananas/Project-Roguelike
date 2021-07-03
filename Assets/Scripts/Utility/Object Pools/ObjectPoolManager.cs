@@ -9,6 +9,7 @@ public class ObjectPoolManager : MonoBehaviour
     public ItemPickupObjectPool itemPickupsPool;
     public ItemPickupObjectPool bagPickupsPool;
     public ItemDataObjectPool itemDataObjectPool;
+    public ItemDataObjectPool itemDataContainerObjectPool;
 
     #region Singleton
     public static ObjectPoolManager instance;

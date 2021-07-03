@@ -355,7 +355,7 @@ public class ItemData : MonoBehaviour
         }
     }
 
-    public void ReturnToObjectPool()
+    public void ReturnToItemDataObjectPool()
     {
         transform.SetParent(gm.objectPoolManager.itemDataObjectPool.transform);
         if (gm.objectPoolManager.itemDataObjectPool.pooledObjects.Contains(gameObject) == false)
@@ -363,5 +363,21 @@ public class ItemData : MonoBehaviour
             gm.objectPoolManager.itemDataObjectPool.pooledObjects.Add(gameObject);
             gm.objectPoolManager.itemDataObjectPool.pooledItemDatas.Add(this);
         }
+
+        ClearData();
+        gameObject.SetActive(false);
+    }
+
+    public void ReturnToItemDataContainerObjectPool()
+    {
+        transform.SetParent(gm.objectPoolManager.itemDataContainerObjectPool.transform);
+        if (gm.objectPoolManager.itemDataContainerObjectPool.pooledObjects.Contains(gameObject) == false)
+        {
+            gm.objectPoolManager.itemDataContainerObjectPool.pooledObjects.Add(gameObject);
+            gm.objectPoolManager.itemDataContainerObjectPool.pooledItemDatas.Add(this);
+        }
+
+        ClearData();
+        gameObject.SetActive(false);
     }
 }

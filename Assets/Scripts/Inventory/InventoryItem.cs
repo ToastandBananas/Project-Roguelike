@@ -82,10 +82,14 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             myInventory.items.Remove(itemData);
 
         if (itemData.CompareTag("Item Data Object"))
-            itemData.ReturnToObjectPool();
-
-        itemData.ClearData();
-        itemData.gameObject.SetActive(false);
+            itemData.ReturnToItemDataObjectPool();
+        else if (itemData.CompareTag("Item Data Container Object"))
+            itemData.ReturnToItemDataContainerObjectPool();
+        else
+        {
+            itemData.ClearData();
+            itemData.gameObject.SetActive(false);
+        }
 
         ResetInvItem();
         gm.containerInvUI.UpdateUINumbers();
@@ -142,7 +146,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 {
                     myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.activePlayerInvSideBarButton));
 
-                    // If the item is an equippable bag, set the container menu's active inventory to null
+                    // If the item is an equippable bag, set the container menu's active inventory to null and setup the sidebar icon
                     if (itemData.item.IsBag())
                     {
                         gm.containerInvUI.activeInventory = null;

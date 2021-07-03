@@ -165,11 +165,10 @@ MonoBehaviour:
   maxVolume: 20
   currentWeight: 0
   currentVolume: 0
+  itemsParent: {fileID: 3584289421731665539}
   items: []
-  itemsParent: {fileID: 0}
   container: {fileID: 0}
   myInventoryUI: {fileID: 0}
-  inventoryOwner: {fileID: 0}
   hasBeenInitialized: 0
 --- !u!114 &978380076695628190
 MonoBehaviour:

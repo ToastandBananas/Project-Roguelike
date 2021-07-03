@@ -152,7 +152,7 @@ public class EquipmentManager : MonoBehaviour
                 if (invItemComingFrom != null)
                     invItemComingFrom.ClearItem();
                 else
-                    oldItemData.ReturnToObjectPool();
+                    oldItemData.ReturnToItemDataObjectPool();
 
                 if (isPlayer)
                     gm.playerInvUI.UpdateUINumbers();

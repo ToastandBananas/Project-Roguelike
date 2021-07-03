@@ -9,6 +9,7 @@ TagManager:
   - Shallow Water
   - Item Pickup
   - Item Data Object
+  - Item Data Container Object
   layers:
   - Default
   - TransparentFX
