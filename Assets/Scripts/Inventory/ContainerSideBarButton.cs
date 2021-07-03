@@ -6,10 +6,9 @@ using System.Collections.Generic;
 public class ContainerSideBarButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Direction directionFromPlayer;
+    public Image icon;
+    public Image directionIcon;
 
-    [HideInInspector] public Image icon;
-
-    Image directionIcon;
     GameManager gm;
 
     Color highlightColor = new Color(0, 0.4f, 0.62f);
@@ -17,8 +16,6 @@ public class ContainerSideBarButton : MonoBehaviour, IPointerEnterHandler, IPoin
     void Start()
     {
         gm = GameManager.instance;
-        icon = transform.GetChild(0).GetComponent<Image>();
-        directionIcon = transform.GetChild(1).GetComponent<Image>();
 
         if (directionFromPlayer == Direction.Center)
             HighlightDirectionIcon();

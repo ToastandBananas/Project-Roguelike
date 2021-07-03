@@ -9,13 +9,13 @@ public class PlayerInventoryUI : InventoryUI
 
     [Header("Inventories")]
     public Inventory personalInventory;
-    public Inventory bag1Inventory, bag2Inventory, bag3Inventory, bag4Inventory, bag5Inventory, keysInventory;
+    public Inventory backpackInventory, leftHipPouchInventory, rightHipPouchInventory, quiverInventory, keysInventory;
     
-    public bool bag1Active, bag2Active, bag3Active, bag4Active, bag5Active;
+    public bool backpackEquipped, leftHipPouchEquipped, rightHipPouchEquipped, quiverEquipped;
 
     [Header("Side Bar Buttons")]
     public PlayerInventorySidebarButton personalInventorySideBarButton;
-    public PlayerInventorySidebarButton bag1SideBarButton, bag2SideBarButton, bag3SideBarButton, bag4SideBarButton, bag5SideBarButton, keysSideBarButton, equipmentSideBarButton;
+    public PlayerInventorySidebarButton backpackSidebarButton, leftHipPouchSidebarButton, rightHipPouchSidebarButton, quiverSidebarButton, keysSideBarButton, equipmentSideBarButton;
 
     [HideInInspector] public PlayerInventorySidebarButton activePlayerInvSideBarButton;
 
@@ -112,40 +112,33 @@ public class PlayerInventoryUI : InventoryUI
                 activeInventory = personalInventory;
                 activePlayerInvSideBarButton = personalInventorySideBarButton;
                 break;
-            case PlayerInventoryType.Bag1:
-                inventoryNameText.text = "Bag 1 Inventory";
-                weightText.text = GetTotalWeight(bag1Inventory.items).ToString() + "/" + bag1Inventory.maxWeight.ToString();
-                volumeText.text = GetTotalVolume(bag1Inventory.items).ToString() + "/" + bag1Inventory.maxVolume.ToString();
-                activeInventory = bag1Inventory;
-                activePlayerInvSideBarButton = bag1SideBarButton;
+            case PlayerInventoryType.Backpack:
+                inventoryNameText.text = "Backpack Inventory";
+                weightText.text = GetTotalWeight(backpackInventory.items).ToString() + "/" + backpackInventory.maxWeight.ToString();
+                volumeText.text = GetTotalVolume(backpackInventory.items).ToString() + "/" + backpackInventory.maxVolume.ToString();
+                activeInventory = backpackInventory;
+                activePlayerInvSideBarButton = backpackSidebarButton;
                 break;
-            case PlayerInventoryType.Bag2:
-                inventoryNameText.text = "Bag 2  Inventory";
-                weightText.text = GetTotalWeight(bag2Inventory.items).ToString() + "/" + bag2Inventory.maxWeight.ToString();
-                volumeText.text = GetTotalVolume(bag2Inventory.items).ToString() + "/" + bag2Inventory.maxVolume.ToString();
-                activeInventory = bag2Inventory;
-                activePlayerInvSideBarButton = bag2SideBarButton;
+            case PlayerInventoryType.LeftHipPouch:
+                inventoryNameText.text = "Left Hip Pouch Inventory";
+                weightText.text = GetTotalWeight(leftHipPouchInventory.items).ToString() + "/" + leftHipPouchInventory.maxWeight.ToString();
+                volumeText.text = GetTotalVolume(leftHipPouchInventory.items).ToString() + "/" + leftHipPouchInventory.maxVolume.ToString();
+                activeInventory = leftHipPouchInventory;
+                activePlayerInvSideBarButton = leftHipPouchSidebarButton;
                 break;
-            case PlayerInventoryType.Bag3:
-                inventoryNameText.text = "Bag 3  Inventory";
-                weightText.text = GetTotalWeight(bag3Inventory.items).ToString() + "/" + bag3Inventory.maxWeight.ToString();
-                volumeText.text = GetTotalVolume(bag3Inventory.items).ToString() + "/" + bag3Inventory.maxVolume.ToString();
-                activeInventory = bag3Inventory;
-                activePlayerInvSideBarButton = bag3SideBarButton;
+            case PlayerInventoryType.RightHipPouch:
+                inventoryNameText.text = "Right Hip Pouch Inventory";
+                weightText.text = GetTotalWeight(rightHipPouchInventory.items).ToString() + "/" + rightHipPouchInventory.maxWeight.ToString();
+                volumeText.text = GetTotalVolume(rightHipPouchInventory.items).ToString() + "/" + rightHipPouchInventory.maxVolume.ToString();
+                activeInventory = rightHipPouchInventory;
+                activePlayerInvSideBarButton = rightHipPouchSidebarButton;
                 break;
-            case PlayerInventoryType.Bag4:
-                inventoryNameText.text = "Bag 4  Inventory";
-                weightText.text = GetTotalWeight(bag4Inventory.items).ToString() + "/" + bag4Inventory.maxWeight.ToString();
-                volumeText.text = GetTotalVolume(bag4Inventory.items).ToString() + "/" + bag4Inventory.maxVolume.ToString();
-                activeInventory = bag4Inventory;
-                activePlayerInvSideBarButton = bag4SideBarButton;
-                break;
-            case PlayerInventoryType.Bag5:
-                inventoryNameText.text = "Bag 5  Inventory";
-                weightText.text = GetTotalWeight(bag5Inventory.items).ToString() + "/" + bag5Inventory.maxWeight.ToString();
-                volumeText.text = GetTotalVolume(bag5Inventory.items).ToString() + "/" + bag5Inventory.maxVolume.ToString();
-                activeInventory = bag5Inventory;
-                activePlayerInvSideBarButton = bag5SideBarButton;
+            case PlayerInventoryType.Quiver:
+                inventoryNameText.text = "Quiver Inventory";
+                weightText.text = GetTotalWeight(quiverInventory.items).ToString() + "/" + quiverInventory.maxWeight.ToString();
+                volumeText.text = GetTotalVolume(quiverInventory.items).ToString() + "/" + quiverInventory.maxVolume.ToString();
+                activeInventory = quiverInventory;
+                activePlayerInvSideBarButton = quiverSidebarButton;
                 break;
             case PlayerInventoryType.Keys:
                 inventoryNameText.text = "Keys";
@@ -177,25 +170,21 @@ public class PlayerInventoryUI : InventoryUI
                 invItem.myEquipmentManager = null;
                 invItem.myInventory = personalInventory;
                 break;
-            case PlayerInventoryType.Bag1:
+            case PlayerInventoryType.Backpack:
                 invItem.myEquipmentManager = null;
-                invItem.myInventory = bag1Inventory;
+                invItem.myInventory = backpackInventory;
                 break;
-            case PlayerInventoryType.Bag2:
+            case PlayerInventoryType.LeftHipPouch:
                 invItem.myEquipmentManager = null;
-                invItem.myInventory = bag2Inventory;
+                invItem.myInventory = leftHipPouchInventory;
                 break;
-            case PlayerInventoryType.Bag3:
+            case PlayerInventoryType.RightHipPouch:
                 invItem.myEquipmentManager = null;
-                invItem.myInventory = bag3Inventory;
+                invItem.myInventory = rightHipPouchInventory;
                 break;
-            case PlayerInventoryType.Bag4:
+            case PlayerInventoryType.Quiver:
                 invItem.myEquipmentManager = null;
-                invItem.myInventory = bag4Inventory;
-                break;
-            case PlayerInventoryType.Bag5:
-                invItem.myEquipmentManager = null;
-                invItem.myInventory = bag5Inventory;
+                invItem.myInventory = quiverInventory;
                 break;
             case PlayerInventoryType.Keys:
                 invItem.myEquipmentManager = null;
@@ -243,43 +232,35 @@ public class PlayerInventoryUI : InventoryUI
             totalWeight += personalInventory.items[i].item.weight * personalInventory.items[i].currentStackSize;
         }
 
-        if (bag1Inventory != null)
+        if (backpackInventory != null)
         {
-            for (int i = 0; i < bag1Inventory.items.Count; i++)
+            for (int i = 0; i < backpackInventory.items.Count; i++)
             {
-                totalWeight += bag1Inventory.items[i].item.weight * bag1Inventory.items[i].currentStackSize;
+                totalWeight += backpackInventory.items[i].item.weight * backpackInventory.items[i].currentStackSize;
             }
         }
 
-        if (bag2Inventory != null)
+        if (leftHipPouchInventory != null)
         {
-            for (int i = 0; i < bag2Inventory.items.Count; i++)
+            for (int i = 0; i < leftHipPouchInventory.items.Count; i++)
             {
-                totalWeight += bag2Inventory.items[i].item.weight * bag2Inventory.items[i].currentStackSize;
+                totalWeight += leftHipPouchInventory.items[i].item.weight * leftHipPouchInventory.items[i].currentStackSize;
             }
         }
 
-        if (bag3Inventory != null)
+        if (rightHipPouchInventory != null)
         {
-            for (int i = 0; i < bag3Inventory.items.Count; i++)
+            for (int i = 0; i < rightHipPouchInventory.items.Count; i++)
             {
-                totalWeight += bag3Inventory.items[i].item.weight * bag3Inventory.items[i].currentStackSize;
+                totalWeight += rightHipPouchInventory.items[i].item.weight * rightHipPouchInventory.items[i].currentStackSize;
             }
         }
 
-        if (bag4Inventory != null)
+        if (quiverInventory != null)
         {
-            for (int i = 0; i < bag4Inventory.items.Count; i++)
+            for (int i = 0; i < quiverInventory.items.Count; i++)
             {
-                totalWeight += bag4Inventory.items[i].item.weight * bag4Inventory.items[i].currentStackSize;
-            }
-        }
-
-        if (bag5Inventory != null)
-        {
-            for (int i = 0; i < bag5Inventory.items.Count; i++)
-            {
-                totalWeight += bag5Inventory.items[i].item.weight * bag5Inventory.items[i].currentStackSize;
+                totalWeight += quiverInventory.items[i].item.weight * quiverInventory.items[i].currentStackSize;
             }
         }
 
@@ -308,43 +289,35 @@ public class PlayerInventoryUI : InventoryUI
             totalVolume += personalInventory.items[i].item.volume * personalInventory.items[i].currentStackSize;
         }
 
-        if (bag1Inventory != null)
+        if (backpackInventory != null)
         {
-            for (int i = 0; i < bag1Inventory.items.Count; i++)
+            for (int i = 0; i < backpackInventory.items.Count; i++)
             {
-                totalVolume += bag1Inventory.items[i].item.volume * bag1Inventory.items[i].currentStackSize;
+                totalVolume += backpackInventory.items[i].item.volume * backpackInventory.items[i].currentStackSize;
             }
         }
 
-        if (bag2Inventory != null)
+        if (leftHipPouchInventory != null)
         {
-            for (int i = 0; i < bag2Inventory.items.Count; i++)
+            for (int i = 0; i < leftHipPouchInventory.items.Count; i++)
             {
-                totalVolume += bag2Inventory.items[i].item.volume * bag2Inventory.items[i].currentStackSize;
+                totalVolume += leftHipPouchInventory.items[i].item.volume * leftHipPouchInventory.items[i].currentStackSize;
             }
         }
 
-        if (bag3Inventory != null)
+        if (rightHipPouchInventory != null)
         {
-            for (int i = 0; i < bag3Inventory.items.Count; i++)
+            for (int i = 0; i < rightHipPouchInventory.items.Count; i++)
             {
-                totalVolume += bag3Inventory.items[i].item.volume * bag3Inventory.items[i].currentStackSize;
+                totalVolume += rightHipPouchInventory.items[i].item.volume * rightHipPouchInventory.items[i].currentStackSize;
             }
         }
 
-        if (bag4Inventory != null)
+        if (quiverInventory != null)
         {
-            for (int i = 0; i < bag4Inventory.items.Count; i++)
+            for (int i = 0; i < quiverInventory.items.Count; i++)
             {
-                totalVolume += bag4Inventory.items[i].item.volume * bag4Inventory.items[i].currentStackSize;
-            }
-        }
-
-        if (bag5Inventory != null)
-        {
-            for (int i = 0; i < bag5Inventory.items.Count; i++)
-            {
-                totalVolume += bag5Inventory.items[i].item.volume * bag5Inventory.items[i].currentStackSize;
+                totalVolume += quiverInventory.items[i].item.volume * quiverInventory.items[i].currentStackSize;
             }
         }
 
@@ -368,11 +341,10 @@ public class PlayerInventoryUI : InventoryUI
     void InitInventories()
     {
         personalInventory.Init();
-        bag1Inventory.Init();
-        bag2Inventory.Init();
-        bag3Inventory.Init();
-        bag4Inventory.Init();
-        bag5Inventory.Init();
+        backpackInventory.Init();
+        leftHipPouchInventory.Init();
+        rightHipPouchInventory.Init();
+        quiverInventory.Init();
         keysInventory.Init();
     }
 }

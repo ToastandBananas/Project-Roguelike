@@ -25,7 +25,7 @@ public class Inventory : MonoBehaviour
     
     GameManager gm;
 
-    public virtual void Start()
+    void Start()
     {
         Init();
     }

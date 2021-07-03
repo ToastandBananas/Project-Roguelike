@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ContextMenu : MonoBehaviour
@@ -182,28 +183,35 @@ public class ContextMenu : MonoBehaviour
 
     void DropItem()
     {
-        gm.dropItemController.DropItem(gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromActiveDirection(), contextActiveInvItem.itemData, contextActiveInvItem.itemData.currentStackSize);
-        gm.containerInvUI.AddItemToList(contextActiveInvItem.itemData);
+        List<ItemData> itemsListAddingTo = gm.containerInvUI.GetItemsListFromActiveDirection();
+        Vector3 dropPos = gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromActiveDirection();
 
-        if (contextActiveInvItem.myEquipmentManager != null)
+        // Make sure there's room on the ground first
+        if (contextActiveInvItem.IsRoomOnGround(contextActiveInvItem.itemData, itemsListAddingTo, dropPos))
         {
-            gm.playerInvUI.UpdateUINumbers();
+            gm.dropItemController.DropItem(dropPos, contextActiveInvItem.itemData, contextActiveInvItem.itemData.currentStackSize);
+            gm.containerInvUI.AddItemToList(contextActiveInvItem.itemData);
 
-            Equipment equipment = (Equipment)contextActiveInvItem.itemData.item;
-            gm.playerManager.equipmentManager.Unequip(equipment.equipmentSlot, false);
-        }
-        else
-        {
-            if (contextActiveInvItem.myInventory != null)
+            if (contextActiveInvItem.myEquipmentManager != null)
             {
-                contextActiveInvItem.myInventory.currentWeight -= Mathf.RoundToInt(contextActiveInvItem.itemData.item.weight * contextActiveInvItem.itemData.currentStackSize * 100f) / 100f;
-                contextActiveInvItem.myInventory.currentVolume -= Mathf.RoundToInt(contextActiveInvItem.itemData.item.volume * contextActiveInvItem.itemData.currentStackSize * 100f) / 100f;
-                contextActiveInvItem.myInventory.myInventoryUI.UpdateUINumbers();
+                gm.playerInvUI.UpdateUINumbers();
+
+                Equipment equipment = (Equipment)contextActiveInvItem.itemData.item;
+                gm.playerManager.equipmentManager.Unequip(equipment.equipmentSlot, false);
             }
             else
-                gm.containerInvUI.UpdateUINumbers();
+            {
+                if (contextActiveInvItem.myInventory != null)
+                {
+                    contextActiveInvItem.myInventory.currentWeight -= Mathf.RoundToInt(contextActiveInvItem.itemData.item.weight * contextActiveInvItem.itemData.currentStackSize * 100f) / 100f;
+                    contextActiveInvItem.myInventory.currentVolume -= Mathf.RoundToInt(contextActiveInvItem.itemData.item.volume * contextActiveInvItem.itemData.currentStackSize * 100f) / 100f;
+                    contextActiveInvItem.myInventory.myInventoryUI.UpdateUINumbers();
+                }
+                else
+                    gm.containerInvUI.UpdateUINumbers();
 
-            contextActiveInvItem.ClearItem();
+                contextActiveInvItem.ClearItem();
+            }
         }
 
         DisableContextMenu();

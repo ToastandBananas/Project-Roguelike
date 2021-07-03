@@ -392,14 +392,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultSprite: {fileID: 21300000, guid: 4246d809056d3454f8a4eaa011fa93b2, type: 3}
   highlightedSprite: {fileID: 21300000, guid: 1f3c926f52cc05842b4a0fc99b838336, type: 3}
+  rightArrowSprite: {fileID: 0}
+  downArrowSprite: {fileID: 0}
+  backgroundImage: {fileID: 5458695786222857487}
+  disclosureWidget: {fileID: 0}
+  itemNameText: {fileID: 5458695786379007269}
+  itemAmountText: {fileID: 7611776968133502448}
+  itemTypeText: {fileID: 5458695785940281619}
+  itemWeightText: {fileID: 5458695784695089132}
+  itemVolumeText: {fileID: 5458695786380118812}
   itemData: {fileID: 0}
-  backgroundImage: {fileID: 0}
-  rectTransform: {fileID: 0}
-  itemNameText: {fileID: 0}
-  itemAmountText: {fileID: 0}
-  itemTypeText: {fileID: 0}
-  itemWeightText: {fileID: 0}
-  itemVolumeText: {fileID: 0}
   myInvUI: {fileID: 0}
   myInventory: {fileID: 0}
   myEquipmentManager: {fileID: 0}

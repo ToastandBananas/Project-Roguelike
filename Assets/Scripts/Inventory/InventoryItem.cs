@@ -6,14 +6,16 @@ using System.Collections.Generic;
 
 public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler
 {
-    public Sprite defaultSprite, highlightedSprite;
-    public ItemData itemData;
-    
-    [HideInInspector] public Image backgroundImage;
-    [HideInInspector] public RectTransform rectTransform;
+    [Header("Sprites")]
+    public Sprite defaultSprite;
+    public Sprite highlightedSprite, rightArrowSprite, downArrowSprite;
 
-    [HideInInspector] public TextMeshProUGUI itemNameText, itemAmountText, itemTypeText, itemWeightText, itemVolumeText;
+    [Header("Components")]
+    public Image backgroundImage;
+    public Image disclosureWidget;
+    public TextMeshProUGUI itemNameText, itemAmountText, itemTypeText, itemWeightText, itemVolumeText;
 
+    [HideInInspector] public ItemData itemData;
     [HideInInspector] public InventoryUI myInvUI;
     [HideInInspector] public Inventory myInventory;
     [HideInInspector] public EquipmentManager myEquipmentManager;
@@ -21,18 +23,13 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
     [HideInInspector] public bool isHidden, isGhostItem;
 
+    LayerMask dropBagObstacleMask;
+
     public void Init()
     {
-        backgroundImage = GetComponent<Image>();
-        rectTransform = GetComponent<RectTransform>();
-
-        itemNameText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-        itemAmountText = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
-        itemTypeText = transform.GetChild(2).GetComponent<TextMeshProUGUI>();
-        itemWeightText = transform.GetChild(3).GetComponent<TextMeshProUGUI>();
-        itemVolumeText = transform.GetChild(4).GetComponent<TextMeshProUGUI>();
-
         gm = GameManager.instance;
+
+        dropBagObstacleMask = LayerMask.GetMask("Interactable", "Interactable Objects", "Objects", "Walls", "Character");
     }
 
     public void OnPointerMove(PointerEventData eventData)
@@ -58,6 +55,12 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
     public void ResetInvItem()
     {
         itemData = null;
+
+        if (disclosureWidget != null && disclosureWidget.enabled)
+        {
+            disclosureWidget.sprite = rightArrowSprite;
+            disclosureWidget.enabled = false;
+        }
     }
 
     public void ClearItem()
@@ -129,65 +132,27 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
     public void TransferItem()
     {
-        if (myEquipmentManager == null && (myInventory == null || myInventory.myInventoryUI == gm.containerInvUI)) // If we're taking this item from a container or the ground
+        // If we're taking this item from a container or the ground
+        if (myEquipmentManager == null && (myInventory == null || myInventory.myInventoryUI == gm.containerInvUI))
         {
             // We don't want to add items directly to the keys inv (unless it's a key) or to the current equipment inv
-            if (gm.playerInvUI.activeInventory != null && gm.playerInvUI.activeInventory != gm.playerInvUI.keysInventory && itemData.item.itemType != ItemType.Key)
+            if (gm.playerInvUI.activeInventory != null && gm.playerInvUI.activeInventory != gm.playerInvUI.keysInventory && itemData.item.itemType != ItemType.Key && itemData.item.itemType != ItemType.Ammo)
             {
                 if (gm.playerInvUI.activeInventory.Add(this, itemData, itemData.currentStackSize, myInventory)) // If there's room in the inventory
                 {
                     myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.activePlayerInvSideBarButton));
+
+                    // If the item is an equippable bag, set the container menu's active inventory to null
+                    if (itemData.item.IsBag())
+                    {
+                        gm.containerInvUI.activeInventory = null;
+                        gm.containerInvUI.SetSideBarIcon_Floor(gm.containerInvUI.activeDirection);
+                    }
+
                     ClearItem();
                 }
                 else // If there wasn't enough room in the inventory, try adding 1 at a time, until we can't fit anymore
-                {
-                    // Cache the item in case the itemData gets cleared out before we can do the add item effect
-                    Item itemAdding = itemData.item;
-
-                    if (itemData.item.maxStackSize > 1)
-                    {
-                        bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.activeInventory, itemData);
-                        if (someAdded) myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.activePlayerInvSideBarButton));
-                    }
-
-                    // Now try to fit the item in other bags (if there are any)
-                    if (itemData != null && itemData.currentStackSize > 0 && gm.playerInvUI.bag1Active && gm.playerInvUI.activeInventory != gm.playerInvUI.bag1Inventory)
-                    {
-                        bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.bag1Inventory, itemData);
-                        if (someAdded) myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.bag1SideBarButton));
-                    }
-
-                    if (itemData != null && itemData.currentStackSize > 0 && gm.playerInvUI.bag2Active && gm.playerInvUI.activeInventory != gm.playerInvUI.bag2Inventory)
-                    {
-                        bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.bag2Inventory, itemData);
-                        if (someAdded) myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.bag2SideBarButton));
-                    }
-
-                    if (itemData != null && itemData.currentStackSize > 0 && gm.playerInvUI.bag3Active && gm.playerInvUI.activeInventory != gm.playerInvUI.bag3Inventory)
-                    {
-                        bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.bag3Inventory, itemData);
-                        if (someAdded) myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.bag3SideBarButton));
-                    }
-
-                    if (itemData != null && itemData.currentStackSize > 0 && gm.playerInvUI.bag4Active && gm.playerInvUI.activeInventory != gm.playerInvUI.bag4Inventory)
-                    {
-                        bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.bag4Inventory, itemData);
-                        if (someAdded) myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.bag4SideBarButton));
-                    }
-
-                    if (itemData != null && itemData.currentStackSize > 0 && gm.playerInvUI.bag5Active && gm.playerInvUI.activeInventory != gm.playerInvUI.bag5Inventory)
-                    {
-                        bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.bag5Inventory, itemData);
-                        if (someAdded) myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.bag5SideBarButton));
-                    }
-
-                    // Now try to fit the item in the player's personal inventory
-                    if (itemData != null && itemData.currentStackSize > 0 && gm.playerInvUI.activeInventory != gm.playerInvUI.personalInventory)
-                    {
-                        bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.personalInventory, itemData);
-                        if (someAdded) myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.personalInventorySideBarButton));
-                    }
-                }
+                    AddItemToOtherBags(itemData);
             }
             else if (itemData.item.itemType == ItemType.Key) // If the item is a key, add it directly to the keys inventory
             {
@@ -195,48 +160,16 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.keysSideBarButton));
                 ClearItem();
             }
-            else // Otherwise, add the item to the first available bag, or the personal inventory if there's no bag or no room in any of the bags
+            else if (itemData.item.itemType == ItemType.Ammo)
             {
-                // Cache the item in case the itemData gets cleared out before we can do the add item effect
-                Item itemAdding = itemData.item;
-
-                if (itemData != null && itemData.currentStackSize > 0 && gm.playerInvUI.bag1Active)
+                if (gm.playerInvUI.quiverEquipped)
                 {
-                    bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.bag1Inventory, itemData);
-                    if (someAdded) myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.bag1SideBarButton));
-                }
-
-                if (itemData != null && itemData.currentStackSize > 0 && gm.playerInvUI.bag2Active)
-                {
-                    bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.bag2Inventory, itemData);
-                    if (someAdded) myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.bag2SideBarButton));
-                }
-
-                if (itemData != null && itemData.currentStackSize > 0 && gm.playerInvUI.bag3Active)
-                {
-                    bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.bag3Inventory, itemData);
-                    if (someAdded) myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.bag3SideBarButton));
-                }
-
-                if (itemData != null && itemData.currentStackSize > 0 && gm.playerInvUI.bag4Active)
-                {
-                    bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.bag4Inventory, itemData);
-                    if (someAdded) myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.bag4SideBarButton));
-                }
-
-                if (itemData != null && itemData.currentStackSize > 0 && gm.playerInvUI.bag5Active)
-                {
-                    bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.bag5Inventory, itemData);
-                    if (someAdded) myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.bag5SideBarButton));
-                }
-
-                // Now try to fit the item in the player's personal inventory
-                if (itemData != null && itemData.currentStackSize > 0)
-                {
-                    bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.personalInventory, itemData);
-                    if (someAdded) myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.personalInventorySideBarButton));
+                    if (gm.playerInvUI.quiverInventory.Add(this, itemData, itemData.currentStackSize, myInventory) == false)
+                        AddItemToOtherBags(itemData);
                 }
             }
+            else // Otherwise, add the item to the first available bag, or the personal inventory if there's no bag or no room in any of the bags
+                AddItemToOtherBags(itemData);
 
             gm.playerInvUI.UpdateUINumbers();
         }
@@ -279,9 +212,11 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 if (itemData.currentStackSize > 0) // If there's still some left to drop or if the item's maxStackSize is 1
                 {
                     List<ItemData> itemsListAddingTo = gm.containerInvUI.GetItemsListFromActiveDirection();
-                    if (IsRoomOnGround(itemData, itemsListAddingTo))
+                    Vector3 dropPos = gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromActiveDirection();
+
+                    if (IsRoomOnGround(itemData, itemsListAddingTo, dropPos))
                     {
-                        gm.dropItemController.DropItem(gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromActiveDirection(), itemData, itemData.currentStackSize);
+                        gm.dropItemController.DropItem(dropPos, itemData, itemData.currentStackSize);
 
                         if (gm.playerInvUI.activeInventory != null)
                         {
@@ -306,6 +241,112 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             }
 
             gm.playerInvUI.UpdateUINumbers();
+        }
+    }
+
+    void AddItemToOtherBags(ItemData itemToAdd)
+    {
+        // Cache the item in case the itemData gets cleared out before we can do the add item effect
+        Item itemAdding = itemToAdd.item;
+
+        // Try adding to the active inventory first
+        if (gm.playerInvUI.activeInventory != null && itemToAdd.item.maxStackSize > 1)
+        {
+            bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.activeInventory, itemToAdd);
+            if (someAdded)
+            {
+                myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.activePlayerInvSideBarButton));
+
+                // If the item is an equippable bag, set the container menu's active inventory to null
+                if (itemData.item.IsBag())
+                {
+                    gm.containerInvUI.activeInventory = null;
+                    gm.containerInvUI.SetSideBarIcon_Floor(gm.containerInvUI.activeDirection);
+                }
+            }
+        }
+
+        // If the item is ammunition, try adding here second
+        if (itemToAdd != null && itemToAdd.item.itemType == ItemType.Ammo && itemToAdd.currentStackSize > 0 && gm.playerInvUI.quiverEquipped && gm.playerInvUI.activeInventory != gm.playerInvUI.quiverInventory)
+        {
+            bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.quiverInventory, itemToAdd);
+            if (someAdded)
+            {
+                myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.quiverSidebarButton));
+
+                // If the item is an equippable bag, set the container menu's active inventory to null
+                if (itemData.item.IsBag())
+                {
+                    gm.containerInvUI.activeInventory = null;
+                    gm.containerInvUI.SetSideBarIcon_Floor(gm.containerInvUI.activeDirection);
+                }
+            }
+        }
+
+        // Now try to fit the item in other equipped bags
+        if (itemToAdd != null && itemToAdd.currentStackSize > 0 && gm.playerInvUI.backpackEquipped && gm.playerInvUI.activeInventory != gm.playerInvUI.backpackInventory)
+        {
+            bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.backpackInventory, itemToAdd);
+            if (someAdded)
+            {
+                myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.backpackSidebarButton));
+
+                // If the item is an equippable bag, set the container menu's active inventory to null
+                if (itemData.item.IsBag())
+                {
+                    gm.containerInvUI.activeInventory = null;
+                    gm.containerInvUI.SetSideBarIcon_Floor(gm.containerInvUI.activeDirection);
+                }
+            }
+        }
+
+        if (itemToAdd != null && itemToAdd.currentStackSize > 0 && gm.playerInvUI.leftHipPouchEquipped && gm.playerInvUI.activeInventory != gm.playerInvUI.leftHipPouchInventory)
+        {
+            bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.leftHipPouchInventory, itemToAdd);
+            if (someAdded)
+            {
+                myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.leftHipPouchSidebarButton));
+
+                // If the item is an equippable bag, set the container menu's active inventory to null
+                if (itemData.item.IsBag())
+                {
+                    gm.containerInvUI.activeInventory = null;
+                    gm.containerInvUI.SetSideBarIcon_Floor(gm.containerInvUI.activeDirection);
+                }
+            }
+        }
+
+        if (itemToAdd != null && itemToAdd.currentStackSize > 0 && gm.playerInvUI.rightHipPouchEquipped && gm.playerInvUI.activeInventory != gm.playerInvUI.rightHipPouchInventory)
+        {
+            bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.rightHipPouchInventory, itemToAdd);
+            if (someAdded)
+            {
+                myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.rightHipPouchSidebarButton));
+
+                // If the item is an equippable bag, set the container menu's active inventory to null
+                if (itemData.item.IsBag())
+                {
+                    gm.containerInvUI.activeInventory = null;
+                    gm.containerInvUI.SetSideBarIcon_Floor(gm.containerInvUI.activeDirection);
+                }
+            }
+        }
+
+        // Now try to fit the item in the player's personal inventory
+        if (itemToAdd != null && itemToAdd.currentStackSize > 0 && gm.playerInvUI.activeInventory != gm.playerInvUI.personalInventory)
+        {
+            bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.personalInventory, itemToAdd);
+            if (someAdded)
+            {
+                myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.personalInventorySideBarButton));
+
+                // If the item is an equippable bag, set the container menu's active inventory to null
+                if (itemData.item.IsBag())
+                {
+                    gm.containerInvUI.activeInventory = null;
+                    gm.containerInvUI.SetSideBarIcon_Floor(gm.containerInvUI.activeDirection);
+                }
+            }
         }
     }
 
@@ -344,11 +385,13 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             if (itemDataComingFrom.StackableItemsDataIsEqual(itemsListAddingTo[i], itemDataComingFrom))
             {
                 InventoryItem itemDatasInvItem = gm.containerInvUI.GetItemDatasInventoryItem(itemsListAddingTo[i]);
+                Vector3 dropPos = gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromActiveDirection();
+
                 for (int j = 0; j < itemCount; j++)
                 {
                     if (itemsListAddingTo[i].currentStackSize < itemsListAddingTo[i].item.maxStackSize)
                     {
-                        if (IsRoomOnGround(itemDataComingFrom, itemsListAddingTo))
+                        if (IsRoomOnGround(itemDataComingFrom, itemsListAddingTo, dropPos))
                         {
                             itemsListAddingTo[i].currentStackSize++;
                             itemDataComingFrom.currentStackSize--;
@@ -387,6 +430,11 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         itemTypeText.enabled = false;
         itemWeightText.enabled = false;
         itemVolumeText.enabled = false;
+
+        // TODO: Collapse disclosure widget if it's open
+
+        if (itemData.item.itemType == ItemType.Bag || itemData.item.itemType == ItemType.PortableContainer)
+            disclosureWidget.enabled = false;
     }
 
     public void Show()
@@ -399,11 +447,23 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         itemWeightText.enabled = true;
         itemVolumeText.enabled = true;
         RemoveHighlight();
+
+        if (itemData != null && (itemData.item.itemType == ItemType.Bag || itemData.item.itemType == ItemType.PortableContainer))
+        {
+            disclosureWidget.enabled = true;
+            disclosureWidget.sprite = rightArrowSprite;
+        }
     }
 
-    bool IsRoomOnGround(ItemData itemDataComingFrom, List<ItemData> itemsListAddingTo)
+    public bool IsRoomOnGround(ItemData itemDataComingFrom, List<ItemData> itemsListAddingTo, Vector2 groundPosition)
     {
-        if (gm.containerInvUI.emptyTileMaxVolume - gm.containerInvUI.GetTotalVolume(itemsListAddingTo) - itemDataComingFrom.item.volume >= 0)
+        if (itemDataComingFrom.item.IsBag())
+        {
+            RaycastHit2D[] hits = Physics2D.RaycastAll(groundPosition, Vector2.zero, 1f, dropBagObstacleMask);
+            if (hits.Length == 0 && gm.containerInvUI.emptyTileMaxVolume - gm.containerInvUI.GetTotalVolume(itemsListAddingTo) - itemDataComingFrom.item.volume >= 0)
+                return true;
+        }
+        else if (gm.containerInvUI.emptyTileMaxVolume - gm.containerInvUI.GetTotalVolume(itemsListAddingTo) - itemDataComingFrom.item.volume >= 0)
             return true;
 
         return false;

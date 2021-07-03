@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb044a60e63a86a4da096d1e94e2a8ca, type: 3}
+  m_Name: Travel Bag
+  m_EditorClassIdentifier: 
+  name: Travel Bag
+  itemType: 12
+  description: A lightweight leather bag, generally used for short term travel.
+  maxStackSize: 1
+  weight: 1
+  volume: 0.8
+  isUsable: 1
+  minBaseValue: 0
+  maxBaseValue: 0
+  staticValue: 50
+  pickupSprite: {fileID: -462824376789195924, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+  equipmentSlot: 11
+  minBaseDurability: 100
+  maxBaseDurability: 100
+  equippedSprite: {fileID: 0}
+  sidebarSprite: {fileID: -462824376789195924, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+  maxWeight: 50
+  maxVolume: 20

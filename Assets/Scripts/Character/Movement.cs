@@ -15,6 +15,13 @@ public class Movement : MonoBehaviour
     public virtual void Start()
     {
         gm = GameManager.instance;
+
+        // Make sure the character is properly positioned
+        if (transform.position.x % 0.5f != 0)
+            transform.position = new Vector3(Mathf.FloorToInt(transform.position.x) + 0.5f, transform.position.y);
+
+        if (transform.position.y % 0.5f != 0)
+            transform.position = new Vector3(transform.position.x, Mathf.FloorToInt(transform.position.y) + 0.5f);
     }
 
     public void Move(int xDir, int yDir, bool isNPC)

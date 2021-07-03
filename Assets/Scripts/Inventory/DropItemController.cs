@@ -4,7 +4,6 @@ using UnityEngine;
 public class DropItemController : MonoBehaviour
 {
     GameManager gm;
-    ItemPickupObjectPool itemPickupObjectPool;
 
     LayerMask obstacleMask;
 
@@ -31,12 +30,22 @@ public class DropItemController : MonoBehaviour
     void Start()
     {
         gm = GameManager.instance;
-        itemPickupObjectPool = ObjectPoolManager.instance.pickupsPool;
     }
 
     public void DropItem(Vector3 dropPosition, ItemData itemData, int amountToDrop)
     {
-        ItemPickup newItemPickup = itemPickupObjectPool.GetPooledObject().GetComponent<ItemPickup>();
+        ItemPickup newItemPickup = null;
+        if (itemData.item.IsBag())
+        {
+            newItemPickup = gm.objectPoolManager.bagPickupsPool.GetPooledItemPickup();
+            Direction direction = GetDirectionFromDropPosition(dropPosition);
+            gm.containerInvUI.AssignInventory(direction, newItemPickup.inventory);
+            Bag bag = (Bag)itemData.item;
+            gm.containerInvUI.GetSideBarButtonFromDirection(direction).icon.sprite = bag.sidebarSprite;
+        }
+        else
+            newItemPickup = gm.objectPoolManager.itemPickupsPool.GetPooledItemPickup();
+
         SetupItemPickup(newItemPickup, itemData, amountToDrop, dropPosition);
 
         if (dropPosition == gm.playerManager.transform.position + GetDropPositionFromActiveDirection())

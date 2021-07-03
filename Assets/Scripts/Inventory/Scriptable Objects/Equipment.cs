@@ -10,7 +10,7 @@ public class Equipment : Item
     public int minBaseDurability = 75;
     public int maxBaseDurability = 100;
 
-    [Header("Sprite")]
+    [Header("Sprites")]
     public Sprite equippedSprite;
 
     public override void Use(EquipmentManager equipmentManager, Inventory inventory, InventoryItem invItem, int itemCount)

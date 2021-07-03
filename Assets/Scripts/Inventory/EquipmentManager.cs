@@ -8,17 +8,19 @@ public class EquipmentManager : MonoBehaviour
     public delegate void OnWeaponChanged(ItemData newItemData, ItemData oldItemData);
     public OnWeaponChanged onWeaponChanged;
 
+    public Transform itemsParent;
     public ItemData[] currentEquipment;
 
     public float currentWeight, currentVolume;
 
     [HideInInspector] public GameManager gm;
     [HideInInspector] public CharacterManager characterManager;
-    [HideInInspector] public Transform itemsParent;
     [HideInInspector] public bool isPlayer;
 
     public virtual void Start()
     {
+        gm = GameManager.instance;
+
         if (gameObject.CompareTag("NPC"))
         {
             characterManager = GetComponent<CharacterManager>();
@@ -28,10 +30,8 @@ public class EquipmentManager : MonoBehaviour
         {
             characterManager = PlayerManager.instance;
             isPlayer = true;
+            itemsParent = gm.playerInvUI.equipmentSideBarButton.transform.GetChild(1);
         }
-
-        gm = GameManager.instance;
-        itemsParent = transform.Find("Items");
 
         int numSlots = System.Enum.GetNames(typeof(EquipmentSlot)).Length;
         currentEquipment = new ItemData[numSlots];
@@ -87,44 +87,28 @@ public class EquipmentManager : MonoBehaviour
                     bool addItemEffectPlayed = false;
                     
                     // Try adding to the player's inventory and if it is added, play the add item effect
-                    if (gm.playerInvUI.bag1Active)
-                        itemAddedToInv = gm.playerInvUI.bag1Inventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null);
+                    if (gm.playerInvUI.backpackEquipped)
+                        itemAddedToInv = gm.playerInvUI.backpackInventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null);
                     
                     if (itemAddedToInv)
                     {
-                        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.bag1SideBarButton));
+                        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.backpackSidebarButton));
                         addItemEffectPlayed = true;
                     }
-                    else if (gm.playerInvUI.bag2Active)
-                        itemAddedToInv = gm.playerInvUI.bag2Inventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null);
+                    else if (gm.playerInvUI.leftHipPouchEquipped)
+                        itemAddedToInv = gm.playerInvUI.leftHipPouchInventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null);
 
                     if (itemAddedToInv && addItemEffectPlayed == false)
                     {
-                        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.bag2SideBarButton));
+                        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.leftHipPouchSidebarButton));
                         addItemEffectPlayed = true;
                     }
-                    else if (itemAddedToInv == false && gm.playerInvUI.bag3Active)
-                        itemAddedToInv = gm.playerInvUI.bag3Inventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null);
+                    else if (itemAddedToInv == false && gm.playerInvUI.rightHipPouchEquipped)
+                        itemAddedToInv = gm.playerInvUI.rightHipPouchInventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null);
 
                     if (itemAddedToInv && addItemEffectPlayed == false)
                     {
-                        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.bag3SideBarButton));
-                        addItemEffectPlayed = true;
-                    }
-                    else if (itemAddedToInv == false && gm.playerInvUI.bag4Active)
-                        itemAddedToInv = gm.playerInvUI.bag4Inventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null);
-
-                    if (itemAddedToInv && addItemEffectPlayed == false)
-                    {
-                        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.bag4SideBarButton));
-                        addItemEffectPlayed = true;
-                    }
-                    else if (itemAddedToInv == false && gm.playerInvUI.bag5Active)
-                        itemAddedToInv = gm.playerInvUI.bag5Inventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null);
-
-                    if (itemAddedToInv && addItemEffectPlayed == false)
-                    {
-                        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.bag5SideBarButton));
+                        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.rightHipPouchSidebarButton));
                         addItemEffectPlayed = true;
                     }
                     else if (itemAddedToInv == false)
@@ -143,29 +127,36 @@ public class EquipmentManager : MonoBehaviour
                 }
             }
 
-            // If this is a Wearable Item, set the scriptableObject to null
-            if (oldItemData.item.IsWeapon() == false)
-                RemoveWearableSprite(equipmentSlot);
-            else  // If this is a Weapon Item, get rid of the weapon's gameobject
-                RemoveWeaponSprite(equipmentSlot);
-
-            UnassignEquipment(oldItemData, equipmentSlot);
-
+            bool isRoomOnGround = true;
             if (shouldDropItem)
-                gm.dropItemController.DropItem(characterManager.transform.position, oldItemData, oldItemData.currentStackSize);
+                isRoomOnGround = invItemComingFrom.IsRoomOnGround(oldItemData, gm.containerInvUI.playerPositionItems, gm.playerManager.transform.position);
 
-            // Adjust the equipment manager's weight and volume
-            oldItemData.currentStackSize = stackSize;
-            currentWeight -= Mathf.RoundToInt(oldItemData.item.weight * oldItemData.currentStackSize * 100f) / 100f;
-            currentVolume -= Mathf.RoundToInt(oldItemData.item.volume * oldItemData.currentStackSize * 100f) / 100f;
+            if (shouldDropItem == false || isRoomOnGround)
+            {
+                // If this is a Wearable Item, set the scriptableObject to null
+                if (oldItemData.item.IsWeapon() == false)
+                    RemoveWearableSprite(equipmentSlot);
+                else  // If this is a Weapon Item, get rid of the weapon's gameobject
+                    RemoveWeaponSprite(equipmentSlot);
 
-            if (invItemComingFrom != null)
-                invItemComingFrom.ClearItem();
-            else
-                oldItemData.ReturnToObjectPool();
+                UnassignEquipment(oldItemData, equipmentSlot);
 
-            if (isPlayer)
-                gm.playerInvUI.UpdateUINumbers();
+                if (shouldDropItem)
+                    gm.dropItemController.DropItem(characterManager.transform.position, oldItemData, oldItemData.currentStackSize);
+
+                // Adjust the equipment manager's weight and volume
+                oldItemData.currentStackSize = stackSize;
+                currentWeight -= Mathf.RoundToInt(oldItemData.item.weight * oldItemData.currentStackSize * 100f) / 100f;
+                currentVolume -= Mathf.RoundToInt(oldItemData.item.volume * oldItemData.currentStackSize * 100f) / 100f;
+
+                if (invItemComingFrom != null)
+                    invItemComingFrom.ClearItem();
+                else
+                    oldItemData.ReturnToObjectPool();
+
+                if (isPlayer)
+                    gm.playerInvUI.UpdateUINumbers();
+            }
         }
     }
 

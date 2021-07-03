@@ -118,7 +118,8 @@ public class StackSizeSelector : MonoBehaviour
             }
             else // If the item is on the ground
             {
-                ItemPickup newItemPickup = gm.objectPoolManager.pickupsPool.GetPooledItemPickup();
+                ItemPickup newItemPickup = gm.objectPoolManager.itemPickupsPool.GetPooledItemPickup();
+
                 newItemData = newItemPickup.itemData;
                 newItemPickup.spriteRenderer.sprite = selectedInvItem.itemData.item.pickupSprite;
                 newItemPickup.transform.position = gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromActiveDirection();

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum ItemType { Item, Weapon, Ammo, Clothing, Armor, Food, Drink, Ingredient, Seed, Readable, Key, QuestItem }
+public enum ItemType { Item, Weapon, Ammo, Clothing, Armor, Food, Drink, Ingredient, Seed, Readable, Key, QuestItem, Bag, PortableContainer }
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Inventory/Item")]
 public class Item : ScriptableObject
@@ -19,7 +19,7 @@ public class Item : ScriptableObject
     public int maxBaseValue;
     public int staticValue = 1;
 
-    [Header("Sprites")]
+    [Header("Pickup Sprite")]
     public Sprite pickupSprite;
 
     public virtual void Use(EquipmentManager equipmentManager, Inventory inventory, InventoryItem invItem, int itemCount)
@@ -76,6 +76,11 @@ public class Item : ScriptableObject
     }
 
     public virtual bool IsShield()
+    {
+        return false;
+    }
+
+    public virtual bool IsBag()
     {
         return false;
     }

@@ -23,10 +23,10 @@ public class CharacterManager : MonoBehaviour
 
         alliances = GetComponent<Alliances>();
         characterStats = GetComponent<CharacterStats>();
+        equippedItemsSpriteManager = transform.GetComponentInChildren<EquippedItemsSpriteManager>();
         movement = GetComponent<Movement>();
         vision = GetComponentInChildren<Vision>();
-
-        TryGetComponent(out equippedItemsSpriteManager);
+        
         TryGetComponent(out equipmentManager);
         TryGetComponent(out inventory);
         TryGetComponent(out npcAttack);

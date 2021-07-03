@@ -14,17 +14,17 @@ public class ContainerInventoryUI : InventoryUI
     [Header("Max Ground Volume")]
     public float emptyTileMaxVolume = 1000f;
 
-    public List<ItemData> playerPositionItems = new List<ItemData>();
-    public List<ItemData> northItems = new List<ItemData>();
-    public List<ItemData> southItems = new List<ItemData>();
-    public List<ItemData> westItems = new List<ItemData>();
-    public List<ItemData> eastItems = new List<ItemData>();
-    public List<ItemData> northwestItems = new List<ItemData>();
-    public List<ItemData> northeastItems = new List<ItemData>();
-    public List<ItemData> southwestItems = new List<ItemData>();
-    public List<ItemData> southeastItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> playerPositionItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> northItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> southItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> westItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> eastItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> northwestItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> northeastItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> southwestItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> southeastItems = new List<ItemData>();
 
-    [HideInInspector] public Inventory northInventory, southInventory, westInventory, eastInventory, northwestInventory, northeastInventory, southwestInventory, southeastInventory;
+    [HideInInspector] public Inventory playerPositionInventory, northInventory, southInventory, westInventory, eastInventory, northwestInventory, northeastInventory, southwestInventory, southeastInventory;
 
     [HideInInspector] public Direction activeDirection;
     [HideInInspector] public ContainerSideBarButton activeContainerSideBarButton;
@@ -109,10 +109,17 @@ public class ContainerInventoryUI : InventoryUI
             {
                 if (hits[i].collider.CompareTag("NPC") == false && hits[i].collider.TryGetComponent(out Inventory inventory) != false)
                 {
-                    // Get each item in the container's inventory
-                    for (int j = 0; j < inventory.items.Count; j++)
+                    if (hits[i].collider.TryGetComponent(out ItemData itemData))
                     {
-                        itemsList.Add(inventory.items[j]);
+                        itemsList.Add(itemData);
+                    }
+                    else
+                    {
+                        // Get each item in the container's inventory
+                        for (int j = 0; j < inventory.items.Count; j++)
+                        {
+                            itemsList.Add(inventory.items[j]);
+                        }
                     }
 
                     SetSideBarIcon_Container(direction, inventory);
@@ -141,11 +148,12 @@ public class ContainerInventoryUI : InventoryUI
         }
     }
 
-    void AssignInventory(Direction direction, Inventory inventory)
+    public void AssignInventory(Direction direction, Inventory inventory)
     {
         switch (direction)
         {
             case Direction.Center:
+                if (inventory != null) playerPositionInventory = inventory;
                 break;
             case Direction.North:
                 if (inventory != null) northInventory = inventory;
@@ -181,7 +189,7 @@ public class ContainerInventoryUI : InventoryUI
         switch (direction)
         {
             case Direction.Center:
-                invItem.myInventory = null;
+                invItem.myInventory = playerPositionInventory;
                 break;
             case Direction.North:
                 invItem.myInventory = northInventory;
@@ -212,7 +220,7 @@ public class ContainerInventoryUI : InventoryUI
         }
     }
 
-    void SetSideBarIcon_Container(Direction direction, Inventory inventory)
+    public void SetSideBarIcon_Container(Direction direction, Inventory inventory)
     {
         switch (direction)
         {
@@ -248,7 +256,7 @@ public class ContainerInventoryUI : InventoryUI
         }
     }
 
-    void SetSideBarIcon_Floor(Direction direction)
+    public void SetSideBarIcon_Floor(Direction direction)
     {
         switch (direction)
         {
@@ -289,10 +297,15 @@ public class ContainerInventoryUI : InventoryUI
         switch (direction)
         {
             case Direction.Center:
-                inventoryNameText.text = "Items Under Self";
-                weightText.text = GetTotalWeight(playerPositionItems).ToString();
-                volumeText.text = GetTotalVolume(playerPositionItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                 activeContainerSideBarButton = playerPositionSideBarButton;
+                if (playerPositionInventory != null)
+                    SetupContainerUI(playerPositionInventory, playerPositionSideBarButton.icon, playerPositionItems);
+                else
+                {
+                    inventoryNameText.text = "Items Under Self";
+                    weightText.text = GetTotalWeight(playerPositionItems).ToString();
+                    volumeText.text = GetTotalVolume(playerPositionItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                }
                 break;
             case Direction.North:
                 activeContainerSideBarButton = northSideBarButton;
@@ -475,6 +488,12 @@ public class ContainerInventoryUI : InventoryUI
         southeastSideBarButton.ResetDirectionIconColor();
         if (activeDirection != Direction.Center || newDirection != Direction.Center)
             playerPositionSideBarButton.ResetDirectionIconColor();
+
+        if (playerPositionInventory != null)
+        {
+            playerPositionInventory.container.spriteRenderer.sprite = GetContainerIcon(playerPositionInventory, false);
+            playerPositionSideBarButton.icon.sprite = GetContainerIcon(playerPositionInventory, false);
+        }
 
         if (northInventory != null)
         {
@@ -734,6 +753,7 @@ public class ContainerInventoryUI : InventoryUI
         southwestItems.Clear();
         southeastItems.Clear();
 
+        playerPositionInventory = null;
         northInventory = null;
         southInventory = null;
         westInventory = null;

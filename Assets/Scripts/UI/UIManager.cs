@@ -74,7 +74,6 @@ public class UIManager : MonoBehaviour
             // Build the context menu
             if (GameControls.gamePlayActions.menuContext.WasPressed)
             {
-                Debug.Log(Input.mousePosition);
                 ClearSelectedItems(false);
                 dragTimer = 0;
 
@@ -234,9 +233,9 @@ public class UIManager : MonoBehaviour
             }
         }
         
-        // Disable the context menu
-        if (GameControls.gamePlayActions.menuSelect.WasPressed && gm.contextMenu.isActive && activeContextMenuButton == null)
-            StartCoroutine(gm.contextMenu.DelayDisableContextMenu());
+        // Disable the context menu if we left click
+        //if (GameControls.gamePlayActions.menuSelect.WasPressed && gm.contextMenu.isActive && activeContextMenuButton == null)
+            //StartCoroutine(gm.contextMenu.DelayDisableContextMenu());
     }
 
     void CreateNewGhostItem(InventoryItem originalItem)
@@ -383,6 +382,17 @@ public class UIManager : MonoBehaviour
 
         DisableInventoryUIComponents();
 
+        // Make sure both inventory menus are active and not minimized
+        if (gm.containerInvUI.isActive == false)
+            gm.containerInvUI.ToggleInventoryMenu();
+        else if (gm.containerInvUI.isMinimized)
+            gm.containerInvUI.ToggleMinimization();
+
+        if (gm.playerInvUI.isActive == false)
+            gm.playerInvUI.ToggleInventoryMenu();
+        else if (gm.playerInvUI.isMinimized)
+            gm.playerInvUI.ToggleMinimization();
+
         // If we're just trying to drag one item, add it to our invItemsDragging list
         if (selectedItems.Count == 0)
         {
@@ -502,15 +512,21 @@ public class UIManager : MonoBehaviour
             }
             else // If putting on the ground
             {
-                // Drop the item
-                gm.dropItemController.DropItem(gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromDirection(activeContainerSideBarButton.directionFromPlayer), draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize);
+                List<ItemData> itemsListAddingTo = gm.containerInvUI.GetItemsListFromDirection(activeContainerSideBarButton.directionFromPlayer);
+                Vector3 dropPos = gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromDirection(activeContainerSideBarButton.directionFromPlayer);
 
-                // Remove, unequip or clear the item we were dragging, depending where it's coming from
-                RemoveDraggedItem(draggedInvItem, startingItemCount);
+                if (draggedInvItem.IsRoomOnGround(draggedInvItem.itemData, itemsListAddingTo, dropPos))
+                {
+                    // Drop the item
+                    gm.dropItemController.DropItem(dropPos, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize);
 
-                // If the active container sidebar button's items are active in the menu, update the UI
-                if (gm.containerInvUI.activeDirection == activeContainerSideBarButton.directionFromPlayer)
-                    gm.containerInvUI.UpdateUINumbers();
+                    // Remove, unequip or clear the item we were dragging, depending where it's coming from
+                    RemoveDraggedItem(draggedInvItem, startingItemCount);
+
+                    // If the active container sidebar button's items are active in the menu, update the UI
+                    if (gm.containerInvUI.activeDirection == activeContainerSideBarButton.directionFromPlayer)
+                        gm.containerInvUI.UpdateUINumbers();
+                }
             }
         }
         // If we drag and drop an item onto a player inv sidebar button, place the item in the corresponding inventory
@@ -550,8 +566,20 @@ public class UIManager : MonoBehaviour
             }
             else // If the activeInvUI does not have an inventory open
             {
-                // Drop the item
-                gm.dropItemController.DropItem(gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromDirection(gm.containerInvUI.activeDirection), draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize);
+                List<ItemData> itemsListAddingTo = gm.containerInvUI.GetItemsListFromActiveDirection();
+                Vector3 dropPos = gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromActiveDirection();
+
+                // Drop the item if there's room on the ground
+                if (draggedInvItem.IsRoomOnGround(draggedInvItem.itemData, itemsListAddingTo, dropPos))
+                {
+                    gm.dropItemController.DropItem(dropPos, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize);
+
+                    // Remove, unequip or clear the item we were dragging, depending where it's coming from
+                    RemoveDraggedItem(draggedInvItem, startingItemCount);
+
+                    // Update the UI that we dragged the item onto
+                    activeInvUI.UpdateUINumbers();
+                }
             }
 
             if (wasAddedToInventory)
@@ -572,14 +600,18 @@ public class UIManager : MonoBehaviour
         // If we're dropping the item onto open space (not on a menu or sidebar button) and the item is not already on the ground
         else if (activeInvUI == null && (draggedInvItem.myInvUI == gm.playerInvUI || draggedInvItem.myInventory != null) && activePlayerInvSideBarButton == null && activeContainerSideBarButton == null)
         {
-            // Drop the item
-            gm.dropItemController.DropItem(gm.playerManager.transform.position, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize);
+            Vector3 dropPos = gm.playerManager.transform.position;
+            if (draggedInvItem.IsRoomOnGround(draggedInvItem.itemData, gm.containerInvUI.playerPositionItems, dropPos))
+            {
+                // Drop the item
+                gm.dropItemController.DropItem(dropPos, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize);
 
-            // Remove, unequip or clear the item we were dragging, depending where it's coming from
-            RemoveDraggedItem(draggedInvItem, startingItemCount);
+                // Remove, unequip or clear the item we were dragging, depending where it's coming from
+                RemoveDraggedItem(draggedInvItem, startingItemCount);
 
-            // Update the UI that we dragged the item onto
-            draggedInvItem.myInvUI.UpdateUINumbers();
+                // Update the UI that we dragged the item onto
+                draggedInvItem.myInvUI.UpdateUINumbers();
+            }
         }
 
         // Re-enable components for the dragged item, since they were disabled previously
@@ -612,9 +644,9 @@ public class UIManager : MonoBehaviour
 
     public void ToggleInventory()
     {
-        if (gm.containerInvUI.inventoryParent.activeSelf && gm.playerInvUI.inventoryParent.activeSelf == false)
+        if (gm.containerInvUI.isActive && gm.playerInvUI.isActive == false)
             gm.playerInvUI.ToggleInventoryMenu();
-        else if (gm.containerInvUI.inventoryParent.activeSelf == false && gm.playerInvUI.inventoryParent.activeSelf)
+        else if (gm.containerInvUI.isActive == false && gm.playerInvUI.isActive)
             gm.containerInvUI.ToggleInventoryMenu();
         else
         {
@@ -625,10 +657,10 @@ public class UIManager : MonoBehaviour
 
     public void DisableInventoryMenus()
     {
-        if (gm.playerInvUI.inventoryParent.activeSelf)
+        if (gm.playerInvUI.isActive)
             gm.playerInvUI.ToggleInventoryMenu();
 
-        if (gm.containerInvUI.inventoryParent.activeSelf)
+        if (gm.containerInvUI.isActive)
             gm.containerInvUI.ToggleInventoryMenu();
     }
 

@@ -6,6 +6,9 @@ public class ItemPickup : Interactable
     public int itemCount = 1;
     public bool shouldUseItemCount;
 
+    [Header("Bags Only")]
+    public Inventory inventory;
+
     [HideInInspector] public ItemData itemData;
     [HideInInspector] public Rigidbody2D rigidBody;
     [HideInInspector] public SpriteRenderer spriteRenderer;
@@ -23,6 +26,22 @@ public class ItemPickup : Interactable
 
         if (shouldUseItemCount)
             itemData.currentStackSize = itemCount;
+
+        spriteRenderer.sprite = itemData.item.pickupSprite;
+
+        // Make sure the item pickup is properly positioned
+        if (transform.position.x % 0.5f != 0)
+            transform.position = new Vector3(Mathf.FloorToInt(transform.position.x) + 0.5f, transform.position.y);
+
+        if (transform.position.y % 0.5f != 0)
+            transform.position = new Vector3(transform.position.x, Mathf.FloorToInt(transform.position.y) + 0.5f);
+
+        if (inventory != null)
+        {
+            Bag bag = (Bag)itemData.item;
+            inventory.maxWeight = bag.maxWeight;
+            inventory.maxVolume = bag.maxVolume;
+        }
     }
 
     public override void Interact(EquipmentManager equipmentManager, Inventory inventory, Transform whoIsInteracting)

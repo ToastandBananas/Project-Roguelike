@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3749062138308843613}
   - component: {fileID: 3749062138308843612}
+  - component: {fileID: 7462452904538821107}
   m_Layer: 0
   m_Name: ItemDataObject
   m_TagString: Item Data Object
@@ -56,3 +57,25 @@ MonoBehaviour:
   shieldBashDamage: 0
   freshness: 100
   uses: 1
+--- !u!114 &7462452904538821107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3749062138308843587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58a0fbbcc54e72a449c3c52866bf4d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxWeight: 20
+  maxVolume: 20
+  currentWeight: 0
+  currentVolume: 0
+  items: []
+  itemsParent: {fileID: 0}
+  container: {fileID: 0}
+  myInventoryUI: {fileID: 0}
+  inventoryOwner: {fileID: 0}
+  hasBeenInitialized: 0

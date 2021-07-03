@@ -6,7 +6,8 @@ public class ObjectPoolManager : MonoBehaviour
     public InventoryItemObjectPool containerInventoryItemObjectPool;
     public InventoryItemObjectPool playerInventoryItemObjectPool;
     public InventoryItemObjectPool ghostImageInventoryItemObjectPool;
-    public ItemPickupObjectPool pickupsPool;
+    public ItemPickupObjectPool itemPickupsPool;
+    public ItemPickupObjectPool bagPickupsPool;
     public ItemDataObjectPool itemDataObjectPool;
 
     #region Singleton

@@ -11,19 +11,17 @@ public class InventoryUI : MonoBehaviour
 
     [Header("Texts")]
     public TextMeshProUGUI inventoryNameText;
-    public TextMeshProUGUI weightText;
-    public TextMeshProUGUI volumeText;
+    public TextMeshProUGUI weightText, volumeText;
 
     [HideInInspector] public GameManager gm;
     [HideInInspector] public Inventory activeInventory;
+    [HideInInspector] public bool isActive, isMinimized;
 
     int addItemEffectsPlayCount;
 
     public virtual void Start()
     {
         gm = GameManager.instance;
-
-        UpdateVisibleSlots();
 
         if (inventoryParent.activeSelf)
             inventoryParent.SetActive(false);
@@ -51,6 +49,9 @@ public class InventoryUI : MonoBehaviour
         invItem.myInventory = activeInventory;
         invItem.gameObject.SetActive(true);
 
+        if (newItemData.item.itemType == ItemType.Bag || newItemData.item.itemType == ItemType.PortableContainer)
+            invItem.disclosureWidget.enabled = true;
+
         return invItem;
     }
 
@@ -63,9 +64,12 @@ public class InventoryUI : MonoBehaviour
     {
         inventoryParent.SetActive(!inventoryParent.activeSelf);
 
-        // If the Inventory was menu was closed
+        // If the Inventory menu was closed
         if (inventoryParent.activeSelf == false)
         {
+            isActive = false;
+            isMinimized = false;
+
             // Close the context menu, stackSizeSelector and any active tooltips
             gm.uiManager.DisableInventoryUIComponents();
 
@@ -74,12 +78,20 @@ public class InventoryUI : MonoBehaviour
             else if (gm.playerInvUI == this)
                 gm.uiManager.activePlayerInvSideBarButton = null;
         }
-        else if (background.activeSelf == false)
+        else // If the Inventory menu was opened
         {
-            // Make sure these are active, in case the inventory had been minimized previously
-            background.SetActive(true);
-            sideBarParent.SetActive(true);
-            minimizeButtonText.transform.rotation = Quaternion.Euler(0, 0, 180);
+            isActive = true;
+            isMinimized = false;
+
+            if (background.activeSelf == false)
+            {
+                // Make sure these are active, in case the inventory had been minimized previously
+                background.SetActive(true);
+                sideBarParent.SetActive(true);
+                minimizeButtonText.transform.rotation = Quaternion.Euler(0, 0, 180);
+                isActive = true;
+                isMinimized = false;
+            }
         }
     }
 
@@ -91,13 +103,17 @@ public class InventoryUI : MonoBehaviour
         // If the inventory was minimized
         if (background.activeSelf == false)
         {
+            isMinimized = true;
             minimizeButtonText.transform.rotation = Quaternion.Euler(Vector3.zero);
 
             // Close the context menu, stackSizeSelector and any active tooltips
             gm.uiManager.DisableInventoryUIComponents();
         }
         else
+        {
+            isMinimized = false;
             minimizeButtonText.transform.rotation = Quaternion.Euler(0, 0, 180);
+        }
     }
 
     public float GetTotalWeight(List<ItemData> itemsList)
@@ -146,11 +162,6 @@ public class InventoryUI : MonoBehaviour
         return Mathf.RoundToInt(totalVolume * 100f) / 100f;
     }
 
-    public void UpdateVisibleSlots()
-    {
-        // TODO
-    }
-
     public InventoryItem GetItemDatasInventoryItem(ItemData itemData)
     {
         if (this == gm.playerInvUI)
@@ -181,12 +192,20 @@ public class InventoryUI : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f * (addItemEffectsPlayCount - 1));
 
-        if (containerSideBarButton != null)
-            addItemEffect.DoEffect_Left(itemSprite, containerSideBarButton.transform.position.y);
-        else
-            addItemEffect.DoEffect_Right(itemSprite, playerInvSideBarButton.transform.position.y);
+        if ((containerSideBarButton != null && containerSideBarButton.gameObject.activeInHierarchy) || (playerInvSideBarButton != null && playerInvSideBarButton.gameObject.activeInHierarchy))
+        {
+            if (containerSideBarButton != null)
+                addItemEffect.DoEffect_Left(itemSprite, containerSideBarButton.transform.position.y);
+            else
+                addItemEffect.DoEffect_Right(itemSprite, playerInvSideBarButton.transform.position.y);
 
-        yield return new WaitForSeconds(addItemEffect.anim.GetCurrentAnimatorStateInfo(0).length);
-        addItemEffectsPlayCount--;
+            yield return new WaitForSeconds(addItemEffect.anim.GetCurrentAnimatorStateInfo(0).length);
+            addItemEffectsPlayCount--;
+        }
+        else
+        {
+            addItemEffect.gameObject.SetActive(false);
+            addItemEffectsPlayCount--;
+        }
     }
 }
