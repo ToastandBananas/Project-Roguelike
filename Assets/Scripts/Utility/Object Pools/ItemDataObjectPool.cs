@@ -20,6 +20,9 @@ public class ItemDataObjectPool : ObjectPool
                 ItemData existingItemData = transform.GetChild(i).GetComponent<ItemData>();
                 pooledItemDatas.Add(existingItemData);
                 pooledObjects.Add(existingItemData.gameObject);
+
+                if (existingItemData.CompareTag("Item Data Container Object"))
+                    existingItemData.GetComponent<Inventory>().Init();
             }
 
             // Create and add new objects to the list
@@ -31,6 +34,9 @@ public class ItemDataObjectPool : ObjectPool
                 itemData.gameObject.SetActive(false);
                 pooledItemDatas.Add(itemData);
                 pooledObjects.Add(itemData.gameObject);
+
+                if (itemData.CompareTag("Item Data Container Object"))
+                    itemData.GetComponent<Inventory>().Init();
             }
 
             hasBeenInitialized = true;
@@ -49,6 +55,10 @@ public class ItemDataObjectPool : ObjectPool
         itemData.transform.SetParent(transform);
         pooledItemDatas.Add(itemData);
         pooledObjects.Add(itemData.gameObject);
+
+        if (itemData.CompareTag("Item Data Container Object"))
+            itemData.GetComponent<Inventory>().Init();
+
         return itemData;
     }
 }

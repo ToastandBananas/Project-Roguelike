@@ -110,7 +110,7 @@ public class StackSizeSelector : MonoBehaviour
 
                 selectedInvItem.myInventory.items.Add(newItemData);
                 if (selectedInvItem.myInventory.myInventoryUI == gm.containerInvUI)
-                    gm.containerInvUI.AddItemToList(newItemData);
+                    gm.containerInvUI.AddItemToActiveDirectionList(newItemData);
 
                 #if UNITY_EDITOR
                     newItemData.name = selectedInvItem.itemData.itemName;
@@ -124,7 +124,7 @@ public class StackSizeSelector : MonoBehaviour
                 newItemPickup.spriteRenderer.sprite = selectedInvItem.itemData.item.pickupSprite;
                 newItemPickup.transform.position = gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromActiveDirection();
                 newItemPickup.gameObject.SetActive(true);
-                gm.containerInvUI.AddItemToList(newItemData);
+                gm.containerInvUI.AddItemToActiveDirectionList(newItemData);
 
                 #if UNITY_EDITOR
                     newItemPickup.name = selectedInvItem.itemData.itemName;

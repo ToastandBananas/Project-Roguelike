@@ -234,8 +234,8 @@ public class UIManager : MonoBehaviour
         }
         
         // Disable the context menu if we left click
-        //if (GameControls.gamePlayActions.menuSelect.WasPressed && gm.contextMenu.isActive && activeContextMenuButton == null)
-            //StartCoroutine(gm.contextMenu.DelayDisableContextMenu());
+        if (GameControls.gamePlayActions.menuSelect.WasPressed && gm.contextMenu.isActive && activeContextMenuButton == null)
+            StartCoroutine(gm.contextMenu.DelayDisableContextMenu());
     }
 
     void CreateNewGhostItem(InventoryItem originalItem)
@@ -502,6 +502,10 @@ public class UIManager : MonoBehaviour
                     // Play the add item effect
                     StartCoroutine(gm.containerInvUI.PlayAddItemEffect(draggedInvItem.itemData.item.pickupSprite, activeContainerSideBarButton, null));
 
+                    // If the item was a bag and we took it from the ground
+                    if (draggedInvItem.itemData.item.IsBag() && gm.containerInvUI.activeInventory == draggedInvItem.itemData.bagInventory)
+                        gm.containerInvUI.RemoveBagFromGround();
+
                     // If we took the item from an inventory, remove the item
                     RemoveDraggedItem(draggedInvItem, startingItemCount);
 
@@ -518,7 +522,11 @@ public class UIManager : MonoBehaviour
                 if (draggedInvItem.IsRoomOnGround(draggedInvItem.itemData, itemsListAddingTo, dropPos))
                 {
                     // Drop the item
-                    gm.dropItemController.DropItem(dropPos, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize);
+                    gm.dropItemController.DropItem(dropPos, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory);
+
+                    // If the item was a bag and we took it from the ground
+                    if (draggedInvItem.itemData.item.IsBag() && gm.containerInvUI.activeInventory == draggedInvItem.itemData.bagInventory)
+                        gm.containerInvUI.RemoveBagFromGround();
 
                     // Remove, unequip or clear the item we were dragging, depending where it's coming from
                     RemoveDraggedItem(draggedInvItem, startingItemCount);
@@ -543,6 +551,10 @@ public class UIManager : MonoBehaviour
                 // Play the add item effect
                 StartCoroutine(gm.playerInvUI.PlayAddItemEffect(draggedInvItem.itemData.item.pickupSprite, null, activePlayerInvSideBarButton));
 
+                // If the item was a bag and we took it from the ground
+                if (draggedInvItem.itemData.item.IsBag() && gm.containerInvUI.activeInventory == draggedInvItem.itemData.bagInventory)
+                    gm.containerInvUI.RemoveBagFromGround();
+
                 // Remove, unequip or clear the item we were dragging, depending where it's coming from
                 RemoveDraggedItem(draggedInvItem, startingItemCount);
 
@@ -563,6 +575,10 @@ public class UIManager : MonoBehaviour
             {
                 // Try adding the item to the inventory
                 wasAddedToInventory = activeInvUI.activeInventory.Add(draggedInvItem, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory);
+
+                // If the item was a bag and we took it from the ground
+                if (draggedInvItem.itemData.item.IsBag() && gm.containerInvUI.activeInventory == draggedInvItem.itemData.bagInventory)
+                    gm.containerInvUI.RemoveBagFromGround();
             }
             else // If the activeInvUI does not have an inventory open
             {
@@ -572,7 +588,7 @@ public class UIManager : MonoBehaviour
                 // Drop the item if there's room on the ground
                 if (draggedInvItem.IsRoomOnGround(draggedInvItem.itemData, itemsListAddingTo, dropPos))
                 {
-                    gm.dropItemController.DropItem(dropPos, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize);
+                    gm.dropItemController.DropItem(dropPos, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory);
 
                     // Remove, unequip or clear the item we were dragging, depending where it's coming from
                     RemoveDraggedItem(draggedInvItem, startingItemCount);
@@ -604,7 +620,7 @@ public class UIManager : MonoBehaviour
             if (draggedInvItem.IsRoomOnGround(draggedInvItem.itemData, gm.containerInvUI.playerPositionItems, dropPos))
             {
                 // Drop the item
-                gm.dropItemController.DropItem(dropPos, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize);
+                gm.dropItemController.DropItem(dropPos, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory);
 
                 // Remove, unequip or clear the item we were dragging, depending where it's coming from
                 RemoveDraggedItem(draggedInvItem, startingItemCount);

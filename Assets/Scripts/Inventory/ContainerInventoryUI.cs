@@ -24,7 +24,7 @@ public class ContainerInventoryUI : InventoryUI
     [HideInInspector] public List<ItemData> southwestItems = new List<ItemData>();
     [HideInInspector] public List<ItemData> southeastItems = new List<ItemData>();
 
-    [HideInInspector] public Inventory playerPositionInventory, northInventory, southInventory, westInventory, eastInventory, northwestInventory, northeastInventory, southwestInventory, southeastInventory;
+    public Inventory playerPositionInventory, northInventory, southInventory, westInventory, eastInventory, northwestInventory, northeastInventory, southwestInventory, southeastInventory;
 
     [HideInInspector] public Direction activeDirection;
     [HideInInspector] public ContainerSideBarButton activeContainerSideBarButton;
@@ -123,7 +123,7 @@ public class ContainerInventoryUI : InventoryUI
                     }
 
                     SetSideBarIcon_Container(direction, inventory);
-                    AssignInventory(direction, inventory);
+                    AssignDirectionalInventory(direction, inventory);
                 }
                 else
                 {
@@ -148,7 +148,7 @@ public class ContainerInventoryUI : InventoryUI
         }
     }
 
-    public void AssignInventory(Direction direction, Inventory inventory)
+    public void AssignDirectionalInventory(Direction direction, Inventory inventory)
     {
         switch (direction)
         {
@@ -178,6 +178,42 @@ public class ContainerInventoryUI : InventoryUI
                 break;
             case Direction.Southeast:
                 if (inventory != null) southeastInventory = inventory;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void RemoveDirectionalInventory(Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.Center:
+                playerPositionInventory = null;
+                break;
+            case Direction.North:
+                northInventory = null;
+                break;
+            case Direction.South:
+                southInventory = null;
+                break;
+            case Direction.West:
+                westInventory = null;
+                break;
+            case Direction.East:
+                eastInventory = null;
+                break;
+            case Direction.Northwest:
+                northwestInventory = null;
+                break;
+            case Direction.Northeast:
+                northeastInventory = null;
+                break;
+            case Direction.Southwest:
+                southwestInventory = null;
+                break;
+            case Direction.Southeast:
+                southeastInventory = null;
                 break;
             default:
                 break;
@@ -597,7 +633,7 @@ public class ContainerInventoryUI : InventoryUI
         }
     }
 
-    public void AddItemToList(ItemData itemDataToAdd)
+    public void AddItemToActiveDirectionList(ItemData itemDataToAdd)
     {
         switch (activeDirection)
         {
@@ -739,6 +775,13 @@ public class ContainerInventoryUI : InventoryUI
             default:
                 return null;
         }
+    }
+
+    public void RemoveBagFromGround()
+    {
+        SetSideBarIcon_Floor(activeDirection);
+        activeInventory = null;
+        RemoveDirectionalInventory(activeDirection);
     }
 
     void ClearAllLists()

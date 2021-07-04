@@ -189,8 +189,8 @@ public class ContextMenu : MonoBehaviour
         // Make sure there's room on the ground first
         if (contextActiveInvItem.IsRoomOnGround(contextActiveInvItem.itemData, itemsListAddingTo, dropPos))
         {
-            gm.dropItemController.DropItem(dropPos, contextActiveInvItem.itemData, contextActiveInvItem.itemData.currentStackSize);
-            gm.containerInvUI.AddItemToList(contextActiveInvItem.itemData);
+            gm.dropItemController.DropItem(dropPos, contextActiveInvItem.itemData, contextActiveInvItem.itemData.currentStackSize, contextActiveInvItem.myInventory);
+            gm.containerInvUI.AddItemToActiveDirectionList(contextActiveInvItem.itemData);
 
             if (contextActiveInvItem.myEquipmentManager != null)
             {
@@ -201,10 +201,20 @@ public class ContextMenu : MonoBehaviour
             }
             else
             {
-                if (contextActiveInvItem.myInventory != null)
+                if (contextActiveInvItem.myInventory != null && contextActiveInvItem.itemData.item.IsBag() == false)
                 {
                     contextActiveInvItem.myInventory.currentWeight -= Mathf.RoundToInt(contextActiveInvItem.itemData.item.weight * contextActiveInvItem.itemData.currentStackSize * 100f) / 100f;
                     contextActiveInvItem.myInventory.currentVolume -= Mathf.RoundToInt(contextActiveInvItem.itemData.item.volume * contextActiveInvItem.itemData.currentStackSize * 100f) / 100f;
+
+                    if (contextActiveInvItem.itemData.item.itemType == ItemType.PortableContainer)
+                    {
+                        for (int i = 0; i < contextActiveInvItem.itemData.bagInventory.items.Count; i++)
+                        {
+                            contextActiveInvItem.myInventory.currentWeight -= Mathf.RoundToInt(contextActiveInvItem.itemData.bagInventory.items[i].item.weight * contextActiveInvItem.itemData.bagInventory.items[i].currentStackSize * 100f) / 100f;
+                            contextActiveInvItem.myInventory.currentVolume -= Mathf.RoundToInt(contextActiveInvItem.itemData.bagInventory.items[i].item.volume * contextActiveInvItem.itemData.bagInventory.items[i].currentStackSize * 100f) / 100f;
+                        }
+                    }
+
                     contextActiveInvItem.myInventory.myInventoryUI.UpdateUINumbers();
                 }
                 else

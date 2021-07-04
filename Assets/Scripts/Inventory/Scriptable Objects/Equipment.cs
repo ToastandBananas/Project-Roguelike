@@ -17,7 +17,7 @@ public class Equipment : Item
     {
         // Equip the item
         if (invItem.myEquipmentManager == null)
-            equipmentManager.Equip(invItem.itemData, equipmentSlot);
+            equipmentManager.Equip(invItem.itemData, invItem, equipmentSlot);
         else
         {
             // Unequip the item

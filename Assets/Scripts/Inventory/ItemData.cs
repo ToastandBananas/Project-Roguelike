@@ -31,6 +31,8 @@ public class ItemData : MonoBehaviour
     [Header("Consumable Data")]
     public int freshness = 100;
     public int uses = 1;
+    
+    [HideInInspector] public Inventory bagInventory;
 
     GameManager gm;
 
@@ -40,6 +42,8 @@ public class ItemData : MonoBehaviour
             value = CalculateItemValue();
         else if (item != null)
             RandomizeData();
+
+        TryGetComponent(out bagInventory);
     }
 
     void Start()
@@ -357,6 +361,8 @@ public class ItemData : MonoBehaviour
 
     public void ReturnToItemDataObjectPool()
     {
+        if (gm == null) gm = GameManager.instance;
+
         transform.SetParent(gm.objectPoolManager.itemDataObjectPool.transform);
         if (gm.objectPoolManager.itemDataObjectPool.pooledObjects.Contains(gameObject) == false)
         {
@@ -370,6 +376,8 @@ public class ItemData : MonoBehaviour
 
     public void ReturnToItemDataContainerObjectPool()
     {
+        if (gm == null) gm = GameManager.instance;
+
         transform.SetParent(gm.objectPoolManager.itemDataContainerObjectPool.transform);
         if (gm.objectPoolManager.itemDataContainerObjectPool.pooledObjects.Contains(gameObject) == false)
         {

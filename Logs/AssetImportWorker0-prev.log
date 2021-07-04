@@ -15,11 +15,11 @@ C:/Users/cuell/OneDrive/Desktop/Game Projects/Project Roguelike
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-64566
+55270
 Successfully changed project path to: C:/Users/cuell/OneDrive/Desktop/Game Projects/Project Roguelike
 C:/Users/cuell/OneDrive/Desktop/Game Projects/Project Roguelike
 Using Asset Import Pipeline V2.
-Refreshing native plugins compatible for Editor in 142.70 ms, found 6 plugins.
+Refreshing native plugins compatible for Editor in 183.01 ms, found 6 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2021.1.10f1 (b15f561b2cef)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2021.1.10f1/Editor/Data/Resources/UnitySubsystems
@@ -35,94 +35,94 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2021.1.10f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2021.1.10f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/2021.1.10f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56072
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56648
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.1.10f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.1.10f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.004364 seconds.
+Registered in 0.005789 seconds.
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 379.36 ms, found 6 plugins.
+Refreshing native plugins compatible for Editor in 2140.50 ms, found 6 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  2.534 seconds
+- Completed reload, in  8.665 seconds
 Domain Reload Profiling:
-	ReloadAssembly (2535ms)
-		BeginReloadAssembly (79ms)
+	ReloadAssembly (8665ms)
+		BeginReloadAssembly (224ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (0ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (1ms)
-		EndReloadAssembly (1195ms)
-			LoadAssemblies (76ms)
+			CreateAndSetChildDomain (2ms)
+		EndReloadAssembly (6143ms)
+			LoadAssemblies (218ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (230ms)
+			SetupTypeCache (1584ms)
 			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (46ms)
-			SetupLoadedEditorAssemblies (844ms)
+			RebuildScriptCaches (1143ms)
+			SetupLoadedEditorAssemblies (2629ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (13ms)
+				InitializePlatformSupportModulesInManaged (146ms)
 				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (379ms)
+				RefreshPlugins (2141ms)
 				BeforeProcessingInitializeOnLoad (2ms)
-				ProcessInitializeOnLoadAttributes (405ms)
-				ProcessInitializeOnLoadMethodAttributes (44ms)
+				ProcessInitializeOnLoadAttributes (217ms)
+				ProcessInitializeOnLoadMethodAttributes (123ms)
 				AfterProcessingInitializeOnLoad (0ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (0ms)
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.045084 seconds.
+Registered in 0.060748 seconds.
 Begin MonoManager ReloadAssembly
 Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
 Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 207.00 ms, found 6 plugins.
+Refreshing native plugins compatible for Editor in 287.03 ms, found 6 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  3.715 seconds
+- Completed reload, in  2.889 seconds
 Domain Reload Profiling:
-	ReloadAssembly (3715ms)
-		BeginReloadAssembly (424ms)
+	ReloadAssembly (2890ms)
+		BeginReloadAssembly (266ms)
 			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (9ms)
+			DisableScriptedObjects (7ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (51ms)
-		EndReloadAssembly (3143ms)
-			LoadAssemblies (381ms)
+			CreateAndSetChildDomain (29ms)
+		EndReloadAssembly (2514ms)
+			LoadAssemblies (207ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (683ms)
+			SetupTypeCache (697ms)
 			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (116ms)
-			SetupLoadedEditorAssemblies (1781ms)
+			RebuildScriptCaches (106ms)
+			SetupLoadedEditorAssemblies (1318ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (7ms)
+				InitializePlatformSupportModulesInManaged (11ms)
 				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (207ms)
-				BeforeProcessingInitializeOnLoad (207ms)
-				ProcessInitializeOnLoadAttributes (1307ms)
-				ProcessInitializeOnLoadMethodAttributes (34ms)
-				AfterProcessingInitializeOnLoad (19ms)
+				RefreshPlugins (287ms)
+				BeforeProcessingInitializeOnLoad (249ms)
+				ProcessInitializeOnLoadAttributes (727ms)
+				ProcessInitializeOnLoadMethodAttributes (27ms)
+				AfterProcessingInitializeOnLoad (16ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (17ms)
+			AwakeInstancesAfterBackupRestoration (16ms)
 Platform modules already initialized, skipping
 ========================================================================
 Worker process is ready to serve import requests
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.08 seconds
-Refreshing native plugins compatible for Editor in 1.43 ms, found 6 plugins.
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.07 seconds
+Refreshing native plugins compatible for Editor in 1.05 ms, found 6 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 4635 Unused Serialized files (Serialized files now loaded: 0)
 System memory in use before: 164.8 MB.
 System memory in use after: 164.9 MB.
 
 Unloading 54 unused Assets to reduce memory usage. Loaded Objects now: 5066.
-Total: 5.833200 ms (FindLiveObjects: 0.361400 ms CreateObjectMapping: 0.305800 ms MarkObjects: 4.898300 ms  DeleteObjects: 0.266000 ms)
+Total: 7.535600 ms (FindLiveObjects: 0.402400 ms CreateObjectMapping: 0.338200 ms MarkObjects: 6.584900 ms  DeleteObjects: 0.208400 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
@@ -138,87 +138,17 @@ AssetImportParameters requested are different than current active one (requested
 Received Import Request.
   path: Assets/Scripts/Inventory/Inventory.cs
   artifactKey: Guid(58a0fbbcc54e72a449c3c52866bf4d2a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scripts/Inventory/Inventory.cs using Guid(58a0fbbcc54e72a449c3c52866bf4d2a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e67d0eb3a07ef7e9579a89bcd1d1a37a') in 0.078304 seconds 
+Start importing Assets/Scripts/Inventory/Inventory.cs using Guid(58a0fbbcc54e72a449c3c52866bf4d2a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b111dd32d9d2186db1ddcfe5376478b6') in 0.053972 seconds 
 ========================================================================
 Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.020955 seconds.
-Begin MonoManager ReloadAssembly
-Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
-Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 1.99 ms, found 6 plugins.
+Refreshing native plugins compatible for Editor in 17.45 ms, found 6 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-System.ArgumentException: Empty path name is not legal.
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
-  at InControl.NativeProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:75 
-  at InControl.NativeProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:85 
-  at InControl.NativeProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:66 
-  at InControl.NativeProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:19 
-UnityEngine.StackTraceUtility:ExtractStackTrace ()
-UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
-UnityEngine.Logger:Log (UnityEngine.LogType,object)
-UnityEngine.Debug:LogError (object)
-UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+Unloading 37 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 72.5 MB.
+System memory in use after: 72.6 MB.
 
-System.ArgumentException: Empty path name is not legal.
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
-  at InControl.UnityProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:75 
-  at InControl.UnityProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:84 
-  at InControl.UnityProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:66 
-  at InControl.UnityProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:19 
-UnityEngine.StackTraceUtility:ExtractStackTrace ()
-UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
-UnityEngine.Logger:Log (UnityEngine.LogType,object)
-UnityEngine.Debug:LogError (object)
-UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
-
-Mono: successfully reloaded assembly
-- Completed reload, in  2.577 seconds
-Domain Reload Profiling:
-	ReloadAssembly (2577ms)
-		BeginReloadAssembly (228ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (10ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (72ms)
-		EndReloadAssembly (2217ms)
-			LoadAssemblies (208ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (706ms)
-			ReleaseScriptCaches (2ms)
-			RebuildScriptCaches (83ms)
-			SetupLoadedEditorAssemblies (985ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (47ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (2ms)
-				BeforeProcessingInitializeOnLoad (134ms)
-				ProcessInitializeOnLoadAttributes (759ms)
-				ProcessInitializeOnLoadMethodAttributes (15ms)
-				AfterProcessingInitializeOnLoad (26ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (21ms)
-Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 1.11 ms, found 6 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 4616 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 163.7 MB.
-System memory in use after: 163.8 MB.
-
-Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5070.
-Total: 6.229200 ms (FindLiveObjects: 0.410300 ms CreateObjectMapping: 0.465000 ms MarkObjects: 5.240400 ms  DeleteObjects: 0.111700 ms)
+Unloading 37 unused Assets to reduce memory usage. Loaded Objects now: 5066.
+Total: 8.466200 ms (FindLiveObjects: 0.382000 ms CreateObjectMapping: 0.288300 ms MarkObjects: 7.628200 ms  DeleteObjects: 0.165500 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
@@ -233,13 +163,13 @@ AssetImportParameters requested are different than current active one (requested
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.014974 seconds.
+Registered in 0.015665 seconds.
 Begin MonoManager ReloadAssembly
 Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
 Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 1.12 ms, found 6 plugins.
+Refreshing native plugins compatible for Editor in 1.02 ms, found 6 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 System.ArgumentException: Empty path name is not legal.
   at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
@@ -274,33 +204,124 @@ UnityEngine.Debug:LogError (object)
 UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
 
 Mono: successfully reloaded assembly
-- Completed reload, in  1.981 seconds
+- Completed reload, in  2.265 seconds
 Domain Reload Profiling:
-	ReloadAssembly (1982ms)
-		BeginReloadAssembly (171ms)
+	ReloadAssembly (2265ms)
+		BeginReloadAssembly (195ms)
 			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (10ms)
+			DisableScriptedObjects (9ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (53ms)
-		EndReloadAssembly (1712ms)
-			LoadAssemblies (156ms)
+			CreateAndSetChildDomain (60ms)
+		EndReloadAssembly (1976ms)
+			LoadAssemblies (169ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (516ms)
-			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (65ms)
-			SetupLoadedEditorAssemblies (811ms)
+			SetupTypeCache (547ms)
+			ReleaseScriptCaches (2ms)
+			RebuildScriptCaches (80ms)
+			SetupLoadedEditorAssemblies (1047ms)
 				LogAssemblyErrors (0ms)
 				InitializePlatformSupportModulesInManaged (8ms)
 				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (2ms)
-				BeforeProcessingInitializeOnLoad (111ms)
-				ProcessInitializeOnLoadAttributes (665ms)
-				ProcessInitializeOnLoadMethodAttributes (10ms)
-				AfterProcessingInitializeOnLoad (15ms)
+				RefreshPlugins (1ms)
+				BeforeProcessingInitializeOnLoad (105ms)
+				ProcessInitializeOnLoadAttributes (909ms)
+				ProcessInitializeOnLoadMethodAttributes (11ms)
+				AfterProcessingInitializeOnLoad (13ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (15ms)
+			AwakeInstancesAfterBackupRestoration (14ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.22 ms, found 6 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 4616 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 163.7 MB.
+System memory in use after: 163.8 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5070.
+Total: 5.597700 ms (FindLiveObjects: 0.323500 ms CreateObjectMapping: 0.240700 ms MarkObjects: 4.867400 ms  DeleteObjects: 0.165000 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.015712 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.10 ms, found 6 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+System.ArgumentException: Empty path name is not legal.
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
+  at InControl.NativeProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:75 
+  at InControl.NativeProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:85 
+  at InControl.NativeProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:66 
+  at InControl.NativeProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:19 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+System.ArgumentException: Empty path name is not legal.
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
+  at InControl.UnityProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:75 
+  at InControl.UnityProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:84 
+  at InControl.UnityProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:66 
+  at InControl.UnityProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:19 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+Mono: successfully reloaded assembly
+- Completed reload, in  2.107 seconds
+Domain Reload Profiling:
+	ReloadAssembly (2108ms)
+		BeginReloadAssembly (165ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (8ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (51ms)
+		EndReloadAssembly (1853ms)
+			LoadAssemblies (151ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (535ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (61ms)
+			SetupLoadedEditorAssemblies (937ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (8ms)
+				SetLoadedEditorAssemblies (1ms)
+				RefreshPlugins (1ms)
+				BeforeProcessingInitializeOnLoad (99ms)
+				ProcessInitializeOnLoadAttributes (803ms)
+				ProcessInitializeOnLoadMethodAttributes (12ms)
+				AfterProcessingInitializeOnLoad (13ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (14ms)
 Platform modules already initialized, skipping
 Refreshing native plugins compatible for Editor in 1.04 ms, found 6 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
@@ -309,7 +330,7 @@ System memory in use before: 163.8 MB.
 System memory in use after: 163.9 MB.
 
 Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5074.
-Total: 5.414700 ms (FindLiveObjects: 0.391900 ms CreateObjectMapping: 0.269100 ms MarkObjects: 4.582900 ms  DeleteObjects: 0.169400 ms)
+Total: 6.232100 ms (FindLiveObjects: 0.564900 ms CreateObjectMapping: 0.350800 ms MarkObjects: 5.140500 ms  DeleteObjects: 0.174500 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
@@ -324,13 +345,13 @@ AssetImportParameters requested are different than current active one (requested
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.016891 seconds.
+Registered in 0.015733 seconds.
 Begin MonoManager ReloadAssembly
 Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
 Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 1.00 ms, found 6 plugins.
+Refreshing native plugins compatible for Editor in 1.08 ms, found 6 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 System.ArgumentException: Empty path name is not legal.
   at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
@@ -365,593 +386,42 @@ UnityEngine.Debug:LogError (object)
 UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
 
 Mono: successfully reloaded assembly
-- Completed reload, in  2.451 seconds
+- Completed reload, in  1.859 seconds
 Domain Reload Profiling:
-	ReloadAssembly (2451ms)
-		BeginReloadAssembly (175ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (8ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (50ms)
-		EndReloadAssembly (2178ms)
-			LoadAssemblies (156ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (542ms)
-			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (81ms)
-			SetupLoadedEditorAssemblies (710ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (9ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (1ms)
-				BeforeProcessingInitializeOnLoad (97ms)
-				ProcessInitializeOnLoadAttributes (574ms)
-				ProcessInitializeOnLoadMethodAttributes (13ms)
-				AfterProcessingInitializeOnLoad (14ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (16ms)
-Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 1.00 ms, found 6 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 4616 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 163.9 MB.
-System memory in use after: 164.0 MB.
-
-Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5078.
-Total: 6.506800 ms (FindLiveObjects: 0.492000 ms CreateObjectMapping: 0.284600 ms MarkObjects: 5.589700 ms  DeleteObjects: 0.139100 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.017857 seconds.
-Begin MonoManager ReloadAssembly
-Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
-Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 4.69 ms, found 6 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-System.ArgumentException: Empty path name is not legal.
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
-  at InControl.NativeProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:75 
-  at InControl.NativeProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:85 
-  at InControl.NativeProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:66 
-  at InControl.NativeProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:19 
-UnityEngine.StackTraceUtility:ExtractStackTrace ()
-UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
-UnityEngine.Logger:Log (UnityEngine.LogType,object)
-UnityEngine.Debug:LogError (object)
-UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
-
-System.ArgumentException: Empty path name is not legal.
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
-  at InControl.UnityProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:75 
-  at InControl.UnityProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:84 
-  at InControl.UnityProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:66 
-  at InControl.UnityProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:19 
-UnityEngine.StackTraceUtility:ExtractStackTrace ()
-UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
-UnityEngine.Logger:Log (UnityEngine.LogType,object)
-UnityEngine.Debug:LogError (object)
-UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
-
-Mono: successfully reloaded assembly
-- Completed reload, in  2.024 seconds
-Domain Reload Profiling:
-	ReloadAssembly (2025ms)
-		BeginReloadAssembly (167ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (9ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (50ms)
-		EndReloadAssembly (1764ms)
-			LoadAssemblies (154ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (544ms)
-			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (84ms)
-			SetupLoadedEditorAssemblies (801ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (23ms)
-				SetLoadedEditorAssemblies (3ms)
-				RefreshPlugins (5ms)
-				BeforeProcessingInitializeOnLoad (177ms)
-				ProcessInitializeOnLoadAttributes (564ms)
-				ProcessInitializeOnLoadMethodAttributes (15ms)
-				AfterProcessingInitializeOnLoad (14ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (16ms)
-Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 1.00 ms, found 6 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 4616 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 163.9 MB.
-System memory in use after: 164.0 MB.
-
-Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5082.
-Total: 5.235300 ms (FindLiveObjects: 0.406000 ms CreateObjectMapping: 0.337400 ms MarkObjects: 4.364200 ms  DeleteObjects: 0.126600 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Import Request.
-  Time since last request: 386.486380 seconds.
-  path: Assets/Prefabs/Inventory/ItemDataObject.prefab
-  artifactKey: Guid(b3e2231364fb8e14ba521ef01c6406c4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Prefabs/Inventory/ItemDataObject.prefab using Guid(b3e2231364fb8e14ba521ef01c6406c4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ce0631f377546c5aa76a4849ffd92136') in 0.039407 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 16.694622 seconds.
-  path: Assets/Prefabs/Bag Pickup.prefab
-  artifactKey: Guid(0d9baafb7cc1ef34090c19a68b0a4aaa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Prefabs/Bag Pickup.prefab using Guid(0d9baafb7cc1ef34090c19a68b0a4aaa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a9236eab12c139d4b6f11ae2ee4d07f3') in 0.085033 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 5.387337 seconds.
-  path: Assets/Prefabs/Bag Pickup.prefab
-  artifactKey: Guid(0d9baafb7cc1ef34090c19a68b0a4aaa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Prefabs/Bag Pickup.prefab using Guid(0d9baafb7cc1ef34090c19a68b0a4aaa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '37134f3ef36d25350bc44492c3ecf288') in 0.020123 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.942483 seconds.
-  path: Assets/Prefabs/Bag Pickup.prefab
-  artifactKey: Guid(0d9baafb7cc1ef34090c19a68b0a4aaa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Prefabs/Bag Pickup.prefab using Guid(0d9baafb7cc1ef34090c19a68b0a4aaa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e017d07f3d0c573c64cb215509f3663c') in 0.012486 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 41.754883 seconds.
-  path: Assets/Prefabs/Bag Pickup.prefab
-  artifactKey: Guid(0d9baafb7cc1ef34090c19a68b0a4aaa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Prefabs/Bag Pickup.prefab using Guid(0d9baafb7cc1ef34090c19a68b0a4aaa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a6aff325aebfd8d9f4f5600ee339ff68') in 0.017698 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 4.679198 seconds.
-  path: Assets/Prefabs/Bag Pickup.prefab
-  artifactKey: Guid(0d9baafb7cc1ef34090c19a68b0a4aaa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Prefabs/Bag Pickup.prefab using Guid(0d9baafb7cc1ef34090c19a68b0a4aaa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '21f535216e440b453b2013cac1f8d5ef') in 0.016098 seconds 
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.015368 seconds.
-Begin MonoManager ReloadAssembly
-Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
-Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 1.02 ms, found 6 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-System.ArgumentException: Empty path name is not legal.
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
-  at InControl.NativeProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:75 
-  at InControl.NativeProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:85 
-  at InControl.NativeProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:66 
-  at InControl.NativeProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:19 
-UnityEngine.StackTraceUtility:ExtractStackTrace ()
-UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
-UnityEngine.Logger:Log (UnityEngine.LogType,object)
-UnityEngine.Debug:LogError (object)
-UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
-
-System.ArgumentException: Empty path name is not legal.
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
-  at InControl.UnityProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:75 
-  at InControl.UnityProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:84 
-  at InControl.UnityProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:66 
-  at InControl.UnityProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:19 
-UnityEngine.StackTraceUtility:ExtractStackTrace ()
-UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
-UnityEngine.Logger:Log (UnityEngine.LogType,object)
-UnityEngine.Debug:LogError (object)
-UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
-
-Mono: successfully reloaded assembly
-- Completed reload, in  1.891 seconds
-Domain Reload Profiling:
-	ReloadAssembly (1892ms)
-		BeginReloadAssembly (188ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (9ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (74ms)
-		EndReloadAssembly (1608ms)
-			LoadAssemblies (149ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (514ms)
-			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (64ms)
-			SetupLoadedEditorAssemblies (725ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (8ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (1ms)
-				BeforeProcessingInitializeOnLoad (106ms)
-				ProcessInitializeOnLoadAttributes (584ms)
-				ProcessInitializeOnLoadMethodAttributes (12ms)
-				AfterProcessingInitializeOnLoad (13ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (14ms)
-Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 1.12 ms, found 6 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 4616 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 167.9 MB.
-System memory in use after: 168.0 MB.
-
-Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5093.
-Total: 5.077200 ms (FindLiveObjects: 0.392100 ms CreateObjectMapping: 0.264200 ms MarkObjects: 4.128100 ms  DeleteObjects: 0.291600 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.016239 seconds.
-Begin MonoManager ReloadAssembly
-Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
-Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 1.39 ms, found 6 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-System.ArgumentException: Empty path name is not legal.
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
-  at InControl.NativeProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:75 
-  at InControl.NativeProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:85 
-  at InControl.NativeProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:66 
-  at InControl.NativeProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:19 
-UnityEngine.StackTraceUtility:ExtractStackTrace ()
-UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
-UnityEngine.Logger:Log (UnityEngine.LogType,object)
-UnityEngine.Debug:LogError (object)
-UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
-
-System.ArgumentException: Empty path name is not legal.
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
-  at InControl.UnityProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:75 
-  at InControl.UnityProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:84 
-  at InControl.UnityProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:66 
-  at InControl.UnityProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:19 
-UnityEngine.StackTraceUtility:ExtractStackTrace ()
-UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
-UnityEngine.Logger:Log (UnityEngine.LogType,object)
-UnityEngine.Debug:LogError (object)
-UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
-
-Mono: successfully reloaded assembly
-- Completed reload, in  2.113 seconds
-Domain Reload Profiling:
-	ReloadAssembly (2114ms)
+	ReloadAssembly (1860ms)
 		BeginReloadAssembly (166ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (8ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (48ms)
-		EndReloadAssembly (1841ms)
-			LoadAssemblies (154ms)
+			CreateAndSetChildDomain (49ms)
+		EndReloadAssembly (1600ms)
+			LoadAssemblies (148ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (502ms)
-			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (65ms)
-			SetupLoadedEditorAssemblies (974ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (9ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (1ms)
-				BeforeProcessingInitializeOnLoad (353ms)
-				ProcessInitializeOnLoadAttributes (585ms)
-				ProcessInitializeOnLoadMethodAttributes (11ms)
-				AfterProcessingInitializeOnLoad (14ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (15ms)
-Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 1.00 ms, found 6 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 4616 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 168.1 MB.
-System memory in use after: 168.2 MB.
-
-Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5097.
-Total: 5.164300 ms (FindLiveObjects: 0.381400 ms CreateObjectMapping: 0.276700 ms MarkObjects: 4.339700 ms  DeleteObjects: 0.165400 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Import Request.
-  Time since last request: 1326.671888 seconds.
-  path: Assets/Prefabs/Inventory/ItemDataObject.prefab
-  artifactKey: Guid(b3e2231364fb8e14ba521ef01c6406c4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Prefabs/Inventory/ItemDataObject.prefab using Guid(b3e2231364fb8e14ba521ef01c6406c4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8244b8313fe494e69c6ae4dad6ee827a') in 0.056343 seconds 
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.014573 seconds.
-Begin MonoManager ReloadAssembly
-Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
-Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 1.18 ms, found 6 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-System.ArgumentException: Empty path name is not legal.
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
-  at InControl.NativeProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:75 
-  at InControl.NativeProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:85 
-  at InControl.NativeProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:66 
-  at InControl.NativeProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:19 
-UnityEngine.StackTraceUtility:ExtractStackTrace ()
-UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
-UnityEngine.Logger:Log (UnityEngine.LogType,object)
-UnityEngine.Debug:LogError (object)
-UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
-
-System.ArgumentException: Empty path name is not legal.
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
-  at InControl.UnityProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:75 
-  at InControl.UnityProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:84 
-  at InControl.UnityProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:66 
-  at InControl.UnityProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:19 
-UnityEngine.StackTraceUtility:ExtractStackTrace ()
-UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
-UnityEngine.Logger:Log (UnityEngine.LogType,object)
-UnityEngine.Debug:LogError (object)
-UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
-
-Mono: successfully reloaded assembly
-- Completed reload, in  2.116 seconds
-Domain Reload Profiling:
-	ReloadAssembly (2116ms)
-		BeginReloadAssembly (175ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (9ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (52ms)
-		EndReloadAssembly (1848ms)
-			LoadAssemblies (155ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (559ms)
-			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (66ms)
-			SetupLoadedEditorAssemblies (758ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (8ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (1ms)
-				BeforeProcessingInitializeOnLoad (102ms)
-				ProcessInitializeOnLoadAttributes (620ms)
-				ProcessInitializeOnLoadMethodAttributes (12ms)
-				AfterProcessingInitializeOnLoad (14ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (15ms)
-Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 1.02 ms, found 6 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 4616 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 168.1 MB.
-System memory in use after: 168.2 MB.
-
-Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5101.
-Total: 5.018800 ms (FindLiveObjects: 0.343600 ms CreateObjectMapping: 0.262000 ms MarkObjects: 4.296200 ms  DeleteObjects: 0.115600 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Import Request.
-  Time since last request: 11.452558 seconds.
-  path: Assets/Prefabs/Inventory/ItemDataObject 1.prefab
-  artifactKey: Guid(139689dffd2f5b647977a1fb6194d4bb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Prefabs/Inventory/ItemDataObject 1.prefab using Guid(139689dffd2f5b647977a1fb6194d4bb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a9da875c51c58103655423060a77b103') in 0.034291 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 17.437920 seconds.
-  path: Assets/Prefabs/Inventory/ItemDataPortableContainerObject.prefab
-  artifactKey: Guid(139689dffd2f5b647977a1fb6194d4bb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Prefabs/Inventory/ItemDataPortableContainerObject.prefab using Guid(139689dffd2f5b647977a1fb6194d4bb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '639cf336058a3ea0f6fdceb3b93400ee') in 0.016184 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 9.660490 seconds.
-  path: Assets/Prefabs/Inventory/ItemDataContainerObject.prefab
-  artifactKey: Guid(139689dffd2f5b647977a1fb6194d4bb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Prefabs/Inventory/ItemDataContainerObject.prefab using Guid(139689dffd2f5b647977a1fb6194d4bb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5bcd24446c135ef06afc3876ae0d70a9') in 0.006354 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 15.986525 seconds.
-  path: Assets/Prefabs/Inventory/ItemDataObject.prefab
-  artifactKey: Guid(b3e2231364fb8e14ba521ef01c6406c4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Prefabs/Inventory/ItemDataObject.prefab using Guid(b3e2231364fb8e14ba521ef01c6406c4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c156eeff5fe6d379ad4da91e4ae6a986') in 0.008341 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 52.849948 seconds.
-  path: Assets/Prefabs/Inventory/ItemDataContainerObject.prefab
-  artifactKey: Guid(139689dffd2f5b647977a1fb6194d4bb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Prefabs/Inventory/ItemDataContainerObject.prefab using Guid(139689dffd2f5b647977a1fb6194d4bb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9145b0f87ab0734e760f3544ff30eaac') in 0.014527 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 2.195975 seconds.
-  path: Assets/Prefabs/Inventory/ItemDataContainerObject.prefab
-  artifactKey: Guid(139689dffd2f5b647977a1fb6194d4bb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Prefabs/Inventory/ItemDataContainerObject.prefab using Guid(139689dffd2f5b647977a1fb6194d4bb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '50b1599e87b71d5f591cacaaa7348080') in 0.006649 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 5.495974 seconds.
-  path: Assets/Prefabs/Inventory/ItemDataContainerObject.prefab
-  artifactKey: Guid(139689dffd2f5b647977a1fb6194d4bb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Prefabs/Inventory/ItemDataContainerObject.prefab using Guid(139689dffd2f5b647977a1fb6194d4bb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '42e0ae607cafaca23b52b4ceab492359') in 0.008943 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 5.056175 seconds.
-  path: ProjectSettings/TagManager.asset
-  artifactKey: Guid(00000000000000003000000000000000) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing ProjectSettings/TagManager.asset using Guid(00000000000000003000000000000000) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e95ed66fac79b5fe4ac541e4b97f6232') in 0.007965 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 13.556703 seconds.
-  path: Assets/Prefabs/Inventory/ItemDataContainerObject.prefab
-  artifactKey: Guid(139689dffd2f5b647977a1fb6194d4bb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Prefabs/Inventory/ItemDataContainerObject.prefab using Guid(139689dffd2f5b647977a1fb6194d4bb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '52529220c9620bb4a86a642ab8443aa9') in 0.008662 seconds 
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.015847 seconds.
-Begin MonoManager ReloadAssembly
-Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
-Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 1.03 ms, found 6 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-System.ArgumentException: Empty path name is not legal.
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
-  at InControl.NativeProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:75 
-  at InControl.NativeProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:85 
-  at InControl.NativeProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:66 
-  at InControl.NativeProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:19 
-UnityEngine.StackTraceUtility:ExtractStackTrace ()
-UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
-UnityEngine.Logger:Log (UnityEngine.LogType,object)
-UnityEngine.Debug:LogError (object)
-UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
-
-System.ArgumentException: Empty path name is not legal.
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
-  at InControl.UnityProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:75 
-  at InControl.UnityProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:84 
-  at InControl.UnityProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:66 
-  at InControl.UnityProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:19 
-UnityEngine.StackTraceUtility:ExtractStackTrace ()
-UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
-UnityEngine.Logger:Log (UnityEngine.LogType,object)
-UnityEngine.Debug:LogError (object)
-UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
-
-Mono: successfully reloaded assembly
-- Completed reload, in  2.045 seconds
-Domain Reload Profiling:
-	ReloadAssembly (2045ms)
-		BeginReloadAssembly (181ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (8ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (64ms)
-		EndReloadAssembly (1770ms)
-			LoadAssemblies (144ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (498ms)
+			SetupTypeCache (510ms)
 			ReleaseScriptCaches (2ms)
 			RebuildScriptCaches (63ms)
-			SetupLoadedEditorAssemblies (904ms)
+			SetupLoadedEditorAssemblies (740ms)
 				LogAssemblyErrors (0ms)
 				InitializePlatformSupportModulesInManaged (8ms)
 				SetLoadedEditorAssemblies (1ms)
 				RefreshPlugins (1ms)
-				BeforeProcessingInitializeOnLoad (103ms)
-				ProcessInitializeOnLoadAttributes (764ms)
-				ProcessInitializeOnLoadMethodAttributes (14ms)
+				BeforeProcessingInitializeOnLoad (101ms)
+				ProcessInitializeOnLoadAttributes (605ms)
+				ProcessInitializeOnLoadMethodAttributes (10ms)
 				AfterProcessingInitializeOnLoad (13ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (16ms)
+			AwakeInstancesAfterBackupRestoration (13ms)
 Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 1.07 ms, found 6 plugins.
+Refreshing native plugins compatible for Editor in 0.99 ms, found 6 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 4616 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 168.1 MB.
-System memory in use after: 168.2 MB.
+System memory in use before: 163.8 MB.
+System memory in use after: 163.9 MB.
 
-Unloading 41 unused Assets to reduce memory usage. Loaded Objects now: 5105.
-Total: 5.357100 ms (FindLiveObjects: 0.419800 ms CreateObjectMapping: 0.271000 ms MarkObjects: 4.522100 ms  DeleteObjects: 0.143200 ms)
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5078.
+Total: 5.227700 ms (FindLiveObjects: 0.354300 ms CreateObjectMapping: 0.270600 ms MarkObjects: 4.434100 ms  DeleteObjects: 0.167500 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
@@ -966,13 +436,13 @@ AssetImportParameters requested are different than current active one (requested
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.018230 seconds.
+Registered in 0.017464 seconds.
 Begin MonoManager ReloadAssembly
 Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
 Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 1.01 ms, found 6 plugins.
+Refreshing native plugins compatible for Editor in 1.04 ms, found 6 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 System.ArgumentException: Empty path name is not legal.
   at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
@@ -1007,224 +477,42 @@ UnityEngine.Debug:LogError (object)
 UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
 
 Mono: successfully reloaded assembly
-- Completed reload, in  1.847 seconds
+- Completed reload, in  1.857 seconds
 Domain Reload Profiling:
-	ReloadAssembly (1848ms)
-		BeginReloadAssembly (161ms)
+	ReloadAssembly (1858ms)
+		BeginReloadAssembly (159ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (8ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
 			CreateAndSetChildDomain (47ms)
 		EndReloadAssembly (1596ms)
-			LoadAssemblies (148ms)
+			LoadAssemblies (150ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (495ms)
-			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (68ms)
-			SetupLoadedEditorAssemblies (742ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (8ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (1ms)
-				BeforeProcessingInitializeOnLoad (109ms)
-				ProcessInitializeOnLoadAttributes (599ms)
-				ProcessInitializeOnLoadMethodAttributes (10ms)
-				AfterProcessingInitializeOnLoad (14ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (14ms)
-Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 1.01 ms, found 6 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 4616 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 168.1 MB.
-System memory in use after: 168.3 MB.
-
-Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5109.
-Total: 5.973300 ms (FindLiveObjects: 0.577700 ms CreateObjectMapping: 0.361300 ms MarkObjects: 4.874700 ms  DeleteObjects: 0.158700 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.015793 seconds.
-Begin MonoManager ReloadAssembly
-Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
-Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 1.22 ms, found 6 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-System.ArgumentException: Empty path name is not legal.
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
-  at InControl.NativeProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:75 
-  at InControl.NativeProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:85 
-  at InControl.NativeProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:66 
-  at InControl.NativeProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:19 
-UnityEngine.StackTraceUtility:ExtractStackTrace ()
-UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
-UnityEngine.Logger:Log (UnityEngine.LogType,object)
-UnityEngine.Debug:LogError (object)
-UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
-
-System.ArgumentException: Empty path name is not legal.
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
-  at InControl.UnityProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:75 
-  at InControl.UnityProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:84 
-  at InControl.UnityProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:66 
-  at InControl.UnityProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:19 
-UnityEngine.StackTraceUtility:ExtractStackTrace ()
-UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
-UnityEngine.Logger:Log (UnityEngine.LogType,object)
-UnityEngine.Debug:LogError (object)
-UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
-
-Mono: successfully reloaded assembly
-- Completed reload, in  1.885 seconds
-Domain Reload Profiling:
-	ReloadAssembly (1886ms)
-		BeginReloadAssembly (164ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (8ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (48ms)
-		EndReloadAssembly (1624ms)
-			LoadAssemblies (144ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (511ms)
+			SetupTypeCache (507ms)
 			ReleaseScriptCaches (2ms)
-			RebuildScriptCaches (64ms)
-			SetupLoadedEditorAssemblies (747ms)
+			RebuildScriptCaches (65ms)
+			SetupLoadedEditorAssemblies (722ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (7ms)
+				InitializePlatformSupportModulesInManaged (9ms)
 				SetLoadedEditorAssemblies (1ms)
 				RefreshPlugins (1ms)
-				BeforeProcessingInitializeOnLoad (104ms)
-				ProcessInitializeOnLoadAttributes (610ms)
-				ProcessInitializeOnLoadMethodAttributes (10ms)
-				AfterProcessingInitializeOnLoad (13ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (15ms)
-Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 0.99 ms, found 6 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 4616 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 168.0 MB.
-System memory in use after: 168.1 MB.
-
-Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5113.
-Total: 5.795800 ms (FindLiveObjects: 0.343100 ms CreateObjectMapping: 0.274600 ms MarkObjects: 4.997000 ms  DeleteObjects: 0.179400 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.016912 seconds.
-Begin MonoManager ReloadAssembly
-Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
-Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 1.02 ms, found 6 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-System.ArgumentException: Empty path name is not legal.
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
-  at InControl.NativeProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:75 
-  at InControl.NativeProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:85 
-  at InControl.NativeProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:66 
-  at InControl.NativeProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:19 
-UnityEngine.StackTraceUtility:ExtractStackTrace ()
-UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
-UnityEngine.Logger:Log (UnityEngine.LogType,object)
-UnityEngine.Debug:LogError (object)
-UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
-
-System.ArgumentException: Empty path name is not legal.
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
-  at InControl.UnityProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:75 
-  at InControl.UnityProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:84 
-  at InControl.UnityProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:66 
-  at InControl.UnityProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:19 
-UnityEngine.StackTraceUtility:ExtractStackTrace ()
-UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
-UnityEngine.Logger:Log (UnityEngine.LogType,object)
-UnityEngine.Debug:LogError (object)
-UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
-
-Mono: successfully reloaded assembly
-- Completed reload, in  1.908 seconds
-Domain Reload Profiling:
-	ReloadAssembly (1909ms)
-		BeginReloadAssembly (171ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (8ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (47ms)
-		EndReloadAssembly (1645ms)
-			LoadAssemblies (157ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (510ms)
-			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (66ms)
-			SetupLoadedEditorAssemblies (767ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (8ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (1ms)
-				BeforeProcessingInitializeOnLoad (117ms)
-				ProcessInitializeOnLoadAttributes (617ms)
+				BeforeProcessingInitializeOnLoad (106ms)
+				ProcessInitializeOnLoadAttributes (580ms)
 				ProcessInitializeOnLoadMethodAttributes (11ms)
 				AfterProcessingInitializeOnLoad (13ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (13ms)
 Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 1.00 ms, found 6 plugins.
+Refreshing native plugins compatible for Editor in 0.99 ms, found 6 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 4616 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 168.2 MB.
-System memory in use after: 168.3 MB.
+System memory in use before: 163.8 MB.
+System memory in use after: 164.0 MB.
 
-Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5117.
-Total: 6.046100 ms (FindLiveObjects: 0.377800 ms CreateObjectMapping: 0.268200 ms MarkObjects: 5.226300 ms  DeleteObjects: 0.172700 ms)
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5082.
+Total: 5.012400 ms (FindLiveObjects: 0.336700 ms CreateObjectMapping: 0.268100 ms MarkObjects: 4.214300 ms  DeleteObjects: 0.192600 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
@@ -1239,7 +527,462 @@ AssetImportParameters requested are different than current active one (requested
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.016222 seconds.
+Registered in 0.013860 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.17 ms, found 6 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+System.ArgumentException: Empty path name is not legal.
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
+  at InControl.NativeProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:75 
+  at InControl.NativeProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:85 
+  at InControl.NativeProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:66 
+  at InControl.NativeProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:19 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+System.ArgumentException: Empty path name is not legal.
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
+  at InControl.UnityProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:75 
+  at InControl.UnityProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:84 
+  at InControl.UnityProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:66 
+  at InControl.UnityProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:19 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.832 seconds
+Domain Reload Profiling:
+	ReloadAssembly (1833ms)
+		BeginReloadAssembly (164ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (7ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (49ms)
+		EndReloadAssembly (1583ms)
+			LoadAssemblies (142ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (472ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (58ms)
+			SetupLoadedEditorAssemblies (716ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (8ms)
+				SetLoadedEditorAssemblies (1ms)
+				RefreshPlugins (1ms)
+				BeforeProcessingInitializeOnLoad (98ms)
+				ProcessInitializeOnLoadAttributes (546ms)
+				ProcessInitializeOnLoadMethodAttributes (26ms)
+				AfterProcessingInitializeOnLoad (36ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (20ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.01 ms, found 6 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 4616 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 163.7 MB.
+System memory in use after: 163.8 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5086.
+Total: 5.412900 ms (FindLiveObjects: 0.604400 ms CreateObjectMapping: 0.336200 ms MarkObjects: 4.302100 ms  DeleteObjects: 0.169300 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.017560 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.33 ms, found 6 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+System.ArgumentException: Empty path name is not legal.
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
+  at InControl.NativeProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:75 
+  at InControl.NativeProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:85 
+  at InControl.NativeProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:66 
+  at InControl.NativeProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:19 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+System.ArgumentException: Empty path name is not legal.
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
+  at InControl.UnityProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:75 
+  at InControl.UnityProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:84 
+  at InControl.UnityProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:66 
+  at InControl.UnityProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:19 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.862 seconds
+Domain Reload Profiling:
+	ReloadAssembly (1863ms)
+		BeginReloadAssembly (171ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (7ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (51ms)
+		EndReloadAssembly (1600ms)
+			LoadAssemblies (152ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (499ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (59ms)
+			SetupLoadedEditorAssemblies (742ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (8ms)
+				SetLoadedEditorAssemblies (1ms)
+				RefreshPlugins (1ms)
+				BeforeProcessingInitializeOnLoad (101ms)
+				ProcessInitializeOnLoadAttributes (608ms)
+				ProcessInitializeOnLoadMethodAttributes (11ms)
+				AfterProcessingInitializeOnLoad (13ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (15ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.00 ms, found 6 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 4616 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 163.9 MB.
+System memory in use after: 164.0 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5090.
+Total: 5.996700 ms (FindLiveObjects: 0.333900 ms CreateObjectMapping: 0.266200 ms MarkObjects: 5.224600 ms  DeleteObjects: 0.170600 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.017230 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.57 ms, found 6 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+System.ArgumentException: Empty path name is not legal.
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
+  at InControl.NativeProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:75 
+  at InControl.NativeProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:85 
+  at InControl.NativeProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:66 
+  at InControl.NativeProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:19 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+System.ArgumentException: Empty path name is not legal.
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
+  at InControl.UnityProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:75 
+  at InControl.UnityProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:84 
+  at InControl.UnityProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:66 
+  at InControl.UnityProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:19 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.848 seconds
+Domain Reload Profiling:
+	ReloadAssembly (1849ms)
+		BeginReloadAssembly (164ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (7ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (51ms)
+		EndReloadAssembly (1595ms)
+			LoadAssemblies (146ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (499ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (61ms)
+			SetupLoadedEditorAssemblies (741ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (8ms)
+				SetLoadedEditorAssemblies (1ms)
+				RefreshPlugins (2ms)
+				BeforeProcessingInitializeOnLoad (103ms)
+				ProcessInitializeOnLoadAttributes (601ms)
+				ProcessInitializeOnLoadMethodAttributes (11ms)
+				AfterProcessingInitializeOnLoad (15ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (14ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.01 ms, found 6 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 4616 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 163.9 MB.
+System memory in use after: 164.0 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5094.
+Total: 5.516500 ms (FindLiveObjects: 0.329600 ms CreateObjectMapping: 0.619700 ms MarkObjects: 4.438100 ms  DeleteObjects: 0.127900 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.016805 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.04 ms, found 6 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+System.ArgumentException: Empty path name is not legal.
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
+  at InControl.NativeProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:75 
+  at InControl.NativeProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:85 
+  at InControl.NativeProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:66 
+  at InControl.NativeProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:19 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+System.ArgumentException: Empty path name is not legal.
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
+  at InControl.UnityProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:75 
+  at InControl.UnityProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:84 
+  at InControl.UnityProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:66 
+  at InControl.UnityProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:19 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.822 seconds
+Domain Reload Profiling:
+	ReloadAssembly (1822ms)
+		BeginReloadAssembly (159ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (9ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (47ms)
+		EndReloadAssembly (1574ms)
+			LoadAssemblies (147ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (492ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (62ms)
+			SetupLoadedEditorAssemblies (733ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (8ms)
+				SetLoadedEditorAssemblies (1ms)
+				RefreshPlugins (1ms)
+				BeforeProcessingInitializeOnLoad (105ms)
+				ProcessInitializeOnLoadAttributes (594ms)
+				ProcessInitializeOnLoadMethodAttributes (10ms)
+				AfterProcessingInitializeOnLoad (13ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (13ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.01 ms, found 6 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 4616 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 163.9 MB.
+System memory in use after: 164.0 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5098.
+Total: 6.046400 ms (FindLiveObjects: 0.466100 ms CreateObjectMapping: 0.546800 ms MarkObjects: 4.855400 ms  DeleteObjects: 0.176900 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.017826 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 0.94 ms, found 6 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+System.ArgumentException: Empty path name is not legal.
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
+  at InControl.NativeProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:75 
+  at InControl.NativeProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:85 
+  at InControl.NativeProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:66 
+  at InControl.NativeProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:19 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+System.ArgumentException: Empty path name is not legal.
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
+  at InControl.UnityProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:75 
+  at InControl.UnityProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:84 
+  at InControl.UnityProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:66 
+  at InControl.UnityProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:19 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.667 seconds
+Domain Reload Profiling:
+	ReloadAssembly (1667ms)
+		BeginReloadAssembly (155ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (7ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (46ms)
+		EndReloadAssembly (1428ms)
+			LoadAssemblies (137ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (463ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (62ms)
+			SetupLoadedEditorAssemblies (637ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (7ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (1ms)
+				BeforeProcessingInitializeOnLoad (95ms)
+				ProcessInitializeOnLoadAttributes (507ms)
+				ProcessInitializeOnLoadMethodAttributes (14ms)
+				AfterProcessingInitializeOnLoad (13ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (13ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.04 ms, found 6 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 4616 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 163.9 MB.
+System memory in use after: 164.0 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5102.
+Total: 6.209100 ms (FindLiveObjects: 0.363200 ms CreateObjectMapping: 0.332900 ms MarkObjects: 5.335100 ms  DeleteObjects: 0.176800 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.018992 seconds.
 Begin MonoManager ReloadAssembly
 Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
 Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
@@ -1280,133 +1023,42 @@ UnityEngine.Debug:LogError (object)
 UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
 
 Mono: successfully reloaded assembly
-- Completed reload, in  2.116 seconds
+- Completed reload, in  1.930 seconds
 Domain Reload Profiling:
-	ReloadAssembly (2117ms)
-		BeginReloadAssembly (166ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (8ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (51ms)
-		EndReloadAssembly (1859ms)
-			LoadAssemblies (152ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (517ms)
-			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (65ms)
-			SetupLoadedEditorAssemblies (968ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (8ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (1ms)
-				BeforeProcessingInitializeOnLoad (243ms)
-				ProcessInitializeOnLoadAttributes (687ms)
-				ProcessInitializeOnLoadMethodAttributes (16ms)
-				AfterProcessingInitializeOnLoad (13ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (14ms)
-Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 1.02 ms, found 6 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 4616 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 168.2 MB.
-System memory in use after: 168.3 MB.
-
-Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5121.
-Total: 5.771400 ms (FindLiveObjects: 0.502200 ms CreateObjectMapping: 0.675800 ms MarkObjects: 4.416100 ms  DeleteObjects: 0.176300 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.015818 seconds.
-Begin MonoManager ReloadAssembly
-Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
-Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 1.21 ms, found 6 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-System.ArgumentException: Empty path name is not legal.
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
-  at InControl.NativeProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:75 
-  at InControl.NativeProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:85 
-  at InControl.NativeProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:66 
-  at InControl.NativeProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:19 
-UnityEngine.StackTraceUtility:ExtractStackTrace ()
-UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
-UnityEngine.Logger:Log (UnityEngine.LogType,object)
-UnityEngine.Debug:LogError (object)
-UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
-
-System.ArgumentException: Empty path name is not legal.
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
-  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
-  at InControl.UnityProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:75 
-  at InControl.UnityProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:84 
-  at InControl.UnityProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:66 
-  at InControl.UnityProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:19 
-UnityEngine.StackTraceUtility:ExtractStackTrace ()
-UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
-UnityEngine.Logger:Log (UnityEngine.LogType,object)
-UnityEngine.Debug:LogError (object)
-UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
-
-Mono: successfully reloaded assembly
-- Completed reload, in  1.760 seconds
-Domain Reload Profiling:
-	ReloadAssembly (1760ms)
-		BeginReloadAssembly (165ms)
+	ReloadAssembly (1930ms)
+		BeginReloadAssembly (156ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (9ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (54ms)
-		EndReloadAssembly (1510ms)
-			LoadAssemblies (147ms)
+			CreateAndSetChildDomain (47ms)
+		EndReloadAssembly (1681ms)
+			LoadAssemblies (143ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (485ms)
+			SetupTypeCache (555ms)
 			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (63ms)
-			SetupLoadedEditorAssemblies (675ms)
+			RebuildScriptCaches (70ms)
+			SetupLoadedEditorAssemblies (758ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (9ms)
+				InitializePlatformSupportModulesInManaged (8ms)
 				SetLoadedEditorAssemblies (1ms)
 				RefreshPlugins (1ms)
-				BeforeProcessingInitializeOnLoad (100ms)
-				ProcessInitializeOnLoadAttributes (541ms)
-				ProcessInitializeOnLoadMethodAttributes (10ms)
-				AfterProcessingInitializeOnLoad (13ms)
+				BeforeProcessingInitializeOnLoad (104ms)
+				ProcessInitializeOnLoadAttributes (618ms)
+				ProcessInitializeOnLoadMethodAttributes (12ms)
+				AfterProcessingInitializeOnLoad (15ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (14ms)
 Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 1.45 ms, found 6 plugins.
+Refreshing native plugins compatible for Editor in 1.10 ms, found 6 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 4616 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 168.2 MB.
-System memory in use after: 168.3 MB.
+System memory in use before: 163.8 MB.
+System memory in use after: 163.9 MB.
 
-Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5125.
-Total: 5.932900 ms (FindLiveObjects: 0.398200 ms CreateObjectMapping: 0.315400 ms MarkObjects: 5.044800 ms  DeleteObjects: 0.173000 ms)
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5106.
+Total: 6.829500 ms (FindLiveObjects: 0.473200 ms CreateObjectMapping: 0.410100 ms MarkObjects: 5.778200 ms  DeleteObjects: 0.166400 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
@@ -1421,13 +1073,13 @@ AssetImportParameters requested are different than current active one (requested
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.014786 seconds.
+Registered in 0.019819 seconds.
 Begin MonoManager ReloadAssembly
 Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
 Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 0.95 ms, found 6 plugins.
+Refreshing native plugins compatible for Editor in 1.14 ms, found 6 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 System.ArgumentException: Empty path name is not legal.
   at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
@@ -1462,42 +1114,315 @@ UnityEngine.Debug:LogError (object)
 UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
 
 Mono: successfully reloaded assembly
-- Completed reload, in  1.741 seconds
+- Completed reload, in  2.286 seconds
 Domain Reload Profiling:
-	ReloadAssembly (1741ms)
-		BeginReloadAssembly (209ms)
+	ReloadAssembly (2286ms)
+		BeginReloadAssembly (208ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (10ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (61ms)
+		EndReloadAssembly (1958ms)
+			LoadAssemblies (201ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (648ms)
+			ReleaseScriptCaches (2ms)
+			RebuildScriptCaches (79ms)
+			SetupLoadedEditorAssemblies (842ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (10ms)
+				SetLoadedEditorAssemblies (1ms)
+				RefreshPlugins (1ms)
+				BeforeProcessingInitializeOnLoad (119ms)
+				ProcessInitializeOnLoadAttributes (679ms)
+				ProcessInitializeOnLoadMethodAttributes (14ms)
+				AfterProcessingInitializeOnLoad (18ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (20ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.17 ms, found 6 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 4616 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 164.0 MB.
+System memory in use after: 164.1 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5110.
+Total: 8.244000 ms (FindLiveObjects: 0.353200 ms CreateObjectMapping: 0.291400 ms MarkObjects: 7.426200 ms  DeleteObjects: 0.171700 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.015838 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.01 ms, found 6 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+System.ArgumentException: Empty path name is not legal.
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
+  at InControl.NativeProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:75 
+  at InControl.NativeProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:85 
+  at InControl.NativeProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:66 
+  at InControl.NativeProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:19 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+System.ArgumentException: Empty path name is not legal.
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
+  at InControl.UnityProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:75 
+  at InControl.UnityProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:84 
+  at InControl.UnityProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:66 
+  at InControl.UnityProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:19 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.983 seconds
+Domain Reload Profiling:
+	ReloadAssembly (1984ms)
+		BeginReloadAssembly (159ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (10ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (46ms)
+		EndReloadAssembly (1724ms)
+			LoadAssemblies (143ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (498ms)
+			ReleaseScriptCaches (2ms)
+			RebuildScriptCaches (61ms)
+			SetupLoadedEditorAssemblies (877ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (7ms)
+				SetLoadedEditorAssemblies (1ms)
+				RefreshPlugins (1ms)
+				BeforeProcessingInitializeOnLoad (99ms)
+				ProcessInitializeOnLoadAttributes (711ms)
+				ProcessInitializeOnLoadMethodAttributes (24ms)
+				AfterProcessingInitializeOnLoad (33ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (14ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.01 ms, found 6 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 4616 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 164.0 MB.
+System memory in use after: 164.1 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5114.
+Total: 5.550000 ms (FindLiveObjects: 0.339200 ms CreateObjectMapping: 0.258400 ms MarkObjects: 4.808600 ms  DeleteObjects: 0.142400 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.013572 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.01 ms, found 6 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+System.ArgumentException: Empty path name is not legal.
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
+  at InControl.NativeProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:75 
+  at InControl.NativeProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:85 
+  at InControl.NativeProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:66 
+  at InControl.NativeProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:19 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+System.ArgumentException: Empty path name is not legal.
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
+  at InControl.UnityProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:75 
+  at InControl.UnityProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:84 
+  at InControl.UnityProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:66 
+  at InControl.UnityProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:19 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.725 seconds
+Domain Reload Profiling:
+	ReloadAssembly (1726ms)
+		BeginReloadAssembly (151ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (7ms)
 			BackupInstance (0ms)
-			ReleaseScriptingObjects (3ms)
-			CreateAndSetChildDomain (67ms)
-		EndReloadAssembly (1430ms)
-			LoadAssemblies (157ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (45ms)
+		EndReloadAssembly (1488ms)
+			LoadAssemblies (139ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (464ms)
-			ReleaseScriptCaches (2ms)
-			RebuildScriptCaches (57ms)
-			SetupLoadedEditorAssemblies (638ms)
+			SetupTypeCache (479ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (61ms)
+			SetupLoadedEditorAssemblies (673ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (7ms)
-				SetLoadedEditorAssemblies (0ms)
+				InitializePlatformSupportModulesInManaged (8ms)
+				SetLoadedEditorAssemblies (1ms)
 				RefreshPlugins (1ms)
-				BeforeProcessingInitializeOnLoad (96ms)
-				ProcessInitializeOnLoadAttributes (511ms)
-				ProcessInitializeOnLoadMethodAttributes (10ms)
-				AfterProcessingInitializeOnLoad (12ms)
+				BeforeProcessingInitializeOnLoad (101ms)
+				ProcessInitializeOnLoadAttributes (538ms)
+				ProcessInitializeOnLoadMethodAttributes (11ms)
+				AfterProcessingInitializeOnLoad (14ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (12ms)
+			AwakeInstancesAfterBackupRestoration (13ms)
 Platform modules already initialized, skipping
 Refreshing native plugins compatible for Editor in 0.99 ms, found 6 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 4616 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 168.2 MB.
-System memory in use after: 168.3 MB.
+System memory in use before: 164.0 MB.
+System memory in use after: 164.1 MB.
 
-Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5129.
-Total: 5.001100 ms (FindLiveObjects: 0.373800 ms CreateObjectMapping: 0.347300 ms MarkObjects: 4.098500 ms  DeleteObjects: 0.180100 ms)
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5118.
+Total: 6.068500 ms (FindLiveObjects: 0.367100 ms CreateObjectMapping: 0.303200 ms MarkObjects: 5.270200 ms  DeleteObjects: 0.126500 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.016810 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.04 ms, found 6 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+System.ArgumentException: Empty path name is not legal.
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
+  at InControl.NativeProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:75 
+  at InControl.NativeProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:85 
+  at InControl.NativeProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:66 
+  at InControl.NativeProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\NativeProfileListGenerator.cs:19 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+System.ArgumentException: Empty path name is not legal.
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00033] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string)
+  at InControl.UnityProfileListGenerator.GetFileContents (System.String fileName) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:75 
+  at InControl.UnityProfileListGenerator.PutFileContents (System.String filePath, System.String content) [0x00000] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:84 
+  at InControl.UnityProfileListGenerator.DiscoverProfiles () [0x000fa] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:66 
+  at InControl.UnityProfileListGenerator..cctor () [0x00007] in C:\Users\cuell\OneDrive\Desktop\Game Projects\Project Roguelike\Assets\InControl\Editor\UnityProfileListGenerator.cs:19 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+Mono: successfully reloaded assembly
+- Completed reload, in  2.007 seconds
+Domain Reload Profiling:
+	ReloadAssembly (2007ms)
+		BeginReloadAssembly (147ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (8ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (48ms)
+		EndReloadAssembly (1770ms)
+			LoadAssemblies (157ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (489ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (64ms)
+			SetupLoadedEditorAssemblies (923ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (8ms)
+				SetLoadedEditorAssemblies (1ms)
+				RefreshPlugins (1ms)
+				BeforeProcessingInitializeOnLoad (104ms)
+				ProcessInitializeOnLoadAttributes (784ms)
+				ProcessInitializeOnLoadMethodAttributes (12ms)
+				AfterProcessingInitializeOnLoad (13ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (13ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.09 ms, found 6 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 4616 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 164.0 MB.
+System memory in use after: 164.1 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5122.
+Total: 6.032000 ms (FindLiveObjects: 0.643400 ms CreateObjectMapping: 1.088400 ms MarkObjects: 4.119200 ms  DeleteObjects: 0.180000 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 

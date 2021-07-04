@@ -60,7 +60,7 @@ public class ItemPickup : Interactable
             Equipment equipment = (Equipment)itemData.item;
             if (equipmentManager.currentEquipment[(int)equipment.equipmentSlot] == null)
             {
-                equipmentManager.Equip(itemData, equipment.equipmentSlot);
+                equipmentManager.Equip(itemData, null, equipment.equipmentSlot);
                 wasPickedUp = true;
             }
             else

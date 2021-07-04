@@ -37,9 +37,14 @@ public class EquipmentManager : MonoBehaviour
         currentEquipment = new ItemData[numSlots];
     }
 
-    public virtual void Equip(ItemData newItemData, EquipmentSlot equipmentSlot)
+    public virtual void Equip(ItemData newItemData, InventoryItem invItemComingFrom, EquipmentSlot equipmentSlot)
     {
-        ItemData equipmentItemData = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData();
+        ItemData equipmentItemData = null;
+        if (newItemData.item.IsBag())
+            equipmentItemData = gm.objectPoolManager.itemDataContainerObjectPool.GetPooledItemData();
+        else
+            equipmentItemData = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData();
+
         newItemData.TransferData(newItemData, equipmentItemData);
         equipmentItemData.currentStackSize = 1;
         equipmentItemData.transform.SetParent(itemsParent);
@@ -49,8 +54,57 @@ public class EquipmentManager : MonoBehaviour
             equipmentItemData.gameObject.name = equipmentItemData.itemName;
         #endif
 
+        // Adjust the equipment manager's weight and volume
         currentWeight += Mathf.RoundToInt(equipmentItemData.item.weight * 100f) / 100f;
         currentVolume += Mathf.RoundToInt(equipmentItemData.item.volume * 100f) / 100f;
+
+        // If the item was a bag, be sure to add the weight/volume of the bag's contents
+        if (newItemData.item.IsBag())
+        {
+            gm.playerInvUI.EquipBag(newItemData);
+
+            Inventory bagsInventory = gm.playerInvUI.GetInventoryFromBagEquipSlot(newItemData);
+            Inventory itemDataComingFromsInv = null;
+            if (newItemData.CompareTag("Item Pickup")) // If this is a bag we're picking up from the ground
+                itemDataComingFromsInv = newItemData.bagInventory;
+            else if (invItemComingFrom != null)
+                itemDataComingFromsInv = invItemComingFrom.myInventory; // If this bag is inside a container or one of the player's inventories
+
+            for (int i = 0; i < newItemData.bagInventory.items.Count; i++)
+            {
+                // Add new ItemData Objects to the items parent of the new bag and transfer data to them
+                ItemData newItemDataObject = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData();
+                newItemDataObject.transform.SetParent(bagsInventory.itemsParent);
+                newItemDataObject.gameObject.SetActive(true);
+                newItemData.bagInventory.items[i].TransferData(newItemData.bagInventory.items[i], newItemDataObject);
+
+                // Populate the new bag's inventory, but make sure it's not already in the items list (because of the Inventory's Init method, which populates this list)
+                if (bagsInventory.items.Contains(newItemDataObject) == false)
+                    bagsInventory.items.Add(newItemDataObject);
+
+                #if UNITY_EDITOR
+                    newItemDataObject.name = newItemDataObject.itemName;
+                #endif
+            }
+
+            // Set the weight and volume of the "new" bag
+            bagsInventory.GetCurrentWeightAndVolume();
+
+            // If the bag is coming from an Inventory or EquipmentManager (and not from the ground), subtract the bag's weight/volume, including the items inside it
+            if (newItemData.CompareTag("Item Pickup") == false)
+                bagsInventory.SubtractItemsWeightAndVolumeFromInventory(newItemData, invItemComingFrom.myInventory, 1, true);
+            else
+                newItemData.bagInventory.ResetWeightAndVolume(); // Else if it is a pickup, just set the weight and volume to 0
+
+            for (int i = 0; i < itemDataComingFromsInv.items.Count; i++)
+            {
+                // Return the item we took out of the "old" bag back to it's object pool
+                itemDataComingFromsInv.items[i].ReturnToItemDataObjectPool();
+            }
+
+            // Clear out the items list of the "old" bag
+            itemDataComingFromsInv.items.Clear();
+        }
 
         AssignEquipment(equipmentItemData, equipmentSlot);
 
@@ -140,14 +194,25 @@ public class EquipmentManager : MonoBehaviour
                     RemoveWeaponSprite(equipmentSlot);
 
                 UnassignEquipment(oldItemData, equipmentSlot);
-
+                
+                // If we determined we should drop the item, then drop it
                 if (shouldDropItem)
-                    gm.dropItemController.DropItem(characterManager.transform.position, oldItemData, oldItemData.currentStackSize);
+                    gm.dropItemController.DropItem(characterManager.transform.position, oldItemData, oldItemData.currentStackSize, null);
 
                 // Adjust the equipment manager's weight and volume
                 oldItemData.currentStackSize = stackSize;
                 currentWeight -= Mathf.RoundToInt(oldItemData.item.weight * oldItemData.currentStackSize * 100f) / 100f;
                 currentVolume -= Mathf.RoundToInt(oldItemData.item.volume * oldItemData.currentStackSize * 100f) / 100f;
+
+                // If the item was a bag, be sure to subtract the weight/volume of the bag's contents
+                if (oldItemData.item.IsBag())
+                {
+                    for (int i = 0; i < oldItemData.bagInventory.items.Count; i++)
+                    {
+                        currentWeight -= Mathf.RoundToInt(oldItemData.bagInventory.items[i].item.weight * oldItemData.bagInventory.items[i].currentStackSize * 100f) / 100f;
+                        currentVolume -= Mathf.RoundToInt(oldItemData.bagInventory.items[i].item.volume * oldItemData.bagInventory.items[i].currentStackSize * 100f) / 100f;
+                    }
+                }
 
                 if (invItemComingFrom != null)
                     invItemComingFrom.ClearItem();

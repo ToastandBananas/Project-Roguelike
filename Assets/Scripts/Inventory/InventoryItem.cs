@@ -146,12 +146,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 {
                     myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.activePlayerInvSideBarButton));
 
-                    // If the item is an equippable bag, set the container menu's active inventory to null and setup the sidebar icon
-                    if (itemData.item.IsBag())
-                    {
-                        gm.containerInvUI.activeInventory = null;
-                        gm.containerInvUI.SetSideBarIcon_Floor(gm.containerInvUI.activeDirection);
-                    }
+                    // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
+                    if (itemData.item.IsBag() && gm.containerInvUI.activeInventory == itemData.bagInventory)
+                        gm.containerInvUI.RemoveBagFromGround();
 
                     ClearItem();
                 }
@@ -220,7 +217,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
                     if (IsRoomOnGround(itemData, itemsListAddingTo, dropPos))
                     {
-                        gm.dropItemController.DropItem(dropPos, itemData, itemData.currentStackSize);
+                        gm.dropItemController.DropItem(dropPos, itemData, itemData.currentStackSize, gm.playerInvUI.activeInventory);
 
                         if (gm.playerInvUI.activeInventory != null)
                         {
@@ -261,12 +258,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             {
                 myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.activePlayerInvSideBarButton));
 
-                // If the item is an equippable bag, set the container menu's active inventory to null
-                if (itemData.item.IsBag())
-                {
-                    gm.containerInvUI.activeInventory = null;
-                    gm.containerInvUI.SetSideBarIcon_Floor(gm.containerInvUI.activeDirection);
-                }
+                // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
+                if (itemData.item.IsBag() && gm.containerInvUI.activeInventory == itemData.bagInventory)
+                    gm.containerInvUI.RemoveBagFromGround();
             }
         }
 
@@ -278,12 +272,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             {
                 myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.quiverSidebarButton));
 
-                // If the item is an equippable bag, set the container menu's active inventory to null
-                if (itemData.item.IsBag())
-                {
-                    gm.containerInvUI.activeInventory = null;
-                    gm.containerInvUI.SetSideBarIcon_Floor(gm.containerInvUI.activeDirection);
-                }
+                // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
+                if (itemData.item.IsBag() && gm.containerInvUI.activeInventory == itemData.bagInventory)
+                    gm.containerInvUI.RemoveBagFromGround();
             }
         }
 
@@ -295,12 +286,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             {
                 myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.backpackSidebarButton));
 
-                // If the item is an equippable bag, set the container menu's active inventory to null
-                if (itemData.item.IsBag())
-                {
-                    gm.containerInvUI.activeInventory = null;
-                    gm.containerInvUI.SetSideBarIcon_Floor(gm.containerInvUI.activeDirection);
-                }
+                // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
+                if (itemData.item.IsBag() && gm.containerInvUI.activeInventory == itemData.bagInventory)
+                    gm.containerInvUI.RemoveBagFromGround();
             }
         }
 
@@ -311,12 +299,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             {
                 myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.leftHipPouchSidebarButton));
 
-                // If the item is an equippable bag, set the container menu's active inventory to null
-                if (itemData.item.IsBag())
-                {
-                    gm.containerInvUI.activeInventory = null;
-                    gm.containerInvUI.SetSideBarIcon_Floor(gm.containerInvUI.activeDirection);
-                }
+                // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
+                if (itemData.item.IsBag() && gm.containerInvUI.activeInventory == itemData.bagInventory)
+                    gm.containerInvUI.RemoveBagFromGround();
             }
         }
 
@@ -327,12 +312,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             {
                 myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.rightHipPouchSidebarButton));
 
-                // If the item is an equippable bag, set the container menu's active inventory to null
-                if (itemData.item.IsBag())
-                {
-                    gm.containerInvUI.activeInventory = null;
-                    gm.containerInvUI.SetSideBarIcon_Floor(gm.containerInvUI.activeDirection);
-                }
+                // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
+                if (itemData.item.IsBag() && gm.containerInvUI.activeInventory == itemData.bagInventory)
+                    gm.containerInvUI.RemoveBagFromGround();
             }
         }
 
@@ -344,12 +326,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             {
                 myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.personalInventorySideBarButton));
 
-                // If the item is an equippable bag, set the container menu's active inventory to null
-                if (itemData.item.IsBag())
-                {
-                    gm.containerInvUI.activeInventory = null;
-                    gm.containerInvUI.SetSideBarIcon_Floor(gm.containerInvUI.activeDirection);
-                }
+                // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
+                if (itemData.item.IsBag() && gm.containerInvUI.activeInventory == itemData.bagInventory)
+                    gm.containerInvUI.RemoveBagFromGround();
             }
         }
     }

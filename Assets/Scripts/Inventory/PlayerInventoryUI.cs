@@ -199,6 +199,46 @@ public class PlayerInventoryUI : InventoryUI
         }
     }
 
+    public Inventory GetInventoryFromBagEquipSlot(ItemData bagItemData)
+    {
+        Bag bag = (Bag)bagItemData.item;
+        switch (bag.equipmentSlot)
+        {
+            case EquipmentSlot.Quiver:
+                return quiverInventory;
+            case EquipmentSlot.Backpack:
+                return backpackInventory;
+            case EquipmentSlot.LeftHipPouch:
+                return leftHipPouchInventory;
+            case EquipmentSlot.RightHipPouch:
+                return rightHipPouchInventory;
+            default:
+                return null;
+        }
+    }
+
+    public void EquipBag(ItemData bagItemData)
+    {
+        Bag bag = (Bag)bagItemData.item;
+        switch (bag.equipmentSlot)
+        {
+            case EquipmentSlot.Quiver:
+                quiverSidebarButton.ShowSideBarButton();
+                break;
+            case EquipmentSlot.Backpack:
+                backpackSidebarButton.ShowSideBarButton();
+                break;
+            case EquipmentSlot.LeftHipPouch:
+                leftHipPouchSidebarButton.ShowSideBarButton();
+                break;
+            case EquipmentSlot.RightHipPouch:
+                rightHipPouchSidebarButton.ShowSideBarButton();
+                break;
+            default:
+                break;
+        }
+    }
+
     public override void UpdateUINumbers()
     {
         if (activeInventory != null)
@@ -227,56 +267,24 @@ public class PlayerInventoryUI : InventoryUI
     float GetTotalCarriedWeight()
     {
         float totalWeight = 0;
-        for (int i = 0; i < personalInventory.items.Count; i++)
-        {
-            totalWeight += personalInventory.items[i].item.weight * personalInventory.items[i].currentStackSize;
-        }
+        totalWeight += personalInventory.currentWeight;
 
         if (backpackInventory != null)
-        {
-            for (int i = 0; i < backpackInventory.items.Count; i++)
-            {
-                totalWeight += backpackInventory.items[i].item.weight * backpackInventory.items[i].currentStackSize;
-            }
-        }
+            totalWeight += backpackInventory.currentWeight;
 
         if (leftHipPouchInventory != null)
-        {
-            for (int i = 0; i < leftHipPouchInventory.items.Count; i++)
-            {
-                totalWeight += leftHipPouchInventory.items[i].item.weight * leftHipPouchInventory.items[i].currentStackSize;
-            }
-        }
+            totalWeight += leftHipPouchInventory.currentWeight;
 
         if (rightHipPouchInventory != null)
-        {
-            for (int i = 0; i < rightHipPouchInventory.items.Count; i++)
-            {
-                totalWeight += rightHipPouchInventory.items[i].item.weight * rightHipPouchInventory.items[i].currentStackSize;
-            }
-        }
+            totalWeight += rightHipPouchInventory.currentWeight;
 
         if (quiverInventory != null)
-        {
-            for (int i = 0; i < quiverInventory.items.Count; i++)
-            {
-                totalWeight += quiverInventory.items[i].item.weight * quiverInventory.items[i].currentStackSize;
-            }
-        }
+            totalWeight += quiverInventory.currentWeight;
 
         if (keysInventory != null)
-        {
-            for (int i = 0; i < keysInventory.items.Count; i++)
-            {
-                totalWeight += keysInventory.items[i].item.weight * keysInventory.items[i].currentStackSize;
-            }
-        }
-
-        for (int i = 0; i < gm.playerManager.equipmentManager.currentEquipment.Length; i++)
-        {
-            if (gm.playerManager.equipmentManager.currentEquipment[i] != null)
-                totalWeight += gm.playerManager.equipmentManager.currentEquipment[i].item.weight * gm.playerManager.equipmentManager.currentEquipment[i].currentStackSize;
-        }
+            totalWeight += keysInventory.currentWeight;
+        
+        totalWeight += gm.playerManager.equipmentManager.currentWeight;
 
         return Mathf.RoundToInt(totalWeight * 100f) / 100f;
     }
@@ -284,56 +292,24 @@ public class PlayerInventoryUI : InventoryUI
     float GetTotalCarriedVolume()
     {
         float totalVolume = 0;
-        for (int i = 0; i < personalInventory.items.Count; i++)
-        {
-            totalVolume += personalInventory.items[i].item.volume * personalInventory.items[i].currentStackSize;
-        }
+        totalVolume += personalInventory.currentVolume;
 
         if (backpackInventory != null)
-        {
-            for (int i = 0; i < backpackInventory.items.Count; i++)
-            {
-                totalVolume += backpackInventory.items[i].item.volume * backpackInventory.items[i].currentStackSize;
-            }
-        }
+            totalVolume += backpackInventory.currentVolume;
 
         if (leftHipPouchInventory != null)
-        {
-            for (int i = 0; i < leftHipPouchInventory.items.Count; i++)
-            {
-                totalVolume += leftHipPouchInventory.items[i].item.volume * leftHipPouchInventory.items[i].currentStackSize;
-            }
-        }
+            totalVolume += leftHipPouchInventory.currentVolume;
 
         if (rightHipPouchInventory != null)
-        {
-            for (int i = 0; i < rightHipPouchInventory.items.Count; i++)
-            {
-                totalVolume += rightHipPouchInventory.items[i].item.volume * rightHipPouchInventory.items[i].currentStackSize;
-            }
-        }
+            totalVolume += rightHipPouchInventory.currentVolume;
 
         if (quiverInventory != null)
-        {
-            for (int i = 0; i < quiverInventory.items.Count; i++)
-            {
-                totalVolume += quiverInventory.items[i].item.volume * quiverInventory.items[i].currentStackSize;
-            }
-        }
+            totalVolume += quiverInventory.currentVolume;
 
         if (keysInventory != null)
-        {
-            for (int i = 0; i < keysInventory.items.Count; i++)
-            {
-                totalVolume += keysInventory.items[i].item.volume * keysInventory.items[i].currentStackSize;
-            }
-        }
+            totalVolume += keysInventory.currentVolume;
 
-        for (int i = 0; i < gm.playerManager.equipmentManager.currentEquipment.Length; i++)
-        {
-            if (gm.playerManager.equipmentManager.currentEquipment[i] != null)
-                totalVolume += gm.playerManager.equipmentManager.currentEquipment[i].item.volume * gm.playerManager.equipmentManager.currentEquipment[i].currentStackSize;
-        }
+        totalVolume += gm.playerManager.equipmentManager.currentVolume;
 
         return Mathf.RoundToInt(totalVolume * 100f) / 100f;
     }

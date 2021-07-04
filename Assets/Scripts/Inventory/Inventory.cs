@@ -36,14 +36,16 @@ public class Inventory : MonoBehaviour
         {
             gm = GameManager.instance;
             TryGetComponent(out container);
-            
+
+            // Populate the items list if there are any children on the itemsParent
             for (int i = 0; i < itemsParent.childCount; i++)
             {
                 ItemData itemData = itemsParent.GetChild(i).GetComponent<ItemData>();
-                items.Add(itemData);
-                currentWeight += Mathf.RoundToInt(itemData.item.weight * itemData.currentStackSize * 100f) / 100f;
-                currentVolume += Mathf.RoundToInt(itemData.item.volume * itemData.currentStackSize * 100f) / 100f;
+                if (items.Contains(itemData) == false)
+                    items.Add(itemData);
             }
+
+            GetCurrentWeightAndVolume();
 
             if (items.Count > 0)
             {
@@ -73,8 +75,7 @@ public class Inventory : MonoBehaviour
         }
 
         // Add to this Inventory's weight and volume
-        currentWeight += Mathf.RoundToInt(itemDataComingFrom.item.weight * itemCount * 100f) / 100f;
-        currentVolume += Mathf.RoundToInt(itemDataComingFrom.item.volume * itemCount * 100f) / 100f;
+        AddItemsWeightAndVolumeToInventory(itemDataComingFrom, this, itemCount);
 
         // Try adding to existing stacks first, while keeping track of how many we added to existing stacks
         int amountAddedToExistingStacks = 0;
@@ -112,56 +113,59 @@ public class Inventory : MonoBehaviour
             if (gm.uiManager.activeContainerSideBarButton != null && this == gm.uiManager.activeContainerSideBarButton.GetInventory())
                 gm.containerInvUI.AddItemToListFromDirection(itemDataToAdd, gm.uiManager.activeContainerSideBarButton.directionFromPlayer);
             else if (myInventoryUI == gm.containerInvUI)
-                gm.containerInvUI.AddItemToList(itemDataToAdd);
+                gm.containerInvUI.AddItemToActiveDirectionList(itemDataToAdd);
 
             // Set the parent of this new ItemData to the Inventory's itemsParent and set the gameObject as active
             itemDataToAdd.transform.SetParent(itemsParent);
             itemDataToAdd.gameObject.SetActive(true);
 
-            // If the item is a bag, add any items it had to the new bag's Inventory
-            if (itemDataComingFrom.item.IsBag())
+            // If the item is a bag, add any items it had to the "new" bag object's Inventory
+            if (itemDataComingFrom.item.IsBag() || itemDataComingFrom.item.itemType == ItemType.PortableContainer)
             {
-                Inventory newBagsInv = itemDataToAdd.GetComponent<Inventory>();
-                //Inventory itemDataComingFromsInv = itemDataComingFrom.GetComponent<Inventory>();
-
-                // If this is a bag we're picking up from the ground
-                if (itemDataComingFrom.CompareTag("Item Pickup"))
+                Inventory itemDataComingFromsInv = null;
+                if (invComingFrom == null)
+                    itemDataComingFromsInv = gm.playerInvUI.GetInventoryFromBagEquipSlot(itemDataComingFrom);
+                else if (itemDataComingFrom.CompareTag("Item Pickup")) // If this is a bag we're picking up from the ground
+                    itemDataComingFromsInv = invComingFrom;
+                else
+                    itemDataComingFromsInv = itemDataComingFrom.bagInventory; // If this bag is inside a container or one of the player's inventories
+                
+                for (int i = 0; i < itemDataComingFromsInv.items.Count; i++)
                 {
-                    for (int i = 0; i < invComingFrom.items.Count; i++)
-                    {
-                        // Add new ItemData Objects to the items parent of the new bag and transfer data to them
-                        ItemData newItemDataObject = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData();
-                        newItemDataObject.transform.SetParent(newBagsInv.itemsParent);
-                        newItemDataObject.gameObject.SetActive(true);
-                        invComingFrom.items[i].TransferData(invComingFrom.items[i], newItemDataObject);
-
-                        // Return the item we took out of the bag back to it's object pool
-                        invComingFrom.items[i].ReturnToItemDataObjectPool();
-
-                        // Populate the new bag's inventory
-                        newBagsInv.items.Add(newItemDataObject);
-
-                        #if UNITY_EDITOR
-                            newItemDataObject.name = newItemDataObject.itemName;
-                        #endif
-                    }
-
-                    invComingFrom.items.Clear();
-                }
-                else // If this is a bag we're grabbing from an inventory
-                {
-                    //////////
-                    // TODO //
-                    //////////
-
-                    // Transfer invComingFrom's items to the new bag's inventory
-
                     // Add new ItemData Objects to the items parent of the new bag and transfer data to them
+                    ItemData newItemDataObject = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData();
+                    newItemDataObject.transform.SetParent(itemDataToAdd.bagInventory.itemsParent);
+                    newItemDataObject.gameObject.SetActive(true);
+                    itemDataComingFromsInv.items[i].TransferData(itemDataComingFromsInv.items[i], newItemDataObject);
 
-                    // Return the item we took out of the bag back to it's object pool
+                    // Populate the new bag's inventory, but make sure it's not already in the items list (because of the Inventory's Init method, which populates this list)
+                    if (itemDataToAdd.bagInventory.items.Contains(newItemDataObject) == false)
+                        itemDataToAdd.bagInventory.items.Add(newItemDataObject);
 
-                    // Populate the new bag's inventory
+                    #if UNITY_EDITOR
+                        newItemDataObject.name = newItemDataObject.itemName;
+                    #endif
                 }
+
+                // Set the weight and volume of the "new" bag
+                itemDataToAdd.bagInventory.GetCurrentWeightAndVolume();
+
+                // If the bag is coming from an Inventory or EquipmentManager (and not from the ground), subtract the bag's weight/volume, including the items inside it
+                if (invComingFrom == null)
+                    SubtractItemsWeightAndVolumeFromInventory(itemDataComingFrom, itemDataComingFromsInv, itemCount, true);
+                else if (itemDataComingFrom.CompareTag("Item Pickup") == false)
+                    SubtractItemsWeightAndVolumeFromInventory(itemDataComingFrom, invComingFrom, itemCount, true);
+                else
+                    invComingFrom.ResetWeightAndVolume(); // Else if it is a pickup, just set the weight and volume to 0
+
+                for (int i = 0; i < itemDataComingFromsInv.items.Count; i++)
+                {
+                    // Return the item we took out of the "old" bag back to it's object pool
+                    itemDataComingFromsInv.items[i].ReturnToItemDataObjectPool();
+                }
+                
+                // Clear out the items list of the "old" bag
+                itemDataComingFromsInv.items.Clear();
             }
 
             // If this Inventory is active in the menu, create a new InventoryItem
@@ -172,12 +176,9 @@ public class Inventory : MonoBehaviour
                 itemDataToAdd.gameObject.name = itemDataToAdd.itemName;
             #endif
 
-            // If we're taking this item from another Inventory, update it's weight and volume
-            if (invComingFrom != null)
-            {
-                invComingFrom.currentWeight -= Mathf.RoundToInt(itemDataComingFrom.item.weight * itemCount * 100f) / 100f;
-                invComingFrom.currentVolume -= Mathf.RoundToInt(itemDataComingFrom.item.volume * itemCount * 100f) / 100f;
-            }
+            // If we're taking this item from another Inventory and it's not a bag or portable container, update its weight and volume
+            if (invComingFrom != null && itemDataComingFrom.item.IsBag() == false && itemDataComingFrom.item.itemType != ItemType.PortableContainer)
+                SubtractItemsWeightAndVolumeFromInventory(itemDataComingFrom, invComingFrom, itemCount, true);
 
             // If we're only taking 1 count of the item, subtract 1 from the currentStackSize, otherwise it should now be 0
             if (itemCount == 1)
@@ -192,8 +193,7 @@ public class Inventory : MonoBehaviour
     public void Remove(ItemData itemData, int itemCount, InventoryItem invItem)
     {
         // Subtract from current weight and volume
-        currentWeight -= Mathf.RoundToInt(itemData.item.weight * itemCount * 100f) / 100f;
-        currentVolume -= Mathf.RoundToInt(itemData.item.volume * itemCount * 100f) / 100f;
+        SubtractItemsWeightAndVolumeFromInventory(itemData, this, itemCount, true);
 
         // Update InventoryUI
         if (myInventoryUI.activeInventory == this)
@@ -264,8 +264,18 @@ public class Inventory : MonoBehaviour
 
     public bool HasRoomInInventory(ItemData itemData, int itemCount)
     {
-        float itemWeight = itemData.item.weight * itemCount;
-        float itemVolume = itemData.item.volume * itemCount;
+        float itemWeight = Mathf.RoundToInt(itemData.item.weight * itemCount * 100f) / 100f;
+        float itemVolume = Mathf.RoundToInt(itemData.item.volume * itemCount * 100f) / 100f;
+
+        if (itemData.item.IsBag() || itemData.item.itemType == ItemType.PortableContainer)
+        {
+            for (int i = 0; i < itemData.bagInventory.items.Count; i++)
+            {
+                itemWeight += Mathf.RoundToInt(itemData.bagInventory.items[i].item.weight * itemData.bagInventory.items[i].currentStackSize * 100f) / 100f;
+                itemVolume += Mathf.RoundToInt(itemData.bagInventory.items[i].item.volume * itemData.bagInventory.items[i].currentStackSize * 100f) / 100f;
+            }
+        }
+
         if (maxWeight - currentWeight >= itemWeight && maxVolume - currentVolume >= itemVolume)
             return true;
 
@@ -277,15 +287,64 @@ public class Inventory : MonoBehaviour
         int itemCountInInventory = 0;
 
         // Add up how much of this Item that we have in our Inventory
-        for (int i = 0; i < myInventoryUI.inventoryItemObjectPool.pooledInventoryItems.Count; i++)
+        for (int i = 0; i < myInventoryUI.inventoryItemObjectPool.activePooledInventoryItems.Count; i++)
         {
-            if (myInventoryUI.inventoryItemObjectPool.pooledInventoryItems[i].itemData != null && myInventoryUI.inventoryItemObjectPool.pooledInventoryItems[i].itemData.item == itemData.item)
-                itemCountInInventory += myInventoryUI.inventoryItemObjectPool.pooledInventoryItems[i].itemData.currentStackSize;
+            if (myInventoryUI.inventoryItemObjectPool.activePooledInventoryItems[i].itemData.item == itemData.item)
+                itemCountInInventory += myInventoryUI.inventoryItemObjectPool.activePooledInventoryItems[i].itemData.currentStackSize;
         }
 
         if (itemCountInInventory >= itemAmountRequired)
             return true;
 
         return false;
+    }
+
+    public void AddItemsWeightAndVolumeToInventory(ItemData itemDataAdding, Inventory invAddingItemTo, int itemCount)
+    {
+        invAddingItemTo.currentWeight += Mathf.RoundToInt(itemDataAdding.item.weight * itemCount * 100f) / 100f;
+        invAddingItemTo.currentVolume += Mathf.RoundToInt(itemDataAdding.item.volume * itemCount * 100f) / 100f;
+
+        if (itemDataAdding.item.IsBag() || itemDataAdding.item.itemType == ItemType.PortableContainer)
+        {
+            for (int i = 0; i < itemDataAdding.bagInventory.items.Count; i++)
+            {
+                invAddingItemTo.currentWeight += Mathf.RoundToInt(itemDataAdding.bagInventory.items[i].item.weight * itemDataAdding.bagInventory.items[i].currentStackSize * 100f) / 100f;
+                invAddingItemTo.currentVolume += Mathf.RoundToInt(itemDataAdding.bagInventory.items[i].item.volume * itemDataAdding.bagInventory.items[i].currentStackSize * 100f) / 100f;
+            }
+        }
+    }
+
+    public void SubtractItemsWeightAndVolumeFromInventory(ItemData itemDataRemoving, Inventory invRemovingItemFrom, int itemCount, bool shouldSubtractItemRemovingWeighAndVolume)
+    {
+        if (shouldSubtractItemRemovingWeighAndVolume)
+        {
+            invRemovingItemFrom.currentWeight -= Mathf.RoundToInt(itemDataRemoving.item.weight * itemCount * 100f) / 100f;
+            invRemovingItemFrom.currentVolume -= Mathf.RoundToInt(itemDataRemoving.item.volume * itemCount * 100f) / 100f;
+        }
+
+        if (itemDataRemoving.item.IsBag() || itemDataRemoving.item.itemType == ItemType.PortableContainer)
+        {
+            for (int i = 0; i < itemDataRemoving.bagInventory.items.Count; i++)
+            {
+                invRemovingItemFrom.currentWeight -= Mathf.RoundToInt(itemDataRemoving.bagInventory.items[i].item.weight * itemDataRemoving.bagInventory.items[i].currentStackSize * 100f) / 100f;
+                invRemovingItemFrom.currentVolume -= Mathf.RoundToInt(itemDataRemoving.bagInventory.items[i].item.volume * itemDataRemoving.bagInventory.items[i].currentStackSize * 100f) / 100f;
+            }
+        }
+    }
+
+    public void GetCurrentWeightAndVolume()
+    {
+        ResetWeightAndVolume();
+        for (int i = 0; i < items.Count; i++)
+        {
+            currentWeight += Mathf.RoundToInt(items[i].item.weight * items[i].currentStackSize * 100f) / 100f;
+            currentVolume += Mathf.RoundToInt(items[i].item.volume * items[i].currentStackSize * 100f) / 100f;
+        }
+    }
+
+    public void ResetWeightAndVolume()
+    {
+        currentVolume = 0;
+        currentWeight = 0;
     }
 }
