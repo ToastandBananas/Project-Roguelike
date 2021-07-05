@@ -37,8 +37,15 @@ public class EquipmentManager : MonoBehaviour
         currentEquipment = new ItemData[numSlots];
     }
 
-    public virtual void Equip(ItemData newItemData, InventoryItem invItemComingFrom, EquipmentSlot equipmentSlot)
+    public virtual bool Equip(ItemData newItemData, InventoryItem invItemComingFrom, EquipmentSlot equipmentSlot)
     {
+        // If the item we're equipping is a bag, make sure it's not inside of another bag. If it is, the player will need to remove it from the bag it's inside before they can equip it. 
+        if (newItemData.item.IsBag() && gm.playerInvUI.ItemIsInABag(newItemData))
+        {
+            Debug.Log("You must remove " + newItemData.itemName + " from your bag before you can equip it.");
+            return false;
+        }
+
         ItemData equipmentItemData = null;
         if (newItemData.item.IsBag())
             equipmentItemData = gm.objectPoolManager.itemDataContainerObjectPool.GetPooledItemData();
@@ -54,6 +61,17 @@ public class EquipmentManager : MonoBehaviour
             equipmentItemData.gameObject.name = equipmentItemData.itemName;
         #endif
 
+        if (AssignEquipment(equipmentItemData, equipmentSlot) == false)
+        {
+            if (newItemData.item.IsBag())
+                equipmentItemData.ReturnToItemDataContainerObjectPool();
+            else
+                equipmentItemData.ReturnToItemDataObjectPool();
+
+            Debug.Log("Can't equip item");
+            return false;
+        }
+
         // Adjust the equipment manager's weight and volume
         currentWeight += Mathf.RoundToInt(equipmentItemData.item.weight * 100f) / 100f;
         currentVolume += Mathf.RoundToInt(equipmentItemData.item.volume * 100f) / 100f;
@@ -61,6 +79,7 @@ public class EquipmentManager : MonoBehaviour
         // If the item was a bag, be sure to add the weight/volume of the bag's contents
         if (newItemData.item.IsBag())
         {
+            // Setup the sidebar for the new bag
             gm.playerInvUI.EquipBag(newItemData);
 
             Inventory bagsInventory = gm.playerInvUI.GetInventoryFromBagEquipSlot(newItemData);
@@ -92,21 +111,22 @@ public class EquipmentManager : MonoBehaviour
 
             // If the bag is coming from an Inventory or EquipmentManager (and not from the ground), subtract the bag's weight/volume, including the items inside it
             if (newItemData.CompareTag("Item Pickup") == false)
-                bagsInventory.SubtractItemsWeightAndVolumeFromInventory(newItemData, invItemComingFrom.myInventory, 1, true);
-            else
-                newItemData.bagInventory.ResetWeightAndVolume(); // Else if it is a pickup, just set the weight and volume to 0
+                bagsInventory.SubtractItemsWeightAndVolumeFromInventory(newItemData, invItemComingFrom.myInventory, 1, false); // We don't subtract the bag's weight yet because it will just be subtracted later when it's removed from the inventory
 
-            for (int i = 0; i < itemDataComingFromsInv.items.Count; i++)
+            newItemData.bagInventory.ResetWeightAndVolume(); // Reset the bag's inventory
+            
+            for (int i = 0; i < newItemData.bagInventory.items.Count; i++)
             {
                 // Return the item we took out of the "old" bag back to it's object pool
-                itemDataComingFromsInv.items[i].ReturnToItemDataObjectPool();
+                newItemData.bagInventory.items[i].ReturnToItemDataObjectPool();
             }
 
             // Clear out the items list of the "old" bag
-            itemDataComingFromsInv.items.Clear();
-        }
+            newItemData.bagInventory.items.Clear();
 
-        AssignEquipment(equipmentItemData, equipmentSlot);
+            if (gm.playerInvUI.activeInventory == bagsInventory)
+                gm.playerInvUI.GetPlayerInvSidebarButtonFromActiveInv().ShowInventoryItems();
+        }
 
         StartCoroutine(gm.playerInvUI.PlayAddItemEffect(equipmentItemData.item.pickupSprite, null, gm.playerInvUI.equipmentSideBarButton));
 
@@ -114,7 +134,7 @@ public class EquipmentManager : MonoBehaviour
         if (gm.playerInvUI.activeInventory == null && isPlayer)
         {
             gm.playerInvUI.ShowNewInventoryItem(equipmentItemData);
-            gm.playerInvUI.UpdateUINumbers();
+            gm.playerInvUI.UpdateUI();
         }
 
         // If this is a Wearable item, show the equipment's sprite on the player
@@ -122,70 +142,128 @@ public class EquipmentManager : MonoBehaviour
             SetWearableSprite(equipmentSlot, (Equipment)equipmentItemData.item);
         else
             SetWeaponSprite(equipmentSlot, (Equipment)equipmentItemData.item);
+
+        // If the item is a bag and it was on the ground, set the sidebar icon to a floor icon
+        if (newItemData.item.IsBag() && newItemData.CompareTag("Item Pickup"))
+            gm.containerInvUI.SetSideBarIcon_Floor(gm.containerInvUI.activeDirection);
+
+        return true;
     }
 
-    public virtual void Unequip(EquipmentSlot equipmentSlot, bool shouldAddToInventory)
+    public virtual bool Unequip(EquipmentSlot equipmentSlot, bool shouldAddToInventory, bool canDropItem)
     {
         if (currentEquipment[(int)equipmentSlot] != null)
         {
             ItemData oldItemData = currentEquipment[(int)equipmentSlot];
             InventoryItem invItemComingFrom = gm.playerInvUI.GetItemDatasInventoryItem(oldItemData);
+            Inventory invComingFrom = null;
             int stackSize = oldItemData.currentStackSize;
             bool shouldDropItem = false;
+            
+            // If the item we're unequipping is a bag
+            if (oldItemData.item.IsBag())
+            {
+                // Get the bag's inventory (the one on the sidebar)
+                invComingFrom = gm.playerInvUI.GetInventoryFromBagEquipSlot(oldItemData);
+
+                // If we're dropping the bag
+                if (shouldAddToInventory == false && canDropItem)
+                {
+                    // Make sure there's room to drop it (bags cannot be dropped on other items)
+                    if (gm.uiManager.IsRoomOnGround(oldItemData, gm.containerInvUI.playerPositionItems, gm.playerManager.transform.position) == false)
+                        return false;
+                }
+                else // If we're trying to add the bag to our inventory before dropping it
+                {
+                    // Check through each of the player's inventories and see if there's room in any of them...if there is, we can continue on
+                    bool hasRoomInInventory = false;
+                    if (gm.playerInvUI.backpackEquipped && gm.playerInvUI.backpackInventory != invComingFrom)
+                        hasRoomInInventory = gm.playerInvUI.backpackInventory.HasRoomInInventory(oldItemData, 1);
+
+                    if (hasRoomInInventory == false && gm.playerInvUI.leftHipPouchEquipped && gm.playerInvUI.leftHipPouchInventory != invComingFrom)
+                        hasRoomInInventory = gm.playerInvUI.leftHipPouchInventory.HasRoomInInventory(oldItemData, 1);
+
+                    if (hasRoomInInventory == false && gm.playerInvUI.rightHipPouchEquipped && gm.playerInvUI.rightHipPouchInventory != invComingFrom)
+                        hasRoomInInventory = gm.playerInvUI.rightHipPouchInventory.HasRoomInInventory(oldItemData, 1);
+
+                    if (hasRoomInInventory == false)
+                        hasRoomInInventory = gm.playerInvUI.personalInventory.HasRoomInInventory(oldItemData, 1);
+
+                    if (hasRoomInInventory == false) // If there's no room in any of our inventories
+                    {
+                        // Check if there's room on the ground (bags cannot be dropped on other items)
+                        if (gm.uiManager.IsRoomOnGround(oldItemData, gm.containerInvUI.playerPositionItems, gm.playerManager.transform.position) == false)
+                            return false;
+                    }
+                }
+
+                for (int i = 0; i < invComingFrom.items.Count; i++)
+                {
+                    // Set each item in the inventory as a child of the bag item itself
+                    invComingFrom.items[i].transform.SetParent(oldItemData.bagInventory.itemsParent);
+
+                    // Add each item in the inventory to the bag's items list, so that when it's added to another inventory or dropped, the items are accounted for
+                    oldItemData.bagInventory.items.Add(invComingFrom.items[i]);
+                }
+            }
 
             if (shouldAddToInventory)
             {
                 if (isPlayer) // If this is the player's equipment
                 {
-                    bool itemAddedToInv = false;
+                    bool itemWasAddedToInv = false;
                     bool addItemEffectPlayed = false;
-                    
+
                     // Try adding to the player's inventory and if it is added, play the add item effect
-                    if (gm.playerInvUI.backpackEquipped)
-                        itemAddedToInv = gm.playerInvUI.backpackInventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null);
-                    
-                    if (itemAddedToInv)
+                    if (gm.playerInvUI.backpackEquipped && gm.playerInvUI.backpackInventory != invComingFrom)
+                        itemWasAddedToInv = gm.playerInvUI.backpackInventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, invComingFrom);
+
+                    if (itemWasAddedToInv)
                     {
                         StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.backpackSidebarButton));
                         addItemEffectPlayed = true;
                     }
-                    else if (gm.playerInvUI.leftHipPouchEquipped)
-                        itemAddedToInv = gm.playerInvUI.leftHipPouchInventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null);
+                    else if (gm.playerInvUI.leftHipPouchEquipped && gm.playerInvUI.leftHipPouchInventory != invComingFrom)
+                        itemWasAddedToInv = gm.playerInvUI.leftHipPouchInventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, invComingFrom);
 
-                    if (itemAddedToInv && addItemEffectPlayed == false)
+                    if (itemWasAddedToInv && addItemEffectPlayed == false)
                     {
                         StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.leftHipPouchSidebarButton));
                         addItemEffectPlayed = true;
                     }
-                    else if (itemAddedToInv == false && gm.playerInvUI.rightHipPouchEquipped)
-                        itemAddedToInv = gm.playerInvUI.rightHipPouchInventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null);
+                    else if (itemWasAddedToInv == false && gm.playerInvUI.rightHipPouchEquipped && gm.playerInvUI.rightHipPouchInventory != invComingFrom)
+                        itemWasAddedToInv = gm.playerInvUI.rightHipPouchInventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, invComingFrom);
 
-                    if (itemAddedToInv && addItemEffectPlayed == false)
+                    if (itemWasAddedToInv && addItemEffectPlayed == false)
                     {
                         StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.rightHipPouchSidebarButton));
                         addItemEffectPlayed = true;
                     }
-                    else if (itemAddedToInv == false)
-                        itemAddedToInv = gm.playerInvUI.personalInventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, null);
-                    
-                    if (itemAddedToInv && addItemEffectPlayed == false)
+                    else if (itemWasAddedToInv == false)
+                        itemWasAddedToInv = gm.playerInvUI.personalInventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, invComingFrom);
+
+                    if (itemWasAddedToInv && addItemEffectPlayed == false)
                         StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.personalInventorySideBarButton));
-                    else if (itemAddedToInv == false) // If we can't add it to the Inventory, drop it, but first we need to run the rest of the code in this method, so we'll just set a bool for now
+                    else if (itemWasAddedToInv == false) // If we can't add it to the Inventory, drop it, but first we need to run the rest of the code in this method, so we'll just set a bool for now
                         shouldDropItem = true;
                 }
                 else // If this is an NPC's equipment
                 {
                     // Try adding to the NPC's inventory, else drop the item at their feet
-                    if (characterManager.inventory.Add(null, oldItemData, oldItemData.currentStackSize, null) == false)
+                    if (characterManager.inventory.Add(null, oldItemData, oldItemData.currentStackSize, invComingFrom) == false)
                         shouldDropItem = true;
                 }
             }
+            else
+                shouldDropItem = true;
 
-            bool isRoomOnGround = true;
-            if (shouldDropItem)
-                isRoomOnGround = invItemComingFrom.IsRoomOnGround(oldItemData, gm.containerInvUI.playerPositionItems, gm.playerManager.transform.position);
+            bool isRoomOnGround = false;
+            if (shouldDropItem && canDropItem)
+                isRoomOnGround = gm.uiManager.IsRoomOnGround(oldItemData, gm.containerInvUI.playerPositionItems, gm.playerManager.transform.position);
 
-            if (shouldDropItem == false || isRoomOnGround)
+            if (shouldDropItem && canDropItem && isRoomOnGround == false)
+                return false;
+            else
             {
                 // If this is a Wearable Item, set the scriptableObject to null
                 if (oldItemData.item.IsWeapon() == false)
@@ -193,26 +271,20 @@ public class EquipmentManager : MonoBehaviour
                 else  // If this is a Weapon Item, get rid of the weapon's gameobject
                     RemoveWeaponSprite(equipmentSlot);
 
-                UnassignEquipment(oldItemData, equipmentSlot);
-                
-                // If we determined we should drop the item, then drop it
-                if (shouldDropItem)
-                    gm.dropItemController.DropItem(characterManager.transform.position, oldItemData, oldItemData.currentStackSize, null);
-
                 // Adjust the equipment manager's weight and volume
                 oldItemData.currentStackSize = stackSize;
                 currentWeight -= Mathf.RoundToInt(oldItemData.item.weight * oldItemData.currentStackSize * 100f) / 100f;
                 currentVolume -= Mathf.RoundToInt(oldItemData.item.volume * oldItemData.currentStackSize * 100f) / 100f;
 
+                UnassignEquipment(oldItemData, equipmentSlot);
+
+                // If we determined we should drop the item, then drop it
+                if (shouldDropItem && canDropItem)
+                    gm.dropItemController.DropItem(characterManager.transform.position, oldItemData, oldItemData.currentStackSize, invComingFrom);
+
                 // If the item was a bag, be sure to subtract the weight/volume of the bag's contents
                 if (oldItemData.item.IsBag())
-                {
-                    for (int i = 0; i < oldItemData.bagInventory.items.Count; i++)
-                    {
-                        currentWeight -= Mathf.RoundToInt(oldItemData.bagInventory.items[i].item.weight * oldItemData.bagInventory.items[i].currentStackSize * 100f) / 100f;
-                        currentVolume -= Mathf.RoundToInt(oldItemData.bagInventory.items[i].item.volume * oldItemData.bagInventory.items[i].currentStackSize * 100f) / 100f;
-                    }
-                }
+                    gm.playerInvUI.UnequipBag((Bag)oldItemData.item, invComingFrom);
 
                 if (invItemComingFrom != null)
                     invItemComingFrom.ClearItem();
@@ -220,28 +292,42 @@ public class EquipmentManager : MonoBehaviour
                     oldItemData.ReturnToItemDataObjectPool();
 
                 if (isPlayer)
-                    gm.playerInvUI.UpdateUINumbers();
+                    gm.playerInvUI.UpdateUI();
             }
         }
+
+        return true;
     }
 
-    public virtual void AssignEquipment(ItemData newItemData, EquipmentSlot equipmentSlot)
+    public virtual bool AssignEquipment(ItemData newItemData, EquipmentSlot equipmentSlot)
     {
         ItemData oldItemData = null;
+        bool canAssignEquipment = true;
 
         // If there's already an Item in this slot
         if (currentEquipment[(int)equipmentSlot] != null)
         {
             oldItemData = currentEquipment[(int)equipmentSlot];
-            Unequip(equipmentSlot, true);
+
+            // We need to temporarily disable the corresponding bag inventory so that the bag that we're unequipping doesn't try to place itself in its own inventory. 
+            // It will be re-enabled in the Equip method.
+            gm.playerInvUI.TemporarilyDisableBag(oldItemData);
+
+            // Try to unequip the old Item
+            canAssignEquipment = Unequip(equipmentSlot, true, true);
         }
 
-        if (onWearableChanged != null && newItemData.item.IsWeapon() == false)
-            onWearableChanged.Invoke(newItemData, oldItemData);
-        else if (onWeaponChanged != null && newItemData.item.IsWeapon())
-            onWeaponChanged.Invoke(newItemData, oldItemData);
+        if (canAssignEquipment)
+        {
+            if (onWearableChanged != null && newItemData.item.IsWeapon() == false)
+                onWearableChanged.Invoke(newItemData, oldItemData);
+            else if (onWeaponChanged != null && newItemData.item.IsWeapon())
+                onWeaponChanged.Invoke(newItemData, oldItemData);
 
-        currentEquipment[(int)equipmentSlot] = newItemData;
+            currentEquipment[(int)equipmentSlot] = newItemData;
+        }
+
+        return canAssignEquipment;
     }
 
     public virtual void UnassignEquipment(ItemData oldItemData, EquipmentSlot equipmentSlot)
@@ -261,7 +347,7 @@ public class EquipmentManager : MonoBehaviour
             if (currentEquipment[i] != null)
             {
                 Equipment equipment = (Equipment)currentEquipment[i].item;
-                Unequip(equipment.equipmentSlot, shouldAddEquipmentToInventory);
+                Unequip(equipment.equipmentSlot, shouldAddEquipmentToInventory, true);
             }
         }
     }

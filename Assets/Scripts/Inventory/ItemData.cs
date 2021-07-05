@@ -377,7 +377,6 @@ public class ItemData : MonoBehaviour
     public void ReturnToItemDataContainerObjectPool()
     {
         if (gm == null) gm = GameManager.instance;
-
         transform.SetParent(gm.objectPoolManager.itemDataContainerObjectPool.transform);
         if (gm.objectPoolManager.itemDataContainerObjectPool.pooledObjects.Contains(gameObject) == false)
         {

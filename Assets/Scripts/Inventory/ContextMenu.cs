@@ -132,7 +132,7 @@ public class ContextMenu : MonoBehaviour
     void Unequip()
     {
         Equipment equipment = (Equipment)contextActiveInvItem.itemData.item;
-        gm.playerManager.equipmentManager.Unequip(equipment.equipmentSlot, true);
+        gm.playerManager.equipmentManager.Unequip(equipment.equipmentSlot, true, true);
         DisableContextMenu();
     }
 
@@ -187,17 +187,17 @@ public class ContextMenu : MonoBehaviour
         Vector3 dropPos = gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromActiveDirection();
 
         // Make sure there's room on the ground first
-        if (contextActiveInvItem.IsRoomOnGround(contextActiveInvItem.itemData, itemsListAddingTo, dropPos))
+        if (gm.uiManager.IsRoomOnGround(contextActiveInvItem.itemData, itemsListAddingTo, dropPos))
         {
             gm.dropItemController.DropItem(dropPos, contextActiveInvItem.itemData, contextActiveInvItem.itemData.currentStackSize, contextActiveInvItem.myInventory);
             gm.containerInvUI.AddItemToActiveDirectionList(contextActiveInvItem.itemData);
 
             if (contextActiveInvItem.myEquipmentManager != null)
             {
-                gm.playerInvUI.UpdateUINumbers();
-
                 Equipment equipment = (Equipment)contextActiveInvItem.itemData.item;
-                gm.playerManager.equipmentManager.Unequip(equipment.equipmentSlot, false);
+                gm.playerManager.equipmentManager.Unequip(equipment.equipmentSlot, false, false);
+
+                gm.playerInvUI.UpdateUI();
             }
             else
             {
@@ -215,10 +215,10 @@ public class ContextMenu : MonoBehaviour
                         }
                     }
 
-                    contextActiveInvItem.myInventory.myInventoryUI.UpdateUINumbers();
+                    contextActiveInvItem.myInventory.myInventoryUI.UpdateUI();
                 }
                 else
-                    gm.containerInvUI.UpdateUINumbers();
+                    gm.containerInvUI.UpdateUI();
 
                 contextActiveInvItem.ClearItem();
             }

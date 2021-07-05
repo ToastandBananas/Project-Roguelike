@@ -122,23 +122,6 @@ public class PlayerInventorySidebarButton : MonoBehaviour, IPointerEnterHandler,
         }
     }
 
-    public void SetupBag(Bag newBag, Inventory bagInventory)
-    {
-        // Set the sidebar icon sprite
-        if (newBag.sidebarSprite != null)
-            icon.sprite = newBag.sidebarSprite;
-        else
-            icon.sprite = newBag.pickupSprite;
-
-        // Set the max weight and volume
-        inventory.maxWeight = newBag.maxWeight;
-        inventory.maxVolume = newBag.maxVolume;
-
-        // Clear the old inventory items list and populate it with the new items if the bag contained any
-        //inventory.items.Clear();
-        
-    }
-
     void HideInactiveBags()
     {
         if ((gm.playerInvUI.backpackEquipped == false && playerInventoryType == PlayerInventoryType.Backpack) || (gm.playerInvUI.leftHipPouchEquipped == false && playerInventoryType == PlayerInventoryType.LeftHipPouch)

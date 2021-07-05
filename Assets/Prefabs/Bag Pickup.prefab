@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3492804692996092060}
   - component: {fileID: 4028266339254937707}
   - component: {fileID: 978380076695628190}
-  m_Layer: 13
+  m_Layer: 14
   m_Name: Bag Pickup
   m_TagString: Item Pickup
   m_Icon: {fileID: 0}
@@ -195,6 +195,7 @@ MonoBehaviour:
   shieldBashDamage: 0
   freshness: 100
   uses: 1
+  bagInventory: {fileID: 0}
 --- !u!1 &3398505541977878362
 GameObject:
   m_ObjectHideFlags: 0

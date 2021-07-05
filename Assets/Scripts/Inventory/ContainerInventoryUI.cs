@@ -349,7 +349,7 @@ public class ContainerInventoryUI : InventoryUI
                     SetupContainerUI(northInventory, northSideBarButton.icon, northItems);
                 else
                 {
-                    inventoryNameText.text = "Items Above Self";
+                    inventoryNameText.text = "Items North of Self";
                     weightText.text = GetTotalWeight(northItems).ToString();
                     volumeText.text = GetTotalVolume(northItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                 }
@@ -360,7 +360,7 @@ public class ContainerInventoryUI : InventoryUI
                     SetupContainerUI(southInventory, southSideBarButton.icon, southItems);
                 else
                 {
-                    inventoryNameText.text = "Items Below Self";
+                    inventoryNameText.text = "Items South of Self";
                     weightText.text = GetTotalWeight(southItems).ToString();
                     volumeText.text = GetTotalVolume(southItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                 }
@@ -371,7 +371,7 @@ public class ContainerInventoryUI : InventoryUI
                     SetupContainerUI(westInventory, westSideBarButton.icon, westItems);
                 else
                 {
-                    inventoryNameText.text = "Items Left of Self";
+                    inventoryNameText.text = "Items West of Self";
                     weightText.text = GetTotalWeight(westItems).ToString();
                     volumeText.text = GetTotalVolume(westItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                 }
@@ -382,7 +382,7 @@ public class ContainerInventoryUI : InventoryUI
                     SetupContainerUI(eastInventory, eastSideBarButton.icon, eastItems);
                 else
                 {
-                    inventoryNameText.text = "Items Right of Self";
+                    inventoryNameText.text = "Items East of Self";
                     weightText.text = GetTotalWeight(eastItems).ToString();
                     volumeText.text = GetTotalVolume(eastItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                 }
@@ -393,7 +393,7 @@ public class ContainerInventoryUI : InventoryUI
                     SetupContainerUI(northwestInventory, northwestSideBarButton.icon, northwestItems);
                 else
                 {
-                    inventoryNameText.text = "Items Above and Left of Self";
+                    inventoryNameText.text = "Items Northwest of Self";
                     weightText.text = GetTotalWeight(northwestItems).ToString();
                     volumeText.text = GetTotalVolume(northwestItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                 }
@@ -404,7 +404,7 @@ public class ContainerInventoryUI : InventoryUI
                     SetupContainerUI(northeastInventory, northeastSideBarButton.icon, northeastItems);
                 else
                 {
-                    inventoryNameText.text = "Items Above and Right of Self";
+                    inventoryNameText.text = "Items Northeast of Self";
                     weightText.text = GetTotalWeight(northeastItems).ToString();
                     volumeText.text = GetTotalVolume(northeastItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                 }
@@ -415,7 +415,7 @@ public class ContainerInventoryUI : InventoryUI
                     SetupContainerUI(southwestInventory, southwestSideBarButton.icon, southwestItems);
                 else
                 {
-                    inventoryNameText.text = "Items Below and Left of Self";
+                    inventoryNameText.text = "Items Southwest of Self";
                     weightText.text = GetTotalWeight(southwestItems).ToString();
                     volumeText.text = GetTotalVolume(southwestItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                 }
@@ -426,7 +426,7 @@ public class ContainerInventoryUI : InventoryUI
                     SetupContainerUI(southeastInventory, southeastSideBarButton.icon, southeastItems);
                 else
                 {
-                    inventoryNameText.text = "Items Below and Right Self";
+                    inventoryNameText.text = "Items Southeast of Self";
                     weightText.text = GetTotalWeight(southeastItems).ToString();
                     volumeText.text = GetTotalVolume(southeastItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                 }
@@ -580,10 +580,11 @@ public class ContainerInventoryUI : InventoryUI
         }
     }
 
-    public override void UpdateUINumbers()
+    public override void UpdateUI()
     {
         if (activeInventory != null)
         {
+            inventoryNameText.text = activeInventory.container.name + " Inventory";
             weightText.text = (Mathf.RoundToInt(activeInventory.currentWeight * 100f) / 100f).ToString() + "/" + activeInventory.maxWeight.ToString();
             volumeText.text = (Mathf.RoundToInt(activeInventory.currentVolume * 100f) / 100f).ToString() + "/" + activeInventory.maxVolume.ToString();
         }
@@ -592,38 +593,47 @@ public class ContainerInventoryUI : InventoryUI
             switch (activeDirection)
             {
                 case Direction.Center:
+                    inventoryNameText.text = "Items Under Self";
                     weightText.text = GetTotalWeight(playerPositionItems).ToString();
                     volumeText.text = GetTotalVolume(playerPositionItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
                 case Direction.North:
+                    inventoryNameText.text = "Items North of Self";
                     weightText.text = GetTotalWeight(northItems).ToString();
                     volumeText.text = GetTotalVolume(northItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
                 case Direction.South:
+                    inventoryNameText.text = "Items South of Self";
                     weightText.text = GetTotalWeight(southItems).ToString();
                     volumeText.text = GetTotalVolume(southItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
                 case Direction.West:
+                    inventoryNameText.text = "Items West of Self";
                     weightText.text = GetTotalWeight(westItems).ToString();
                     volumeText.text = GetTotalVolume(westItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
                 case Direction.East:
+                    inventoryNameText.text = "Items East of Self";
                     weightText.text = GetTotalWeight(eastItems).ToString();
                     volumeText.text = GetTotalVolume(eastItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
                 case Direction.Northwest:
+                    inventoryNameText.text = "Items Northwest of Self";
                     weightText.text = GetTotalWeight(northwestItems).ToString();
                     volumeText.text = GetTotalVolume(northwestItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
                 case Direction.Northeast:
+                    inventoryNameText.text = "Items Northeast of Self";
                     weightText.text = GetTotalWeight(northeastItems).ToString();
                     volumeText.text = GetTotalVolume(northeastItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
                 case Direction.Southwest:
+                    inventoryNameText.text = "Items Southwest of Self";
                     weightText.text = GetTotalWeight(southwestItems).ToString();
                     volumeText.text = GetTotalVolume(southwestItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;
                 case Direction.Southeast:
+                    inventoryNameText.text = "Items Southeast of Self";
                     weightText.text = GetTotalWeight(southeastItems).ToString();
                     volumeText.text = GetTotalVolume(southeastItems).ToString() + "/" + emptyTileMaxVolume.ToString();
                     break;

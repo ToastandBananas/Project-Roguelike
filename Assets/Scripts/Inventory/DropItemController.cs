@@ -35,21 +35,18 @@ public class DropItemController : MonoBehaviour
     public void DropItem(Vector3 dropPosition, ItemData itemData, int amountToDrop, Inventory invComingFrom)
     {
         ItemPickup newItemPickup = null;
+        Direction dropDirection = GetDirectionFromDropPosition(dropPosition);
+
         if (itemData.item.IsBag())
         {
             // If the item we're dropping is a bag, create a new bag pickup
             newItemPickup = gm.objectPoolManager.bagPickupsPool.GetPooledItemPickup();
 
             // Find our drop direction and assign the bag's inventory to our directional inventory
-            Direction direction = GetDirectionFromDropPosition(dropPosition);
-            gm.containerInvUI.AssignDirectionalInventory(direction, newItemPickup.inventory);
+            gm.containerInvUI.AssignDirectionalInventory(dropDirection, newItemPickup.inventory);
 
-            if (gm.containerInvUI.activeDirection == direction)
+            if (gm.containerInvUI.activeDirection == dropDirection)
                 gm.containerInvUI.activeInventory = newItemPickup.inventory;
-
-            // Set the container sidebar icon to our bag icon
-            Bag bag = (Bag)itemData.item;
-            gm.containerInvUI.GetSideBarButtonFromDirection(direction).icon.sprite = bag.sidebarSprite;
         }
         else // Otherwise, if the item is not a bag, create a normal item pickup
             newItemPickup = gm.objectPoolManager.itemPickupsPool.GetPooledItemPickup();
@@ -59,13 +56,19 @@ public class DropItemController : MonoBehaviour
 
         if (itemData.item.IsBag())
         {
+            Inventory bagInv = null;
+            if (itemData.transform.parent.parent != null && itemData.transform.parent.parent.name == "Equipped Items") // If we're dropping this item straight from our equipped items menu
+                bagInv = gm.playerInvUI.GetInventoryFromBagEquipSlot(itemData);
+            else
+                bagInv = itemData.bagInventory;
+
             // If the item we're dropping is a bag, add new ItemData Objects to the items parent of the dropped bag and transfer data to them
-            for (int i = 0; i < itemData.bagInventory.items.Count; i++)
+            for (int i = 0; i < bagInv.items.Count; i++)
             {
                 ItemData newItemDataObject = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData();
                 newItemDataObject.transform.SetParent(newItemPickup.itemData.bagInventory.itemsParent);
                 newItemDataObject.gameObject.SetActive(true);
-                itemData.bagInventory.items[i].TransferData(itemData.bagInventory.items[i], newItemDataObject);
+                bagInv.items[i].TransferData(bagInv.items[i], newItemDataObject);
 
                 // Populate the new bag's inventory, but make sure it's not already in the items list (because of the Inventory's Init method, which populates this list)
                 if (newItemPickup.itemData.bagInventory.items.Contains(newItemDataObject) == false)
@@ -85,23 +88,23 @@ public class DropItemController : MonoBehaviour
                 if (gm.contextMenu.contextActiveInvItem != null && itemData == gm.contextMenu.contextActiveInvItem.itemData) // If the item was dropped using the context menu
                     invComingFrom.SubtractItemsWeightAndVolumeFromInventory(itemData, invComingFrom, 1, true);
                 else if (itemData.CompareTag("Item Pickup") == false)
-                    invComingFrom.SubtractItemsWeightAndVolumeFromInventory(itemData, invComingFrom, 1, false);
-                else
-                    invComingFrom.ResetWeightAndVolume(); // Else if it is a pickup, just set the weight and volume to 0
+                    invComingFrom.SubtractItemsWeightAndVolumeFromInventory(itemData, invComingFrom, 1, true);
 
-                invComingFrom.myInventoryUI.UpdateUINumbers();
+                bagInv.ResetWeightAndVolume(); // Reset the bag's inventory
+
+                invComingFrom.myInventoryUI.UpdateUI();
             }
             else // If the bag is coming from the ground
                 gm.containerInvUI.RemoveBagFromGround();
 
-            for (int i = 0; i < itemData.bagInventory.items.Count; i++)
+            for (int i = 0; i < bagInv.items.Count; i++)
             {
                 // Return the item we took out of the "old" bag back to it's object pool
-                itemData.bagInventory.items[i].ReturnToItemDataObjectPool();
+                bagInv.items[i].ReturnToItemDataObjectPool();
             }
 
             // Clear out the items list of the "old" bag
-            itemData.bagInventory.items.Clear();
+            bagInv.items.Clear();
         }
 
         // If the drop position is our active direction
@@ -115,7 +118,7 @@ public class DropItemController : MonoBehaviour
 
             // Add the item to our active direction's items list and update the container UI numbers
             gm.containerInvUI.AddItemToActiveDirectionList(newItemPickup.itemData);
-            gm.containerInvUI.UpdateUINumbers();
+            gm.containerInvUI.UpdateUI();
         }
         else if (dropPosition == gm.playerManager.transform.position) // If the drop position is the player's position
         {
@@ -131,19 +134,23 @@ public class DropItemController : MonoBehaviour
 
             // If our active direction is the centered, update the container UI numbers
             if (gm.containerInvUI.activeDirection == Direction.Center)
-                gm.containerInvUI.UpdateUINumbers();
+                gm.containerInvUI.UpdateUI();
         }
         else // If the drop position is not our active direction or the player's position
         {
-            // Figure out which direction our drop position is from the player
-            Direction direction = GetDirectionFromDropPosition(dropPosition);
-
             // Play the add item effect
-            StartCoroutine(gm.containerInvUI.PlayAddItemEffect(itemData.item.pickupSprite, gm.containerInvUI.GetSideBarButtonFromDirection(direction), null));
+            StartCoroutine(gm.containerInvUI.PlayAddItemEffect(itemData.item.pickupSprite, gm.containerInvUI.GetSideBarButtonFromDirection(dropDirection), null));
 
             // Add the item to the appropriate directional list
-            List<ItemData> itemsList = gm.containerInvUI.GetItemsListFromDirection(direction);
+            List<ItemData> itemsList = gm.containerInvUI.GetItemsListFromDirection(dropDirection);
             itemsList.Add(newItemPickup.itemData);
+        }
+
+        // If the item we're dropping is a bag, set the container sidebar icon to our bag icon
+        if (itemData.item.IsBag())
+        {
+            Bag bag = (Bag)itemData.item;
+            gm.containerInvUI.GetSideBarButtonFromDirection(dropDirection).icon.sprite = bag.sidebarSprite;
         }
     }
 

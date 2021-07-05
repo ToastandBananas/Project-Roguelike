@@ -23,6 +23,8 @@ public class UIManager : MonoBehaviour
     float dragTimer;
     int activeInvItemCount;
 
+    LayerMask dropBagObstacleMask;
+
     #region Singleton
     public static UIManager instance;
     void Awake()
@@ -43,199 +45,204 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         gm = GameManager.instance;
+
+        dropBagObstacleMask = LayerMask.GetMask("Interactable", "Interactable Objects", "Objects", "Walls");
     }
 
     void Update()
     {
-        // Skip these button presses if we're currently dragging items
-        if (invItemsDragging.Count == 0)
+        if (gm.playerManager.playerMovement.isMoving == false)
         {
-            // Toggle the Player's Inventory
-            if (GameControls.gamePlayActions.playerInventory.WasPressed)
+            // Skip these button presses if we're currently dragging items
+            if (invItemsDragging.Count == 0)
             {
-                ClearSelectedItems(false);
-                ToggleInventory();
-            }
-
-            // Disable Inventory menus if they are open and tab is pressed
-            if (GameControls.gamePlayActions.tab.WasPressed)
-            {
-                ClearSelectedItems(false);
-                DisableInventoryMenus();
-            }
-
-            // Take everything from an open container or the ground
-            if (GameControls.gamePlayActions.menuContainerTakeAll.WasPressed && gm.containerInvUI.inventoryParent.activeSelf)
-            {
-                ClearSelectedItems(false);
-                gm.containerInvUI.TakeAll();
-            }
-
-            // Build the context menu
-            if (GameControls.gamePlayActions.menuContext.WasPressed)
-            {
-                ClearSelectedItems(false);
-                dragTimer = 0;
-
-                if (activeInvItem != null)
-                    SelectActiveItem();
-
-                if (gm.contextMenu.isActive == false && activeInvItem != null && activeInvItem.itemData != null)
-                    gm.contextMenu.BuildContextMenu(activeInvItem);
-                else if (gm.contextMenu.isActive)
-                    gm.contextMenu.DisableContextMenu();
-
-                if (gm.stackSizeSelector.isActive)
-                    gm.stackSizeSelector.HideStackSizeSelector();
-            }
-
-            // Split stack
-            if (GameControls.gamePlayActions.menuSelect.WasPressed && GameControls.gamePlayActions.leftAlt.IsPressed)
-            {
-                ClearSelectedItems(false);
-                dragTimer = 0;
-
-                if (activeInvItem != null && activeInvItem.itemData != null && activeInvItem.itemData.currentStackSize > 1 && activeInvItem != gm.stackSizeSelector.selectedInvItem)
+                // Toggle the Player's Inventory
+                if (GameControls.gamePlayActions.playerInventory.WasPressed)
                 {
-                    // Show the Stack Size Selector
-                    gm.stackSizeSelector.ShowStackSizeSelector(activeInvItem);
+                    ClearSelectedItems(false);
+                    ToggleInventory();
                 }
-                else if (gm.stackSizeSelector.isActive && (activeInvItem == null || activeInvItem.itemData == null || activeInvItem.itemData.currentStackSize == 1))
+
+                // Disable Inventory menus if they are open and tab is pressed
+                if (GameControls.gamePlayActions.tab.WasPressed)
                 {
-                    // Hide the Stack Size Selector
-                    gm.stackSizeSelector.HideStackSizeSelector();
+                    ClearSelectedItems(false);
+                    DisableInventoryMenus();
                 }
-            }
 
-            // Use Item
-            if (GameControls.gamePlayActions.menuUseItem.WasPressed)
-            {
-                ClearSelectedItems(false);
-
-                if (activeInvItem != null)
-                    activeInvItem.UseItem();
-
-                DisableInventoryUIComponents();
-            }
-
-            // Select all
-            if (GameControls.gamePlayActions.leftCtrl.IsPressed && GameControls.gamePlayActions.a.WasPressed)
-                SelectAll();
-
-            // Clear selected items if we only left click on an item that's not already selected
-            if (GameControls.gamePlayActions.menuSelect.WasPressed && GameControls.gamePlayActions.leftCtrl.IsPressed == false && GameControls.gamePlayActions.leftShift.IsPressed == false
-                && selectedItems.Contains(activeInvItem) == false)
-            {
-                ClearSelectedItems(false);
-            }
-        }
-
-        // Transfer or drop item
-        if (GameControls.gamePlayActions.menuSelect.WasReleased)
-        {
-            if ((GameControls.gamePlayActions.leftCtrl.IsPressed == false && GameControls.gamePlayActions.leftShift.IsPressed == false && GameControls.gamePlayActions.leftAlt.IsPressed == false) 
-                || activeGhostInvItems.Count > 0)
-            {
-                // Transfer Item
-                if (dragTimer < minDragTime && activeInvItem != null)
+                // Take everything from an open container or the ground
+                if (GameControls.gamePlayActions.menuContainerTakeAll.WasPressed && gm.containerInvUI.inventoryParent.activeSelf)
                 {
-                    // Don't transfer unless the context menu is closed, to prevent misclicks
-                    if (gm.contextMenu.isActive == false)
-                        activeInvItem.TransferItem();
-                    else
+                    ClearSelectedItems(false);
+                    gm.containerInvUI.TakeAll();
+                }
+
+                // Build the context menu
+                if (GameControls.gamePlayActions.menuContext.WasPressed)
+                {
+                    ClearSelectedItems(false);
+                    dragTimer = 0;
+
+                    if (activeInvItem != null)
+                        SelectActiveItem();
+
+                    if (gm.contextMenu.isActive == false && activeInvItem != null && activeInvItem.itemData != null)
+                        gm.contextMenu.BuildContextMenu(activeInvItem);
+                    else if (gm.contextMenu.isActive)
                         gm.contextMenu.DisableContextMenu();
 
                     if (gm.stackSizeSelector.isActive)
                         gm.stackSizeSelector.HideStackSizeSelector();
                 }
-                else if (invItemsDragging.Count > 0)
-                {
-                    for (int i = 0; i < invItemsDragging.Count; i++)
-                    {
-                        DragAndDrop_DropItem(invItemsDragging[i]);
-                    }
 
-                    // Reset and hide the ghostInvItem
-                    for (int i = 0; i < activeGhostInvItems.Count; i++)
+                // Split stack
+                if (GameControls.gamePlayActions.menuSelect.WasPressed && GameControls.gamePlayActions.leftAlt.IsPressed)
+                {
+                    ClearSelectedItems(false);
+                    dragTimer = 0;
+
+                    if (activeInvItem != null && activeInvItem.itemData != null && activeInvItem.itemData.currentStackSize > 1 && activeInvItem != gm.stackSizeSelector.selectedInvItem)
                     {
-                        activeGhostInvItems[i].ResetInvItem();
-                        activeGhostInvItems[i].gameObject.SetActive(false);
-                        gm.objectPoolManager.ghostImageInventoryItemObjectPool.activePooledInventoryItems.Remove(activeGhostInvItems[i]);
+                        // Show the Stack Size Selector
+                        gm.stackSizeSelector.ShowStackSizeSelector(activeInvItem);
+                    }
+                    else if (gm.stackSizeSelector.isActive && (activeInvItem == null || activeInvItem.itemData == null || activeInvItem.itemData.currentStackSize == 1))
+                    {
+                        // Hide the Stack Size Selector
+                        gm.stackSizeSelector.HideStackSizeSelector();
                     }
                 }
 
-                // Remove highlighting for any selected items
-                for (int i = 0; i < selectedItems.Count; i++)
+                // Use Item
+                if (GameControls.gamePlayActions.menuUseItem.WasPressed)
                 {
-                    selectedItems[i].RemoveHighlight();
+                    ClearSelectedItems(false);
+
+                    if (activeInvItem != null)
+                        activeInvItem.UseItem();
+
+                    DisableInventoryUIComponents();
                 }
 
-                // Reset these variables and clear out our lists:
-                invItemsDragging.Clear();
-                selectedItems.Clear();
-                activeGhostInvItems.Clear();
-                firstSelectedItem = null;
-                activeInvItem = null;
-                dragTimer = 0;
-                activeInvItemCount = 0;
-            }
-            else if (activeInvItem != null)
-            {
-                if (GameControls.gamePlayActions.leftShift.IsPressed) // If left clicking while holding down left shift
-                    ShiftSelect();
-                else if (activeInvItem != null && GameControls.gamePlayActions.leftCtrl.IsPressed) // If left clicking while holding down left ctrl
+                // Select all
+                if (GameControls.gamePlayActions.leftCtrl.IsPressed && GameControls.gamePlayActions.a.WasPressed)
+                    SelectAll();
+
+                // Clear selected items if we only left click on an item that's not already selected
+                if (GameControls.gamePlayActions.menuSelect.WasPressed && GameControls.gamePlayActions.leftCtrl.IsPressed == false && GameControls.gamePlayActions.leftShift.IsPressed == false
+                    && selectedItems.Contains(activeInvItem) == false)
                 {
-                    if (selectedItems.Contains(activeInvItem) == false)
-                        SelectActiveItem();
-                    else
-                        DeselectActiveItem();
+                    ClearSelectedItems(false);
                 }
             }
 
-            dragTimer = 0;
-        }
-
-        // Drag Item
-        if (GameControls.gamePlayActions.menuSelect.IsPressed 
-            && ((GameControls.gamePlayActions.leftCtrl.IsPressed == false && GameControls.gamePlayActions.leftShift.IsPressed == false && activeInvItem != null) || activeGhostInvItems.Count > 0))
-        {
-            // Add to the drag timer each frame
-            dragTimer += Time.deltaTime;
-
-            // Once the timer is above the minDragTime, start dragging
-            if (dragTimer >= minDragTime)
+            // Transfer or drop item
+            if (GameControls.gamePlayActions.menuSelect.WasReleased)
             {
-                // Setup the image for the item we're dragging
-                if (activeGhostInvItems.Count == 0)
+                if ((GameControls.gamePlayActions.leftCtrl.IsPressed == false && GameControls.gamePlayActions.leftShift.IsPressed == false && GameControls.gamePlayActions.leftAlt.IsPressed == false)
+                    || activeGhostInvItems.Count > 0)
                 {
-                    if (invItemsDragging.Contains(activeInvItem))
+                    // Transfer Item
+                    if (dragTimer < minDragTime && activeInvItem != null)
+                    {
+                        // Don't transfer unless the context menu is closed, to prevent misclicks
+                        if (gm.contextMenu.isActive == false)
+                            activeInvItem.TransferItem();
+                        else
+                            gm.contextMenu.DisableContextMenu();
+
+                        if (gm.stackSizeSelector.isActive)
+                            gm.stackSizeSelector.HideStackSizeSelector();
+                    }
+                    else if (invItemsDragging.Count > 0)
                     {
                         for (int i = 0; i < invItemsDragging.Count; i++)
                         {
-                            CreateNewGhostItem(invItemsDragging[i]);
+                            DragAndDrop_DropItem(invItemsDragging[i]);
+                        }
+
+                        // Reset and hide the ghostInvItem
+                        for (int i = 0; i < activeGhostInvItems.Count; i++)
+                        {
+                            activeGhostInvItems[i].ResetInvItem();
+                            activeGhostInvItems[i].gameObject.SetActive(false);
+                            gm.objectPoolManager.ghostImageInventoryItemObjectPool.activePooledInventoryItems.Remove(activeGhostInvItems[i]);
                         }
                     }
-                }
 
-                // Have the item we're dragging follow the mouse cursor
-                if (activeGhostInvItems.Count > 0)
-                    activeGhostInvItems[0].transform.parent.position = Input.mousePosition;
-
-                if (selectedItems.Count > 0)
-                {
+                    // Remove highlighting for any selected items
                     for (int i = 0; i < selectedItems.Count; i++)
                     {
-                        DragAndDrop_DragItem(selectedItems[i]);
+                        selectedItems[i].RemoveHighlight();
+                    }
+
+                    // Reset these variables and clear out our lists:
+                    invItemsDragging.Clear();
+                    selectedItems.Clear();
+                    activeGhostInvItems.Clear();
+                    firstSelectedItem = null;
+                    activeInvItem = null;
+                    dragTimer = 0;
+                    activeInvItemCount = 0;
+                }
+                else if (activeInvItem != null)
+                {
+                    if (GameControls.gamePlayActions.leftShift.IsPressed) // If left clicking while holding down left shift
+                        ShiftSelect();
+                    else if (activeInvItem != null && GameControls.gamePlayActions.leftCtrl.IsPressed) // If left clicking while holding down left ctrl
+                    {
+                        if (selectedItems.Contains(activeInvItem) == false)
+                            SelectActiveItem();
+                        else
+                            DeselectActiveItem();
                     }
                 }
-                else
-                    DragAndDrop_DragItem(activeInvItem);
+
+                dragTimer = 0;
             }
+
+            // Drag Item
+            if (GameControls.gamePlayActions.menuSelect.IsPressed
+                && ((GameControls.gamePlayActions.leftCtrl.IsPressed == false && GameControls.gamePlayActions.leftShift.IsPressed == false && activeInvItem != null) || activeGhostInvItems.Count > 0))
+            {
+                // Add to the drag timer each frame
+                dragTimer += Time.deltaTime;
+
+                // Once the timer is above the minDragTime, start dragging
+                if (dragTimer >= minDragTime)
+                {
+                    // Setup the image for the item we're dragging
+                    if (activeGhostInvItems.Count == 0)
+                    {
+                        if (invItemsDragging.Contains(activeInvItem))
+                        {
+                            for (int i = 0; i < invItemsDragging.Count; i++)
+                            {
+                                CreateNewGhostItem(invItemsDragging[i]);
+                            }
+                        }
+                    }
+
+                    // Have the item we're dragging follow the mouse cursor
+                    if (activeGhostInvItems.Count > 0)
+                        activeGhostInvItems[0].transform.parent.position = Input.mousePosition;
+
+                    if (selectedItems.Count > 0)
+                    {
+                        for (int i = 0; i < selectedItems.Count; i++)
+                        {
+                            DragAndDrop_DragItem(selectedItems[i]);
+                        }
+                    }
+                    else
+                        DragAndDrop_DragItem(activeInvItem);
+                }
+            }
+
+            // Disable the context menu if we left click
+            if (GameControls.gamePlayActions.menuSelect.WasPressed && gm.contextMenu.isActive && activeContextMenuButton == null)
+                StartCoroutine(gm.contextMenu.DelayDisableContextMenu());
         }
-        
-        // Disable the context menu if we left click
-        if (GameControls.gamePlayActions.menuSelect.WasPressed && gm.contextMenu.isActive && activeContextMenuButton == null)
-            StartCoroutine(gm.contextMenu.DelayDisableContextMenu());
     }
 
     void CreateNewGhostItem(InventoryItem originalItem)
@@ -511,7 +518,7 @@ public class UIManager : MonoBehaviour
 
                     // If the active container sidebar button's items are active in the menu
                     if (gm.containerInvUI.activeDirection == activeContainerSideBarButton.directionFromPlayer)
-                        gm.containerInvUI.UpdateUINumbers();
+                        gm.containerInvUI.UpdateUI();
                 }
             }
             else // If putting on the ground
@@ -519,7 +526,7 @@ public class UIManager : MonoBehaviour
                 List<ItemData> itemsListAddingTo = gm.containerInvUI.GetItemsListFromDirection(activeContainerSideBarButton.directionFromPlayer);
                 Vector3 dropPos = gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromDirection(activeContainerSideBarButton.directionFromPlayer);
 
-                if (draggedInvItem.IsRoomOnGround(draggedInvItem.itemData, itemsListAddingTo, dropPos))
+                if (IsRoomOnGround(draggedInvItem.itemData, itemsListAddingTo, dropPos))
                 {
                     // Drop the item
                     gm.dropItemController.DropItem(dropPos, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory);
@@ -533,7 +540,7 @@ public class UIManager : MonoBehaviour
 
                     // If the active container sidebar button's items are active in the menu, update the UI
                     if (gm.containerInvUI.activeDirection == activeContainerSideBarButton.directionFromPlayer)
-                        gm.containerInvUI.UpdateUINumbers();
+                        gm.containerInvUI.UpdateUI();
                 }
             }
         }
@@ -560,7 +567,7 @@ public class UIManager : MonoBehaviour
 
                 // If the active player inv sidebar button's items are active in the menu, update the UI
                 if (gm.playerInvUI.activeInventory == inv)
-                    gm.playerInvUI.UpdateUINumbers();
+                    gm.playerInvUI.UpdateUI();
             }
         }
         // If we try to drop it directly on the background of the container or player inventory menu
@@ -586,7 +593,7 @@ public class UIManager : MonoBehaviour
                 Vector3 dropPos = gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromActiveDirection();
 
                 // Drop the item if there's room on the ground
-                if (draggedInvItem.IsRoomOnGround(draggedInvItem.itemData, itemsListAddingTo, dropPos))
+                if (IsRoomOnGround(draggedInvItem.itemData, itemsListAddingTo, dropPos))
                 {
                     gm.dropItemController.DropItem(dropPos, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory);
 
@@ -594,7 +601,7 @@ public class UIManager : MonoBehaviour
                     RemoveDraggedItem(draggedInvItem, startingItemCount);
 
                     // Update the UI that we dragged the item onto
-                    activeInvUI.UpdateUINumbers();
+                    activeInvUI.UpdateUI();
                 }
             }
 
@@ -610,14 +617,14 @@ public class UIManager : MonoBehaviour
                 RemoveDraggedItem(draggedInvItem, startingItemCount);
 
                 // Update the UI that we dragged the item onto
-                activeInvUI.UpdateUINumbers();
+                activeInvUI.UpdateUI();
             }
         }
         // If we're dropping the item onto open space (not on a menu or sidebar button) and the item is not already on the ground
         else if (activeInvUI == null && (draggedInvItem.myInvUI == gm.playerInvUI || draggedInvItem.myInventory != null) && activePlayerInvSideBarButton == null && activeContainerSideBarButton == null)
         {
             Vector3 dropPos = gm.playerManager.transform.position;
-            if (draggedInvItem.IsRoomOnGround(draggedInvItem.itemData, gm.containerInvUI.playerPositionItems, dropPos))
+            if (IsRoomOnGround(draggedInvItem.itemData, gm.containerInvUI.playerPositionItems, dropPos))
             {
                 // Drop the item
                 gm.dropItemController.DropItem(dropPos, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory);
@@ -626,7 +633,7 @@ public class UIManager : MonoBehaviour
                 RemoveDraggedItem(draggedInvItem, startingItemCount);
 
                 // Update the UI that we dragged the item onto
-                draggedInvItem.myInvUI.UpdateUINumbers();
+                draggedInvItem.myInvUI.UpdateUI();
             }
         }
 
@@ -644,7 +651,7 @@ public class UIManager : MonoBehaviour
         {
             // If we're taking the item from the player's equipment menu, unequip the item
             draggedInvItem.itemData.currentStackSize = startingItemCount;
-            draggedInvItem.myEquipmentManager.Unequip(draggedInvItem.myEquipmentManager.GetEquipmentSlotFromItemData(draggedInvItem.itemData), false);
+            draggedInvItem.myEquipmentManager.Unequip(draggedInvItem.myEquipmentManager.GetEquipmentSlotFromItemData(draggedInvItem.itemData), false, false);
         }
         else // If the item was on the ground, simply clear out the InventoryItem we were dragging
             draggedInvItem.ClearItem();
@@ -691,5 +698,21 @@ public class UIManager : MonoBehaviour
             gm.stackSizeSelector.HideStackSizeSelector();
 
         // gm.tooltipManager.HideAllTooltips();
+    }
+
+    public bool IsRoomOnGround(ItemData itemDataComingFrom, List<ItemData> itemsListAddingTo, Vector2 groundPosition)
+    {
+        if (itemDataComingFrom.item.IsBag())
+        {
+            RaycastHit2D[] hits = Physics2D.RaycastAll(groundPosition, Vector2.zero, 1f, dropBagObstacleMask);
+            if (hits.Length == 0 && gm.containerInvUI.emptyTileMaxVolume - gm.containerInvUI.GetTotalVolume(itemsListAddingTo) - itemDataComingFrom.bagInventory.currentVolume - itemDataComingFrom.item.volume >= 0)
+                return true;
+        }
+        else if (gm.containerInvUI.emptyTileMaxVolume - gm.containerInvUI.GetTotalVolume(itemsListAddingTo) - itemDataComingFrom.item.volume >= 0 
+            && (groundPosition != (Vector2)gm.playerManager.transform.position || gm.containerInvUI.playerPositionInventory == null))
+            return true;
+
+        Debug.Log("There's not enough room on the ground to place the " + itemDataComingFrom.itemName);
+        return false;
     }
 }

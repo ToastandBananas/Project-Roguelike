@@ -23,13 +23,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
     [HideInInspector] public bool isHidden, isGhostItem;
 
-    LayerMask dropBagObstacleMask;
-
     public void Init()
     {
         gm = GameManager.instance;
-
-        dropBagObstacleMask = LayerMask.GetMask("Interactable", "Interactable Objects", "Objects", "Walls", "Character");
     }
 
     public void OnPointerMove(PointerEventData eventData)
@@ -92,7 +88,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         }
 
         ResetInvItem();
-        gm.containerInvUI.UpdateUINumbers();
+        gm.containerInvUI.UpdateUI();
         gameObject.SetActive(false);
     }
 
@@ -120,8 +116,24 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
     public void UpdateItemNumberTexts()
     {
         itemAmountText.text = itemData.currentStackSize.ToString();
-        itemWeightText.text = (Mathf.RoundToInt(itemData.item.weight * itemData.currentStackSize * 100f) / 100f).ToString();
-        itemVolumeText.text = (Mathf.RoundToInt(itemData.item.volume * itemData.currentStackSize * 100f) / 100f).ToString();
+
+        float totalWeight = Mathf.RoundToInt(itemData.item.weight * itemData.currentStackSize * 100f) / 100f;
+        float totalVolume = Mathf.RoundToInt(itemData.item.volume * itemData.currentStackSize * 100f) / 100f;
+
+        if (itemData.item.IsBag() || itemData.item.itemType == ItemType.PortableContainer)
+        {
+            for (int i = 0; i < itemData.bagInventory.items.Count; i++)
+            {
+                if (itemData.bagInventory.items[i].item != null)
+                {
+                    totalWeight += Mathf.RoundToInt(itemData.bagInventory.items[i].item.weight * itemData.bagInventory.items[i].currentStackSize * 100f) / 100f;
+                    totalVolume += Mathf.RoundToInt(itemData.bagInventory.items[i].item.volume * itemData.bagInventory.items[i].currentStackSize * 100f) / 100f;
+                }
+            }
+        }
+
+        itemWeightText.text = totalWeight.ToString();
+        itemVolumeText.text = totalVolume.ToString();
     }
 
     public void Highlight()
@@ -172,7 +184,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             else // Otherwise, add the item to the first available bag, or the personal inventory if there's no bag or no room in any of the bags
                 AddItemToOtherBags(itemData);
 
-            gm.playerInvUI.UpdateUINumbers();
+            gm.playerInvUI.UpdateUI();
         }
         else // If we're taking this item from the player's inventory
         {
@@ -185,7 +197,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                     if (myEquipmentManager != null)
                     {
                         EquipmentSlot equipmentSlot = myEquipmentManager.GetEquipmentSlotFromItemData(itemData);
-                        myEquipmentManager.Unequip(equipmentSlot, false);
+                        myEquipmentManager.Unequip(equipmentSlot, false, false);
                     }
                     else
                         ClearItem();
@@ -204,7 +216,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 {
                     AddToExistingStacksOnGround(itemData, itemData.currentStackSize, gm.playerInvUI.activeInventory);
                     UpdateItemNumberTexts();
-                    gm.containerInvUI.UpdateUINumbers();
+                    gm.containerInvUI.UpdateUI();
 
                     if (itemData.currentStackSize < startingStackSize)
                         myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemData.item.pickupSprite, gm.containerInvUI.activeContainerSideBarButton, null));
@@ -215,7 +227,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                     List<ItemData> itemsListAddingTo = gm.containerInvUI.GetItemsListFromActiveDirection();
                     Vector3 dropPos = gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromActiveDirection();
 
-                    if (IsRoomOnGround(itemData, itemsListAddingTo, dropPos))
+                    if (gm.uiManager.IsRoomOnGround(itemData, itemsListAddingTo, dropPos))
                     {
                         gm.dropItemController.DropItem(dropPos, itemData, itemData.currentStackSize, gm.playerInvUI.activeInventory);
 
@@ -229,19 +241,17 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                         if (myEquipmentManager != null)
                         {
                             EquipmentSlot equipmentSlot = myEquipmentManager.GetEquipmentSlotFromItemData(itemData);
-                            myEquipmentManager.Unequip(equipmentSlot, false);
+                            myEquipmentManager.Unequip(equipmentSlot, false, false);
                         }
                         else
                             ClearItem();
                     }
-                    else
-                        Debug.Log("Not enough room on ground to drop item...");
                 }
                 else
                     ClearItem();
             }
 
-            gm.playerInvUI.UpdateUINumbers();
+            gm.playerInvUI.UpdateUI();
         }
     }
 
@@ -249,6 +259,8 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
     {
         // Cache the item in case the itemData gets cleared out before we can do the add item effect
         Item itemAdding = itemToAdd.item;
+        Inventory bagInv = null;
+        if (itemAdding.IsBag()) bagInv = itemToAdd.bagInventory;
 
         // Try adding to the active inventory first
         if (gm.playerInvUI.activeInventory != null && itemToAdd.item.maxStackSize > 1)
@@ -259,7 +271,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.activePlayerInvSideBarButton));
 
                 // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
-                if (itemData.item.IsBag() && gm.containerInvUI.activeInventory == itemData.bagInventory)
+                if (itemAdding.IsBag() && gm.containerInvUI.activeInventory == bagInv)
                     gm.containerInvUI.RemoveBagFromGround();
             }
         }
@@ -273,7 +285,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.quiverSidebarButton));
 
                 // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
-                if (itemData.item.IsBag() && gm.containerInvUI.activeInventory == itemData.bagInventory)
+                if (itemAdding.IsBag() && gm.containerInvUI.activeInventory == bagInv)
                     gm.containerInvUI.RemoveBagFromGround();
             }
         }
@@ -287,7 +299,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.backpackSidebarButton));
 
                 // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
-                if (itemData.item.IsBag() && gm.containerInvUI.activeInventory == itemData.bagInventory)
+                if (itemAdding.IsBag() && gm.containerInvUI.activeInventory == bagInv)
                     gm.containerInvUI.RemoveBagFromGround();
             }
         }
@@ -300,7 +312,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.leftHipPouchSidebarButton));
 
                 // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
-                if (itemData.item.IsBag() && gm.containerInvUI.activeInventory == itemData.bagInventory)
+                if (itemAdding.IsBag() && gm.containerInvUI.activeInventory == bagInv)
                     gm.containerInvUI.RemoveBagFromGround();
             }
         }
@@ -313,7 +325,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.rightHipPouchSidebarButton));
 
                 // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
-                if (itemData.item.IsBag() && gm.containerInvUI.activeInventory == itemData.bagInventory)
+                if (itemAdding.IsBag() && gm.containerInvUI.activeInventory == bagInv)
                     gm.containerInvUI.RemoveBagFromGround();
             }
         }
@@ -327,7 +339,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.personalInventorySideBarButton));
 
                 // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
-                if (itemData.item.IsBag() && gm.containerInvUI.activeInventory == itemData.bagInventory)
+                if (itemAdding.IsBag() && gm.containerInvUI.activeInventory == bagInv)
                     gm.containerInvUI.RemoveBagFromGround();
             }
         }
@@ -352,7 +364,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             }
             else // If there's no longer any room, break out of the loop & update the UI numbers
             {
-                gm.containerInvUI.UpdateUINumbers();
+                gm.containerInvUI.UpdateUI();
                 return someAdded;
             }
         }
@@ -374,7 +386,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 {
                     if (itemsListAddingTo[i].currentStackSize < itemsListAddingTo[i].item.maxStackSize)
                     {
-                        if (IsRoomOnGround(itemDataComingFrom, itemsListAddingTo, dropPos))
+                        if (gm.uiManager.IsRoomOnGround(itemDataComingFrom, itemsListAddingTo, dropPos))
                         {
                             itemsListAddingTo[i].currentStackSize++;
                             itemDataComingFrom.currentStackSize--;
@@ -392,10 +404,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                                 return;
                         }
                         else
-                        {
-                            Debug.Log("Not enough room on ground to drop item...");
                             return;
-                        }
                     }
                     else
                         break;
@@ -436,19 +445,5 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             disclosureWidget.enabled = true;
             disclosureWidget.sprite = rightArrowSprite;
         }
-    }
-
-    public bool IsRoomOnGround(ItemData itemDataComingFrom, List<ItemData> itemsListAddingTo, Vector2 groundPosition)
-    {
-        if (itemDataComingFrom.item.IsBag())
-        {
-            RaycastHit2D[] hits = Physics2D.RaycastAll(groundPosition, Vector2.zero, 1f, dropBagObstacleMask);
-            if (hits.Length == 0 && gm.containerInvUI.emptyTileMaxVolume - gm.containerInvUI.GetTotalVolume(itemsListAddingTo) - itemDataComingFrom.item.volume >= 0)
-                return true;
-        }
-        else if (gm.containerInvUI.emptyTileMaxVolume - gm.containerInvUI.GetTotalVolume(itemsListAddingTo) - itemDataComingFrom.item.volume >= 0)
-            return true;
-
-        return false;
     }
 }

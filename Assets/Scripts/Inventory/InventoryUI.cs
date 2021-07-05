@@ -1,7 +1,7 @@
-using UnityEngine;
-using TMPro;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -55,7 +55,7 @@ public class InventoryUI : MonoBehaviour
         return invItem;
     }
 
-    public virtual void UpdateUINumbers()
+    public virtual void UpdateUI()
     {
         // This is just meant to be overridden
     }

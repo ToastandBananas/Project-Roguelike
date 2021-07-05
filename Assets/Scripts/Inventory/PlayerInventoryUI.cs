@@ -162,6 +162,20 @@ public class PlayerInventoryUI : InventoryUI
         totalVolumeText.text = GetTotalCarriedVolume().ToString();
     }
 
+    public PlayerInventorySidebarButton GetPlayerInvSidebarButtonFromActiveInv()
+    {
+        if (activeInventory == personalInventory)
+            return personalInventorySideBarButton;
+        else if (activeInventory == backpackInventory)
+            return backpackSidebarButton;
+        else if (activeInventory == leftHipPouchInventory)
+            return leftHipPouchSidebarButton;
+        else if (activeInventory == rightHipPouchInventory)
+            return rightHipPouchSidebarButton;
+        else
+            return null;
+    }
+
     void AssignInventoryOrEquipmentManagerToInventoryItem(InventoryItem invItem, PlayerInventoryType playerInvType)
     {
         switch (playerInvType)
@@ -237,9 +251,59 @@ public class PlayerInventoryUI : InventoryUI
             default:
                 break;
         }
+        
+        Inventory bagInv = GetInventoryFromBagEquipSlot(bagItemData);
+        bagInv.maxWeight = bag.maxWeight;
+        bagInv.maxVolume = bag.maxVolume;
     }
 
-    public override void UpdateUINumbers()
+    public void UnequipBag(Bag bag, Inventory bagInv)
+    {
+        switch (bag.equipmentSlot)
+        {
+            case EquipmentSlot.Quiver:
+                quiverSidebarButton.HideSideBarButton();
+                break;
+            case EquipmentSlot.Backpack:
+                backpackSidebarButton.HideSideBarButton();
+                break;
+            case EquipmentSlot.LeftHipPouch:
+                leftHipPouchSidebarButton.HideSideBarButton();
+                break;
+            case EquipmentSlot.RightHipPouch:
+                rightHipPouchSidebarButton.HideSideBarButton();
+                break;
+            default:
+                break;
+        }
+        
+        bagInv.ResetWeightAndVolume();
+        bagInv.items.Clear();
+    }
+
+    public void TemporarilyDisableBag(ItemData bagItemData)
+    {
+        Bag bag = (Bag)bagItemData.item;
+        switch (bag.equipmentSlot)
+        {
+            case EquipmentSlot.Quiver:
+                quiverEquipped = false;
+                break;
+            case EquipmentSlot.Backpack:
+                backpackEquipped = false;
+                break;
+            case EquipmentSlot.LeftHipPouch:
+                leftHipPouchEquipped = false;
+                break;
+            case EquipmentSlot.RightHipPouch:
+                rightHipPouchEquipped = false;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public override void UpdateUI()
     {
         if (activeInventory != null)
         {
@@ -312,6 +376,15 @@ public class PlayerInventoryUI : InventoryUI
         totalVolume += gm.playerManager.equipmentManager.currentVolume;
 
         return Mathf.RoundToInt(totalVolume * 100f) / 100f;
+    }
+
+    public bool ItemIsInABag(ItemData itemData)
+    {
+        if ((backpackEquipped && backpackInventory.items.Contains(itemData)) || (leftHipPouchEquipped && leftHipPouchInventory.items.Contains(itemData))
+            || (rightHipPouchEquipped && rightHipPouchInventory.items.Contains(itemData)) || (quiverEquipped && quiverInventory.items.Contains(itemData)))
+            return true;
+
+        return false;
     }
 
     void InitInventories()
