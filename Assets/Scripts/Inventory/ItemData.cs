@@ -384,6 +384,7 @@ public class ItemData : MonoBehaviour
             gm.objectPoolManager.itemDataContainerObjectPool.pooledItemDatas.Add(this);
         }
 
+        bagInventory.items.Clear();
         ClearData();
         gameObject.SetActive(false);
     }

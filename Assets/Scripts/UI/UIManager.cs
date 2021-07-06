@@ -7,7 +7,7 @@ public class UIManager : MonoBehaviour
 {
     [HideInInspector] public ContainerSideBarButton activeContainerSideBarButton;
     [HideInInspector] public PlayerInventorySidebarButton activePlayerInvSideBarButton;
-    [HideInInspector] public InventoryItem activeInvItem;
+    [HideInInspector] public InventoryItem activeInvItem, lastActiveItem;
     [HideInInspector] public InventoryUI activeInvUI;
     [HideInInspector] public ContextMenuButton activeContextMenuButton;
 
@@ -143,7 +143,7 @@ public class UIManager : MonoBehaviour
                     || activeGhostInvItems.Count > 0)
                 {
                     // Transfer Item
-                    if (dragTimer < minDragTime && activeInvItem != null)
+                    if (dragTimer < minDragTime && activeInvItem != null && (activeInvItem.disclosureWidget == null || activeInvItem.disclosureWidget.isSelected == false))
                     {
                         // Don't transfer unless the context menu is closed, to prevent misclicks
                         if (gm.contextMenu.isActive == false)
@@ -416,73 +416,114 @@ public class UIManager : MonoBehaviour
         }
 
         // Calculate the activeInvItemCount if we haven't done so already
-        if (activeInvItemCount == 0)
-        {
-            for (int i = 0; i < draggedInvItem.transform.parent.childCount; i++)
-            {
-                if (draggedInvItem.transform.parent.GetChild(i).gameObject.activeSelf)
-                    activeInvItemCount++;
-            }
-        }
+        if (draggedInvItem.myInvUI == gm.containerInvUI)
+            activeInvItemCount = gm.containerInvUI.inventoryItemObjectPool.activePooledInventoryItems.Count;
+        else
+            activeInvItemCount = gm.playerInvUI.inventoryItemObjectPool.activePooledInventoryItems.Count;
 
         // If the mouse cursor is over an InventoryItem
         if (activeInvItem != null && activeGhostInvItems.Count == 1)
         {
-            // Drag the InventoryItem up if the mouse position is above the draggedItem
+            // Drag the InventoryItem up (if the mouse position is above the draggedItem's original position)
             if (draggedInvItem.transform.GetSiblingIndex() != 0 && Input.mousePosition.y > draggedInvItem.transform.position.y + 16)
             {
                 // Set the new sibling index of the item
-                draggedInvItem.transform.SetSiblingIndex(draggedInvItem.transform.GetSiblingIndex() - 1);
-
-                // Rearrange the inventory list if it has one
-                if (draggedInvItem.myInventory != null)
+                if (draggedInvItem.parentInvItem == null || draggedInvItem.parentInvItem.itemData.CompareTag("Item Pickup") == false
+                    || draggedInvItem.transform.GetSiblingIndex() >= draggedInvItem.parentInvItem.transform.GetSiblingIndex() + 2) // If the parent bag item of the item we're dragging is on the ground, make sure not to move the dragged item above the bag item
                 {
-                    int index = draggedInvItem.myInventory.items.IndexOf(draggedInvItem.itemData);
-                    if (index > 0)
-                    {
-                        draggedInvItem.myInventory.items.RemoveAt(index);
-                        draggedInvItem.myInventory.items.Insert(index - 1, draggedInvItem.itemData);
-                    }
+                    draggedInvItem.transform.SetSiblingIndex(draggedInvItem.transform.GetSiblingIndex() - 1);
                 }
 
-                // If this is a container UI item, rearrange the appropriate containerUI's directional items list
-                if (draggedInvItem.myInvUI == gm.containerInvUI)
+                // If the item is in a bag and we drag it above its bag item
+                if (draggedInvItem.parentInvItem != null && draggedInvItem.parentInvItem.itemData.CompareTag("Item Pickup") == false
+                    && draggedInvItem.transform.GetSiblingIndex() < draggedInvItem.parentInvItem.transform.GetSiblingIndex())
                 {
-                    List<ItemData> itemsList = gm.containerInvUI.GetItemsListFromActiveDirection();
-                    int index = itemsList.IndexOf(draggedInvItem.itemData);
-                    if (index > 0)
+                    // The item is no longer in the bag, so remove it from the bag
+                    int indexOfBag = draggedInvItem.parentInvItem.myInventory.items.IndexOf(draggedInvItem.parentInvItem.itemData);
+                    draggedInvItem.myInventory = draggedInvItem.parentInvItem.myInventory;
+                    draggedInvItem.myInventory.items.Insert(indexOfBag, draggedInvItem.itemData);
+                    draggedInvItem.parentInvItem.itemData.bagInventory.items.Remove(draggedInvItem.itemData);
+                    draggedInvItem.itemData.transform.SetParent(draggedInvItem.parentInvItem.myInventory.itemsParent);
+                    draggedInvItem.parentInvItem.disclosureWidget.expandedItems.Remove(draggedInvItem);
+                    draggedInvItem.parentInvItem = null;
+                    draggedInvItem.isItemInsideBag = false;
+
+                    // If this is a container UI item, rearrange the appropriate containerUI's directional items list
+                    if (draggedInvItem.myInvUI == gm.containerInvUI && draggedInvItem.parentInvItem == null)
                     {
-                        itemsList.RemoveAt(index);
-                        itemsList.Insert(index - 1, draggedInvItem.itemData);
+                        List<ItemData> itemsList = gm.containerInvUI.GetItemsListFromActiveDirection();
+                        itemsList.Insert(indexOfBag, draggedInvItem.itemData);
+                    }
+                }
+                // If the item is not in a bag, but we drag it in between items in an expanded bag or in between the bag itself and an item inside it
+                else if (draggedInvItem.parentInvItem == null && lastActiveItem != null && lastActiveItem != draggedInvItem
+                    && draggedInvItem.transform.GetSiblingIndex() > lastActiveItem.transform.GetSiblingIndex() 
+                    && (lastActiveItem.parentInvItem != null || (lastActiveItem.itemData.item.IsBag() && lastActiveItem.disclosureWidget.isExpanded)))
+                {
+                    // TODO: the checks above are not correct yet
+                    Debug.Log("Dragged item into bag");
+                }
+                else
+                {
+                    // Rearrange the inventory list if it has one
+                    if (draggedInvItem.myInventory != null)
+                    {
+                        int index = draggedInvItem.myInventory.items.IndexOf(draggedInvItem.itemData);
+                        if (index > 0) // If this is not the first item in the list
+                        {
+                            draggedInvItem.myInventory.items.RemoveAt(index);
+                            draggedInvItem.myInventory.items.Insert(index - 1, draggedInvItem.itemData);
+                        }
+                    }
+
+                    // If this is a container UI item, rearrange the appropriate containerUI's directional items list
+                    if (draggedInvItem.myInvUI == gm.containerInvUI && draggedInvItem.parentInvItem == null)
+                    {
+                        List<ItemData> itemsList = gm.containerInvUI.GetItemsListFromActiveDirection();
+                        int index = itemsList.IndexOf(draggedInvItem.itemData);
+                        if (index > 0) // If this is not the first item in the list
+                        {
+                            itemsList.RemoveAt(index);
+                            itemsList.Insert(index - 1, draggedInvItem.itemData);
+                        }
                     }
                 }
             }
-            // Drag the InventoryItem down
+            // Drag the InventoryItem down (if the mouse position is below the draggedItem's original position)
             else if (draggedInvItem.transform.GetSiblingIndex() != activeInvItemCount - 1 && Input.mousePosition.y < draggedInvItem.transform.position.y - 16)
             {
                 // Set the new sibling index of the item
                 draggedInvItem.transform.SetSiblingIndex(draggedInvItem.transform.GetSiblingIndex() + 1);
 
-                // Rearrange the inventory list if it has one
-                if (draggedInvItem.myInventory != null)
+                // If the item is in a bag and we drag it below the last item in the bag
+                if (draggedInvItem.parentInvItem != null /*&& if the dragged item's index is less than the index of the last item in the bag's items list*/)
                 {
-                    int index = draggedInvItem.myInventory.items.IndexOf(draggedInvItem.itemData);
-                    if (index < activeInvItemCount - 1)
-                    {
-                        draggedInvItem.myInventory.items.RemoveAt(index);
-                        draggedInvItem.myInventory.items.Insert(index + 1, draggedInvItem.itemData);
-                    }
-                }
+                    // The item is no longer in the bag, so remove it from the bag and unassign the item's parentInvItem
 
-                // If this is a container UI item, rearrange the appropriate containerUI's directional list
-                if (draggedInvItem.myInvUI == gm.containerInvUI)
+                }
+                else
                 {
-                    List<ItemData> itemsList = gm.containerInvUI.GetItemsListFromActiveDirection();
-                    int index = itemsList.IndexOf(draggedInvItem.itemData);
-                    if (index < activeInvItemCount - 1)
+                    // Rearrange the inventory list if it has one
+                    if (draggedInvItem.myInventory != null)
                     {
-                        itemsList.RemoveAt(index);
-                        itemsList.Insert(index + 1, draggedInvItem.itemData);
+                        int index = draggedInvItem.myInventory.items.IndexOf(draggedInvItem.itemData);
+                        if (index < activeInvItemCount - 1)
+                        {
+                            draggedInvItem.myInventory.items.RemoveAt(index);
+                            draggedInvItem.myInventory.items.Insert(index + 1, draggedInvItem.itemData);
+                        }
+                    }
+
+                    // If this is a container UI item, rearrange the appropriate containerUI's directional items list
+                    if (draggedInvItem.myInvUI == gm.containerInvUI)
+                    {
+                        List<ItemData> itemsList = gm.containerInvUI.GetItemsListFromActiveDirection();
+                        int index = itemsList.IndexOf(draggedInvItem.itemData);
+                        if (index < activeInvItemCount - 1)
+                        {
+                            itemsList.RemoveAt(index);
+                            itemsList.Insert(index + 1, draggedInvItem.itemData);
+                        }
                     }
                 }
             }

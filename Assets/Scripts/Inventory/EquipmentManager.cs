@@ -48,7 +48,10 @@ public class EquipmentManager : MonoBehaviour
 
         ItemData equipmentItemData = null;
         if (newItemData.item.IsBag())
+        {
             equipmentItemData = gm.objectPoolManager.itemDataContainerObjectPool.GetPooledItemData();
+            equipmentItemData.bagInventory.items.Clear();
+        }
         else
             equipmentItemData = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData();
 
@@ -309,15 +312,16 @@ public class EquipmentManager : MonoBehaviour
         {
             oldItemData = currentEquipment[(int)equipmentSlot];
 
-            // We need to temporarily disable the corresponding bag inventory so that the bag that we're unequipping doesn't try to place itself in its own inventory. 
+            // If the item we're equipping is a bag, we need to temporarily disable the corresponding bag inventory so that the bag that we're unequipping doesn't try to place itself in its own inventory. 
             // It will be re-enabled in the Equip method.
-            gm.playerInvUI.TemporarilyDisableBag(oldItemData);
+            if (oldItemData.item.IsBag())
+                gm.playerInvUI.TemporarilyDisableBag(oldItemData);
 
             // Try to unequip the old Item
             canAssignEquipment = Unequip(equipmentSlot, true, true);
         }
 
-        if (canAssignEquipment)
+        if (canAssignEquipment) // If we are able to assign the equipment
         {
             if (onWearableChanged != null && newItemData.item.IsWeapon() == false)
                 onWearableChanged.Invoke(newItemData, oldItemData);
@@ -325,6 +329,17 @@ public class EquipmentManager : MonoBehaviour
                 onWeaponChanged.Invoke(newItemData, oldItemData);
 
             currentEquipment[(int)equipmentSlot] = newItemData;
+        }
+        else if (oldItemData.item.IsBag()) // If we aren't able to assign the equipment
+        {
+            gm.playerInvUI.ReenableBag(oldItemData); // Re-enable the bag, since we disabled it earlier
+
+            if (gm.containerInvUI.activeInventory == newItemData.bagInventory)
+            {
+                // And show the sidebar icon for the bag, since it will have been hidden at this point
+                Bag bag = (Bag)newItemData.item;
+                gm.containerInvUI.GetSideBarButtonFromDirection(gm.containerInvUI.activeDirection).icon.sprite = bag.sidebarSprite;
+            }
         }
 
         return canAssignEquipment;

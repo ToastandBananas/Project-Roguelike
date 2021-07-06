@@ -49,8 +49,21 @@ public class InventoryUI : MonoBehaviour
         invItem.myInventory = activeInventory;
         invItem.gameObject.SetActive(true);
 
-        if (newItemData.item.itemType == ItemType.Bag || newItemData.item.itemType == ItemType.PortableContainer)
-            invItem.disclosureWidget.enabled = true;
+        if ((newItemData.item.itemType == ItemType.Bag || newItemData.item.itemType == ItemType.PortableContainer) && invItem.disclosureWidget != null)
+            invItem.disclosureWidget.EnableDisclosureWidget();
+
+        return invItem;
+    }
+
+    public InventoryItem ShowNewBagItem(ItemData newItemData, InventoryItem bagInvItem)
+    {
+        InventoryItem invItem = ShowNewInventoryItem(newItemData);
+        bagInvItem.disclosureWidget.expandedItems.Add(invItem);
+        invItem.backgroundImage.sprite = invItem.blueHighlightedSprite;
+        invItem.isItemInsideBag = true;
+        invItem.myInventory = bagInvItem.itemData.bagInventory;
+        invItem.parentInvItem = bagInvItem;
+        invItem.transform.SetSiblingIndex(bagInvItem.transform.GetSiblingIndex() + 1);
 
         return invItem;
     }

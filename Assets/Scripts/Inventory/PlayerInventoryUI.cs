@@ -303,6 +303,28 @@ public class PlayerInventoryUI : InventoryUI
         }
     }
 
+    public void ReenableBag(ItemData bagItemData)
+    {
+        Bag bag = (Bag)bagItemData.item;
+        switch (bag.equipmentSlot)
+        {
+            case EquipmentSlot.Quiver:
+                quiverEquipped = true;
+                break;
+            case EquipmentSlot.Backpack:
+                backpackEquipped = true;
+                break;
+            case EquipmentSlot.LeftHipPouch:
+                leftHipPouchEquipped = true;
+                break;
+            case EquipmentSlot.RightHipPouch:
+                rightHipPouchEquipped = true;
+                break;
+            default:
+                break;
+        }
+    }
+
     public override void UpdateUI()
     {
         if (activeInventory != null)

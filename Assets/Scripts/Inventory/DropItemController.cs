@@ -41,6 +41,7 @@ public class DropItemController : MonoBehaviour
         {
             // If the item we're dropping is a bag, create a new bag pickup
             newItemPickup = gm.objectPoolManager.bagPickupsPool.GetPooledItemPickup();
+            newItemPickup.inventory.items.Clear();
 
             // Find our drop direction and assign the bag's inventory to our directional inventory
             gm.containerInvUI.AssignDirectionalInventory(dropDirection, newItemPickup.inventory);

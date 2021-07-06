@@ -8,20 +8,21 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 {
     [Header("Sprites")]
     public Sprite defaultSprite;
-    public Sprite highlightedSprite, rightArrowSprite, downArrowSprite;
+    public Sprite highlightedSprite, blueHighlightedSprite;
 
     [Header("Components")]
     public Image backgroundImage;
-    public Image disclosureWidget;
+    public DisclosureWidget disclosureWidget;
     public TextMeshProUGUI itemNameText, itemAmountText, itemTypeText, itemWeightText, itemVolumeText;
 
     [HideInInspector] public ItemData itemData;
     [HideInInspector] public InventoryUI myInvUI;
     [HideInInspector] public Inventory myInventory;
+    [HideInInspector] public InventoryItem parentInvItem;
     [HideInInspector] public EquipmentManager myEquipmentManager;
     [HideInInspector] public GameManager gm;
 
-    [HideInInspector] public bool isHidden, isGhostItem;
+    [HideInInspector] public bool isHidden, isGhostItem, isItemInsideBag, isItemInsidePortableContainer;
 
     public void Init()
     {
@@ -32,6 +33,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
     {
         if (isGhostItem == false && gm.uiManager.activeInvItem != this)
         {
+            gm.uiManager.lastActiveItem = this;
             gm.uiManager.activeInvItem = this;
             Highlight();
         }
@@ -51,12 +53,13 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
     public void ResetInvItem()
     {
         itemData = null;
+        isItemInsideBag = false;
+        isItemInsidePortableContainer = false;
+        backgroundImage.sprite = defaultSprite;
+        parentInvItem = null;
 
-        if (disclosureWidget != null && disclosureWidget.enabled)
-        {
-            disclosureWidget.sprite = rightArrowSprite;
-            disclosureWidget.enabled = false;
-        }
+        if (disclosureWidget != null && disclosureWidget.isEnabled)
+            disclosureWidget.DisableDisclosureWidget();
     }
 
     public void ClearItem()
@@ -67,16 +70,20 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         myInvUI.inventoryItemObjectPool.activePooledInventoryItems.Remove(this);
 
         if (gm.uiManager.activeInvItem == this)
-        {
             gm.uiManager.activeInvItem = null;
-            backgroundImage.sprite = defaultSprite;
-        }
+
+        if (gm.uiManager.lastActiveItem == this)
+            gm.uiManager.lastActiveItem = null;
 
         gm.containerInvUI.RemoveItemFromList(itemData);
 
         if (myInventory != null)
             myInventory.items.Remove(itemData);
 
+        if ((itemData.item.IsBag() || itemData.item.itemType == ItemType.PortableContainer) && disclosureWidget.isExpanded)
+            disclosureWidget.ContractDisclosureWidget();
+
+        // Return the itemData on this InventoryItem back to the appropriate object pool
         if (itemData.CompareTag("Item Data Object"))
             itemData.ReturnToItemDataObjectPool();
         else if (itemData.CompareTag("Item Data Container Object"))
@@ -89,6 +96,23 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
         ResetInvItem();
         gm.containerInvUI.UpdateUI();
+        gameObject.SetActive(false);
+    }
+
+    public void CollapseItem()
+    {
+        if (isHidden)
+            Show();
+
+        myInvUI.inventoryItemObjectPool.activePooledInventoryItems.Remove(this);
+
+        if (gm.uiManager.activeInvItem == this)
+        {
+            gm.uiManager.activeInvItem = null;
+            backgroundImage.sprite = defaultSprite;
+        }
+
+        ResetInvItem();
         gameObject.SetActive(false);
     }
 
@@ -143,7 +167,10 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
     public void RemoveHighlight()
     {
-        backgroundImage.sprite = defaultSprite;
+        if (isItemInsideBag)
+            backgroundImage.sprite = blueHighlightedSprite;
+        else
+            backgroundImage.sprite = defaultSprite;
     }
 
     public void TransferItem()
@@ -423,10 +450,13 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         itemWeightText.enabled = false;
         itemVolumeText.enabled = false;
 
-        // TODO: Collapse disclosure widget if it's open
+        if ((itemData.item.itemType == ItemType.Bag || itemData.item.itemType == ItemType.PortableContainer) && disclosureWidget != null)
+        {
+            if (disclosureWidget.isExpanded)
+                disclosureWidget.ContractDisclosureWidget();
 
-        if (itemData.item.itemType == ItemType.Bag || itemData.item.itemType == ItemType.PortableContainer)
-            disclosureWidget.enabled = false;
+            disclosureWidget.DisableDisclosureWidget();
+        }
     }
 
     public void Show()
@@ -441,9 +471,6 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         RemoveHighlight();
 
         if (itemData != null && (itemData.item.itemType == ItemType.Bag || itemData.item.itemType == ItemType.PortableContainer))
-        {
-            disclosureWidget.enabled = true;
-            disclosureWidget.sprite = rightArrowSprite;
-        }
+            disclosureWidget.EnableDisclosureWidget();
     }
 }

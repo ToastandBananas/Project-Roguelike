@@ -24,7 +24,7 @@ public class ContainerInventoryUI : InventoryUI
     [HideInInspector] public List<ItemData> southwestItems = new List<ItemData>();
     [HideInInspector] public List<ItemData> southeastItems = new List<ItemData>();
 
-    public Inventory playerPositionInventory, northInventory, southInventory, westInventory, eastInventory, northwestInventory, northeastInventory, southwestInventory, southeastInventory;
+    [HideInInspector] public Inventory playerPositionInventory, northInventory, southInventory, westInventory, eastInventory, northwestInventory, northeastInventory, southwestInventory, southeastInventory;
 
     [HideInInspector] public Direction activeDirection;
     [HideInInspector] public ContainerSideBarButton activeContainerSideBarButton;
@@ -76,6 +76,10 @@ public class ContainerInventoryUI : InventoryUI
         {
             InventoryItem invItem = ShowNewInventoryItem(itemsList[i]);
             AssignInventoryToInventoryItem(invItem, direction);
+            
+            // If this is a bag on the ground, just automatically expand its disclosure widget to show the items inside the bag
+            if (invItem.myInventory != null && invItem.myInventory.CompareTag("Item Pickup") && invItem.itemData.item.IsBag())
+                invItem.disclosureWidget.ExpandDisclosureWidget();
         }
 
         // Set container open icon sprite (when applicable) and header/volume/weight text
