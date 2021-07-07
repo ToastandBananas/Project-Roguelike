@@ -32,7 +32,7 @@ public class DropItemController : MonoBehaviour
         gm = GameManager.instance;
     }
 
-    public void DropItem(Vector3 dropPosition, ItemData itemData, int amountToDrop, Inventory invComingFrom)
+    public void DropItem(Vector3 dropPosition, ItemData itemData, int amountToDrop, Inventory invComingFrom, InventoryItem invItemComingFrom)
     {
         ItemPickup newItemPickup = null;
         Direction dropDirection = GetDirectionFromDropPosition(dropPosition);
@@ -87,9 +87,9 @@ public class DropItemController : MonoBehaviour
             if (invComingFrom != null)
             {
                 if (gm.contextMenu.contextActiveInvItem != null && itemData == gm.contextMenu.contextActiveInvItem.itemData) // If the item was dropped using the context menu
-                    invComingFrom.SubtractItemsWeightAndVolumeFromInventory(itemData, invComingFrom, 1, true);
+                    invComingFrom.SubtractItemsWeightAndVolumeFromInventory(itemData, invComingFrom, gm.contextMenu.contextActiveInvItem, 1, true);
                 else if (itemData.CompareTag("Item Pickup") == false)
-                    invComingFrom.SubtractItemsWeightAndVolumeFromInventory(itemData, invComingFrom, 1, true);
+                    invComingFrom.SubtractItemsWeightAndVolumeFromInventory(itemData, invComingFrom, invItemComingFrom, 1, false);
 
                 bagInv.ResetWeightAndVolume(); // Reset the bag's inventory
 

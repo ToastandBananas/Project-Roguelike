@@ -36,7 +36,7 @@ public class DisclosureWidget : MonoBehaviour, IPointerEnterHandler, IPointerExi
     {
         isExpanded = false;
         image.sprite = rightArrowSprite;
-
+        
         for (int i = 0; i < expandedItems.Count; i++)
         {
             expandedItems[i].CollapseItem();
@@ -47,7 +47,7 @@ public class DisclosureWidget : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public void ToggleDisclosureWidget()
     {
-        if (isExpanded)
+        if (expandedItems.Count > 0 || isExpanded)
             ContractDisclosureWidget();
         else
             ExpandDisclosureWidget();

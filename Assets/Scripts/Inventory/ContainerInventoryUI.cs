@@ -14,15 +14,15 @@ public class ContainerInventoryUI : InventoryUI
     [Header("Max Ground Volume")]
     public float emptyTileMaxVolume = 1000f;
 
-    [HideInInspector] public List<ItemData> playerPositionItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> northItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> southItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> westItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> eastItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> northwestItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> northeastItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> southwestItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> southeastItems = new List<ItemData>();
+    public List<ItemData> playerPositionItems = new List<ItemData>();
+    public List<ItemData> northItems = new List<ItemData>();
+    public List<ItemData> southItems = new List<ItemData>();
+    public List<ItemData> westItems = new List<ItemData>();
+    public List<ItemData> eastItems = new List<ItemData>();
+    public List<ItemData> northwestItems = new List<ItemData>();
+    public List<ItemData> northeastItems = new List<ItemData>();
+    public List<ItemData> southwestItems = new List<ItemData>();
+    public List<ItemData> southeastItems = new List<ItemData>();
 
     [HideInInspector] public Inventory playerPositionInventory, northInventory, southInventory, westInventory, eastInventory, northwestInventory, northeastInventory, southwestInventory, southeastInventory;
 

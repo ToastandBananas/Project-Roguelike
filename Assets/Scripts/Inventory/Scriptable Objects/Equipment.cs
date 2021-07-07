@@ -28,7 +28,11 @@ public class Equipment : Item
         }
 
         if (itemUsed)
+        {
             base.Use(equipmentManager, inventory, invItem, itemCount);
+            GameManager.instance.playerInvUI.UpdateUI();
+            GameManager.instance.containerInvUI.UpdateUI();
+        }
     }
 
     public override bool IsEquipment()

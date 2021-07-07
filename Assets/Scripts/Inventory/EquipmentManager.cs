@@ -114,8 +114,8 @@ public class EquipmentManager : MonoBehaviour
 
             // If the bag is coming from an Inventory or EquipmentManager (and not from the ground), subtract the bag's weight/volume, including the items inside it
             if (newItemData.CompareTag("Item Pickup") == false)
-                bagsInventory.SubtractItemsWeightAndVolumeFromInventory(newItemData, invItemComingFrom.myInventory, 1, false); // We don't subtract the bag's weight yet because it will just be subtracted later when it's removed from the inventory
-
+                bagsInventory.SubtractItemsWeightAndVolumeFromInventory(newItemData, invItemComingFrom.myInventory, invItemComingFrom, 1, false); // We don't subtract the bag's weight yet because it will just be subtracted later when it's removed from the inventory
+            
             newItemData.bagInventory.ResetWeightAndVolume(); // Reset the bag's inventory
             
             for (int i = 0; i < newItemData.bagInventory.items.Count; i++)
@@ -135,10 +135,7 @@ public class EquipmentManager : MonoBehaviour
 
         // If the equipment inventory is active, show the item in the menu
         if (gm.playerInvUI.activeInventory == null && isPlayer)
-        {
             gm.playerInvUI.ShowNewInventoryItem(equipmentItemData);
-            gm.playerInvUI.UpdateUI();
-        }
 
         // If this is a Wearable item, show the equipment's sprite on the player
         if (equipmentItemData.item.IsWeapon() == false)
@@ -219,7 +216,7 @@ public class EquipmentManager : MonoBehaviour
 
                     // Try adding to the player's inventory and if it is added, play the add item effect
                     if (gm.playerInvUI.backpackEquipped && gm.playerInvUI.backpackInventory != invComingFrom)
-                        itemWasAddedToInv = gm.playerInvUI.backpackInventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, invComingFrom);
+                        itemWasAddedToInv = gm.playerInvUI.backpackInventory.AddItem(invItemComingFrom, oldItemData, oldItemData.currentStackSize, invComingFrom);
 
                     if (itemWasAddedToInv)
                     {
@@ -227,7 +224,7 @@ public class EquipmentManager : MonoBehaviour
                         addItemEffectPlayed = true;
                     }
                     else if (gm.playerInvUI.leftHipPouchEquipped && gm.playerInvUI.leftHipPouchInventory != invComingFrom)
-                        itemWasAddedToInv = gm.playerInvUI.leftHipPouchInventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, invComingFrom);
+                        itemWasAddedToInv = gm.playerInvUI.leftHipPouchInventory.AddItem(invItemComingFrom, oldItemData, oldItemData.currentStackSize, invComingFrom);
 
                     if (itemWasAddedToInv && addItemEffectPlayed == false)
                     {
@@ -235,7 +232,7 @@ public class EquipmentManager : MonoBehaviour
                         addItemEffectPlayed = true;
                     }
                     else if (itemWasAddedToInv == false && gm.playerInvUI.rightHipPouchEquipped && gm.playerInvUI.rightHipPouchInventory != invComingFrom)
-                        itemWasAddedToInv = gm.playerInvUI.rightHipPouchInventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, invComingFrom);
+                        itemWasAddedToInv = gm.playerInvUI.rightHipPouchInventory.AddItem(invItemComingFrom, oldItemData, oldItemData.currentStackSize, invComingFrom);
 
                     if (itemWasAddedToInv && addItemEffectPlayed == false)
                     {
@@ -243,7 +240,7 @@ public class EquipmentManager : MonoBehaviour
                         addItemEffectPlayed = true;
                     }
                     else if (itemWasAddedToInv == false)
-                        itemWasAddedToInv = gm.playerInvUI.personalInventory.Add(invItemComingFrom, oldItemData, oldItemData.currentStackSize, invComingFrom);
+                        itemWasAddedToInv = gm.playerInvUI.personalInventory.AddItem(invItemComingFrom, oldItemData, oldItemData.currentStackSize, invComingFrom);
 
                     if (itemWasAddedToInv && addItemEffectPlayed == false)
                         StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.personalInventorySideBarButton));
@@ -253,7 +250,7 @@ public class EquipmentManager : MonoBehaviour
                 else // If this is an NPC's equipment
                 {
                     // Try adding to the NPC's inventory, else drop the item at their feet
-                    if (characterManager.inventory.Add(null, oldItemData, oldItemData.currentStackSize, invComingFrom) == false)
+                    if (characterManager.inventory.AddItem(null, oldItemData, oldItemData.currentStackSize, invComingFrom) == false)
                         shouldDropItem = true;
                 }
             }
@@ -283,7 +280,7 @@ public class EquipmentManager : MonoBehaviour
 
                 // If we determined we should drop the item, then drop it
                 if (shouldDropItem && canDropItem)
-                    gm.dropItemController.DropItem(characterManager.transform.position, oldItemData, oldItemData.currentStackSize, invComingFrom);
+                    gm.dropItemController.DropItem(characterManager.transform.position, oldItemData, oldItemData.currentStackSize, invComingFrom, invItemComingFrom);
 
                 // If the item was a bag, be sure to subtract the weight/volume of the bag's contents
                 if (oldItemData.item.IsBag())
@@ -293,9 +290,6 @@ public class EquipmentManager : MonoBehaviour
                     invItemComingFrom.ClearItem();
                 else
                     oldItemData.ReturnToItemDataObjectPool();
-
-                if (isPlayer)
-                    gm.playerInvUI.UpdateUI();
             }
         }
 
@@ -376,6 +370,17 @@ public class EquipmentManager : MonoBehaviour
         }
 
         return 0;
+    }
+
+    public bool ItemIsEquipped(ItemData itemDataInQuestion)
+    {
+        for (int i = 0; i < currentEquipment.Length; i++)
+        {
+            if (currentEquipment[i] == itemDataInQuestion)
+                return true;
+        }
+
+        return false;
     }
 
     void SetWearableSprite(EquipmentSlot wearableSlot, Equipment equipment)

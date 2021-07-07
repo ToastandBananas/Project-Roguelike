@@ -47,9 +47,11 @@ public class InventoryUI : MonoBehaviour
         invItem.itemData = newItemData;
         invItem.UpdateAllItemTexts();
         invItem.myInventory = activeInventory;
+        invItem.myInvUI = this;
         invItem.gameObject.SetActive(true);
+        invItem.originalSiblingIndex = invItem.transform.GetSiblingIndex();
 
-        if ((newItemData.item.itemType == ItemType.Bag || newItemData.item.itemType == ItemType.PortableContainer) && invItem.disclosureWidget != null)
+        if ((newItemData.item.itemType == ItemType.Bag || newItemData.item.itemType == ItemType.PortableContainer) && gm.playerManager.playerEquipmentManager.ItemIsEquipped(newItemData) == false && invItem.disclosureWidget != null)
             invItem.disclosureWidget.EnableDisclosureWidget();
 
         return invItem;
@@ -58,12 +60,14 @@ public class InventoryUI : MonoBehaviour
     public InventoryItem ShowNewBagItem(ItemData newItemData, InventoryItem bagInvItem)
     {
         InventoryItem invItem = ShowNewInventoryItem(newItemData);
-        bagInvItem.disclosureWidget.expandedItems.Add(invItem);
+        if (bagInvItem.disclosureWidget.isExpanded)
+            bagInvItem.disclosureWidget.expandedItems.Add(invItem);
         invItem.backgroundImage.sprite = invItem.blueHighlightedSprite;
         invItem.isItemInsideBag = true;
         invItem.myInventory = bagInvItem.itemData.bagInventory;
         invItem.parentInvItem = bagInvItem;
         invItem.transform.SetSiblingIndex(bagInvItem.transform.GetSiblingIndex() + 1);
+        invItem.originalSiblingIndex = invItem.transform.GetSiblingIndex();
 
         return invItem;
     }
@@ -258,5 +262,16 @@ public class InventoryUI : MonoBehaviour
             addItemEffect.gameObject.SetActive(false);
             addItemEffectsPlayCount--;
         }
+    }
+
+    public InventoryItem GetBagItemFromInventory(Inventory inventory)
+    {
+        for (int i = 0; i < inventoryItemObjectPool.activePooledInventoryItems.Count; i++)
+        {
+            if (inventoryItemObjectPool.activePooledInventoryItems[i].myInventory == inventory)
+                return inventoryItemObjectPool.activePooledInventoryItems[i];
+        }
+
+        return null;
     }
 }

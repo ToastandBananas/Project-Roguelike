@@ -57,7 +57,7 @@ public class Item : ScriptableObject
 
     public void RemoveFromInventory(Inventory inventory, int itemCount, InventoryItem invItem)
     {
-        inventory.Remove(invItem.itemData, itemCount, invItem);
+        inventory.RemoveItem(invItem.itemData, itemCount, invItem);
     }
 
     public virtual bool IsEquipment()

@@ -23,10 +23,13 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
     [HideInInspector] public GameManager gm;
 
     [HideInInspector] public bool isHidden, isGhostItem, isItemInsideBag, isItemInsidePortableContainer;
+    [HideInInspector] public bool canDragToCurrentLocation = true;
+    [HideInInspector] public int originalSiblingIndex;
 
     public void Init()
     {
         gm = GameManager.instance;
+        canDragToCurrentLocation = true;
     }
 
     public void OnPointerMove(PointerEventData eventData)
@@ -57,6 +60,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         isItemInsidePortableContainer = false;
         backgroundImage.sprite = defaultSprite;
         parentInvItem = null;
+        canDragToCurrentLocation = true;
 
         if (disclosureWidget != null && disclosureWidget.isEnabled)
             disclosureWidget.DisableDisclosureWidget();
@@ -80,7 +84,8 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         if (myInventory != null)
             myInventory.items.Remove(itemData);
 
-        if ((itemData.item.IsBag() || itemData.item.itemType == ItemType.PortableContainer) && disclosureWidget.isExpanded)
+        // If the item being cleared is a bag or portable container, contract the disclosure widget (if it's expanded)
+        if (itemData != null && (itemData.item.IsBag() || itemData.item.itemType == ItemType.PortableContainer) && disclosureWidget.isExpanded)
             disclosureWidget.ContractDisclosureWidget();
 
         // Return the itemData on this InventoryItem back to the appropriate object pool
@@ -93,6 +98,10 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             itemData.ClearData();
             itemData.gameObject.SetActive(false);
         }
+
+        // If this item was inside a bag or portable container's inventory and it was the last item inside of it, contract the disclosure widget (if it's expanded)
+        if (parentInvItem != null && parentInvItem.itemData.bagInventory.items.Count == 0 && parentInvItem.disclosureWidget.isExpanded)
+            parentInvItem.disclosureWidget.ContractDisclosureWidget();
 
         ResetInvItem();
         gm.containerInvUI.UpdateUI();
@@ -181,7 +190,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             // We don't want to add items directly to the keys inv (unless it's a key) or to the current equipment inv
             if (gm.playerInvUI.activeInventory != null && gm.playerInvUI.activeInventory != gm.playerInvUI.keysInventory && itemData.item.itemType != ItemType.Key && itemData.item.itemType != ItemType.Ammo)
             {
-                if (gm.playerInvUI.activeInventory.Add(this, itemData, itemData.currentStackSize, myInventory)) // If there's room in the inventory
+                if (gm.playerInvUI.activeInventory.AddItem(this, itemData, itemData.currentStackSize, myInventory)) // If there's room in the inventory
                 {
                     myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.activePlayerInvSideBarButton));
 
@@ -196,7 +205,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             }
             else if (itemData.item.itemType == ItemType.Key) // If the item is a key, add it directly to the keys inventory
             {
-                gm.playerInvUI.keysInventory.Add(this, itemData, itemData.currentStackSize, myInventory);
+                gm.playerInvUI.keysInventory.AddItem(this, itemData, itemData.currentStackSize, myInventory);
                 myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.keysSideBarButton));
                 ClearItem();
             }
@@ -204,8 +213,13 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             {
                 if (gm.playerInvUI.quiverEquipped)
                 {
-                    if (gm.playerInvUI.quiverInventory.Add(this, itemData, itemData.currentStackSize, myInventory) == false)
+                    if (gm.playerInvUI.quiverInventory.AddItem(this, itemData, itemData.currentStackSize, myInventory) == false)
                         AddItemToOtherBags(itemData);
+                    else
+                    {
+                        myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.quiverSidebarButton));
+                        ClearItem();
+                    }
                 }
             }
             else // Otherwise, add the item to the first available bag, or the personal inventory if there's no bag or no room in any of the bags
@@ -217,7 +231,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         {
             if (gm.containerInvUI.activeInventory != null) // If we're trying to place the item in a container
             {
-                if (gm.containerInvUI.activeInventory.Add(this, itemData, itemData.currentStackSize, myInventory)) // Try adding the item's entire stack
+                if (gm.containerInvUI.activeInventory.AddItem(this, itemData, itemData.currentStackSize, myInventory)) // Try adding the item's entire stack
                 {
                     myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemData.item.pickupSprite, gm.containerInvUI.activeContainerSideBarButton, null));
 
@@ -256,7 +270,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
                     if (gm.uiManager.IsRoomOnGround(itemData, itemsListAddingTo, dropPos))
                     {
-                        gm.dropItemController.DropItem(dropPos, itemData, itemData.currentStackSize, gm.playerInvUI.activeInventory);
+                        gm.dropItemController.DropItem(dropPos, itemData, itemData.currentStackSize, gm.playerInvUI.activeInventory, this);
 
                         if (gm.playerInvUI.activeInventory != null)
                         {
@@ -290,7 +304,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         if (itemAdding.IsBag()) bagInv = itemToAdd.bagInventory;
 
         // Try adding to the active inventory first
-        if (gm.playerInvUI.activeInventory != null && itemToAdd.item.maxStackSize > 1)
+        if (gm.playerInvUI.activeInventory != null && (gm.playerInvUI.activeInventory != gm.playerInvUI.keysInventory || itemToAdd.item.itemType == ItemType.Key) && itemToAdd.item.maxStackSize > 1)
         {
             bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.activeInventory, itemToAdd);
             if (someAdded)
@@ -304,7 +318,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         }
 
         // If the item is ammunition, try adding here second
-        if (itemToAdd != null && itemToAdd.item.itemType == ItemType.Ammo && itemToAdd.currentStackSize > 0 && gm.playerInvUI.quiverEquipped && gm.playerInvUI.activeInventory != gm.playerInvUI.quiverInventory)
+        if (itemToAdd != null && itemAdding.itemType == ItemType.Ammo && gm.playerInvUI.quiverEquipped && itemToAdd.currentStackSize > 0 && gm.playerInvUI.activeInventory != gm.playerInvUI.quiverInventory)
         {
             bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.quiverInventory, itemToAdd);
             if (someAdded)
@@ -379,7 +393,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         for (int i = 0; i < stackSize; i++)
         {
             // Try to add a single item to the inventory
-            if (invAddingTo.Add(this, itemData, 1, invComingFrom))
+            if (invAddingTo.AddItem(this, itemData, 1, invComingFrom))
             {
                 // If we were able to add one, set someAdded to true
                 someAdded = true;
@@ -470,7 +484,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         itemVolumeText.enabled = true;
         RemoveHighlight();
 
-        if (itemData != null && (itemData.item.itemType == ItemType.Bag || itemData.item.itemType == ItemType.PortableContainer))
+        if (itemData != null && myEquipmentManager == null && (itemData.item.itemType == ItemType.Bag || itemData.item.itemType == ItemType.PortableContainer))
             disclosureWidget.EnableDisclosureWidget();
     }
 }

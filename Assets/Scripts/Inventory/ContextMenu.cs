@@ -66,7 +66,8 @@ public class ContextMenu : MonoBehaviour
                 CreateSplitStackButton();
 
             // If selecting the player's inventory or equipment menu
-            if ((contextActiveInvItem.myInventory != null && contextActiveInvItem.myInventory.myInventoryUI == gm.playerInvUI) || contextActiveInvItem.myEquipmentManager != null)
+            if ((contextActiveInvItem.myInventory != null && contextActiveInvItem.myInventory.myInventoryUI == gm.playerInvUI) || contextActiveInvItem.myEquipmentManager != null
+                || (contextActiveInvItem.parentInvItem != null && contextActiveInvItem.parentInvItem.myInvUI == gm.playerInvUI))
             {
                 if (gm.containerInvUI.activeInventory != null)
                     CreateTransferButton();
@@ -141,7 +142,8 @@ public class ContextMenu : MonoBehaviour
         ContextMenuButton contextButton = GetNextInactiveButton();
         contextButton.gameObject.SetActive(true);
 
-        if ((contextActiveInvItem.myInventory != null && contextActiveInvItem.myInventory.myInventoryUI == gm.playerInvUI) || contextActiveInvItem.myEquipmentManager != null)
+        if ((contextActiveInvItem.myInventory != null && contextActiveInvItem.myInventory.myInventoryUI == gm.playerInvUI) || contextActiveInvItem.myEquipmentManager != null
+            || (contextActiveInvItem.parentInvItem != null && contextActiveInvItem.parentInvItem.myInvUI == gm.playerInvUI))
             contextButton.textMesh.text = "Transfer";
         else
             contextButton.textMesh.text = "Take";
@@ -189,7 +191,7 @@ public class ContextMenu : MonoBehaviour
         // Make sure there's room on the ground first
         if (gm.uiManager.IsRoomOnGround(contextActiveInvItem.itemData, itemsListAddingTo, dropPos))
         {
-            gm.dropItemController.DropItem(dropPos, contextActiveInvItem.itemData, contextActiveInvItem.itemData.currentStackSize, contextActiveInvItem.myInventory);
+            gm.dropItemController.DropItem(dropPos, contextActiveInvItem.itemData, contextActiveInvItem.itemData.currentStackSize, contextActiveInvItem.myInventory, contextActiveInvItem);
             gm.containerInvUI.AddItemToActiveDirectionList(contextActiveInvItem.itemData);
 
             if (contextActiveInvItem.myEquipmentManager != null)

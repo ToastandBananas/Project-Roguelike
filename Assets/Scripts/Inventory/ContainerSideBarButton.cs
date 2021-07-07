@@ -25,6 +25,8 @@ public class ContainerSideBarButton : MonoBehaviour, IPointerEnterHandler, IPoin
     {
         switch (directionFromPlayer)
         {
+            case Direction.Center:
+                return gm.containerInvUI.playerPositionInventory;
             case Direction.North:
                 return gm.containerInvUI.northInventory;
             case Direction.South:
