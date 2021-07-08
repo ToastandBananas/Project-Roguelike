@@ -306,25 +306,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
     {
         // Cache the item in case the itemData gets cleared out before we can do the add item effect
         Item itemAdding = itemToAdd.item;
-        Inventory bagInv = null;
-        if (itemAdding.IsBag()) bagInv = itemToAdd.bagInventory;
 
-        // Try adding to the active inventory first
-        if (gm.playerInvUI.activeInventory != null && (gm.playerInvUI.activeInventory != gm.playerInvUI.keysInventory || itemToAdd.item.itemType == ItemType.Key) && itemToAdd.item.maxStackSize > 1)
-        {
-            bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.activeInventory, itemToAdd);
-            if (someAdded)
-            {
-                myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.activePlayerInvSideBarButton));
-
-                // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
-                if (itemAdding.IsBag() && gm.containerInvUI.activeInventory == bagInv)
-                    gm.containerInvUI.RemoveBagFromGround();
-            }
-        }
-
-        // If the item is ammunition, try adding here second
-        if (itemToAdd != null && itemAdding.itemType == ItemType.Ammo && gm.playerInvUI.quiverEquipped && itemToAdd.currentStackSize > 0 && gm.playerInvUI.activeInventory != gm.playerInvUI.quiverInventory)
+        // If the item is ammunition, try adding here first
+        if (itemAdding.itemType == ItemType.Ammo && gm.playerInvUI.quiverEquipped && itemToAdd.currentStackSize > 0)
         {
             bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.quiverInventory, itemToAdd);
             if (someAdded)
@@ -332,7 +316,22 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.quiverSidebarButton));
 
                 // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
-                if (itemAdding.IsBag() && gm.containerInvUI.activeInventory == bagInv)
+                if (itemAdding.IsBag() && gm.containerInvUI.activeInventory == itemToAdd.bagInventory)
+                    gm.containerInvUI.RemoveBagFromGround();
+            }
+        }
+
+        // Try adding to the active inventory first
+        if (itemToAdd != null && gm.playerInvUI.activeInventory != null && (gm.playerInvUI.activeInventory != gm.playerInvUI.keysInventory || itemToAdd.item.itemType == ItemType.Key) && itemToAdd.item.maxStackSize > 1
+            && gm.playerInvUI.activeInventory != gm.playerInvUI.quiverInventory)
+        {
+            bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.activeInventory, itemToAdd);
+            if (someAdded)
+            {
+                myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.activePlayerInvSideBarButton));
+
+                // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
+                if (itemAdding.IsBag() && gm.containerInvUI.activeInventory == itemToAdd.bagInventory)
                     gm.containerInvUI.RemoveBagFromGround();
             }
         }
@@ -346,7 +345,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.backpackSidebarButton));
 
                 // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
-                if (itemAdding.IsBag() && gm.containerInvUI.activeInventory == bagInv)
+                if (itemAdding.IsBag() && gm.containerInvUI.activeInventory == itemToAdd.bagInventory)
                     gm.containerInvUI.RemoveBagFromGround();
             }
         }
@@ -359,7 +358,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.leftHipPouchSidebarButton));
 
                 // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
-                if (itemAdding.IsBag() && gm.containerInvUI.activeInventory == bagInv)
+                if (itemAdding.IsBag() && gm.containerInvUI.activeInventory == itemToAdd.bagInventory)
                     gm.containerInvUI.RemoveBagFromGround();
             }
         }
@@ -372,7 +371,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.rightHipPouchSidebarButton));
 
                 // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
-                if (itemAdding.IsBag() && gm.containerInvUI.activeInventory == bagInv)
+                if (itemAdding.IsBag() && gm.containerInvUI.activeInventory == itemToAdd.bagInventory)
                     gm.containerInvUI.RemoveBagFromGround();
             }
         }
@@ -386,7 +385,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.personalInventorySideBarButton));
 
                 // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
-                if (itemAdding.IsBag() && gm.containerInvUI.activeInventory == bagInv)
+                if (itemAdding.IsBag() && gm.containerInvUI.activeInventory == itemToAdd.bagInventory)
                     gm.containerInvUI.RemoveBagFromGround();
             }
         }

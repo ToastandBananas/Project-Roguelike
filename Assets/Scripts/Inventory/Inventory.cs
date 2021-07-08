@@ -11,6 +11,7 @@ public class Inventory : MonoBehaviour
 
     public float maxWeight = 20;
     public float maxVolume = 20;
+    public float singleItemVolumeLimit;
 
     public float currentWeight, currentVolume;
 
@@ -304,6 +305,12 @@ public class Inventory : MonoBehaviour
 
     public bool HasRoomInInventory(ItemData itemData, int itemCount)
     {
+        if (singleItemVolumeLimit > 0 && itemData.item.volume > singleItemVolumeLimit)
+        {
+            Debug.Log(itemData.itemName + " is too large to fit in this inventory.");
+            return false;
+        }
+
         float itemWeight = Mathf.RoundToInt(itemData.item.weight * itemCount * 100f) / 100f;
         float itemVolume = Mathf.RoundToInt(itemData.item.volume * itemCount * 100f) / 100f;
 

@@ -262,6 +262,7 @@ public class PlayerInventoryUI : InventoryUI
         Inventory bagInv = GetInventoryFromBagEquipSlot(bagItemData);
         bagInv.maxWeight = bag.maxWeight;
         bagInv.maxVolume = bag.maxVolume;
+        bagInv.singleItemVolumeLimit = bag.singleItemVolumeLimit;
     }
 
     public void UnequipBag(Bag bag, Inventory bagInv)
