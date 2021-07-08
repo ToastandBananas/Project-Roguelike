@@ -160,6 +160,13 @@ public class PlayerInventoryUI : InventoryUI
 
         totalWeightText.text = GetTotalCarriedWeight().ToString();
         totalVolumeText.text = GetTotalCarriedVolume().ToString();
+
+        // Setup the scrollbar
+        if (inventoryItemObjectPool.activePooledInventoryItems.Count > maxInvItems)
+        {
+            scrollbar.value = 1;
+            invItemsParentRectTransform.offsetMin = new Vector2(invItemsParentRectTransform.offsetMin.x, (inventoryItemObjectPool.activePooledInventoryItems.Count - maxInvItems) * -invItemHeight);
+        }
     }
 
     public PlayerInventorySidebarButton GetPlayerInvSidebarButtonFromActiveInv()
@@ -237,16 +244,16 @@ public class PlayerInventoryUI : InventoryUI
         switch (bag.equipmentSlot)
         {
             case EquipmentSlot.Quiver:
-                quiverSidebarButton.ShowSideBarButton();
+                quiverSidebarButton.ShowSideBarButton(bag);
                 break;
             case EquipmentSlot.Backpack:
-                backpackSidebarButton.ShowSideBarButton();
+                backpackSidebarButton.ShowSideBarButton(bag);
                 break;
             case EquipmentSlot.LeftHipPouch:
-                leftHipPouchSidebarButton.ShowSideBarButton();
+                leftHipPouchSidebarButton.ShowSideBarButton(bag);
                 break;
             case EquipmentSlot.RightHipPouch:
-                rightHipPouchSidebarButton.ShowSideBarButton();
+                rightHipPouchSidebarButton.ShowSideBarButton(bag);
                 break;
             default:
                 break;

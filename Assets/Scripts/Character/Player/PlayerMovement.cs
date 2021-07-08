@@ -28,6 +28,14 @@ public class PlayerMovement : Movement
         {
             gm.uiManager.DisableInventoryUIComponents();
 
+            // If we're dragging any inventory items, stop dragging them
+            if (gm.uiManager.invItemsDragging.Count > 0)
+            {
+                gm.uiManager.ShowHiddenItems();
+                gm.uiManager.ResetandHideGhostItems();
+                gm.uiManager.Reset();
+            }
+
             if (horizontal <= 0.3f && horizontal >= -0.3f)
             {
                 if (vertical > 0.3f) // Up

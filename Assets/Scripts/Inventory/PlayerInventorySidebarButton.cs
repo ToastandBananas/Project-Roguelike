@@ -99,7 +99,7 @@ public class PlayerInventorySidebarButton : MonoBehaviour, IPointerEnterHandler,
         }
     }
 
-    public void ShowSideBarButton()
+    public void ShowSideBarButton(Bag bag)
     {
         gameObject.SetActive(true);
 
@@ -107,15 +107,19 @@ public class PlayerInventorySidebarButton : MonoBehaviour, IPointerEnterHandler,
         {
             case PlayerInventoryType.Backpack:
                 gm.playerInvUI.backpackEquipped = true;
+                gm.playerInvUI.backpackSidebarButton.icon.sprite = bag.sidebarSprite;
                 break;
             case PlayerInventoryType.LeftHipPouch:
                 gm.playerInvUI.leftHipPouchEquipped = true;
+                gm.playerInvUI.leftHipPouchSidebarButton.icon.sprite = bag.sidebarSprite;
                 break;
             case PlayerInventoryType.RightHipPouch:
                 gm.playerInvUI.rightHipPouchEquipped = true;
+                gm.playerInvUI.rightHipPouchSidebarButton.icon.sprite = bag.sidebarSprite;
                 break;
             case PlayerInventoryType.Quiver:
                 gm.playerInvUI.quiverEquipped = true;
+                gm.playerInvUI.quiverSidebarButton.icon.sprite = bag.sidebarSprite;
                 break;
             default:
                 break;

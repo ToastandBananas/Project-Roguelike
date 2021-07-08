@@ -65,10 +65,15 @@ public class Inventory : MonoBehaviour
 
     public bool AddItem(InventoryItem invItemComingFrom, ItemData itemDataComingFrom, int itemCount, Inventory invComingFrom)
     {
-        bool hasRoom = HasRoomInInventory(itemDataComingFrom, itemCount);
+        // Prevent putting bags in bags
+        if (invItemComingFrom.itemData.item.IsBag() && gameObject.CompareTag("Item Pickup"))
+        {
+            Debug.Log("You can't put that in here.");
+            return false;
+        }
         
         // Make sure we have room, before we start adding the item
-        if (hasRoom == false)
+        if (HasRoomInInventory(itemDataComingFrom, itemCount) == false)
         {
             Debug.Log("Not enough room in Inventory...");
             return false;

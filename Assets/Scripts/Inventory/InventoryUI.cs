@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
     public Transform slotsParent;
     public GameObject inventoryParent, background, sideBarParent, minimizeButtonText;
+    public RectTransform invItemsParentRectTransform;
+    public ScrollRect scrollRect;
+    public Scrollbar scrollbar;
     public InventoryItemObjectPool inventoryItemObjectPool;
 
     [Header("Texts")]
@@ -15,7 +19,10 @@ public class InventoryUI : MonoBehaviour
 
     [HideInInspector] public GameManager gm;
     [HideInInspector] public Inventory activeInventory;
-    [HideInInspector] public bool isActive, isMinimized;
+    [HideInInspector] public bool isActive, isMinimized, scrollbarSelected;
+
+    [HideInInspector] public int maxInvItems = 31;
+    [HideInInspector] public int invItemHeight = 32;
 
     int addItemEffectsPlayCount;
 
@@ -39,6 +46,7 @@ public class InventoryUI : MonoBehaviour
         }
 
         inventoryItemObjectPool.activePooledInventoryItems.Clear();
+        ResetInventoryItemsParentHeight();
     }
 
     public InventoryItem ShowNewInventoryItem(ItemData newItemData)
@@ -50,6 +58,9 @@ public class InventoryUI : MonoBehaviour
         invItem.myInvUI = this;
         invItem.gameObject.SetActive(true);
         invItem.originalSiblingIndex = invItem.transform.GetSiblingIndex();
+
+        if (inventoryItemObjectPool.activePooledInventoryItems.Count > maxInvItems)
+            EditInventoryItemsParentHeight(invItemHeight);
 
         if ((newItemData.item.itemType == ItemType.Bag || newItemData.item.itemType == ItemType.PortableContainer) && gm.playerManager.playerEquipmentManager.ItemIsEquipped(newItemData) == false && invItem.disclosureWidget != null)
             invItem.disclosureWidget.EnableDisclosureWidget();
@@ -86,6 +97,7 @@ public class InventoryUI : MonoBehaviour
         {
             isActive = false;
             isMinimized = false;
+            DeselectScrollbar();
 
             // Close the context menu, stackSizeSelector and any active tooltips
             gm.uiManager.DisableInventoryUIComponents();
@@ -120,6 +132,8 @@ public class InventoryUI : MonoBehaviour
         // If the inventory was minimized
         if (background.activeSelf == false)
         {
+            DeselectScrollbar();
+
             isMinimized = true;
             minimizeButtonText.transform.rotation = Quaternion.Euler(Vector3.zero);
 
@@ -273,5 +287,26 @@ public class InventoryUI : MonoBehaviour
         }
 
         return null;
+    }
+
+    public void EditInventoryItemsParentHeight(int amount)
+    {
+        invItemsParentRectTransform.offsetMin = new Vector2(invItemsParentRectTransform.offsetMin.x, invItemsParentRectTransform.offsetMin.y + amount);
+    }
+
+    public void ResetInventoryItemsParentHeight()
+    {
+        invItemsParentRectTransform.offsetMax = Vector2.zero;
+        invItemsParentRectTransform.offsetMin = Vector2.zero;
+    }
+
+    public void SelectScrollbar()
+    {
+        scrollbarSelected = true;
+    }
+
+    public void DeselectScrollbar()
+    {
+        scrollbarSelected = false;
     }
 }

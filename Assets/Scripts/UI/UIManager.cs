@@ -12,7 +12,7 @@ public class UIManager : MonoBehaviour
     [HideInInspector] public ContextMenuButton activeContextMenuButton;
 
     [HideInInspector] public List<InventoryItem> selectedItems = new List<InventoryItem>();
-    List<InventoryItem> invItemsDragging = new List<InventoryItem>();
+    [HideInInspector] public List<InventoryItem> invItemsDragging = new List<InventoryItem>();
     List<InventoryItem> activeGhostInvItems = new List<InventoryItem>();
 
     InventoryItem firstSelectedItem;
@@ -160,14 +160,6 @@ public class UIManager : MonoBehaviour
                         {
                             DragAndDrop_DropItem(invItemsDragging[i]);
                         }
-
-                        // Reset and hide the ghostInvItem
-                        for (int i = 0; i < activeGhostInvItems.Count; i++)
-                        {
-                            activeGhostInvItems[i].ResetInvItem();
-                            activeGhostInvItems[i].gameObject.SetActive(false);
-                            gm.objectPoolManager.ghostImageInventoryItemObjectPool.activePooledInventoryItems.Remove(activeGhostInvItems[i]);
-                        }
                     }
 
                     // Remove highlighting for any selected items
@@ -179,14 +171,8 @@ public class UIManager : MonoBehaviour
                     gm.containerInvUI.UpdateUI();
                     gm.playerInvUI.UpdateUI();
 
-                    // Reset these variables and clear out our lists:
-                    invItemsDragging.Clear();
-                    selectedItems.Clear();
-                    activeGhostInvItems.Clear();
-                    firstSelectedItem = null;
-                    activeInvItem = null;
-                    dragTimer = 0;
-                    activeInvItemCount = 0;
+                    // Reset variables and clear out our lists:
+                    Reset();
                 }
                 else if (activeInvItem != null)
                 {
@@ -198,6 +184,21 @@ public class UIManager : MonoBehaviour
                             SelectActiveItem();
                         else
                             DeselectActiveItem();
+
+                        // If we selected an expanded bag, deselect any of its children that are selected
+                        if ((activeInvItem.itemData.item.IsBag() || activeInvItem.itemData.item.itemType == ItemType.PortableContainer) && activeInvItem.disclosureWidget.isExpanded)
+                        {
+                            for (int i = 0; i < activeInvItem.disclosureWidget.expandedItems.Count; i++)
+                            {
+                                if (selectedItems.Contains(activeInvItem.disclosureWidget.expandedItems[i]))
+                                    DeselectItem(activeInvItem.disclosureWidget.expandedItems[i]);
+                            }
+                        } // If we select an item that is inside a bag/portable container and the bag/portable container is already selected, deselect the bag/portable container
+                        else if (activeInvItem.parentInvItem != null)
+                        {
+                            if (selectedItems.Contains(activeInvItem.parentInvItem))
+                                DeselectItem(activeInvItem.parentInvItem);
+                        }
                     }
                 }
 
@@ -212,7 +213,7 @@ public class UIManager : MonoBehaviour
                 dragTimer += Time.deltaTime;
 
                 // Once the timer is above the minDragTime, start dragging
-                if (dragTimer >= minDragTime)
+                if (dragTimer >= minDragTime && (activeGhostInvItems.Count > 0 || (activeInvItem != null && activeInvItem.myInvUI.scrollbarSelected == false)))
                 {
                     // Setup the image for the item we're dragging
                     if (activeGhostInvItems.Count == 0)
@@ -378,6 +379,13 @@ public class UIManager : MonoBehaviour
                         }
                     }
                 }
+            }
+
+            for (int i = 0; i < selectedItems.Count; i++)
+            {
+                // If a parent bag item is selected while at least one of its children is also selected, deselect the parent bag item
+                if (selectedItems[i].parentInvItem != null && selectedItems.Contains(selectedItems[i].parentInvItem))
+                    DeselectItem(selectedItems[i].parentInvItem);
             }
         }
     }
@@ -570,6 +578,19 @@ public class UIManager : MonoBehaviour
         // Re-enable components for the dragged item, since they were disabled previously
         if (draggedInvItem != null)
             draggedInvItem.Show();
+
+        // Disable all of the ghost items
+        ResetandHideGhostItems();
+    }
+
+    public void ResetandHideGhostItems()
+    {
+        for (int i = 0; i < activeGhostInvItems.Count; i++)
+        {
+            activeGhostInvItems[i].ResetInvItem();
+            activeGhostInvItems[i].gameObject.SetActive(false);
+            gm.objectPoolManager.ghostImageInventoryItemObjectPool.activePooledInventoryItems.Remove(activeGhostInvItems[i]);
+        }
     }
 
     void RemoveDraggedItem(InventoryItem draggedInvItem, int startingItemCount)
@@ -590,7 +611,7 @@ public class UIManager : MonoBehaviour
     void RearrangeItems(InventoryItem draggedInvItem)
     {
         // Drag the InventoryItem up (if the mouse position is above the draggedItem's original position)
-        if (draggedInvItem.transform.GetSiblingIndex() != 0 && Input.mousePosition.y > draggedInvItem.transform.position.y + 16 && draggedInvItem.myInvUI == activeInvUI)
+        if (draggedInvItem.transform.GetSiblingIndex() != 0 && draggedInvItem.myInvUI == activeInvUI && activeInvItem != draggedInvItem && Input.mousePosition.y > draggedInvItem.transform.position.y + 16)
         {
             // Set the new sibling index of the item
             if (draggedInvItem.parentInvItem == null || draggedInvItem.parentInvItem.itemData.CompareTag("Item Pickup") == false
@@ -699,7 +720,8 @@ public class UIManager : MonoBehaviour
             }
         }
         // Drag the InventoryItem down (if the mouse position is below the draggedItem's original position)
-        else if (draggedInvItem.transform.GetSiblingIndex() != activeInvItemCount - 1 && Input.mousePosition.y < draggedInvItem.transform.position.y - 16 && draggedInvItem.myInvUI == activeInvUI)
+        else if (draggedInvItem.transform.GetSiblingIndex() != draggedInvItem.myInvUI.inventoryItemObjectPool.pooledInventoryItems.Count - 1 && draggedInvItem.myInvUI == activeInvUI && activeInvItem != draggedInvItem 
+            && Input.mousePosition.y < draggedInvItem.transform.position.y - 16)
         {
             // Set the new sibling index of the item
             draggedInvItem.transform.SetSiblingIndex(draggedInvItem.transform.GetSiblingIndex() + 1);
@@ -880,5 +902,24 @@ public class UIManager : MonoBehaviour
 
         Debug.Log("There's not enough room on the ground to place the " + itemDataComingFrom.itemName);
         return false;
+    }
+
+    public void Reset()
+    {
+        invItemsDragging.Clear();
+        selectedItems.Clear();
+        activeGhostInvItems.Clear();
+        firstSelectedItem = null;
+        activeInvItem = null;
+        dragTimer = 0;
+        activeInvItemCount = 0;
+    }
+
+    public void ShowHiddenItems()
+    {
+        for (int i = 0; i < invItemsDragging.Count; i++)
+        {
+            invItemsDragging[i].Show();
+        }
     }
 }

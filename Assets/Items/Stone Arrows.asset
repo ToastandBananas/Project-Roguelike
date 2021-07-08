@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7476aa059066dea4eba063a8f3820f3a, type: 3}
+  m_Name: Stone Arrows
+  m_EditorClassIdentifier: 
+  name: Stone Arrow(s)
+  itemType: 2
+  description: A simple wooden arrow with an arrowhead made of stone.
+  maxStackSize: 50
+  weight: 0.08
+  volume: 0.25
+  isUsable: 0
+  minBaseValue: 0
+  maxBaseValue: 0
+  staticValue: 1
+  pickupSprite: {fileID: 3695201799222929562, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}

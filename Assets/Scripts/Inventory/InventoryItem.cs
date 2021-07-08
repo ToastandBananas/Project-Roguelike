@@ -73,6 +73,12 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
         myInvUI.inventoryItemObjectPool.activePooledInventoryItems.Remove(this);
 
+        // Update the scrollbar if necessary
+        if (myInvUI.inventoryItemObjectPool.activePooledInventoryItems.Count > myInvUI.maxInvItems)
+            myInvUI.EditInventoryItemsParentHeight(-myInvUI.invItemHeight);
+        else if (myInvUI.inventoryItemObjectPool.activePooledInventoryItems.Count == myInvUI.maxInvItems)
+            myInvUI.ResetInventoryItemsParentHeight();
+
         if (gm.uiManager.activeInvItem == this)
             gm.uiManager.activeInvItem = null;
 

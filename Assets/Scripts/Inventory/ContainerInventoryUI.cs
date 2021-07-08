@@ -438,6 +438,13 @@ public class ContainerInventoryUI : InventoryUI
             default:
                 break;
         }
+
+        // Setup the scrollbar
+        if (inventoryItemObjectPool.activePooledInventoryItems.Count > maxInvItems)
+        {
+            scrollbar.value = 1;
+            invItemsParentRectTransform.offsetMin = new Vector2(invItemsParentRectTransform.offsetMin.x, (inventoryItemObjectPool.activePooledInventoryItems.Count - maxInvItems) * -invItemHeight);
+        }
     }
 
     public List<ItemData> GetItemsListFromActiveDirection()
