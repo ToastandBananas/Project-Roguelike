@@ -111,11 +111,16 @@ public class ContainerInventoryUI : InventoryUI
         {
             if (hits[i].collider != null)
             {
-                if (hits[i].collider.CompareTag("NPC") == false && hits[i].collider.TryGetComponent(out Inventory inventory) != false)
+                if (hits[i].collider.CompareTag("NPC") == false && hits[i].collider.TryGetComponent(out Inventory inventory))
                 {
                     if (hits[i].collider.TryGetComponent(out ItemData itemData))
                     {
                         itemsList.Add(itemData);
+                        if (itemData.item.IsBag())
+                        {
+                            SetSideBarIcon_Container(direction, inventory);
+                            AssignDirectionalInventory(direction, inventory);
+                        }
                     }
                     else
                     {
@@ -124,10 +129,10 @@ public class ContainerInventoryUI : InventoryUI
                         {
                             itemsList.Add(inventory.items[j]);
                         }
-                    }
 
-                    SetSideBarIcon_Container(direction, inventory);
-                    AssignDirectionalInventory(direction, inventory);
+                        SetSideBarIcon_Container(direction, inventory);
+                        AssignDirectionalInventory(direction, inventory);
+                    }
                 }
                 else
                 {

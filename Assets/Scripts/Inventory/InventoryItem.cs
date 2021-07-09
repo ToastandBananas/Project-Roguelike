@@ -91,7 +91,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             myInventory.items.Remove(itemData);
 
         // If the item being cleared is a bag or portable container, contract the disclosure widget (if it's expanded)
-        if (itemData != null && (itemData.item.IsBag() || itemData.item.itemType == ItemType.PortableContainer) && disclosureWidget.isExpanded)
+        if (itemData != null && (itemData.item.IsBag() || itemData.item.itemType == ItemType.Container) && disclosureWidget.isExpanded)
             disclosureWidget.ContractDisclosureWidget();
 
         // Return the itemData on this InventoryItem back to the appropriate object pool
@@ -159,7 +159,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         float totalWeight = Mathf.RoundToInt(itemData.item.weight * itemData.currentStackSize * 100f) / 100f;
         float totalVolume = Mathf.RoundToInt(itemData.item.volume * itemData.currentStackSize * 100f) / 100f;
 
-        if (itemData.item.IsBag() || itemData.item.itemType == ItemType.PortableContainer)
+        if (itemData.item.IsBag() || itemData.item.itemType == ItemType.Container)
         {
             for (int i = 0; i < itemData.bagInventory.items.Count; i++)
             {
@@ -469,7 +469,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         itemWeightText.enabled = false;
         itemVolumeText.enabled = false;
 
-        if ((itemData.item.itemType == ItemType.Bag || itemData.item.itemType == ItemType.PortableContainer) && disclosureWidget != null)
+        if ((itemData.item.itemType == ItemType.Bag || itemData.item.itemType == ItemType.Container) && disclosureWidget != null)
         {
             if (disclosureWidget.isExpanded)
                 disclosureWidget.ContractDisclosureWidget();
@@ -489,7 +489,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         itemVolumeText.enabled = true;
         RemoveHighlight();
 
-        if (itemData != null && myEquipmentManager == null && (itemData.item.itemType == ItemType.Bag || itemData.item.itemType == ItemType.PortableContainer))
+        if (itemData != null && myEquipmentManager == null && (itemData.item.itemType == ItemType.Bag || itemData.item.itemType == ItemType.Container))
             disclosureWidget.EnableDisclosureWidget();
     }
 }

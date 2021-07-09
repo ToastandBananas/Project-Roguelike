@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 3749062138308843612}
   - component: {fileID: 7462452904538821107}
   m_Layer: 0
-  m_Name: ItemDataContainerObject
+  m_Name: ContainerItemDataObject
   m_TagString: Item Data Container Object
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

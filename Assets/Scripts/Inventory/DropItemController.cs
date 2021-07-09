@@ -49,13 +49,19 @@ public class DropItemController : MonoBehaviour
             if (gm.containerInvUI.activeDirection == dropDirection)
                 gm.containerInvUI.activeInventory = newItemPickup.inventory;
         }
+        else if (itemData.item.IsPortableContainer())
+        {
+            // If the item we're dropping is a portable container, create a new portable container pickup
+            newItemPickup = gm.objectPoolManager.portableContainerPickupsPool.GetPooledItemPickup();
+            newItemPickup.inventory.items.Clear();
+        }
         else // Otherwise, if the item is not a bag, create a normal item pickup
             newItemPickup = gm.objectPoolManager.itemPickupsPool.GetPooledItemPickup();
 
         // Activate the pickup, transfer data to it and set its sprite, position, item count and interaction transform
         SetupItemPickup(newItemPickup, itemData, amountToDrop, dropPosition);
 
-        if (itemData.item.IsBag())
+        if (itemData.item.IsBag() || itemData.item.IsPortableContainer())
         {
             Inventory bagInv = null;
             if (itemData.transform.parent.parent != null && itemData.transform.parent.parent.name == "Equipped Items") // If we're dropping this item straight from our equipped items menu
@@ -63,21 +69,10 @@ public class DropItemController : MonoBehaviour
             else
                 bagInv = itemData.bagInventory;
 
-            // If the item we're dropping is a bag, add new ItemData Objects to the items parent of the dropped bag and transfer data to them
+            // If the item we're dropping is a bag (or portable container), add new ItemData Objects to the items parent of the dropped bag and transfer data to them
             for (int i = 0; i < bagInv.items.Count; i++)
             {
-                ItemData newItemDataObject = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData();
-                newItemDataObject.transform.SetParent(newItemPickup.itemData.bagInventory.itemsParent);
-                newItemDataObject.gameObject.SetActive(true);
-                bagInv.items[i].TransferData(bagInv.items[i], newItemDataObject);
-
-                // Populate the new bag's inventory, but make sure it's not already in the items list (because of the Inventory's Init method, which populates this list)
-                if (newItemPickup.itemData.bagInventory.items.Contains(newItemDataObject) == false)
-                    newItemPickup.itemData.bagInventory.items.Add(newItemDataObject);
-
-                #if UNITY_EDITOR
-                    newItemDataObject.name = newItemDataObject.itemName;
-                #endif
+                gm.uiManager.CreateNewItemDataChild(bagInv.items[i], newItemPickup.itemData.bagInventory, true);
             }
 
             // Set the weight and volume of the "new" bag
@@ -155,7 +150,7 @@ public class DropItemController : MonoBehaviour
         }
     }
 
-    void SetupItemPickup(ItemPickup newItemPickup, ItemData itemData, int amountToDrop, Vector3 dropPosition)
+    public void SetupItemPickup(ItemPickup newItemPickup, ItemData itemData, int amountToDrop, Vector3 dropPosition)
     {
         newItemPickup.gameObject.SetActive(true);
         newItemPickup.transform.position = dropPosition;
@@ -164,6 +159,17 @@ public class DropItemController : MonoBehaviour
         itemData.TransferData(itemData, newItemPickup.itemData);
         newItemPickup.itemCount = amountToDrop;
         newItemPickup.interactionTransform = newItemPickup.transform;
+
+        if (itemData.item.IsBag())
+        {
+            Bag bag = (Bag)itemData.item;
+            bag.SetupBagInventory(newItemPickup.inventory);
+        }
+        else if (itemData.item.IsPortableContainer())
+        {
+            PortableContainer portableContainer = (PortableContainer)itemData.item;
+            portableContainer.SetupPortableContainerInventory(newItemPickup.inventory);
+        }
 
         #if UNITY_EDITOR
             newItemPickup.name = itemData.name;

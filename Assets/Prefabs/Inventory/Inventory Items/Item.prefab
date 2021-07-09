@@ -150,6 +150,7 @@ MonoBehaviour:
   button: {fileID: 957819979679405683}
   rightArrowSprite: {fileID: 21300000, guid: 9475fe29c02a41f4f95bcece789988ab, type: 3}
   downArrowSprite: {fileID: 21300000, guid: d87bcfc33ddc8fa489a25ca535773cc3, type: 3}
+  expandedItems: []
   isExpanded: 0
   isEnabled: 0
   isSelected: 0
@@ -557,12 +558,15 @@ MonoBehaviour:
   itemData: {fileID: 0}
   myInvUI: {fileID: 0}
   myInventory: {fileID: 0}
+  parentInvItem: {fileID: 0}
   myEquipmentManager: {fileID: 0}
   gm: {fileID: 0}
   isHidden: 0
   isGhostItem: 0
   isItemInsideBag: 0
   isItemInsidePortableContainer: 0
+  canDragToCurrentLocation: 1
+  originalSiblingIndex: 0
 --- !u!1 &5458695786379007275
 GameObject:
   m_ObjectHideFlags: 0

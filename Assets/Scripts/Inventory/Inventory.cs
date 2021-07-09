@@ -96,7 +96,7 @@ public class Inventory : MonoBehaviour
         {
             // Create a new ItemData Object
             ItemData itemDataToAdd = null;
-            if (itemDataComingFrom.item.IsBag())
+            if (itemDataComingFrom.item.IsBag() || itemDataComingFrom.item.IsPortableContainer())
             {
                 itemDataToAdd = gm.objectPoolManager.itemDataContainerObjectPool.GetPooledItemData();
                 itemDataToAdd.bagInventory.items.Clear();
@@ -106,6 +106,17 @@ public class Inventory : MonoBehaviour
 
             // Transfer data to the new ItemData
             itemDataToAdd.TransferData(itemDataComingFrom, itemDataToAdd);
+
+            if (itemDataToAdd.item.IsBag())
+            {
+                Bag bag = (Bag)itemDataToAdd.item;
+                bag.SetupBagInventory(itemDataToAdd.bagInventory);
+            }
+            else if (itemDataToAdd.item.IsPortableContainer())
+            {
+                PortableContainer portableContainer = (PortableContainer)itemDataToAdd.item;
+                portableContainer.SetupPortableContainerInventory(itemDataToAdd.bagInventory);
+            }
 
             // Since we transferred data from the old ItemData, we need to make sure to set the currentStackSize to 1 if we were only adding one of the item
             if (itemCount == 1)
@@ -128,31 +139,19 @@ public class Inventory : MonoBehaviour
             itemDataToAdd.gameObject.SetActive(true);
 
             // If the item is a bag, add any items it had to the "new" bag object's Inventory
-            if (itemDataComingFrom.item.IsBag() || itemDataComingFrom.item.itemType == ItemType.PortableContainer)
+            if (itemDataComingFrom.item.IsBag() || itemDataComingFrom.item.IsPortableContainer())
             {
                 Inventory itemDataComingFromsInv = null;
-                if (invComingFrom == null)
+                if (invComingFrom == null && itemDataComingFrom.item.IsBag())
                     itemDataComingFromsInv = gm.playerInvUI.GetInventoryFromBagEquipSlot(itemDataComingFrom);
-                else if (itemDataComingFrom.CompareTag("Item Pickup")) // If this is a bag we're picking up from the ground
+                else if (itemDataComingFrom.CompareTag("Item Pickup") && itemDataComingFrom.item.IsBag()) // If this is a bag we're picking up from the ground
                     itemDataComingFromsInv = invComingFrom;
                 else
                     itemDataComingFromsInv = itemDataComingFrom.bagInventory; // If this bag is inside a container or one of the player's inventories
                 
                 for (int i = 0; i < itemDataComingFromsInv.items.Count; i++)
                 {
-                    // Add new ItemData Objects to the items parent of the new bag and transfer data to them
-                    ItemData newItemDataObject = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData();
-                    newItemDataObject.transform.SetParent(itemDataToAdd.bagInventory.itemsParent);
-                    newItemDataObject.gameObject.SetActive(true);
-                    itemDataComingFromsInv.items[i].TransferData(itemDataComingFromsInv.items[i], newItemDataObject);
-
-                    // Populate the new bag's inventory, but make sure it's not already in the items list (because of the Inventory's Init method, which populates this list)
-                    if (itemDataToAdd.bagInventory.items.Contains(newItemDataObject) == false)
-                        itemDataToAdd.bagInventory.items.Add(newItemDataObject);
-
-                    #if UNITY_EDITOR
-                        newItemDataObject.name = newItemDataObject.itemName;
-                    #endif
+                    gm.uiManager.CreateNewItemDataChild(itemDataComingFromsInv.items[i], itemDataToAdd.bagInventory, true);
                 }
 
                 // If the bag is coming from an Inventory or EquipmentManager (and not from the ground), subtract the bag's weight/volume, including the items inside it
@@ -205,7 +204,7 @@ public class Inventory : MonoBehaviour
             #endif
 
             // If we're taking this item from another Inventory and it's not a bag or portable container, update its weight and volume
-            if (invComingFrom != null && itemDataComingFrom.item.IsBag() == false && itemDataComingFrom.item.itemType != ItemType.PortableContainer)
+            if (invComingFrom != null && itemDataComingFrom.item.IsBag() == false && itemDataComingFrom.item.itemType != ItemType.Container)
                 SubtractItemsWeightAndVolumeFromInventory(itemDataComingFrom, invComingFrom, invItemComingFrom, itemCount, true);
 
             // If we're only taking 1 count of the item, subtract 1 from the currentStackSize, otherwise it should now be 0
@@ -314,7 +313,7 @@ public class Inventory : MonoBehaviour
         float itemWeight = Mathf.RoundToInt(itemData.item.weight * itemCount * 100f) / 100f;
         float itemVolume = Mathf.RoundToInt(itemData.item.volume * itemCount * 100f) / 100f;
 
-        if (itemData.item.IsBag() || itemData.item.itemType == ItemType.PortableContainer)
+        if (itemData.item.IsBag() || itemData.item.IsPortableContainer())
         {
             if (itemData.transform.parent.parent != null && itemData.transform.parent.parent.name == "Equipped Items") // If the bag is equipped
             {
@@ -365,7 +364,7 @@ public class Inventory : MonoBehaviour
         invAddingItemTo.currentWeight += Mathf.RoundToInt(itemDataAdding.item.weight * itemCount * 100f) / 100f;
         invAddingItemTo.currentVolume += Mathf.RoundToInt(itemDataAdding.item.volume * itemCount * 100f) / 100f;
 
-        if (itemDataAdding.item.IsBag() || itemDataAdding.item.itemType == ItemType.PortableContainer)
+        if (itemDataAdding.item.IsBag() || itemDataAdding.item.itemType == ItemType.Container)
         {
             for (int i = 0; i < itemDataAdding.bagInventory.items.Count; i++)
             {
@@ -393,7 +392,7 @@ public class Inventory : MonoBehaviour
             }
         }
 
-        if (itemDataRemoving.item.IsBag() || itemDataRemoving.item.itemType == ItemType.PortableContainer)
+        if (itemDataRemoving.item.IsBag() || itemDataRemoving.item.itemType == ItemType.Container)
         {
             for (int i = 0; i < itemDataRemoving.bagInventory.items.Count; i++)
             {

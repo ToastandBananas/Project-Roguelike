@@ -8,6 +8,7 @@ public class ObjectPoolManager : MonoBehaviour
     public InventoryItemObjectPool ghostImageInventoryItemObjectPool;
     public ItemPickupObjectPool itemPickupsPool;
     public ItemPickupObjectPool bagPickupsPool;
+    public ItemPickupObjectPool portableContainerPickupsPool;
     public ItemDataObjectPool itemDataObjectPool;
     public ItemDataObjectPool itemDataContainerObjectPool;
 

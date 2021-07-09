@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum ItemType { Item, Weapon, Ammo, Clothing, Armor, Food, Drink, Ingredient, Seed, Readable, Key, QuestItem, Bag, PortableContainer }
+public enum ItemType { Item, Weapon, Ammo, Clothing, Armor, Food, Drink, Ingredient, Seed, Readable, Key, QuestItem, Bag, Container }
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Inventory/Item")]
 public class Item : ScriptableObject
@@ -81,6 +81,11 @@ public class Item : ScriptableObject
     }
 
     public virtual bool IsBag()
+    {
+        return false;
+    }
+
+    public virtual bool IsPortableContainer()
     {
         return false;
     }

@@ -60,6 +60,12 @@ public class EquipmentManager : MonoBehaviour
         equipmentItemData.transform.SetParent(itemsParent);
         equipmentItemData.gameObject.SetActive(true);
 
+        if (newItemData.item.IsBag())
+        {
+            Bag bag = (Bag)newItemData.item;
+            bag.SetupBagInventory(equipmentItemData.bagInventory);
+        }
+
         #if UNITY_EDITOR
             equipmentItemData.gameObject.name = equipmentItemData.itemName;
         #endif
@@ -78,8 +84,7 @@ public class EquipmentManager : MonoBehaviour
         // Adjust the equipment manager's weight and volume
         currentWeight += Mathf.RoundToInt(equipmentItemData.item.weight * 100f) / 100f;
         currentVolume += Mathf.RoundToInt(equipmentItemData.item.volume * 100f) / 100f;
-
-        // If the item was a bag, be sure to add the weight/volume of the bag's contents
+        
         if (newItemData.item.IsBag())
         {
             // Setup the sidebar for the new bag
@@ -94,19 +99,7 @@ public class EquipmentManager : MonoBehaviour
 
             for (int i = 0; i < newItemData.bagInventory.items.Count; i++)
             {
-                // Add new ItemData Objects to the items parent of the new bag and transfer data to them
-                ItemData newItemDataObject = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData();
-                newItemDataObject.transform.SetParent(bagsInventory.itemsParent);
-                newItemDataObject.gameObject.SetActive(true);
-                newItemData.bagInventory.items[i].TransferData(newItemData.bagInventory.items[i], newItemDataObject);
-
-                // Populate the new bag's inventory, but make sure it's not already in the items list (because of the Inventory's Init method, which populates this list)
-                if (bagsInventory.items.Contains(newItemDataObject) == false)
-                    bagsInventory.items.Add(newItemDataObject);
-
-                #if UNITY_EDITOR
-                    newItemDataObject.name = newItemDataObject.itemName;
-                #endif
+                gm.uiManager.CreateNewItemDataChild(newItemData.bagInventory.items[i], bagsInventory, true);
             }
 
             // Set the weight and volume of the "new" bag

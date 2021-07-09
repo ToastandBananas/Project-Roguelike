@@ -6,7 +6,7 @@ public class ItemPickup : Interactable
     public int itemCount = 1;
     public bool shouldUseItemCount;
 
-    [Header("Bags Only")]
+    [Header("Bags & Portable Containers Only")]
     public Inventory inventory;
 
     [HideInInspector] public ItemData itemData;
@@ -38,9 +38,20 @@ public class ItemPickup : Interactable
 
         if (inventory != null)
         {
-            Bag bag = (Bag)itemData.item;
-            inventory.maxWeight = bag.maxWeight;
-            inventory.maxVolume = bag.maxVolume;
+            if (itemData.item.IsBag())
+            {
+                Bag bag = (Bag)itemData.item;
+                inventory.maxWeight = bag.maxWeight;
+                inventory.maxVolume = bag.maxVolume;
+                inventory.singleItemVolumeLimit = bag.singleItemVolumeLimit;
+            }
+            else if (itemData.item.IsPortableContainer())
+            {
+                PortableContainer portableContainer = (PortableContainer)itemData.item;
+                inventory.maxWeight = portableContainer.maxWeight;
+                inventory.maxVolume = portableContainer.maxVolume;
+                inventory.singleItemVolumeLimit = portableContainer.singleItemVolumeLimit;
+            }
         }
     }
 

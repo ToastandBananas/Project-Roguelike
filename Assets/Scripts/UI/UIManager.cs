@@ -186,7 +186,7 @@ public class UIManager : MonoBehaviour
                             DeselectActiveItem();
 
                         // If we selected an expanded bag, deselect any of its children that are selected
-                        if ((activeInvItem.itemData.item.IsBag() || activeInvItem.itemData.item.itemType == ItemType.PortableContainer) && activeInvItem.disclosureWidget.isExpanded)
+                        if ((activeInvItem.itemData.item.IsBag() || activeInvItem.itemData.item.itemType == ItemType.Container) && activeInvItem.disclosureWidget.isExpanded)
                         {
                             for (int i = 0; i < activeInvItem.disclosureWidget.expandedItems.Count; i++)
                             {
@@ -257,8 +257,8 @@ public class UIManager : MonoBehaviour
         newGhostInvItem.itemData = originalItem.itemData;
         newGhostInvItem.UpdateAllItemTexts();
         newGhostInvItem.gameObject.SetActive(true);
-        originalItem.originalSiblingIndex = originalItem.transform.GetSiblingIndex();
         originalItem.Hide();
+        originalItem.originalSiblingIndex = originalItem.transform.GetSiblingIndex();
     }
 
     void SelectItem(InventoryItem invItem)
@@ -446,6 +446,7 @@ public class UIManager : MonoBehaviour
             {
                 draggedInvItem.transform.SetSiblingIndex(draggedInvItem.originalSiblingIndex);
                 draggedInvItem.Show();
+                ResetandHideGhostItems();
                 return;
             }
         }
@@ -615,24 +616,41 @@ public class UIManager : MonoBehaviour
         {
             // Set the new sibling index of the item
             if (draggedInvItem.parentInvItem == null || draggedInvItem.parentInvItem.itemData.CompareTag("Item Pickup") == false
-                || draggedInvItem.transform.GetSiblingIndex() >= draggedInvItem.parentInvItem.transform.GetSiblingIndex() + 2) // If the parent bag item of the item we're dragging is on the ground, make sure not to move the dragged item above the bag item
+                || draggedInvItem.parentInvItem.itemData.item.IsPortableContainer() || draggedInvItem.transform.GetSiblingIndex() >= draggedInvItem.parentInvItem.transform.GetSiblingIndex() + 2) // If the parent bag item of the item we're dragging is on the ground, make sure not to move the dragged item above the bag item
             {
                 draggedInvItem.transform.SetSiblingIndex(draggedInvItem.transform.GetSiblingIndex() - 1);
             }
 
             // If the item is in a bag and we drag it above its bag item
-            if (draggedInvItem.parentInvItem != null && draggedInvItem.parentInvItem.itemData.CompareTag("Item Pickup") == false
+            if (draggedInvItem.parentInvItem != null && (draggedInvItem.parentInvItem.itemData.CompareTag("Item Pickup") == false || draggedInvItem.parentInvItem.itemData.item.IsPortableContainer())
                 && draggedInvItem.transform.GetSiblingIndex() < draggedInvItem.parentInvItem.transform.GetSiblingIndex())
             {
                 draggedInvItem.canDragToCurrentLocation = true;
                 draggedInvItem.originalSiblingIndex = draggedInvItem.transform.GetSiblingIndex();
 
                 // The item is no longer in the bag, so remove it from the bag
-                int indexOfBag = draggedInvItem.parentInvItem.myInventory.items.IndexOf(draggedInvItem.parentInvItem.itemData);
-                draggedInvItem.myInventory = draggedInvItem.parentInvItem.myInventory;
-                draggedInvItem.myInventory.items.Insert(indexOfBag, draggedInvItem.itemData);
-                draggedInvItem.parentInvItem.itemData.bagInventory.items.Remove(draggedInvItem.itemData);
-                draggedInvItem.itemData.transform.SetParent(draggedInvItem.myInventory.itemsParent);
+                int indexOfBag = 0;
+                if (draggedInvItem.parentInvItem.myInventory != null)
+                {
+                    indexOfBag = draggedInvItem.parentInvItem.myInventory.items.IndexOf(draggedInvItem.parentInvItem.itemData);
+                    draggedInvItem.myInventory = draggedInvItem.parentInvItem.myInventory;
+                    draggedInvItem.myInventory.items.Insert(indexOfBag, draggedInvItem.itemData);
+                    draggedInvItem.itemData.transform.SetParent(draggedInvItem.myInventory.itemsParent);
+                    draggedInvItem.parentInvItem.itemData.bagInventory.items.Remove(draggedInvItem.itemData);
+                }
+                else // If we're taking the item out of a portable container on the ground, drop the item
+                {
+                    if (draggedInvItem.myInvUI == gm.containerInvUI)
+                        indexOfBag = gm.containerInvUI.GetItemsListFromActiveDirection().IndexOf(draggedInvItem.parentInvItem.itemData);
+
+                    //gm.dropItemController.DropItem(draggedInvItem.parentInvItem.itemData.transform.position, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.parentInvItem.itemData.bagInventory, null);
+                    ItemPickup newItemPickup = gm.objectPoolManager.itemPickupsPool.GetPooledItemPickup();
+                    gm.dropItemController.SetupItemPickup(newItemPickup, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.parentInvItem.itemData.transform.position);
+                    draggedInvItem.parentInvItem.itemData.bagInventory.items.Remove(draggedInvItem.itemData);
+                    draggedInvItem.itemData.ReturnToItemDataObjectPool();
+                    draggedInvItem.itemData = newItemPickup.itemData;
+                }
+
                 draggedInvItem.parentInvItem.disclosureWidget.expandedItems.Remove(draggedInvItem);
 
                 // Update weight/volume for the bag
@@ -654,14 +672,35 @@ public class UIManager : MonoBehaviour
             // If the item is not in a bag, but we drag it in between items in an expanded bag or in between the bag itself and an item inside it
             else if (draggedInvItem.parentInvItem == null && lastActiveItem != null && lastActiveItem != draggedInvItem && lastActiveItem.isItemInsideBag
                 && draggedInvItem.transform.GetSiblingIndex() < lastActiveItem.transform.GetSiblingIndex() && draggedInvItem.itemData.item.IsBag() == false 
-                && (draggedInvItem.itemData.item.itemType != ItemType.PortableContainer || lastActiveItem.parentInvItem.itemData.item.IsBag()))
+                && (draggedInvItem.itemData.item.IsPortableContainer() == false || lastActiveItem.parentInvItem.itemData.item.IsBag() 
+                    || (lastActiveItem.parentInvItem.itemData.item.IsPortableContainer() && draggedInvItem.itemData.item.IsPortableContainer() == false)))
             {
                 if (lastActiveItem.parentInvItem.itemData.bagInventory.HasRoomInInventory(draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize))
                 {
                     draggedInvItem.canDragToCurrentLocation = true;
                     draggedInvItem.originalSiblingIndex = draggedInvItem.transform.GetSiblingIndex();
 
-                    draggedInvItem.myInventory.items.Remove(draggedInvItem.itemData);
+                    // If the item was a pickup, setup a new itemdata object to be a child of the bag/portable container we're putting the item in
+                    if (draggedInvItem.itemData.CompareTag("Item Pickup"))
+                    {
+                        ItemData newItemData = CreateNewItemDataChild(draggedInvItem.itemData, lastActiveItem.parentInvItem.itemData.bagInventory, false);
+
+                        // Deactivate the pickup and remove it from the directional list
+                        gm.containerInvUI.GetItemsListFromActiveDirection().Remove(draggedInvItem.itemData);
+                        draggedInvItem.itemData.ClearData();
+                        draggedInvItem.itemData.gameObject.SetActive(false);
+                        draggedInvItem.itemData = newItemData;
+                        Debug.Log("The item was a pickup");
+                    }
+                    else
+                    {
+                        draggedInvItem.myInventory.items.Remove(draggedInvItem.itemData);
+
+                        // If this is a container UI item, remove the item from the appropriate directional list
+                        if (draggedInvItem.myInvUI == gm.containerInvUI && draggedInvItem.parentInvItem == null)
+                            gm.containerInvUI.GetItemsListFromActiveDirection().Remove(draggedInvItem.itemData);
+                    }
+
                     draggedInvItem.myInventory = lastActiveItem.parentInvItem.itemData.bagInventory;
                     draggedInvItem.parentInvItem = lastActiveItem.parentInvItem;
                     draggedInvItem.myInventory.items.Insert(draggedInvItem.myInventory.items.Count - 1, draggedInvItem.itemData);
@@ -673,10 +712,6 @@ public class UIManager : MonoBehaviour
                     draggedInvItem.parentInvItem.itemData.bagInventory.currentWeight += Mathf.RoundToInt(draggedInvItem.itemData.item.weight * draggedInvItem.itemData.currentStackSize * 100f) / 100f;
                     draggedInvItem.parentInvItem.itemData.bagInventory.currentVolume += Mathf.RoundToInt(draggedInvItem.itemData.item.volume * draggedInvItem.itemData.currentStackSize * 100f) / 100f;
                     draggedInvItem.parentInvItem.UpdateItemNumberTexts();
-
-                    // If this is a container UI item, remove the item from the appropriate directional list
-                    if (draggedInvItem.myInvUI == gm.containerInvUI && draggedInvItem.parentInvItem == null)
-                        gm.containerInvUI.GetItemsListFromActiveDirection().Remove(draggedInvItem.itemData);
                 }
                 else
                 {
@@ -726,17 +761,54 @@ public class UIManager : MonoBehaviour
             // Set the new sibling index of the item
             draggedInvItem.transform.SetSiblingIndex(draggedInvItem.transform.GetSiblingIndex() + 1);
 
-            // If the item is in a bag and we drag it below the last item in the bag, remove it from the bag
-            if (draggedInvItem.parentInvItem != null && lastActiveItem != null && lastActiveItem != draggedInvItem
-                && draggedInvItem.parentInvItem.itemData.bagInventory.items.Contains(lastActiveItem.itemData) == false)
+            // If the item is in a bag and we drag it below the last item in the bag, remove it from the bag (but we can't drag bags into bags or portable containers/portable containers into portable containers)
+            if (draggedInvItem.parentInvItem != null && lastActiveItem != null && lastActiveItem != draggedInvItem && lastActiveItem != draggedInvItem.parentInvItem
+                && draggedInvItem.parentInvItem.itemData.bagInventory.items.Contains(lastActiveItem.itemData) == false
+                && ((lastActiveItem.itemData.item.IsBag() == false && lastActiveItem.itemData.item.IsPortableContainer() == false) 
+                || (lastActiveItem.itemData.item.IsBag() && draggedInvItem.itemData.item.IsBag() == false)
+                    || (lastActiveItem.itemData.item.IsPortableContainer() && draggedInvItem.itemData.item.IsBag() == false && draggedInvItem.itemData.item.IsPortableContainer() == false)))
             {
                 draggedInvItem.canDragToCurrentLocation = true;
-                draggedInvItem.originalSiblingIndex = draggedInvItem.transform.GetSiblingIndex();
+
+                int indexOfBag = 0;
+                if (draggedInvItem.parentInvItem.itemData.CompareTag("Item Pickup"))
+                    indexOfBag = gm.containerInvUI.GetItemsListFromActiveDirection().IndexOf(draggedInvItem.parentInvItem.itemData);
+                else
+                    indexOfBag = draggedInvItem.parentInvItem.myInventory.items.IndexOf(draggedInvItem.parentInvItem.itemData);
+
+                bool addedToAnotherBag = false;
 
                 // The item is no longer in the bag, so remove it from the bag
-                int indexOfBag = draggedInvItem.parentInvItem.myInventory.items.IndexOf(draggedInvItem.parentInvItem.itemData);
-                draggedInvItem.myInventory = draggedInvItem.parentInvItem.myInventory;
-                draggedInvItem.myInventory.items.Insert(indexOfBag + 2, draggedInvItem.itemData);
+                // If we're dragging into another bag and this isn't a bag, add the item to the bag
+                if (lastActiveItem.itemData.item.IsBag() || lastActiveItem.itemData.item.IsPortableContainer())
+                {
+                    if (lastActiveItem.itemData.bagInventory.HasRoomInInventory(draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize))
+                    {
+                        addedToAnotherBag = true;
+                        draggedInvItem.myInventory = lastActiveItem.itemData.bagInventory;
+                        draggedInvItem.myInventory.items.Insert(0, draggedInvItem.itemData);
+                    }
+                    else
+                    {
+                        Debug.Log("Not enough room in " + lastActiveItem.itemData.itemName);
+                        draggedInvItem.canDragToCurrentLocation = false;
+                        return;
+                    }
+                }
+                else if (lastActiveItem.isItemInsideBag && lastActiveItem.parentInvItem != draggedInvItem.parentInvItem)
+                {
+                    Debug.Log("Not enough room in " + lastActiveItem.parentInvItem.itemData.itemName);
+                    draggedInvItem.canDragToCurrentLocation = false;
+                    return;
+                }
+                else // If we're not dragging it into another bag, add the item to the player inventory items list
+                {
+                    draggedInvItem.myInventory = draggedInvItem.parentInvItem.myInventory;
+                    draggedInvItem.myInventory.items.Insert(indexOfBag + 2, draggedInvItem.itemData);
+                }
+
+                draggedInvItem.originalSiblingIndex = draggedInvItem.transform.GetSiblingIndex();
+
                 draggedInvItem.parentInvItem.itemData.bagInventory.items.Remove(draggedInvItem.itemData);
                 draggedInvItem.itemData.transform.SetParent(draggedInvItem.myInventory.itemsParent);
                 draggedInvItem.parentInvItem.disclosureWidget.expandedItems.Remove(draggedInvItem);
@@ -750,17 +822,22 @@ public class UIManager : MonoBehaviour
                 if (draggedInvItem.parentInvItem.disclosureWidget.expandedItems.Count == 0)
                     draggedInvItem.parentInvItem.disclosureWidget.ContractDisclosureWidget();
 
-                draggedInvItem.parentInvItem = null;
-                draggedInvItem.isItemInsideBag = false;
+                if (addedToAnotherBag)
+                    draggedInvItem.parentInvItem = lastActiveItem;
+                else
+                {
+                    draggedInvItem.parentInvItem = null;
+                    draggedInvItem.isItemInsideBag = false;
+                }
 
                 // If this is a container UI item, rearrange the appropriate containerUI's directional items list
-                if (draggedInvItem.myInvUI == gm.containerInvUI && draggedInvItem.parentInvItem == null)
+                if (draggedInvItem.myInvUI == gm.containerInvUI && draggedInvItem.parentInvItem == null && addedToAnotherBag == false)
                     gm.containerInvUI.GetItemsListFromActiveDirection().Insert(indexOfBag + 2, draggedInvItem.itemData);
             }
             // If we drag into an open bag from above, try adding the item to the bag
-            else if (lastActiveItem != null && lastActiveItem != draggedInvItem && (lastActiveItem.itemData.item.IsBag() || lastActiveItem.itemData.item.itemType == ItemType.PortableContainer)
+            else if (lastActiveItem != null && lastActiveItem != draggedInvItem && (lastActiveItem.itemData.item.IsBag() || lastActiveItem.itemData.item.itemType == ItemType.Container)
                 && lastActiveItem.disclosureWidget.isExpanded && draggedInvItem.itemData.item.IsBag() == false
-                && (draggedInvItem.itemData.item.itemType != ItemType.PortableContainer || lastActiveItem.itemData.item.IsBag()))
+                && (draggedInvItem.itemData.item.itemType != ItemType.Container || lastActiveItem.itemData.item.IsBag()))
             {
                 if (lastActiveItem.itemData.bagInventory.HasRoomInInventory(draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize))
                 {
@@ -809,7 +886,8 @@ public class UIManager : MonoBehaviour
             }
             // If we drag into an open bag from above and we already know we can't place the item in the bag
             else if (lastActiveItem != null && lastActiveItem != draggedInvItem 
-                && ((lastActiveItem.parentInvItem != null && draggedInvItem.parentInvItem != lastActiveItem.parentInvItem) || (lastActiveItem.itemData.item.IsBag() && lastActiveItem.disclosureWidget.isExpanded)))
+                && ((lastActiveItem.parentInvItem != null && draggedInvItem.parentInvItem != lastActiveItem.parentInvItem) || (lastActiveItem.itemData.item.IsBag() && lastActiveItem.disclosureWidget.isExpanded)
+                || lastActiveItem.itemData.item.IsPortableContainer() && lastActiveItem.disclosureWidget.isExpanded))
             {
                 draggedInvItem.canDragToCurrentLocation = false;
                 // Debug.Log("Can't place here");
@@ -818,12 +896,12 @@ public class UIManager : MonoBehaviour
             {
                 draggedInvItem.canDragToCurrentLocation = true;
                 draggedInvItem.originalSiblingIndex = draggedInvItem.transform.GetSiblingIndex();
-
+                
                 // Rearrange the inventory list if it has one
                 if (draggedInvItem.myInventory != null)
                 {
                     int index = draggedInvItem.myInventory.items.IndexOf(draggedInvItem.itemData);
-                    if (index < activeInvItemCount - 1)
+                    if (index != draggedInvItem.myInventory.items.Count - 1)
                     {
                         draggedInvItem.myInventory.items.RemoveAt(index);
                         draggedInvItem.myInventory.items.Insert(index + 1, draggedInvItem.itemData);
@@ -835,7 +913,7 @@ public class UIManager : MonoBehaviour
                 {
                     List<ItemData> itemsList = gm.containerInvUI.GetItemsListFromActiveDirection();
                     int index = itemsList.IndexOf(draggedInvItem.itemData);
-                    if (index < activeInvItemCount - 1)
+                    if (index != itemsList.Count - 1)
                     {
                         itemsList.RemoveAt(index);
                         itemsList.Insert(index + 1, draggedInvItem.itemData);
@@ -843,6 +921,49 @@ public class UIManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public ItemData CreateNewItemDataChild(ItemData newItemData, Inventory parentInventory, bool shouldAddItemToParentInventory)
+    {
+        // Add new ItemData Objects to the items parent of the new bag and transfer data to them
+        ItemData newItemDataObject = null;
+        if (newItemData.item.IsBag() || newItemData.item.IsPortableContainer())
+            newItemDataObject = gm.objectPoolManager.itemDataContainerObjectPool.GetPooledItemData();
+        else
+            newItemDataObject = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData();
+
+        newItemDataObject.transform.SetParent(parentInventory.itemsParent);
+        newItemDataObject.gameObject.SetActive(true);
+        newItemData.TransferData(newItemData, newItemDataObject);
+
+        if (newItemDataObject.item.IsBag() || newItemDataObject.item.IsPortableContainer())
+        {
+            if (newItemDataObject.item.IsBag())
+            {
+                Bag bag = (Bag)newItemDataObject.item;
+                bag.SetupBagInventory(newItemDataObject.bagInventory);
+            }
+            else if (newItemDataObject.item.IsPortableContainer())
+            {
+                PortableContainer portableContainer = (PortableContainer)newItemDataObject.item;
+                portableContainer.SetupPortableContainerInventory(newItemDataObject.bagInventory);
+            }
+
+            for (int i = 0; i < newItemData.bagInventory.items.Count; i++)
+            {
+                CreateNewItemDataChild(newItemData.bagInventory.items[i], newItemDataObject.bagInventory, true);
+            }
+        }
+
+        // Populate the new bag's inventory, but make sure it's not already in the items list (because of the Inventory's Init method, which populates this list)
+        if (shouldAddItemToParentInventory && parentInventory.items.Contains(newItemDataObject) == false)
+            parentInventory.items.Add(newItemDataObject);
+
+        #if UNITY_EDITOR
+            newItemDataObject.name = newItemDataObject.itemName;
+        #endif
+
+        return newItemDataObject;
     }
 
     public bool UIMenuActive()

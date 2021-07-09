@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8003c46d2a9c9c479f7ec252e4ead70, type: 3}
+  m_Name: Small Sack
+  m_EditorClassIdentifier: 
+  name: Small Sack
+  itemType: 13
+  description: A small sack to store small items.
+  maxStackSize: 1
+  weight: 0.03
+  volume: 0.02
+  isUsable: 0
+  minBaseValue: 0
+  maxBaseValue: 0
+  staticValue: 6
+  pickupSprite: {fileID: -462824376789195924, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+  maxWeight: 12.5
+  maxVolume: 1
+  singleItemVolumeLimit: 0.15

@@ -10,19 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8c8e4e00d5587e74093eaeea017605f2, type: 3}
-  m_Name: Roast Chicken Leg
+  m_Name: Roasted Chicken Leg
   m_EditorClassIdentifier: 
   name: Roasted Chicken Leg
   itemType: 5
   description: How delectable.
   maxStackSize: 10
   weight: 0.25
-  volume: 0.25
+  volume: 0.15
   isUsable: 1
   minBaseValue: 0
   maxBaseValue: 5
   staticValue: 1
-  defaultSprite: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
   pickupSprite: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
   minBaseFreshness: 25
   maxBaseFreshness: 100

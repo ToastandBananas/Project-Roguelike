@@ -59,10 +59,25 @@ public class InventoryUI : MonoBehaviour
         invItem.gameObject.SetActive(true);
         invItem.originalSiblingIndex = invItem.transform.GetSiblingIndex();
 
+        if (newItemData.item.IsBag())
+        {
+            Bag bag = (Bag)newItemData.item;
+            invItem.itemData.bagInventory.maxWeight = bag.maxWeight;
+            invItem.itemData.bagInventory.maxVolume = bag.maxVolume;
+            invItem.itemData.bagInventory.singleItemVolumeLimit = bag.singleItemVolumeLimit;
+        }
+        else if (newItemData.item.IsPortableContainer())
+        {
+            PortableContainer portableContainer = (PortableContainer)newItemData.item;
+            invItem.itemData.bagInventory.maxWeight = portableContainer.maxWeight;
+            invItem.itemData.bagInventory.maxVolume = portableContainer.maxVolume;
+            invItem.itemData.bagInventory.singleItemVolumeLimit = portableContainer.singleItemVolumeLimit;
+        }
+
         if (inventoryItemObjectPool.activePooledInventoryItems.Count > maxInvItems)
             EditInventoryItemsParentHeight(invItemHeight);
 
-        if ((newItemData.item.itemType == ItemType.Bag || newItemData.item.itemType == ItemType.PortableContainer) && gm.playerManager.playerEquipmentManager.ItemIsEquipped(newItemData) == false && invItem.disclosureWidget != null)
+        if ((newItemData.item.itemType == ItemType.Bag || newItemData.item.itemType == ItemType.Container) && gm.playerManager.playerEquipmentManager.ItemIsEquipped(newItemData) == false && invItem.disclosureWidget != null)
             invItem.disclosureWidget.EnableDisclosureWidget();
 
         return invItem;
@@ -153,7 +168,7 @@ public class InventoryUI : MonoBehaviour
         for (int i = 0; i < itemsList.Count; i++)
         {
             totalWeight += itemsList[i].item.weight * itemsList[i].currentStackSize;
-            if (itemsList[i].item.IsBag() || itemsList[i].item.itemType == ItemType.PortableContainer)
+            if (itemsList[i].item.IsBag() || itemsList[i].item.itemType == ItemType.Container)
             {
                 if (itemsList[i].CompareTag("Item Pickup"))
                     totalWeight -= itemsList[i].item.weight * itemsList[i].currentStackSize;
@@ -195,7 +210,7 @@ public class InventoryUI : MonoBehaviour
         for (int i = 0; i < itemsList.Count; i++)
         {
             totalVolume += itemsList[i].item.volume * itemsList[i].currentStackSize;
-            if (itemsList[i].item.IsBag() || itemsList[i].item.itemType == ItemType.PortableContainer)
+            if (itemsList[i].item.IsBag() || itemsList[i].item.itemType == ItemType.Container)
             {
                 if (itemsList[i].CompareTag("Item Pickup"))
                     totalVolume -= itemsList[i].item.volume * itemsList[i].currentStackSize;

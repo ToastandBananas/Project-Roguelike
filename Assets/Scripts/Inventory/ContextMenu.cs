@@ -208,7 +208,7 @@ public class ContextMenu : MonoBehaviour
                     contextActiveInvItem.myInventory.currentWeight -= Mathf.RoundToInt(contextActiveInvItem.itemData.item.weight * contextActiveInvItem.itemData.currentStackSize * 100f) / 100f;
                     contextActiveInvItem.myInventory.currentVolume -= Mathf.RoundToInt(contextActiveInvItem.itemData.item.volume * contextActiveInvItem.itemData.currentStackSize * 100f) / 100f;
 
-                    if (contextActiveInvItem.itemData.item.itemType == ItemType.PortableContainer)
+                    if (contextActiveInvItem.itemData.item.itemType == ItemType.Container)
                     {
                         for (int i = 0; i < contextActiveInvItem.itemData.bagInventory.items.Count; i++)
                         {

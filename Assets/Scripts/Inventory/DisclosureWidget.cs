@@ -15,7 +15,14 @@ public class DisclosureWidget : MonoBehaviour, IPointerEnterHandler, IPointerExi
     [HideInInspector] public List<InventoryItem> expandedItems = new List<InventoryItem>();
 
     [HideInInspector] public bool isExpanded, isEnabled, isSelected;
-    
+
+    void Awake()
+    {
+        isExpanded = false;
+        isEnabled = false;
+        isSelected = false;
+    }
+
     public void ExpandDisclosureWidget()
     {
         if (myInvItem.itemData.bagInventory.items.Count > 0)

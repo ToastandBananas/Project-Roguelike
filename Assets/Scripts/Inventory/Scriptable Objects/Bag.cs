@@ -19,6 +19,13 @@ public class Bag : Equipment
         base.Use(equipmentManager, inventory, invItem, itemCount);
     }
 
+    public void SetupBagInventory(Inventory bagInv)
+    {
+        bagInv.maxWeight = maxWeight;
+        bagInv.maxVolume = maxVolume;
+        bagInv.singleItemVolumeLimit = singleItemVolumeLimit;
+    }
+
     public override bool IsBag()
     {
         return true;
