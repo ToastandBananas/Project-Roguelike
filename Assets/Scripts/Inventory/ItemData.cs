@@ -166,6 +166,33 @@ public class ItemData : MonoBehaviour
         RandomizeData();
     }
 
+
+    /// <summary> This is used when dragging and dropping an item onto another item of the same type and stats (as long as they are stackable of course) </summary>
+    public void AddToItemsStack(InventoryItem invItemTakingFrom)
+    {
+        int invItemTakingFromStackSize = invItemTakingFrom.itemData.currentStackSize;
+        int amountAdded = 0;
+        for (int j = 0; j < invItemTakingFromStackSize; j++)
+        {
+            if (currentStackSize < item.maxStackSize)
+            {
+                amountAdded++;
+                currentStackSize++;
+                invItemTakingFrom.itemData.currentStackSize--;
+            }
+            else
+                break;
+        }
+
+        if (invItemTakingFrom.myInventory != null && invItemTakingFrom.myInventory != gm.playerInvUI.activeInventory && invItemTakingFrom.myInventory != gm.containerInvUI.activeInventory)
+        {
+            invItemTakingFrom.myInventory.currentWeight -= Mathf.RoundToInt(invItemTakingFrom.itemData.item.weight * amountAdded * 100f) / 100f;
+            invItemTakingFrom.myInventory.currentVolume -= Mathf.RoundToInt(invItemTakingFrom.itemData.item.volume * amountAdded * 100f) / 100f;
+        }
+
+        invItemTakingFrom.UpdateItemNumberTexts();
+    }
+
     public bool StackableItemsDataIsEqual(ItemData itemData1, ItemData itemData2)
     {
         if (itemData1.item == itemData2.item && itemData1.value == itemData2.value && itemData1.freshness == itemData2.freshness)

@@ -66,7 +66,7 @@ public class ContextMenu : MonoBehaviour
                 CreateSplitStackButton();
 
             // If selecting the player's inventory or equipment menu
-            if ((contextActiveInvItem.myInventory != null && contextActiveInvItem.myInventory.myInventoryUI == gm.playerInvUI) || contextActiveInvItem.myEquipmentManager != null
+            if ((contextActiveInvItem.myInventory != null && contextActiveInvItem.myInventory.myInvUI == gm.playerInvUI) || contextActiveInvItem.myEquipmentManager != null
                 || (contextActiveInvItem.parentInvItem != null && contextActiveInvItem.parentInvItem.myInvUI == gm.playerInvUI))
             {
                 if (gm.containerInvUI.activeInventory != null)
@@ -142,7 +142,7 @@ public class ContextMenu : MonoBehaviour
         ContextMenuButton contextButton = GetNextInactiveButton();
         contextButton.gameObject.SetActive(true);
 
-        if ((contextActiveInvItem.myInventory != null && contextActiveInvItem.myInventory.myInventoryUI == gm.playerInvUI) || contextActiveInvItem.myEquipmentManager != null
+        if ((contextActiveInvItem.myInventory != null && contextActiveInvItem.myInventory.myInvUI == gm.playerInvUI) || contextActiveInvItem.myEquipmentManager != null
             || (contextActiveInvItem.parentInvItem != null && contextActiveInvItem.parentInvItem.myInvUI == gm.playerInvUI))
             contextButton.textMesh.text = "Transfer";
         else
@@ -203,7 +203,18 @@ public class ContextMenu : MonoBehaviour
             }
             else
             {
-                if (contextActiveInvItem.myInventory != null && contextActiveInvItem.itemData.item.IsBag() == false)
+                InventoryItem contextParentInvItem = null;
+                if (contextActiveInvItem.parentInvItem != null)
+                {
+                    contextParentInvItem = contextActiveInvItem.parentInvItem;
+                    contextParentInvItem.itemData.bagInventory.SubtractItemsWeightAndVolumeFromInventory(contextActiveInvItem.itemData, contextParentInvItem.itemData.bagInventory, contextActiveInvItem, contextActiveInvItem.itemData.currentStackSize, true);
+
+                    if (contextActiveInvItem.myInvUI == gm.playerInvUI)
+                        gm.playerInvUI.UpdateUI();
+                    else
+                        gm.containerInvUI.UpdateUI();
+                }
+                else if (contextActiveInvItem.myInventory != null && contextActiveInvItem.itemData.item.IsBag() == false)
                 {
                     contextActiveInvItem.myInventory.currentWeight -= Mathf.RoundToInt(contextActiveInvItem.itemData.item.weight * contextActiveInvItem.itemData.currentStackSize * 100f) / 100f;
                     contextActiveInvItem.myInventory.currentVolume -= Mathf.RoundToInt(contextActiveInvItem.itemData.item.volume * contextActiveInvItem.itemData.currentStackSize * 100f) / 100f;
@@ -217,12 +228,15 @@ public class ContextMenu : MonoBehaviour
                         }
                     }
 
-                    contextActiveInvItem.myInventory.myInventoryUI.UpdateUI();
+                    contextActiveInvItem.myInventory.myInvUI.UpdateUI();
                 }
                 else
                     gm.containerInvUI.UpdateUI();
-
+                
                 contextActiveInvItem.ClearItem();
+
+                if (contextParentInvItem != null)
+                    contextParentInvItem.UpdateItemNumberTexts();
             }
         }
 

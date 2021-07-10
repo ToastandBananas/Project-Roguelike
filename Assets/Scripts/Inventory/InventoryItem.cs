@@ -15,7 +15,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
     public DisclosureWidget disclosureWidget;
     public TextMeshProUGUI itemNameText, itemAmountText, itemTypeText, itemWeightText, itemVolumeText;
 
-    [HideInInspector] public ItemData itemData;
+    public ItemData itemData;
     [HideInInspector] public InventoryUI myInvUI;
     [HideInInspector] public Inventory myInventory;
     [HideInInspector] public InventoryItem parentInvItem;
@@ -191,12 +191,12 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
     public void TransferItem()
     {
         // If we're taking this item from a container or the ground
-        if (myEquipmentManager == null && (myInventory == null || myInventory.myInventoryUI == gm.containerInvUI))
+        if (myEquipmentManager == null && (myInventory == null || myInventory.myInvUI == gm.containerInvUI))
         {
             // We don't want to add items directly to the keys inv (unless it's a key) or to the current equipment inv
             if (gm.playerInvUI.activeInventory != null && gm.playerInvUI.activeInventory != gm.playerInvUI.keysInventory && itemData.item.itemType != ItemType.Key && itemData.item.itemType != ItemType.Ammo)
             {
-                if (gm.playerInvUI.activeInventory.AddItem(this, itemData, itemData.currentStackSize, myInventory)) // If there's room in the inventory
+                if (gm.playerInvUI.activeInventory.AddItem(this, itemData, itemData.currentStackSize, myInventory, true)) // If there's room in the inventory
                 {
                     myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.activePlayerInvSideBarButton));
 
@@ -211,7 +211,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             }
             else if (itemData.item.itemType == ItemType.Key) // If the item is a key, add it directly to the keys inventory
             {
-                gm.playerInvUI.keysInventory.AddItem(this, itemData, itemData.currentStackSize, myInventory);
+                gm.playerInvUI.keysInventory.AddItem(this, itemData, itemData.currentStackSize, myInventory, true);
                 myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.keysSideBarButton));
                 ClearItem();
             }
@@ -219,7 +219,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             {
                 if (gm.playerInvUI.quiverEquipped)
                 {
-                    if (gm.playerInvUI.quiverInventory.AddItem(this, itemData, itemData.currentStackSize, myInventory) == false)
+                    if (gm.playerInvUI.quiverInventory.AddItem(this, itemData, itemData.currentStackSize, myInventory, true) == false)
                         AddItemToOtherBags(itemData);
                     else
                     {
@@ -237,7 +237,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         {
             if (gm.containerInvUI.activeInventory != null) // If we're trying to place the item in a container
             {
-                if (gm.containerInvUI.activeInventory.AddItem(this, itemData, itemData.currentStackSize, myInventory)) // Try adding the item's entire stack
+                if (gm.containerInvUI.activeInventory.AddItem(this, itemData, itemData.currentStackSize, myInventory, true)) // Try adding the item's entire stack
                 {
                     myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemData.item.pickupSprite, gm.containerInvUI.activeContainerSideBarButton, null));
 
@@ -285,6 +285,14 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                             gm.playerInvUI.activeInventory.currentVolume -= Mathf.RoundToInt(itemData.item.volume * itemData.currentStackSize * 100f) / 100f;
                         }
 
+                        InventoryItem invItemsParentInvItem = null;
+                        if (parentInvItem != null)
+                        {
+                            invItemsParentInvItem = parentInvItem;
+                            parentInvItem.itemData.bagInventory.currentWeight -= Mathf.RoundToInt(itemData.item.weight * itemData.currentStackSize * 100f) / 100f;
+                            parentInvItem.itemData.bagInventory.currentVolume -= Mathf.RoundToInt(itemData.item.volume * itemData.currentStackSize * 100f) / 100f;
+                        }
+
                         if (myEquipmentManager != null)
                         {
                             EquipmentSlot equipmentSlot = myEquipmentManager.GetEquipmentSlotFromItemData(itemData);
@@ -292,6 +300,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                         }
                         else
                             ClearItem();
+
+                        if (invItemsParentInvItem != null)
+                            invItemsParentInvItem.UpdateItemNumberTexts();
                     }
                 }
                 else
@@ -398,7 +409,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         for (int i = 0; i < stackSize; i++)
         {
             // Try to add a single item to the inventory
-            if (invAddingTo.AddItem(this, itemData, 1, invComingFrom))
+            if (invAddingTo.AddItem(this, itemData, 1, invComingFrom, true))
             {
                 // If we were able to add one, set someAdded to true
                 someAdded = true;

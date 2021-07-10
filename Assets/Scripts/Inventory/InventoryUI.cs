@@ -56,6 +56,8 @@ public class InventoryUI : MonoBehaviour
         invItem.UpdateAllItemTexts();
         invItem.myInventory = activeInventory;
         invItem.myInvUI = this;
+        if (invItem.itemData.bagInventory != null)
+            invItem.itemData.bagInventory.myInvUI = this;
         invItem.gameObject.SetActive(true);
         invItem.originalSiblingIndex = invItem.transform.GetSiblingIndex();
 
@@ -85,6 +87,7 @@ public class InventoryUI : MonoBehaviour
 
     public InventoryItem ShowNewBagItem(ItemData newItemData, InventoryItem bagInvItem)
     {
+        Debug.Log("Showing new bag inv item");
         InventoryItem invItem = ShowNewInventoryItem(newItemData);
         if (bagInvItem.disclosureWidget.isExpanded)
             bagInvItem.disclosureWidget.expandedItems.Add(invItem);

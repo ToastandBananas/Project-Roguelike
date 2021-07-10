@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
 
 public class StackSizeSelector : MonoBehaviour
 {
@@ -109,7 +110,7 @@ public class StackSizeSelector : MonoBehaviour
                 newItemData.gameObject.SetActive(true);
 
                 selectedInvItem.myInventory.items.Add(newItemData);
-                if (selectedInvItem.myInventory.myInventoryUI == gm.containerInvUI)
+                if (selectedInvItem.myInventory.myInvUI == gm.containerInvUI)
                     gm.containerInvUI.AddItemToActiveDirectionList(newItemData);
 
                 #if UNITY_EDITOR
@@ -135,10 +136,33 @@ public class StackSizeSelector : MonoBehaviour
             newItemData.currentStackSize = currentValue;
 
             InventoryItem newInvItem = null;
-            if ((selectedInvItem.myInventory != null && selectedInvItem.myInventory.myInventoryUI == gm.containerInvUI) || (selectedInvItem.myInventory == null && selectedInvItem.myEquipmentManager == null))
-                newInvItem = gm.containerInvUI.ShowNewInventoryItem(newItemData);
+            if ((selectedInvItem.myInventory != null && selectedInvItem.myInventory.myInvUI == gm.containerInvUI) || (selectedInvItem.myInventory == null && selectedInvItem.myEquipmentManager == null))
+            {
+                if (selectedInvItem.parentInvItem != null)
+                    newInvItem = gm.containerInvUI.ShowNewBagItem(newItemData, selectedInvItem.parentInvItem);
+                else
+                    newInvItem = gm.containerInvUI.ShowNewInventoryItem(newItemData);
+
+                List<ItemData> directionalItemsList = gm.containerInvUI.GetItemsListFromActiveDirection();
+                directionalItemsList.RemoveAt(directionalItemsList.IndexOf(newInvItem.itemData));
+                directionalItemsList.Insert(directionalItemsList.IndexOf(selectedInvItem.itemData) + 1, newInvItem.itemData);
+            }
             else
-                newInvItem = gm.playerInvUI.ShowNewInventoryItem(newItemData);
+            {
+                if (selectedInvItem.parentInvItem != null)
+                    newInvItem = gm.playerInvUI.ShowNewBagItem(newItemData, selectedInvItem.parentInvItem);
+                else
+                    newInvItem = gm.playerInvUI.ShowNewInventoryItem(newItemData);
+            }
+            
+            if (selectedInvItem.myInventory != null)
+            {
+                newInvItem.transform.SetSiblingIndex(selectedInvItem.transform.GetSiblingIndex());
+                selectedInvItem.myInventory.items.RemoveAt(selectedInvItem.myInventory.items.IndexOf(newInvItem.itemData));
+                selectedInvItem.myInventory.items.Insert(selectedInvItem.myInventory.items.IndexOf(selectedInvItem.itemData) + 1, newInvItem.itemData);
+            }
+            else
+                newInvItem.transform.SetSiblingIndex(selectedInvItem.transform.GetSiblingIndex() + 1);
 
             if (selectedInvItem.itemData.currentStackSize > 0)
                 selectedInvItem.UpdateItemNumberTexts();

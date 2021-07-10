@@ -88,7 +88,8 @@ public class DropItemController : MonoBehaviour
 
                 bagInv.ResetWeightAndVolume(); // Reset the bag's inventory
 
-                invComingFrom.myInventoryUI.UpdateUI();
+                if (invComingFrom.myInvUI == null) invComingFrom.myInvUI = invItemComingFrom.myInvUI;
+                invComingFrom.myInvUI.UpdateUI();
             }
             else // If the bag is coming from the ground
                 gm.containerInvUI.RemoveBagFromGround();

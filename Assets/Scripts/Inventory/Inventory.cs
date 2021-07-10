@@ -20,7 +20,7 @@ public class Inventory : MonoBehaviour
     public List<ItemData> items = new List<ItemData>();
 
     [HideInInspector] public Container container;
-    [HideInInspector] public InventoryUI myInventoryUI;
+    [HideInInspector] public InventoryUI myInvUI;
 
     [HideInInspector] public bool hasBeenInitialized;
     
@@ -64,7 +64,7 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public bool AddItem(InventoryItem invItemComingFrom, ItemData itemDataComingFrom, int itemCount, Inventory invComingFrom)
+    public bool AddItem(InventoryItem invItemComingFrom, ItemData itemDataComingFrom, int itemCount, Inventory invComingFrom, bool shouldUpdateWeightAndVolume)
     {
         // Prevent putting bags in bags
         if (invItemComingFrom.itemData.item.IsBag() && gameObject.CompareTag("Item Pickup"))
@@ -75,10 +75,7 @@ public class Inventory : MonoBehaviour
         
         // Make sure we have room, before we start adding the item
         if (HasRoomInInventory(itemDataComingFrom, itemCount) == false)
-        {
-            Debug.Log("Not enough room in Inventory...");
             return false;
-        }
 
         // Add to this Inventory's weight and volume
         AddItemsWeightAndVolumeToInventory(itemDataComingFrom, this, itemCount);
@@ -131,7 +128,7 @@ public class Inventory : MonoBehaviour
             {
                 gm.containerInvUI.AddItemToListFromDirection(itemDataToAdd, gm.uiManager.activeContainerSideBarButton.directionFromPlayer);
             }
-            else if (gm.uiManager.activeContainerSideBarButton == null && myInventoryUI == gm.containerInvUI && gm.containerInvUI.activeInventory.CompareTag("Item Pickup") == false)
+            else if (gm.uiManager.activeContainerSideBarButton == null && myInvUI == gm.containerInvUI && gm.containerInvUI.activeInventory.CompareTag("Item Pickup") == false)
                 gm.containerInvUI.AddItemToActiveDirectionList(itemDataToAdd);
 
             // Set the parent of this new ItemData to the Inventory's itemsParent and set the gameObject as active
@@ -179,24 +176,24 @@ public class Inventory : MonoBehaviour
             }
 
             // If this Inventory is active in the menu, create a new InventoryItem
-            if (myInventoryUI.activeInventory == this)
+            if (myInvUI != null && myInvUI.activeInventory == this)
             {
                 // If we're adding the item to a bag on the ground, before we show the item, expand the list if it's not expanded
                 if (gameObject.CompareTag("Item Pickup"))
                 {
-                    InventoryItem bagInvItem = myInventoryUI.GetBagItemFromInventory(this);
+                    InventoryItem bagInvItem = myInvUI.GetBagItemFromInventory(this);
                     if (bagInvItem.disclosureWidget.isExpanded == false)
                         bagInvItem.disclosureWidget.ExpandDisclosureWidget();
                     else
                     {
-                        InventoryItem newInvItem = myInventoryUI.ShowNewBagItem(itemDataToAdd, bagInvItem);
+                        InventoryItem newInvItem = myInvUI.ShowNewBagItem(itemDataToAdd, bagInvItem);
                         newInvItem.transform.SetAsLastSibling();
                     }
 
                     bagInvItem.UpdateItemNumberTexts();
                 }
                 else // Otherwise just show a normal InventoryItem
-                    myInventoryUI.ShowNewInventoryItem(itemDataToAdd);
+                    myInvUI.ShowNewInventoryItem(itemDataToAdd);
             }
 
             #if UNITY_EDITOR
@@ -204,7 +201,7 @@ public class Inventory : MonoBehaviour
             #endif
 
             // If we're taking this item from another Inventory and it's not a bag or portable container, update its weight and volume
-            if (invComingFrom != null && itemDataComingFrom.item.IsBag() == false && itemDataComingFrom.item.itemType != ItemType.Container)
+            if (invComingFrom != null && itemDataComingFrom.item.IsBag() == false && itemDataComingFrom.item.itemType != ItemType.Container && shouldUpdateWeightAndVolume)
                 SubtractItemsWeightAndVolumeFromInventory(itemDataComingFrom, invComingFrom, invItemComingFrom, itemCount, true);
 
             // If we're only taking 1 count of the item, subtract 1 from the currentStackSize, otherwise it should now be 0
@@ -260,8 +257,10 @@ public class Inventory : MonoBehaviour
         {
             if (itemDataComingFrom.StackableItemsDataIsEqual(items[i], itemDataComingFrom) && items[i].currentStackSize < items[i].item.maxStackSize)
             {
-                // Get the InventoryItem using the ItemData we're adding to
-                InventoryItem itemDatasInvItem = myInventoryUI.GetItemDatasInventoryItem(items[i]);
+                // Get the InventoryItem using the ItemData we're adding to (and make sure it has an InventoryUI)
+                if (myInvUI == null) myInvUI = invComingFrom.myInvUI;
+                InventoryItem itemDatasInvItem = myInvUI.GetItemDatasInventoryItem(items[i]);
+
                 for (int j = 0; j < itemCount; j++)
                 {
                     if (items[i].currentStackSize < items[i].item.maxStackSize)
@@ -334,11 +333,10 @@ public class Inventory : MonoBehaviour
             }
         }
 
-        // Debug.Log(itemWeight + " / " + itemVolume);
-
         if (maxWeight - currentWeight >= itemWeight && maxVolume - currentVolume >= itemVolume)
             return true;
 
+        Debug.Log("Not enough room in inventory.");
         return false;
     }
 
@@ -347,10 +345,10 @@ public class Inventory : MonoBehaviour
         int itemCountInInventory = 0;
 
         // Add up how much of this Item that we have in our Inventory
-        for (int i = 0; i < myInventoryUI.inventoryItemObjectPool.activePooledInventoryItems.Count; i++)
+        for (int i = 0; i < myInvUI.inventoryItemObjectPool.activePooledInventoryItems.Count; i++)
         {
-            if (myInventoryUI.inventoryItemObjectPool.activePooledInventoryItems[i].itemData.item == itemData.item)
-                itemCountInInventory += myInventoryUI.inventoryItemObjectPool.activePooledInventoryItems[i].itemData.currentStackSize;
+            if (myInvUI.inventoryItemObjectPool.activePooledInventoryItems[i].itemData.item == itemData.item)
+                itemCountInInventory += myInvUI.inventoryItemObjectPool.activePooledInventoryItems[i].itemData.currentStackSize;
         }
 
         if (itemCountInInventory >= itemAmountRequired)
@@ -407,8 +405,8 @@ public class Inventory : MonoBehaviour
         if (invRemovingItemFrom.currentVolume <= 0.001f)
             invRemovingItemFrom.currentVolume = 0;
 
-        if (myInventoryUI != null)
-            myInventoryUI.UpdateUI();
+        if (myInvUI != null)
+            myInvUI.UpdateUI();
     }
 
     public void GetCurrentWeightAndVolume()

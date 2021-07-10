@@ -18,7 +18,7 @@ public class PlayerInventorySidebarButton : MonoBehaviour, IPointerEnterHandler,
         inventory = GetComponent<Inventory>();
         
         if (inventory != null)
-            inventory.myInventoryUI = gm.playerInvUI;
+            inventory.myInvUI = gm.playerInvUI;
         
         HideInactiveBags();
     }

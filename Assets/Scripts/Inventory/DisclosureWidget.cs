@@ -46,10 +46,24 @@ public class DisclosureWidget : MonoBehaviour, IPointerEnterHandler, IPointerExi
         
         for (int i = 0; i < expandedItems.Count; i++)
         {
+            // If the item is a bag or portable container, make sure to also contract their disclosure widgets, if they are expanded as well
+            if (expandedItems[i].disclosureWidget.isEnabled && expandedItems[i].disclosureWidget.isExpanded)
+                expandedItems[i].disclosureWidget.ContractDisclosureWidget();
+
             expandedItems[i].CollapseItem();
         }
 
         expandedItems.Clear();
+    }
+
+    public void RemoveExpandedItem(InventoryItem invItem)
+    {
+        if (expandedItems.Contains(invItem))
+        {
+            expandedItems.Remove(invItem);
+            if (expandedItems.Count == 0)
+                ContractDisclosureWidget();
+        }
     }
 
     public void ToggleDisclosureWidget()
