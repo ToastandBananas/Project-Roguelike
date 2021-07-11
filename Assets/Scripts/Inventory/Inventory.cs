@@ -128,7 +128,7 @@ public class Inventory : MonoBehaviour
             {
                 gm.containerInvUI.AddItemToListFromDirection(itemDataToAdd, gm.uiManager.activeContainerSideBarButton.directionFromPlayer);
             }
-            else if (gm.uiManager.activeContainerSideBarButton == null && myInvUI == gm.containerInvUI && gm.containerInvUI.activeInventory.CompareTag("Item Pickup") == false)
+            else if (gm.uiManager.activeContainerSideBarButton == null && myInvUI == gm.containerInvUI && gm.containerInvUI.activeInventory != null && gm.containerInvUI.activeInventory.CompareTag("Item Pickup") == false)
                 gm.containerInvUI.AddItemToActiveDirectionList(itemDataToAdd);
 
             // Set the parent of this new ItemData to the Inventory's itemsParent and set the gameObject as active

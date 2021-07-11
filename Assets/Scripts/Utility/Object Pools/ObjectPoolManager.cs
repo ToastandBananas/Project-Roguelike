@@ -29,4 +29,28 @@ public class ObjectPoolManager : MonoBehaviour
             instance = this;
     }
     #endregion
+
+    public ItemPickup GetItemPickupFromPool(Item item)
+    {
+        ItemPickup newItemPickup = null;
+        if (item.IsBag())
+            newItemPickup = bagPickupsPool.GetPooledItemPickup();
+        else if (item.IsPortableContainer())
+            newItemPickup = portableContainerPickupsPool.GetPooledItemPickup();
+        else
+            newItemPickup = itemPickupsPool.GetPooledItemPickup();
+
+        return newItemPickup;
+    }
+
+    public ItemData GetItemDataFromPool(Item item)
+    {
+        ItemData newItemData = null;
+        if (item.IsBag() || item.IsPortableContainer())
+            newItemData = itemDataContainerObjectPool.GetPooledItemData();
+        else
+            newItemData = itemDataObjectPool.GetPooledItemData();
+
+        return newItemData;
+    }
 }

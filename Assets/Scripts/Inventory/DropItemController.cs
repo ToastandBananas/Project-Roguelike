@@ -41,19 +41,19 @@ public class DropItemController : MonoBehaviour
         {
             // If the item we're dropping is a bag, create a new bag pickup
             newItemPickup = gm.objectPoolManager.bagPickupsPool.GetPooledItemPickup();
-            newItemPickup.inventory.items.Clear();
+            newItemPickup.itemData.bagInventory.items.Clear();
 
             // Find our drop direction and assign the bag's inventory to our directional inventory
-            gm.containerInvUI.AssignDirectionalInventory(dropDirection, newItemPickup.inventory);
+            gm.containerInvUI.AssignDirectionalInventory(dropDirection, newItemPickup.itemData.bagInventory);
 
             if (gm.containerInvUI.activeDirection == dropDirection)
-                gm.containerInvUI.activeInventory = newItemPickup.inventory;
+                gm.containerInvUI.activeInventory = newItemPickup.itemData.bagInventory;
         }
         else if (itemData.item.IsPortableContainer())
         {
             // If the item we're dropping is a portable container, create a new portable container pickup
             newItemPickup = gm.objectPoolManager.portableContainerPickupsPool.GetPooledItemPickup();
-            newItemPickup.inventory.items.Clear();
+            newItemPickup.itemData.bagInventory.items.Clear();
         }
         else // Otherwise, if the item is not a bag, create a normal item pickup
             newItemPickup = gm.objectPoolManager.itemPickupsPool.GetPooledItemPickup();
@@ -164,12 +164,12 @@ public class DropItemController : MonoBehaviour
         if (itemData.item.IsBag())
         {
             Bag bag = (Bag)itemData.item;
-            bag.SetupBagInventory(newItemPickup.inventory);
+            bag.SetupBagInventory(newItemPickup.itemData.bagInventory);
         }
         else if (itemData.item.IsPortableContainer())
         {
             PortableContainer portableContainer = (PortableContainer)itemData.item;
-            portableContainer.SetupPortableContainerInventory(newItemPickup.inventory);
+            portableContainer.SetupPortableContainerInventory(newItemPickup.itemData.bagInventory);
         }
 
         #if UNITY_EDITOR

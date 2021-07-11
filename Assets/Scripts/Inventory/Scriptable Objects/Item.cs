@@ -45,7 +45,15 @@ public class Item : ScriptableObject
                     }
                 }
                 else
+                {
+                    if (invItem.parentInvItem != null)
+                    {
+                        invItem.parentInvItem.itemData.bagInventory.SubtractItemsWeightAndVolumeFromInventory(invItem.itemData, invItem.parentInvItem.itemData.bagInventory, invItem, itemCount, true);
+                        invItem.parentInvItem.UpdateItemNumberTexts();
+                    }
+
                     invItem.UpdateItemNumberTexts();
+                }
             }
             else
             {

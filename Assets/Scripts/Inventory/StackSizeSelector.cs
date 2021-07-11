@@ -110,7 +110,7 @@ public class StackSizeSelector : MonoBehaviour
                 newItemData.gameObject.SetActive(true);
 
                 selectedInvItem.myInventory.items.Add(newItemData);
-                if (selectedInvItem.myInventory.myInvUI == gm.containerInvUI)
+                if (selectedInvItem.myInventory.myInvUI == gm.containerInvUI && selectedInvItem.parentInvItem == null)
                     gm.containerInvUI.AddItemToActiveDirectionList(newItemData);
 
                 #if UNITY_EDITOR
@@ -144,8 +144,11 @@ public class StackSizeSelector : MonoBehaviour
                     newInvItem = gm.containerInvUI.ShowNewInventoryItem(newItemData);
 
                 List<ItemData> directionalItemsList = gm.containerInvUI.GetItemsListFromActiveDirection();
-                directionalItemsList.RemoveAt(directionalItemsList.IndexOf(newInvItem.itemData));
-                directionalItemsList.Insert(directionalItemsList.IndexOf(selectedInvItem.itemData) + 1, newInvItem.itemData);
+                if (directionalItemsList.Contains(newInvItem.itemData))
+                {
+                    directionalItemsList.RemoveAt(directionalItemsList.IndexOf(newInvItem.itemData));
+                    directionalItemsList.Insert(directionalItemsList.IndexOf(selectedInvItem.itemData) + 1, newInvItem.itemData);
+                }
             }
             else
             {

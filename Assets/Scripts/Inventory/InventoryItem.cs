@@ -85,7 +85,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         if (gm.uiManager.lastActiveItem == this)
             gm.uiManager.lastActiveItem = null;
 
-        gm.containerInvUI.RemoveItemFromList(itemData);
+        gm.containerInvUI.RemoveItemFromActiveDirectionalList(itemData);
 
         if (myInventory != null)
             myInventory.items.Remove(itemData);

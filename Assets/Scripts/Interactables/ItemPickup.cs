@@ -6,9 +6,6 @@ public class ItemPickup : Interactable
     public int itemCount = 1;
     public bool shouldUseItemCount;
 
-    [Header("Bags & Portable Containers Only")]
-    public Inventory inventory;
-
     [HideInInspector] public ItemData itemData;
     [HideInInspector] public Rigidbody2D rigidBody;
     [HideInInspector] public SpriteRenderer spriteRenderer;
@@ -36,22 +33,24 @@ public class ItemPickup : Interactable
         if (transform.position.y % 0.5f != 0)
             transform.position = new Vector3(transform.position.x, Mathf.FloorToInt(transform.position.y) + 0.5f);
 
-        if (inventory != null)
+        if (itemData.bagInventory != null)
         {
             if (itemData.item.IsBag())
             {
                 Bag bag = (Bag)itemData.item;
-                inventory.maxWeight = bag.maxWeight;
-                inventory.maxVolume = bag.maxVolume;
-                inventory.singleItemVolumeLimit = bag.singleItemVolumeLimit;
+                itemData.bagInventory.maxWeight = bag.maxWeight;
+                itemData.bagInventory.maxVolume = bag.maxVolume;
+                itemData.bagInventory.singleItemVolumeLimit = bag.singleItemVolumeLimit;
             }
             else if (itemData.item.IsPortableContainer())
             {
                 PortableContainer portableContainer = (PortableContainer)itemData.item;
-                inventory.maxWeight = portableContainer.maxWeight;
-                inventory.maxVolume = portableContainer.maxVolume;
-                inventory.singleItemVolumeLimit = portableContainer.singleItemVolumeLimit;
+                itemData.bagInventory.maxWeight = portableContainer.maxWeight;
+                itemData.bagInventory.maxVolume = portableContainer.maxVolume;
+                itemData.bagInventory.singleItemVolumeLimit = portableContainer.singleItemVolumeLimit;
             }
+
+            StartCoroutine(itemData.ClampItemCounts());
         }
     }
 

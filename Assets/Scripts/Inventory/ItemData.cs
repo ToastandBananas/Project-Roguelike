@@ -386,6 +386,42 @@ public class ItemData : MonoBehaviour
         }
     }
 
+    /// <summary> 
+    /// Prevents items with an inventory (such as bags) from having their current weight/volume being greater than their max weight/volume, 
+    /// by looping through each item in the inventory and taking turns subtracting 1 from their current stack sizes.
+    /// </summary>
+    public IEnumerator ClampItemCounts()
+    {
+        int itemsWithStackSizeOfOne;
+        while (bagInventory.currentWeight > bagInventory.maxWeight || bagInventory.currentVolume > bagInventory.maxVolume)
+        {
+            itemsWithStackSizeOfOne = 0;
+            for (int i = 0; i < bagInventory.items.Count; i++)
+            {
+                if (bagInventory.items[i].currentStackSize == 1)
+                    itemsWithStackSizeOfOne++;
+            }
+            
+            if (itemsWithStackSizeOfOne == bagInventory.items.Count)
+                break;
+
+            for (int i = 0; i < bagInventory.items.Count; i++)
+            {
+                if (bagInventory.items[i].currentStackSize > 1)
+                {
+                    bagInventory.items[i].currentStackSize--;
+                    bagInventory.currentWeight -= Mathf.RoundToInt(bagInventory.items[i].item.weight * 100f) / 100f;
+                    bagInventory.currentVolume -= Mathf.RoundToInt(bagInventory.items[i].item.volume * 100f) / 100f;
+                }
+
+                if (bagInventory.currentWeight <= bagInventory.maxWeight && bagInventory.currentVolume <= bagInventory.maxVolume)
+                    break;
+            }
+
+            yield return null;
+        }
+    }
+
     public void ReturnToItemDataObjectPool()
     {
         if (gm == null) gm = GameManager.instance;

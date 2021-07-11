@@ -731,7 +731,7 @@ public class ContainerInventoryUI : InventoryUI
         }
     }
 
-    public void RemoveItemFromList(ItemData itemDataToRemove)
+    public void RemoveItemFromActiveDirectionalList(ItemData itemDataToRemove)
     {
         switch (activeDirection)
         {
