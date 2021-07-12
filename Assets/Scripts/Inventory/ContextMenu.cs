@@ -47,7 +47,7 @@ public class ContextMenu : MonoBehaviour
     {
         isActive = true;
         contextActiveInvItem = invItem;
-
+        
         if (contextActiveInvItem.myEquipmentManager != null)
         {
             CreateUnequipButton();
@@ -204,41 +204,7 @@ public class ContextMenu : MonoBehaviour
             else
             {
                 contextActiveInvItem.UpdateInventoryWeightAndVolume();
-                //InventoryItem contextParentInvItem = null;
-                /*if (contextActiveInvItem.parentInvItem != null)
-                {
-                    //contextActiveInvItem.parentInvItemcontextParentInvItem = contextActiveInvItem.parentInvItem;
-                    //contextParentInvItem.itemData.bagInventory.UpdateCurrentWeightAndVolume();
-                    //contextParentInvItem.itemData.bagInventory.SubtractItemsWeightAndVolumeFromInventory(contextActiveInvItem.itemData, contextParentInvItem.itemData.bagInventory, contextActiveInvItem, contextActiveInvItem.itemData.currentStackSize, true, true);
-
-                    if (contextActiveInvItem.myInvUI == gm.playerInvUI)
-                        gm.playerInvUI.UpdateUI();
-                    else
-                        gm.containerInvUI.UpdateUI();
-                }
-                else if (contextActiveInvItem.myInventory != null && contextActiveInvItem.itemData.item.IsBag() == false)
-                {
-                    contextActiveInvItem.myInventory.currentWeight -= Mathf.RoundToInt(contextActiveInvItem.itemData.item.weight * contextActiveInvItem.itemData.currentStackSize * 100f) / 100f;
-                    contextActiveInvItem.myInventory.currentVolume -= Mathf.RoundToInt(contextActiveInvItem.itemData.item.volume * contextActiveInvItem.itemData.currentStackSize * 100f) / 100f;
-
-                    if (contextActiveInvItem.itemData.item.IsPortableContainer())
-                    {
-                        for (int i = 0; i < contextActiveInvItem.itemData.bagInventory.items.Count; i++)
-                        {
-                            contextActiveInvItem.myInventory.currentWeight -= Mathf.RoundToInt(contextActiveInvItem.itemData.bagInventory.items[i].item.weight * contextActiveInvItem.itemData.bagInventory.items[i].currentStackSize * 100f) / 100f;
-                            contextActiveInvItem.myInventory.currentVolume -= Mathf.RoundToInt(contextActiveInvItem.itemData.bagInventory.items[i].item.volume * contextActiveInvItem.itemData.bagInventory.items[i].currentStackSize * 100f) / 100f;
-                        }
-                    }
-
-                    contextActiveInvItem.myInventory.myInvUI.UpdateUI();
-                }
-                else
-                    gm.containerInvUI.UpdateUI();*/
-                
                 contextActiveInvItem.ClearItem();
-
-                //if (contextParentInvItem != null)
-                    //contextParentInvItem.UpdateItemNumberTexts();
             }
         }
 

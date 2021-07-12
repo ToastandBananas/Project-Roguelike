@@ -122,14 +122,8 @@ public class StackSizeSelector : MonoBehaviour
                 ItemPickup newItemPickup = gm.objectPoolManager.itemPickupsPool.GetPooledItemPickup();
 
                 newItemData = newItemPickup.itemData;
-                newItemPickup.spriteRenderer.sprite = selectedInvItem.itemData.item.pickupSprite;
-                newItemPickup.transform.position = gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromActiveDirection();
-                newItemPickup.gameObject.SetActive(true);
+                gm.dropItemController.SetupItemPickup(newItemPickup, selectedInvItem.itemData, currentValue, gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromActiveDirection());
                 gm.containerInvUI.AddItemToActiveDirectionList(newItemData);
-
-                #if UNITY_EDITOR
-                    newItemPickup.name = selectedInvItem.itemData.itemName;
-                #endif
             }
 
             selectedInvItem.itemData.TransferData(selectedInvItem.itemData, newItemData);

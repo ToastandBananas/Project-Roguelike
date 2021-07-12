@@ -77,9 +77,6 @@ public class Inventory : MonoBehaviour
         if (HasRoomInInventory(itemDataComingFrom, itemCount) == false)
             return false;
 
-        // Add to this Inventory's weight and volume
-        //AddItemsWeightAndVolumeToInventory(itemDataComingFrom, this, itemCount);
-
         // Try adding to existing stacks first, while keeping track of how many we added to existing stacks
         int amountAddedToExistingStacks = 0;
         if (itemDataComingFrom.item.maxStackSize > 1 && InventoryContainsSameItem(itemDataComingFrom))
@@ -151,17 +148,6 @@ public class Inventory : MonoBehaviour
                     gm.uiManager.CreateNewItemDataChild(itemDataComingFromsInv.items[i], itemDataToAdd.bagInventory, true);
                 }
 
-                // If the bag is coming from an Inventory or EquipmentManager (and not from the ground), subtract the bag's weight/volume, including the items inside it
-                /*if (invComingFrom == null)
-                    SubtractItemsWeightAndVolumeFromInventory(itemDataComingFrom, itemDataComingFromsInv, invItemComingFrom, itemCount, true, true);
-                else if (itemDataComingFrom.CompareTag("Item Pickup") == false)
-                {
-                    SubtractItemsWeightAndVolumeFromInventory(itemDataComingFrom, itemDataComingFromsInv, invItemComingFrom, itemCount, true, true);
-                    SubtractItemsWeightAndVolumeFromInventory(itemDataComingFrom, invComingFrom, invItemComingFrom, itemCount, true, true);
-                }
-                else
-                    invComingFrom.ResetWeightAndVolume(); // Else if it is a pickup, just set the weight and volume to 0*/
-
                 for (int i = 0; i < itemDataComingFromsInv.items.Count; i++)
                 {
                     // Return the item we took out of the "old" bag back to it's object pool
@@ -200,30 +186,12 @@ public class Inventory : MonoBehaviour
                 itemDataToAdd.gameObject.name = itemDataToAdd.itemName;
             #endif
 
-            // If we're taking this item from another Inventory and it's not a bag or portable container, update its weight and volume
-            //if (invComingFrom != null && itemDataComingFrom.item.IsBag() == false && itemDataComingFrom.item.itemType != ItemType.Container && shouldUpdateWeightAndVolume)
-                //SubtractItemsWeightAndVolumeFromInventory(itemDataComingFrom, invComingFrom, invItemComingFrom, itemCount, true, true);
-
             // If we're only taking 1 count of the item, subtract 1 from the currentStackSize, otherwise it should now be 0
             if (itemCount == 1)
                 itemDataComingFrom.currentStackSize--;
             else
                 itemDataComingFrom.currentStackSize = 0;
         }
-
-        // Update the InventoryItem we're taking from's texts
-        //if (invItemComingFrom != null)
-        //{
-            //invItemComingFrom.UpdateInventoryWeightAndVolume();
-            //invItemComingFrom.UpdateItemNumberTexts();
-            //if (invItemComingFrom.parentInvItem != null)
-                //invItemComingFrom.parentInvItem.UpdateItemNumberTexts();
-        //}
-
-        //if (invComingFrom != null)
-            //invComingFrom.UpdateCurrentWeightAndVolume();
-
-        //UpdateCurrentWeightAndVolume();
 
         return true;
     }

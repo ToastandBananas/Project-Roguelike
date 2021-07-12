@@ -15,8 +15,8 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
     public DisclosureWidget disclosureWidget;
     public TextMeshProUGUI itemNameText, itemAmountText, itemTypeText, itemWeightText, itemVolumeText;
 
-    public ItemData itemData;
-    public Inventory myInventory;
+    [HideInInspector] public ItemData itemData;
+    [HideInInspector] public Inventory myInventory;
     [HideInInspector] public InventoryUI myInvUI;
     [HideInInspector] public InventoryItem parentInvItem;
     [HideInInspector] public EquipmentManager myEquipmentManager;
@@ -242,6 +242,8 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                         ClearItem();
                     }
                 }
+                else
+                    AddItemToOtherBags(itemData);
             }
             else // Otherwise, add the item to the first available bag, or the personal inventory if there's no bag or no room in any of the bags
                 AddItemToOtherBags(itemData);
@@ -303,20 +305,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                         gm.dropItemController.DropItem(dropPos, itemData, itemData.currentStackSize, gm.playerInvUI.activeInventory, this);
 
                         if (gm.playerInvUI.activeInventory != null)
-                        {
                             gm.playerInvUI.activeInventory.items.Remove(itemData);
-                            //gm.playerInvUI.activeInventory.currentWeight -= Mathf.RoundToInt(itemData.item.weight * itemData.currentStackSize * 100f) / 100f;
-                            //gm.playerInvUI.activeInventory.currentVolume -= Mathf.RoundToInt(itemData.item.volume * itemData.currentStackSize * 100f) / 100f;
-                        }
 
                         UpdateInventoryWeightAndVolume();
-                        /*InventoryItem invItemsParentInvItem = null;
-                        if (parentInvItem != null)
-                        {
-                            invItemsParentInvItem = parentInvItem;
-                            parentInvItem.itemData.bagInventory.currentWeight -= Mathf.RoundToInt(itemData.item.weight * itemData.currentStackSize * 100f) / 100f;
-                            parentInvItem.itemData.bagInventory.currentVolume -= Mathf.RoundToInt(itemData.item.volume * itemData.currentStackSize * 100f) / 100f;
-                        }*/
 
                         if (myEquipmentManager != null)
                         {
@@ -325,9 +316,6 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                         }
                         else
                             ClearItem();
-
-                        //if (invItemsParentInvItem != null)
-                            //invItemsParentInvItem.UpdateItemNumberTexts();
                     }
                 }
                 else
@@ -431,8 +419,6 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                     gm.containerInvUI.RemoveBagFromGround();
             }
         }
-
-        UpdateInventoryWeightAndVolume();
     }
 
     bool AddItemToInventory_OneAtATime(Inventory invComingFrom, Inventory invAddingTo, ItemData itemData)
@@ -448,6 +434,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 someAdded = true;
                 if (itemData.currentStackSize == 0) // If the entire stack was added
                 {
+                    gm.containerInvUI.GetItemDatasInventoryItem(itemData).UpdateInventoryWeightAndVolume();
                     ClearItem();
                     return someAdded;
                 }

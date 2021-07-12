@@ -80,17 +80,7 @@ public class DropItemController : MonoBehaviour
 
             // If the bag is coming from an Inventory (and not from the ground)
             if (invComingFrom != null)
-            {
-                //if (gm.contextMenu.contextActiveInvItem != null && itemData == gm.contextMenu.contextActiveInvItem.itemData) // If the item was dropped using the context menu
-                    //invComingFrom.SubtractItemsWeightAndVolumeFromInventory(itemData, invComingFrom, gm.contextMenu.contextActiveInvItem, 1, true, true);
-                //else if (itemData.CompareTag("Item Pickup") == false)
-                    //invComingFrom.SubtractItemsWeightAndVolumeFromInventory(itemData, invComingFrom, invItemComingFrom, 1, false, true);
-
                 bagInv.ResetWeightAndVolume(); // Reset the bag's inventory
-
-                //if (invComingFrom.myInvUI == null) invComingFrom.myInvUI = invItemComingFrom.myInvUI;
-                //invComingFrom.myInvUI.UpdateUI();
-            }
             else // If the bag is coming from the ground
                 gm.containerInvUI.RemoveBagFromGround();
 
@@ -153,16 +143,6 @@ public class DropItemController : MonoBehaviour
         itemData.currentStackSize = 0;
         if (invItemComingFrom != null)
             invItemComingFrom.UpdateInventoryWeightAndVolume();
-
-        /*if (invComingFrom != null)
-        {
-            invComingFrom.UpdateCurrentWeightAndVolume();
-
-            if (invComingFrom.myInvUI == null)
-                invComingFrom.myInvUI = invItemComingFrom.myInvUI;
-
-            invComingFrom.myInvUI.UpdateUI();
-        }*/
     }
 
     public void SetupItemPickup(ItemPickup newItemPickup, ItemData itemData, int amountToDrop, Vector3 dropPosition)
@@ -178,6 +158,7 @@ public class DropItemController : MonoBehaviour
         if (itemData.item.IsBag())
         {
             Bag bag = (Bag)itemData.item;
+            newItemPickup.itemData.bagInventory.container.sidebarSpriteClosed = bag.sidebarSprite;
             bag.SetupBagInventory(newItemPickup.itemData.bagInventory);
         }
         else if (itemData.item.IsPortableContainer())

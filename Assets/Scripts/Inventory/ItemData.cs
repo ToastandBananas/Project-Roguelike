@@ -184,12 +184,6 @@ public class ItemData : MonoBehaviour
                 break;
         }
 
-        //if (invItemTakingFrom.myInventory != null && invItemTakingFrom.myInventory != gm.playerInvUI.activeInventory && invItemTakingFrom.myInventory != gm.containerInvUI.activeInventory)
-        //{
-            //invItemTakingFrom.myInventory.currentWeight -= Mathf.RoundToInt(invItemTakingFrom.itemData.item.weight * amountAdded * 100f) / 100f;
-            //invItemTakingFrom.myInventory.currentVolume -= Mathf.RoundToInt(invItemTakingFrom.itemData.item.volume * amountAdded * 100f) / 100f;
-        //}
-
         invItemTakingFrom.UpdateItemNumberTexts();
     }
 

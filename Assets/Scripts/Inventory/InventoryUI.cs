@@ -56,8 +56,13 @@ public class InventoryUI : MonoBehaviour
         invItem.UpdateAllItemTexts();
         invItem.myInventory = activeInventory;
         invItem.myInvUI = this;
+
+        if (activeInventory == null && this == gm.playerInvUI)
+            invItem.myEquipmentManager = gm.playerManager.playerEquipmentManager;
+
         if (invItem.itemData.bagInventory != null)
             invItem.itemData.bagInventory.myInvUI = this;
+
         invItem.gameObject.SetActive(true);
         invItem.originalSiblingIndex = invItem.transform.GetSiblingIndex();
 

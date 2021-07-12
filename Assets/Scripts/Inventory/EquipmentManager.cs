@@ -105,12 +105,8 @@ public class EquipmentManager : MonoBehaviour
             // Set the weight and volume of the "new" bag
             bagsInventory.UpdateCurrentWeightAndVolume();
 
-            // If the bag is coming from an Inventory or EquipmentManager (and not from the ground), subtract the bag's weight/volume, including the items inside it
-            //if (newItemData.CompareTag("Item Pickup") == false)
-                //bagsInventory.UpdateCurrentWeightAndVolume();
-                //bagsInventory.SubtractItemsWeightAndVolumeFromInventory(newItemData, invItemComingFrom.myInventory, invItemComingFrom, 1, false, false); // We don't subtract the bag's weight yet because it will just be subtracted later when it's removed from the inventory
-            
-            newItemData.bagInventory.ResetWeightAndVolume(); // Reset the bag's inventory
+            // Reset the old bag's inventory
+            newItemData.bagInventory.ResetWeightAndVolume(); 
             
             for (int i = 0; i < newItemData.bagInventory.items.Count; i++)
             {
