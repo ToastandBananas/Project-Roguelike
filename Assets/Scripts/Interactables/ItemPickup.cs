@@ -81,6 +81,7 @@ public class ItemPickup : Interactable
 
         if (wasPickedUp)
         {
+            inventory.UpdateCurrentWeightAndVolume();
             UpdateItemPickupFocus();
             Deactivate();
         }

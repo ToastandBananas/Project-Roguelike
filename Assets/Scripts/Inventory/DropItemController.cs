@@ -76,20 +76,20 @@ public class DropItemController : MonoBehaviour
             }
 
             // Set the weight and volume of the "new" bag
-            newItemPickup.itemData.bagInventory.GetCurrentWeightAndVolume();
+            newItemPickup.itemData.bagInventory.UpdateCurrentWeightAndVolume();
 
-            // If the bag is coming from an Inventory (and not from the ground), subtract the bag's weight/volume, including the items inside it
+            // If the bag is coming from an Inventory (and not from the ground)
             if (invComingFrom != null)
             {
-                if (gm.contextMenu.contextActiveInvItem != null && itemData == gm.contextMenu.contextActiveInvItem.itemData) // If the item was dropped using the context menu
-                    invComingFrom.SubtractItemsWeightAndVolumeFromInventory(itemData, invComingFrom, gm.contextMenu.contextActiveInvItem, 1, true);
-                else if (itemData.CompareTag("Item Pickup") == false)
-                    invComingFrom.SubtractItemsWeightAndVolumeFromInventory(itemData, invComingFrom, invItemComingFrom, 1, false);
+                //if (gm.contextMenu.contextActiveInvItem != null && itemData == gm.contextMenu.contextActiveInvItem.itemData) // If the item was dropped using the context menu
+                    //invComingFrom.SubtractItemsWeightAndVolumeFromInventory(itemData, invComingFrom, gm.contextMenu.contextActiveInvItem, 1, true, true);
+                //else if (itemData.CompareTag("Item Pickup") == false)
+                    //invComingFrom.SubtractItemsWeightAndVolumeFromInventory(itemData, invComingFrom, invItemComingFrom, 1, false, true);
 
                 bagInv.ResetWeightAndVolume(); // Reset the bag's inventory
 
-                if (invComingFrom.myInvUI == null) invComingFrom.myInvUI = invItemComingFrom.myInvUI;
-                invComingFrom.myInvUI.UpdateUI();
+                //if (invComingFrom.myInvUI == null) invComingFrom.myInvUI = invItemComingFrom.myInvUI;
+                //invComingFrom.myInvUI.UpdateUI();
             }
             else // If the bag is coming from the ground
                 gm.containerInvUI.RemoveBagFromGround();
@@ -149,6 +149,20 @@ public class DropItemController : MonoBehaviour
             Bag bag = (Bag)itemData.item;
             gm.containerInvUI.GetSideBarButtonFromDirection(dropDirection).icon.sprite = bag.sidebarSprite;
         }
+
+        itemData.currentStackSize = 0;
+        if (invItemComingFrom != null)
+            invItemComingFrom.UpdateInventoryWeightAndVolume();
+
+        /*if (invComingFrom != null)
+        {
+            invComingFrom.UpdateCurrentWeightAndVolume();
+
+            if (invComingFrom.myInvUI == null)
+                invComingFrom.myInvUI = invItemComingFrom.myInvUI;
+
+            invComingFrom.myInvUI.UpdateUI();
+        }*/
     }
 
     public void SetupItemPickup(ItemPickup newItemPickup, ItemData itemData, int amountToDrop, Vector3 dropPosition)

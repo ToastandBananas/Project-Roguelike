@@ -455,6 +455,10 @@ public class UIManager : MonoBehaviour
                 if (inv.AddItem(draggedInvItem, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, true))
                 {
                     // If the item was added to the inventory:
+                    // Update weight/volume
+                    draggedInvItem.UpdateInventoryWeightAndVolume();
+                    inv.UpdateCurrentWeightAndVolume();
+
                     // Play the add item effect
                     StartCoroutine(gm.containerInvUI.PlayAddItemEffect(draggedInvItem.itemData.item.pickupSprite, activeContainerSideBarButton, null));
 
@@ -476,6 +480,9 @@ public class UIManager : MonoBehaviour
                     // Drop the item
                     gm.dropItemController.DropItem(dropPos, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, draggedInvItem);
 
+                    // Update weight/volume
+                    draggedInvItem.UpdateInventoryWeightAndVolume();
+
                     // If the item was a bag and we took it from the ground
                     if (draggedInvItem.itemData.item.IsBag() && gm.containerInvUI.activeInventory == draggedInvItem.itemData.bagInventory)
                         gm.containerInvUI.RemoveBagFromGround();
@@ -496,6 +503,10 @@ public class UIManager : MonoBehaviour
             if (inv.AddItem(draggedInvItem, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, true))
             {
                 // If the item was added to the inventory:
+                // Update weight/volume
+                draggedInvItem.UpdateInventoryWeightAndVolume();
+                inv.UpdateCurrentWeightAndVolume();
+
                 // Play the add item effect
                 StartCoroutine(gm.playerInvUI.PlayAddItemEffect(draggedInvItem.itemData.item.pickupSprite, null, activePlayerInvSideBarButton));
 
@@ -534,6 +545,9 @@ public class UIManager : MonoBehaviour
                 {
                     gm.dropItemController.DropItem(dropPos, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, draggedInvItem);
 
+                    // Update weight/volume
+                    draggedInvItem.UpdateInventoryWeightAndVolume();
+
                     // Remove, unequip or clear the item we were dragging, depending where it's coming from
                     RemoveDraggedItem(draggedInvItem, startingItemCount);
                 }
@@ -541,6 +555,10 @@ public class UIManager : MonoBehaviour
 
             if (wasAddedToInventory)
             {
+                // Update weight/volume
+                draggedInvItem.UpdateInventoryWeightAndVolume();
+                activeInvUI.activeInventory.UpdateCurrentWeightAndVolume();
+
                 // Play the add item effect
                 if (activeInvUI == gm.containerInvUI)
                     StartCoroutine(gm.containerInvUI.PlayAddItemEffect(draggedInvItem.itemData.item.pickupSprite, gm.containerInvUI.activeContainerSideBarButton, null));
@@ -559,6 +577,9 @@ public class UIManager : MonoBehaviour
             {
                 // Drop the item
                 gm.dropItemController.DropItem(dropPos, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, draggedInvItem);
+
+                // Update weight/volume
+                draggedInvItem.UpdateInventoryWeightAndVolume();
 
                 // Remove, unequip or clear the item we were dragging, depending where it's coming from
                 RemoveDraggedItem(draggedInvItem, startingItemCount);
@@ -579,6 +600,7 @@ public class UIManager : MonoBehaviour
                     {
                         int draggedInvItemCurrentStackSize = draggedInvItem.itemData.currentStackSize;
                         activeInvItem.itemData.bagInventory.AddItem(draggedInvItem, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, false);
+                        activeInvItem.UpdateInventoryWeightAndVolume();
 
                         if (activeInvItem.disclosureWidget.isExpanded)
                         {
@@ -591,9 +613,11 @@ public class UIManager : MonoBehaviour
                             if (draggedInvItem.myInvUI == gm.containerInvUI)
                                 gm.containerInvUI.RemoveItemFromActiveDirectionalList(draggedInvItem.itemData);
 
+                            draggedInvItem.UpdateInventoryWeightAndVolume();
                             if (draggedInvItem.parentInvItem != null)
                             {
-                                draggedInvItem.parentInvItem.itemData.bagInventory.SubtractItemsWeightAndVolumeFromInventory(draggedInvItem.itemData, draggedInvItem.parentInvItem.itemData.bagInventory, draggedInvItem, draggedInvItemCurrentStackSize, true);
+                                //draggedInvItem.parentInvItem.itemData.bagInventory.SubtractItemsWeightAndVolumeFromInventory(draggedInvItem.itemData, draggedInvItem.parentInvItem.itemData.bagInventory, draggedInvItem, draggedInvItemCurrentStackSize, true, false);
+                                //draggedInvItem.parentInvItem.itemData.bagInventory.UpdateCurrentWeightAndVolume();
                                 draggedInvItem.parentInvItem.disclosureWidget.RemoveExpandedItem(draggedInvItem);
                             }
 
@@ -604,6 +628,7 @@ public class UIManager : MonoBehaviour
 
                             draggedInvItem.isItemInsideBag = true;
                             draggedInvItem.parentInvItem = activeInvItem;
+                            draggedInvItem.myInventory = draggedInvItem.parentInvItem.itemData.bagInventory;
                             draggedInvItem.parentInvItem.disclosureWidget.expandedItems.Add(draggedInvItem);
                             draggedInvItem.itemData = draggedInvItem.parentInvItem.itemData.bagInventory.items[draggedInvItem.parentInvItem.itemData.bagInventory.items.Count - 1];
 
@@ -612,9 +637,11 @@ public class UIManager : MonoBehaviour
                         }
                         else
                         {
+                            draggedInvItem.UpdateInventoryWeightAndVolume();
                             if (draggedInvItem.parentInvItem != null)
                             {
-                                draggedInvItem.parentInvItem.itemData.bagInventory.SubtractItemsWeightAndVolumeFromInventory(draggedInvItem.itemData, draggedInvItem.parentInvItem.itemData.bagInventory, draggedInvItem, draggedInvItemCurrentStackSize, true);
+                                //draggedInvItem.parentInvItem.itemData.bagInventory.SubtractItemsWeightAndVolumeFromInventory(draggedInvItem.itemData, draggedInvItem.parentInvItem.itemData.bagInventory, draggedInvItem, draggedInvItemCurrentStackSize, true, false);
+                                //draggedInvItem.parentInvItem.itemData.bagInventory.UpdateCurrentWeightAndVolume();
                                 draggedInvItem.parentInvItem.disclosureWidget.RemoveExpandedItem(draggedInvItem);
                             }
 
@@ -639,6 +666,7 @@ public class UIManager : MonoBehaviour
                     {
                         int draggedInvItemCurrentStackSize = draggedInvItem.itemData.currentStackSize;
                         activeInvItem.itemData.bagInventory.AddItem(draggedInvItem, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, false);
+                        activeInvItem.UpdateInventoryWeightAndVolume();
 
                         if (activeInvItem.disclosureWidget.isExpanded)
                         {
@@ -651,9 +679,11 @@ public class UIManager : MonoBehaviour
                             if (draggedInvItem.myInvUI == gm.containerInvUI)
                                 gm.containerInvUI.RemoveItemFromActiveDirectionalList(draggedInvItem.itemData);
 
+                            draggedInvItem.UpdateInventoryWeightAndVolume();
                             if (draggedInvItem.parentInvItem != null)
                             {
-                                draggedInvItem.parentInvItem.itemData.bagInventory.SubtractItemsWeightAndVolumeFromInventory(draggedInvItem.itemData, draggedInvItem.parentInvItem.itemData.bagInventory, draggedInvItem, draggedInvItemCurrentStackSize, true);
+                                //draggedInvItem.parentInvItem.itemData.bagInventory.SubtractItemsWeightAndVolumeFromInventory(draggedInvItem.itemData, draggedInvItem.parentInvItem.itemData.bagInventory, draggedInvItem, draggedInvItemCurrentStackSize, true, false);
+                                //draggedInvItem.parentInvItem.itemData.bagInventory.UpdateCurrentWeightAndVolume();
                                 draggedInvItem.parentInvItem.disclosureWidget.RemoveExpandedItem(draggedInvItem);
                             }
 
@@ -661,6 +691,7 @@ public class UIManager : MonoBehaviour
 
                             draggedInvItem.isItemInsideBag = true;
                             draggedInvItem.parentInvItem = activeInvItem;
+                            draggedInvItem.myInventory = draggedInvItem.parentInvItem.itemData.bagInventory;
                             draggedInvItem.parentInvItem.disclosureWidget.expandedItems.Add(draggedInvItem);
                             draggedInvItem.itemData = draggedInvItem.parentInvItem.itemData.bagInventory.items[draggedInvItem.parentInvItem.itemData.bagInventory.items.Count - 1];
 
@@ -669,9 +700,11 @@ public class UIManager : MonoBehaviour
                         }
                         else
                         {
+                            draggedInvItem.UpdateInventoryWeightAndVolume();
                             if (draggedInvItem.parentInvItem != null)
                             {
-                                draggedInvItem.parentInvItem.itemData.bagInventory.SubtractItemsWeightAndVolumeFromInventory(draggedInvItem.itemData, draggedInvItem.parentInvItem.itemData.bagInventory, draggedInvItem, draggedInvItemCurrentStackSize, true);
+                                //draggedInvItem.parentInvItem.itemData.bagInventory.SubtractItemsWeightAndVolumeFromInventory(draggedInvItem.itemData, draggedInvItem.parentInvItem.itemData.bagInventory, draggedInvItem, draggedInvItemCurrentStackSize, true, false);
+                                //draggedInvItem.parentInvItem.itemData.bagInventory.UpdateCurrentWeightAndVolume();
                                 draggedInvItem.parentInvItem.disclosureWidget.RemoveExpandedItem(draggedInvItem);
                             }
 
@@ -684,21 +717,26 @@ public class UIManager : MonoBehaviour
                 else
                     Debug.Log("You can't put that in the " + activeInvItem.itemData.itemName);
             }
+            // If we the item we're dragging and dropping is the same as the active item and they have equal values, add to the active item's stack size
             else if (activeInvItem.itemData.item.maxStackSize > 1 && activeInvItem.itemData.currentStackSize < activeInvItem.itemData.item.maxStackSize 
                 && activeInvItem.itemData.StackableItemsDataIsEqual(activeInvItem.itemData, draggedInvItem.itemData))
             {
-                // If we the item we're dragging and dropping is the same as the active item and they have equal values, add to the active item's stack size
-                int startingStackSize = draggedInvItem.itemData.currentStackSize;
+                //int startingStackSize = draggedInvItem.itemData.currentStackSize;
                 activeInvItem.itemData.AddToItemsStack(draggedInvItem);
-                activeInvItem.UpdateItemNumberTexts();
 
                 if (draggedInvItem.itemData.currentStackSize == 0)
                 {
-                    if (activeInvItem.parentInvItem.itemData.bagInventory != null)
-                        activeInvItem.parentInvItem.itemData.bagInventory.AddItemsWeightAndVolumeToInventory(draggedInvItem.itemData, activeInvItem.parentInvItem.itemData.bagInventory, startingStackSize - draggedInvItem.itemData.currentStackSize);
+                    //activeInvItem.parentInvItem.itemData.bagInventory.AddItemsWeightAndVolumeToInventory(draggedInvItem.itemData, activeInvItem.parentInvItem.itemData.bagInventory, startingStackSize - draggedInvItem.itemData.currentStackSize);
 
                     RemoveDraggedItem(draggedInvItem, startingItemCount);
                 }
+
+                activeInvItem.UpdateInventoryWeightAndVolume();
+                //activeInvItem.myInventory.UpdateCurrentWeightAndVolume();
+                //activeInvItem.UpdateItemNumberTexts();
+                //activeInvItem.parentInvItem.UpdateItemNumberTexts();
+                //if (activeInvItem.parentInvItem.itemData.bagInventory != null)
+                    //activeInvItem.parentInvItem.itemData.bagInventory.UpdateCurrentWeightAndVolume();
             }
         }
         else if (activeInvUI != null && activeInvUI == draggedInvItem.myInvUI)
@@ -793,16 +831,27 @@ public class UIManager : MonoBehaviour
                 draggedInvItem.parentInvItem.disclosureWidget.expandedItems.Remove(draggedInvItem);
 
                 // Update weight/volume for the bag
-                draggedInvItem.parentInvItem.itemData.bagInventory.currentWeight -= Mathf.RoundToInt(draggedInvItem.itemData.item.weight * draggedInvItem.itemData.currentStackSize * 100f) / 100f;
-                draggedInvItem.parentInvItem.itemData.bagInventory.currentVolume -= Mathf.RoundToInt(draggedInvItem.itemData.item.volume * draggedInvItem.itemData.currentStackSize * 100f) / 100f;
-                draggedInvItem.parentInvItem.UpdateItemNumberTexts();
+                draggedInvItem.UpdateInventoryWeightAndVolume();
+                if (draggedInvItem.myInventory != null)
+                    draggedInvItem.myInventory.UpdateCurrentWeightAndVolume();
 
                 // If there's now nothing left in the bag, contract the disclosure widget
                 if (draggedInvItem.parentInvItem.disclosureWidget.expandedItems.Count == 0)
                     draggedInvItem.parentInvItem.disclosureWidget.ContractDisclosureWidget();
 
-                draggedInvItem.parentInvItem = null;
-                draggedInvItem.isItemInsideBag = false;
+                // If we just dragged it into another bag
+                if (draggedInvItem.parentInvItem.parentInvItem != null)
+                {
+                    Debug.Log("Here");
+                    draggedInvItem.parentInvItem = draggedInvItem.parentInvItem.parentInvItem;
+                    draggedInvItem.parentInvItem.disclosureWidget.expandedItems.Add(draggedInvItem);
+                    draggedInvItem.isItemInsideBag = true;
+                }
+                else
+                {
+                    draggedInvItem.parentInvItem = null;
+                    draggedInvItem.isItemInsideBag = false;
+                }
 
                 // If this is a container UI item, rearrange the appropriate containerUI's directional items list
                 if (draggedInvItem.myInvUI == gm.containerInvUI && draggedInvItem.parentInvItem == null)
@@ -925,7 +974,8 @@ public class UIManager : MonoBehaviour
                         draggedInvItem.itemData.transform.SetParent(lastActiveItem.itemData.bagInventory.itemsParent);
                         draggedInvItem.myInventory = lastActiveItem.itemData.bagInventory;
                         draggedInvItem.myInventory.items.Insert(0, draggedInvItem.itemData);
-                        lastActiveItem.itemData.bagInventory.AddItemsWeightAndVolumeToInventory(draggedInvItem.itemData, lastActiveItem.itemData.bagInventory, draggedInvItem.itemData.currentStackSize);
+                        //lastActiveItem.itemData.bagInventory.AddItemsWeightAndVolumeToInventory(draggedInvItem.itemData, lastActiveItem.itemData.bagInventory, draggedInvItem.itemData.currentStackSize);
+                        lastActiveItem.itemData.bagInventory.UpdateCurrentWeightAndVolume();
                         lastActiveItem.UpdateItemNumberTexts();
                     }
                     else

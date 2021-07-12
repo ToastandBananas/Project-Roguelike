@@ -101,13 +101,14 @@ public class EquipmentManager : MonoBehaviour
             {
                 gm.uiManager.CreateNewItemDataChild(newItemData.bagInventory.items[i], bagsInventory, true);
             }
-
+            
             // Set the weight and volume of the "new" bag
-            bagsInventory.GetCurrentWeightAndVolume();
+            bagsInventory.UpdateCurrentWeightAndVolume();
 
             // If the bag is coming from an Inventory or EquipmentManager (and not from the ground), subtract the bag's weight/volume, including the items inside it
-            if (newItemData.CompareTag("Item Pickup") == false)
-                bagsInventory.SubtractItemsWeightAndVolumeFromInventory(newItemData, invItemComingFrom.myInventory, invItemComingFrom, 1, false); // We don't subtract the bag's weight yet because it will just be subtracted later when it's removed from the inventory
+            //if (newItemData.CompareTag("Item Pickup") == false)
+                //bagsInventory.UpdateCurrentWeightAndVolume();
+                //bagsInventory.SubtractItemsWeightAndVolumeFromInventory(newItemData, invItemComingFrom.myInventory, invItemComingFrom, 1, false, false); // We don't subtract the bag's weight yet because it will just be subtracted later when it's removed from the inventory
             
             newItemData.bagInventory.ResetWeightAndVolume(); // Reset the bag's inventory
             
@@ -213,6 +214,8 @@ public class EquipmentManager : MonoBehaviour
 
                     if (itemWasAddedToInv)
                     {
+                        invItemComingFrom.UpdateInventoryWeightAndVolume();
+                        gm.playerInvUI.backpackInventory.UpdateCurrentWeightAndVolume();
                         StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.backpackSidebarButton));
                         addItemEffectPlayed = true;
                     }
@@ -221,6 +224,8 @@ public class EquipmentManager : MonoBehaviour
 
                     if (itemWasAddedToInv && addItemEffectPlayed == false)
                     {
+                        invItemComingFrom.UpdateInventoryWeightAndVolume();
+                        gm.playerInvUI.leftHipPouchInventory.UpdateCurrentWeightAndVolume();
                         StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.leftHipPouchSidebarButton));
                         addItemEffectPlayed = true;
                     }
@@ -229,6 +234,8 @@ public class EquipmentManager : MonoBehaviour
 
                     if (itemWasAddedToInv && addItemEffectPlayed == false)
                     {
+                        invItemComingFrom.UpdateInventoryWeightAndVolume();
+                        gm.playerInvUI.rightHipPouchInventory.UpdateCurrentWeightAndVolume();
                         StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.rightHipPouchSidebarButton));
                         addItemEffectPlayed = true;
                     }
@@ -236,7 +243,11 @@ public class EquipmentManager : MonoBehaviour
                         itemWasAddedToInv = gm.playerInvUI.personalInventory.AddItem(invItemComingFrom, oldItemData, oldItemData.currentStackSize, invComingFrom, true);
 
                     if (itemWasAddedToInv && addItemEffectPlayed == false)
+                    {
+                        invItemComingFrom.UpdateInventoryWeightAndVolume();
+                        gm.playerInvUI.personalInventory.UpdateCurrentWeightAndVolume();
                         StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.personalInventorySideBarButton));
+                    }
                     else if (itemWasAddedToInv == false) // If we can't add it to the Inventory, drop it, but first we need to run the rest of the code in this method, so we'll just set a bool for now
                         shouldDropItem = true;
                 }
@@ -245,6 +256,8 @@ public class EquipmentManager : MonoBehaviour
                     // Try adding to the NPC's inventory, else drop the item at their feet
                     if (characterManager.inventory.AddItem(null, oldItemData, oldItemData.currentStackSize, invComingFrom, true) == false)
                         shouldDropItem = true;
+                    else
+                        characterManager.inventory.UpdateCurrentWeightAndVolume();
                 }
             }
             else

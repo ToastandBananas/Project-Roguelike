@@ -203,11 +203,13 @@ public class ContextMenu : MonoBehaviour
             }
             else
             {
-                InventoryItem contextParentInvItem = null;
-                if (contextActiveInvItem.parentInvItem != null)
+                contextActiveInvItem.UpdateInventoryWeightAndVolume();
+                //InventoryItem contextParentInvItem = null;
+                /*if (contextActiveInvItem.parentInvItem != null)
                 {
-                    contextParentInvItem = contextActiveInvItem.parentInvItem;
-                    contextParentInvItem.itemData.bagInventory.SubtractItemsWeightAndVolumeFromInventory(contextActiveInvItem.itemData, contextParentInvItem.itemData.bagInventory, contextActiveInvItem, contextActiveInvItem.itemData.currentStackSize, true);
+                    //contextActiveInvItem.parentInvItemcontextParentInvItem = contextActiveInvItem.parentInvItem;
+                    //contextParentInvItem.itemData.bagInventory.UpdateCurrentWeightAndVolume();
+                    //contextParentInvItem.itemData.bagInventory.SubtractItemsWeightAndVolumeFromInventory(contextActiveInvItem.itemData, contextParentInvItem.itemData.bagInventory, contextActiveInvItem, contextActiveInvItem.itemData.currentStackSize, true, true);
 
                     if (contextActiveInvItem.myInvUI == gm.playerInvUI)
                         gm.playerInvUI.UpdateUI();
@@ -219,7 +221,7 @@ public class ContextMenu : MonoBehaviour
                     contextActiveInvItem.myInventory.currentWeight -= Mathf.RoundToInt(contextActiveInvItem.itemData.item.weight * contextActiveInvItem.itemData.currentStackSize * 100f) / 100f;
                     contextActiveInvItem.myInventory.currentVolume -= Mathf.RoundToInt(contextActiveInvItem.itemData.item.volume * contextActiveInvItem.itemData.currentStackSize * 100f) / 100f;
 
-                    if (contextActiveInvItem.itemData.item.itemType == ItemType.Container)
+                    if (contextActiveInvItem.itemData.item.IsPortableContainer())
                     {
                         for (int i = 0; i < contextActiveInvItem.itemData.bagInventory.items.Count; i++)
                         {
@@ -231,12 +233,12 @@ public class ContextMenu : MonoBehaviour
                     contextActiveInvItem.myInventory.myInvUI.UpdateUI();
                 }
                 else
-                    gm.containerInvUI.UpdateUI();
+                    gm.containerInvUI.UpdateUI();*/
                 
                 contextActiveInvItem.ClearItem();
 
-                if (contextParentInvItem != null)
-                    contextParentInvItem.UpdateItemNumberTexts();
+                //if (contextParentInvItem != null)
+                    //contextParentInvItem.UpdateItemNumberTexts();
             }
         }
 

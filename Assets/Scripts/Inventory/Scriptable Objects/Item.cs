@@ -46,14 +46,34 @@ public class Item : ScriptableObject
                 }
                 else
                 {
-                    if (invItem.parentInvItem != null)
+                    invItem.UpdateInventoryWeightAndVolume();
+                    /*if (invItem.parentInvItem != null)
                     {
-                        invItem.parentInvItem.itemData.bagInventory.SubtractItemsWeightAndVolumeFromInventory(invItem.itemData, invItem.parentInvItem.itemData.bagInventory, invItem, itemCount, true);
+                        //invItem.parentInvItem.itemData.bagInventory.SubtractItemsWeightAndVolumeFromInventory(invItem.itemData, invItem.parentInvItem.itemData.bagInventory, invItem, itemCount, true, true);
+                        invItem.parentInvItem.itemData.bagInventory.UpdateCurrentWeightAndVolume();
                         invItem.parentInvItem.UpdateItemNumberTexts();
+
+                        if (invItem.parentInvItem.parentInvItem != null)
+                        {
+                            invItem.parentInvItem.parentInvItem.itemData.bagInventory.UpdateCurrentWeightAndVolume();
+                            invItem.parentInvItem.parentInvItem.UpdateItemNumberTexts();
+
+                            if (invItem.parentInvItem.parentInvItem.myInventory != null)
+                                invItem.parentInvItem.parentInvItem.myInventory.UpdateCurrentWeightAndVolume();
+                        }
+                        else if (invItem.parentInvItem.myInventory != null)
+                            invItem.parentInvItem.myInventory.UpdateCurrentWeightAndVolume();
+                    }
+                    else if (invItem.myInventory != null)
+                    {
+                        //invItem.myInventory.SubtractItemsWeightAndVolumeFromInventory(invItem.itemData, invItem.myInventory, invItem, itemCount, true, true);
+                        invItem.myInventory.UpdateCurrentWeightAndVolume();
                     }
 
-                    invItem.UpdateItemNumberTexts();
+                    invItem.UpdateItemNumberTexts();*/
                 }
+
+                invItem.myInvUI.UpdateUI();
             }
             else
             {
