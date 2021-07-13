@@ -337,7 +337,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_RootOrder
-      value: 44
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_LocalPosition.x
@@ -490,96 +490,6 @@ MonoBehaviour:
   directionFromPlayer: 7
   icon: {fileID: 1704723213}
   directionIcon: {fileID: 1610212899}
---- !u!1001 &92947422
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 23
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (17)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &92947423 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 92947422}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &98887360
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1000,91 +910,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myInvUI: {fileID: 1403562116}
---- !u!1001 &146648295
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (4)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
 --- !u!4 &150165717 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
@@ -1654,181 +1479,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 193172372}
   m_CullTransparentMesh: 1
---- !u!1001 &204552607
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 32
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (26)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &204552608 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 204552607}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &211498756
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 14
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (7)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
 --- !u!1 &218378755
 GameObject:
   m_ObjectHideFlags: 0
@@ -2131,96 +1781,6 @@ CanvasRenderer:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
   m_PrefabInstance: {fileID: 1048482991}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &231167817
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (24)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &231167818 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 231167817}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &252370508
 GameObject:
@@ -2996,7 +2556,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_RootOrder
-      value: 48
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3478,7 +3038,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3688,96 +3248,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 383303779}
   m_CullTransparentMesh: 1
---- !u!1001 &399191783
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 39
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (33)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &399191784 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 399191783}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &407343483
 GameObject:
   m_ObjectHideFlags: 0
@@ -3919,7 +3389,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_RootOrder
-      value: 45
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4219,96 +3689,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &454587464
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 19
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (12)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &454587465 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 454587464}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &468830051
 GameObject:
   m_ObjectHideFlags: 0
@@ -4614,96 +3994,6 @@ RectTransform:
   m_AnchoredPosition: {x: 12, y: 0}
   m_SizeDelta: {x: 160, y: 21.7}
   m_Pivot: {x: 0.5, y: 1}
---- !u!1001 &501447047
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 24
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (18)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &501447048 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 501447047}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &514569382
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4769,96 +4059,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 3749062138308843613, guid: b3e2231364fb8e14ba521ef01c6406c4, type: 3}
   m_PrefabInstance: {fileID: 514569382}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &518640071
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 34
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (28)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &518640072 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 518640071}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &519101911
 GameObject:
@@ -5228,96 +4428,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 535248449}
   m_CullTransparentMesh: 1
---- !u!1001 &535562570
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 28
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (22)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &535562571 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 535562570}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &541307255
 GameObject:
   m_ObjectHideFlags: 0
@@ -5390,96 +4500,6 @@ RectTransform:
   m_AnchoredPosition: {x: 3, y: 0}
   m_SizeDelta: {x: 160, y: 21.7}
   m_Pivot: {x: 0.5, y: 1}
---- !u!1001 &548021053
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 42
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (36)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &548021054 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 548021053}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &549636862
 GameObject:
   m_ObjectHideFlags: 0
@@ -5757,91 +4777,6 @@ MonoBehaviour:
     m_Bits: 12544
   focusInteractable: {fileID: 0}
   canInteract: 1
---- !u!1001 &553007935
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (9)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
 --- !u!1 &554865803
 GameObject:
   m_ObjectHideFlags: 0
@@ -6110,11 +5045,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 556453532}
   m_CullTransparentMesh: 1
---- !u!4 &579993486 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 838793847}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &592220390
 GameObject:
   m_ObjectHideFlags: 0
@@ -6487,96 +5417,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7572552896763493184, guid: 53d24c0bb5692de479ab1647a96d9e9d, type: 3}
   m_PrefabInstance: {fileID: 98887360}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &651870760
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 37
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (31)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &651870761 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 651870760}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &656325476
 GameObject:
   m_ObjectHideFlags: 0
@@ -6845,96 +5685,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 661034285}
   m_CullTransparentMesh: 1
---- !u!1001 &667269023
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (34)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &667269024 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 667269023}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &667730162
 GameObject:
   m_ObjectHideFlags: 0
@@ -7051,181 +5801,6 @@ MonoBehaviour:
   container: {fileID: 0}
   myInvUI: {fileID: 0}
   hasBeenInitialized: 0
---- !u!1001 &672116282
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (13)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &672116283 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 672116282}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &673320866
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (6)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
 --- !u!1 &673731263
 GameObject:
   m_ObjectHideFlags: 0
@@ -7749,7 +6324,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_RootOrder
-      value: 47
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7890,96 +6465,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!1001 &733662104
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (15)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &733662105 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 733662104}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &740054740
 GameObject:
   m_ObjectHideFlags: 0
@@ -8063,181 +6548,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1001 &762055251
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (8)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!1001 &767260023
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (19)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &767260024 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 767260023}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &778039913
 GameObject:
   m_ObjectHideFlags: 0
@@ -8532,96 +6842,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 784989889}
   m_CullTransparentMesh: 1
---- !u!1001 &788477200
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 17
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (10)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &788477201 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 788477200}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &788565930
 GameObject:
   m_ObjectHideFlags: 0
@@ -8769,51 +6989,16 @@ Transform:
   - {fileID: 2070364907}
   - {fileID: 1099067817}
   - {fileID: 995029608}
-  - {fileID: 579993486}
-  - {fileID: 1398127731}
   - {fileID: 1210002083}
   - {fileID: 227473640}
   - {fileID: 1519758761}
-  - {fileID: 992283576}
-  - {fileID: 1662779842}
-  - {fileID: 733662105}
-  - {fileID: 2002137458}
-  - {fileID: 2093282655}
-  - {fileID: 1859289227}
-  - {fileID: 1820506296}
-  - {fileID: 1000842339}
-  - {fileID: 788477201}
-  - {fileID: 966305652}
-  - {fileID: 454587465}
-  - {fileID: 672116283}
-  - {fileID: 1724187675}
-  - {fileID: 1803704908}
-  - {fileID: 92947423}
-  - {fileID: 501447048}
-  - {fileID: 767260024}
-  - {fileID: 911892937}
-  - {fileID: 1389290901}
-  - {fileID: 535562571}
-  - {fileID: 1538945030}
-  - {fileID: 231167818}
-  - {fileID: 1630647588}
-  - {fileID: 204552608}
-  - {fileID: 883681017}
-  - {fileID: 518640072}
-  - {fileID: 1852145731}
-  - {fileID: 905170757}
-  - {fileID: 651870761}
-  - {fileID: 1970942604}
-  - {fileID: 399191784}
-  - {fileID: 667269024}
-  - {fileID: 1131499904}
-  - {fileID: 548021054}
   - {fileID: 1558640265}
   - {fileID: 795916320}
   - {fileID: 415494321}
   - {fileID: 1809877756}
   - {fileID: 150165717}
   - {fileID: 1392199866}
+  - {fileID: 1460930410}
   m_Father: {fileID: 1417868993}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8852,67 +7037,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1001 &838793847
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: d6f97f541b67b45468a1503beb004a57, type: 2}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Long Sword (4)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
 --- !u!1 &840856815
 GameObject:
   m_ObjectHideFlags: 0
@@ -9733,96 +7857,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!1001 &883681016
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 33
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (27)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &883681017 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 883681016}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &887206277
 GameObject:
   m_ObjectHideFlags: 0
@@ -10159,96 +8193,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 897516210}
   m_CullTransparentMesh: 1
---- !u!1001 &905170756
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 36
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (30)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &905170757 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 905170756}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &906846102
 GameObject:
   m_ObjectHideFlags: 0
@@ -10450,96 +8394,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 909946529}
   m_CullTransparentMesh: 1
---- !u!1001 &911892936
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 26
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (20)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &911892937 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 911892936}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &922356756
 GameObject:
   m_ObjectHideFlags: 0
@@ -11024,96 +8878,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 964968683}
   m_CullTransparentMesh: 1
---- !u!1001 &966305651
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 18
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (11)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &966305652 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 966305651}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &966907902
 GameObject:
   m_ObjectHideFlags: 0
@@ -12114,20 +9878,10 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 986774934}
   m_CullTransparentMesh: 1
---- !u!4 &992283576 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 1633759519}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &995029608 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
   m_PrefabInstance: {fileID: 1057419817}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1000842339 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 553007935}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1018013449
 GameObject:
@@ -12315,7 +10069,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_LocalPosition.x
@@ -13198,96 +10952,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1123691230}
   m_CullTransparentMesh: 1
---- !u!1001 &1131499903
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 41
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (35)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &1131499904 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 1131499903}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1132432441
 GameObject:
   m_ObjectHideFlags: 0
@@ -14352,7 +12016,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_LocalPosition.x
@@ -16117,96 +13781,6 @@ MonoBehaviour:
   characterManager: {fileID: 0}
   hitCollider: {fileID: 0}
   canTakeDamage: 1
---- !u!1001 &1389290900
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 27
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (21)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &1389290901 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 1389290900}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1392199866 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
@@ -16356,11 +13930,6 @@ MonoBehaviour:
   directionFromPlayer: 6
   icon: {fileID: 1406509253}
   directionIcon: {fileID: 118807899}
---- !u!4 &1398127731 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 1506351996}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1403562114
 GameObject:
   m_ObjectHideFlags: 0
@@ -16734,7 +14303,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_RootOrder
-      value: 46
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_LocalPosition.x
@@ -16950,6 +14519,80 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1454152046}
   m_CullTransparentMesh: 1
+--- !u!1001 &1460930409
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: e04b6a9d16a455547ac8532d05dddee7, type: 2}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -851715481033328299, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Tunic
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_TagString
+      value: Item Pickup
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &1460930410 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 1460930409}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1473345627
 GameObject:
   m_ObjectHideFlags: 0
@@ -17152,91 +14795,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!1001 &1478310252
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (5)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
 --- !u!1 &1479287144
 GameObject:
   m_ObjectHideFlags: 0
@@ -17578,67 +15136,6 @@ MonoBehaviour:
   container: {fileID: 0}
   myInvUI: {fileID: 0}
   hasBeenInitialized: 0
---- !u!1001 &1506351996
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: d6f97f541b67b45468a1503beb004a57, type: 2}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Long Sword (5)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
 --- !u!4 &1519758761 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
@@ -18906,96 +16403,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1001 &1538945029
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 29
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (23)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &1538945030 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 1538945029}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1541563278
 GameObject:
   m_ObjectHideFlags: 0
@@ -19321,7 +16728,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_RootOrder
-      value: 43
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_LocalPosition.x
@@ -19834,96 +17241,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1610212897}
   m_CullTransparentMesh: 1
---- !u!1001 &1630647587
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 31
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (25)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &1630647588 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 1630647587}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1633727875
 GameObject:
   m_ObjectHideFlags: 0
@@ -87358,87 +84675,6 @@ MonoBehaviour:
   legacyMode: 0
   serializedVersion: 1
   legacyUseWorldSpace: 0
---- !u!1001 &1633759519
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (3)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
 --- !u!1 &1639515231
 GameObject:
   m_ObjectHideFlags: 0
@@ -87603,11 +84839,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1657931524}
   m_CullTransparentMesh: 1
---- !u!4 &1662779842 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 673320866}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1704723210
 GameObject:
   m_ObjectHideFlags: 0
@@ -87945,96 +85176,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!1001 &1724187674
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 21
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (14)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &1724187675 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 1724187674}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1725526648
 GameObject:
   m_ObjectHideFlags: 0
@@ -88312,96 +85453,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1798017141}
   m_CullTransparentMesh: 1
---- !u!1001 &1803704907
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 22
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (16)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &1803704908 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 1803704907}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1808916412
 GameObject:
   m_ObjectHideFlags: 0
@@ -88575,11 +85626,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!4 &1820506296 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 762055251}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1843916193
 GameObject:
   m_ObjectHideFlags: 0
@@ -88671,101 +85717,6 @@ MonoBehaviour:
   legArmor: {fileID: 863907238}
   boots: {fileID: 1527874949}
   gloves: {fileID: 218378757}
---- !u!1001 &1852145730
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 35
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (29)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &1852145731 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 1852145730}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1859289227 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 211498756}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1864087885
 GameObject:
   m_ObjectHideFlags: 0
@@ -89626,96 +86577,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1945826462}
   m_CullTransparentMesh: 1
---- !u!1001 &1970942603
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 802752643}
-    m_Modifications:
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_RootOrder
-      value: 38
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: item
-      value: 
-      objectReference: {fileID: 11400000, guid: 94148b2fd5cec704ea5a9d4131aea354, type: 2}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: value
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: itemName
-      value: Roast Chicken Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: freshness
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: currentStackSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: hasBeenRandomized
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
-      propertyPath: m_Name
-      value: Roast Chicken Leg (32)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
---- !u!4 &1970942604 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 1970942603}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1975683147
 GameObject:
   m_ObjectHideFlags: 0
@@ -89892,11 +86753,6 @@ PrefabInstance:
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4237178433494171497, guid: 027e949e899ca394da0c8ed245bdfb6d, type: 3}
   m_PrefabInstance: {fileID: 1997841273}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &2002137458 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 146648295}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2003331725
 GameObject:
@@ -90334,11 +87190,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b3e2231364fb8e14ba521ef01c6406c4, type: 3}
---- !u!4 &2093282655 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
-  m_PrefabInstance: {fileID: 1478310252}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2118508075
 GameObject:
   m_ObjectHideFlags: 0

@@ -22,11 +22,11 @@ MonoBehaviour:
   minBaseValue: 8
   maxBaseValue: 20
   staticValue: 1
-  defaultSprite: {fileID: 2451652252212011429, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
   pickupSprite: {fileID: 2451652252212011429, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
   equipmentSlot: 7
   minBaseDurability: 75
   maxBaseDurability: 100
+  equippedSprite: {fileID: 1560336491388677395, guid: f20a51d4e8c99fb4b989b0d8c061c05f, type: 3}
   isTwoHanded: 0
   attackRange: 1
   minBaseDamage: 1

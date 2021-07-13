@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5612873fceb0a9c44b1b7bf1782bfa41, type: 3}
+  m_Name: Tunic
+  m_EditorClassIdentifier: 
+  name: Tunic
+  itemType: 3
+  description: A simple loose-fitting shirt made of linen.
+  maxStackSize: 1
+  weight: 0.32
+  volume: 1
+  isUsable: 1
+  minBaseValue: 4
+  maxBaseValue: 10
+  staticValue: 1
+  pickupSprite: {fileID: -851715481033328299, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+  equipmentSlot: 1
+  minBaseDurability: 50
+  maxBaseDurability: 72
+  equippedSprite: {fileID: 8233946077316339242, guid: e44b0bda5fde2104399981aac835ec96, type: 3}
+  minBaseDefense: 1
+  maxBaseDefense: 1
+  coldResistance: 0
+  heatResistance: 0
