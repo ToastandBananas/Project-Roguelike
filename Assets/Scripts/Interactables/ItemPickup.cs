@@ -27,11 +27,11 @@ public class ItemPickup : Interactable
         spriteRenderer.sprite = itemData.item.pickupSprite;
 
         // Make sure the item pickup is properly positioned
-        if (transform.position.x % 0.5f != 0)
-            transform.position = new Vector3(Mathf.FloorToInt(transform.position.x) + 0.5f, transform.position.y);
+        if (transform.position.x % 1f != 0)
+            transform.position = new Vector2(Mathf.RoundToInt(transform.position.x), transform.position.y);
 
-        if (transform.position.y % 0.5f != 0)
-            transform.position = new Vector3(transform.position.x, Mathf.FloorToInt(transform.position.y) + 0.5f);
+        if (transform.position.y % 1f != 0)
+            transform.position = new Vector2(transform.position.x, Mathf.RoundToInt(transform.position.y));
 
         if (itemData.bagInventory != null)
         {

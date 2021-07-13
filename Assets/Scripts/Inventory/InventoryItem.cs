@@ -39,6 +39,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             gm.uiManager.lastActiveItem = this;
             gm.uiManager.activeInvItem = this;
             Highlight();
+
+            if (gm.contextMenu.isActive == false)
+                gm.tooltipManager.ShowInventoryTooltip(this);
         }
     }
 
@@ -48,6 +51,8 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         {
             if (gm.uiManager.selectedItems.Contains(this) == false)
                 RemoveHighlight();
+
+            gm.tooltipManager.HideInventoryTooltip();
 
             gm.uiManager.activeInvItem = null;
         }
@@ -285,8 +290,6 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 if (itemData.item.maxStackSize > 1) // Try adding to existing stacks first, if the item is stackable
                 {
                     AddToExistingStacksOnGround(itemData, itemData.currentStackSize, gm.playerInvUI.activeInventory);
-                    //UpdateItemNumberTexts();
-                    //gm.containerInvUI.UpdateUI();
 
                     if (itemData.currentStackSize < startingStackSize)
                     {
@@ -492,6 +495,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
     public void UpdateInventoryWeightAndVolume()
     {
+        if (itemData.bagInventory != null)
+            itemData.bagInventory.UpdateCurrentWeightAndVolume();
+
         if (parentInvItem != null)
         {
             parentInvItem.itemData.bagInventory.UpdateCurrentWeightAndVolume();

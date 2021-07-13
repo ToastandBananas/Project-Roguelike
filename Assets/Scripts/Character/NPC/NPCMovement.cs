@@ -381,7 +381,7 @@ public class NPCMovement : Movement
     {
         roamPositionSet = true;
         Vector2 roamPos = defaultPosition + UtilsClass.GetRandomDir() * Random.Range(minRoamDistance, maxRoamDistance);
-        roamPos = new Vector2(Mathf.RoundToInt(roamPos.x) + 0.5f, Mathf.RoundToInt(roamPos.y) + 0.5f);
+        roamPos = new Vector2(Mathf.RoundToInt(roamPos.x), Mathf.RoundToInt(roamPos.y));
         return roamPos;
     }
     #endregion

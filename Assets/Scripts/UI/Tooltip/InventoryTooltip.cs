@@ -1,21 +1,134 @@
-using UnityEngine;
-
 public class InventoryTooltip : Tooltip
 {
-    public void BuildTooltip(ItemData itemData)
+    public override void BuildTooltip(ItemData itemData)
     {
-        if (stringBuilder.ToString() != "")
-            stringBuilder.Clear();
+        stringBuilder.Clear();
 
         // Item name
-        stringBuilder.Append("<b><size=26>" + itemData.name + "</size></b>\n\n");
+        stringBuilder.Append("<b><size=26>" + itemData.itemName + "</size></b>\n");
+
+        if (itemData.item.IsWeapon())
+        {
+            Weapon weapon = (Weapon)itemData.item;
+            
+            // One/two handed
+            if (weapon.isTwoHanded)
+                stringBuilder.Append("<i>Two-Handed</i>\n");
+            else
+                stringBuilder.Append("<i>One-Handed</i>\n");
+        }
+
+        stringBuilder.Append("\n");
 
         // Description
         if (itemData.item.description != "")
             stringBuilder.Append(itemData.item.description + "\n\n");
+        
+        if (itemData.item.IsWeapon()) 
+        {
+            Weapon weapon = (Weapon)itemData.item;
 
-        // TODO
+            // Attack range
+            stringBuilder.Append("Attack Range: " + weapon.attackRange + "\n\n");
 
-        ShowTooltip();
+            // Damage
+            stringBuilder.Append("Damage: " + itemData.damage + "\n");
+            
+            // Tree damage
+            if (itemData.treeDamage > 0)
+                stringBuilder.Append("Tree Damage : " + itemData.treeDamage + "\n\n");
+        }
+        else if (itemData.item.IsShield())
+        {
+            // Defense
+            stringBuilder.Append("Defense: " + itemData.defense + "\n");
+
+            // Shield bash damage
+            stringBuilder.Append("Shield Bash Damage: " + itemData.shieldBashDamage + "\n\n");
+        }
+        else if (itemData.item.IsWearable())
+        {
+            Wearable wearable = (Wearable)itemData.item;
+
+            // Defense
+            stringBuilder.Append("Defense: " + itemData.defense + "\n");
+
+            // Cold resistance
+            if (wearable.coldResistance > 0)
+                stringBuilder.Append("Cold Resistance: " + wearable.coldResistance + "° F\n");
+
+            // Heat resistance
+            if (wearable.heatResistance > 0)
+                stringBuilder.Append("Heat Resistance: " + wearable.heatResistance + "° F\n");
+
+            stringBuilder.Append("\n");
+        }
+        else if (itemData.item.IsConsumable())
+        {
+            Consumable consumable = (Consumable)itemData.item;
+
+            // Freshness
+            stringBuilder.Append("Freshness: " + itemData.freshness + "%\n");
+
+            // Thirst quench
+            if (consumable.thirstQuench > 0)
+                stringBuilder.Append("Thirst Quench: " + consumable.thirstQuench + "%\n");
+
+            // Nourishment
+            if (consumable.nourishment > 0)
+                stringBuilder.Append("Nourishment: " + consumable.nourishment + "%\n");
+
+            stringBuilder.Append("\n");
+        }
+        else if (itemData.item.IsBag())
+        {
+            Bag bag = (Bag)itemData.item;
+
+            // Weight
+            stringBuilder.Append("Inventory Weight: " + itemData.bagInventory.currentWeight.ToString("#0.00") + " / " + bag.maxWeight + "\n");
+
+            // Volume
+            stringBuilder.Append("Inventory Volume: " + itemData.bagInventory.currentVolume.ToString("#0.00") + " / " + bag.maxVolume + "\n\n");
+
+            // Single item volume limit
+            if (bag.singleItemVolumeLimit > 0)
+                stringBuilder.Append("Single item volume limit: " + bag.singleItemVolumeLimit + "\n");
+
+            stringBuilder.Append("\n");
+        }
+        else if (itemData.item.IsPortableContainer())
+        {
+            PortableContainer portableContainer = (PortableContainer)itemData.item;
+
+            // Weight
+            stringBuilder.Append("Inventory Weight: " + itemData.bagInventory.currentWeight.ToString("#0.00") + " / " + portableContainer.maxWeight + "\n");
+
+            // Volume
+            stringBuilder.Append("Inventory Volume: " + itemData.bagInventory.currentVolume.ToString("#0.00") + " / " + portableContainer.maxVolume + "\n\n");
+
+            // Single item volume limit
+            if (portableContainer.singleItemVolumeLimit > 0)
+                stringBuilder.Append("Single item volume limit: " + portableContainer.singleItemVolumeLimit + "\n");
+
+            stringBuilder.Append("\n");
+        }
+        else if (itemData.item.IsKey())
+        {
+            // Perhaps put which door it goes to if the player knows? (And if not, maybe just put "???" for the door name?)
+        }
+
+        if (itemData.item.IsEquipment())
+        {
+            // Durability
+            if (itemData.maxDurability > 0)
+                stringBuilder.Append("Durability: " + itemData.durability + " / " + itemData.maxDurability + "\n\n");
+        }
+
+        // Weight/volume
+        stringBuilder.Append("Weight: " + itemData.item.weight + "\n");
+        stringBuilder.Append("Volume: " + itemData.item.volume + "\n\n");
+
+        // Value
+        stringBuilder.Append("Estimated Value: " + itemData.value + " gold");
     }
 }

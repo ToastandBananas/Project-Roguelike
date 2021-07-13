@@ -151,7 +151,7 @@ public class Inventory : MonoBehaviour
                 for (int i = 0; i < itemDataComingFromsInv.items.Count; i++)
                 {
                     // Return the item we took out of the "old" bag back to it's object pool
-                    itemDataComingFromsInv.items[i].ReturnToItemDataObjectPool();
+                    itemDataComingFromsInv.items[i].ReturnToObjectPool();
                 }
                 
                 // Clear out the items list of the "old" bag
@@ -198,9 +198,6 @@ public class Inventory : MonoBehaviour
 
     public void RemoveItem(ItemData itemData, int itemCount, InventoryItem invItem)
     {
-        // Subtract from current weight and volume
-        //SubtractItemsWeightAndVolumeFromInventory(itemData, this, invItem, itemCount, true, true);
-        
         // Update InventoryUI
         if (invItem.myInvUI.activeInventory == this)
             invItem.myInvUI.UpdateUI();
@@ -221,10 +218,6 @@ public class Inventory : MonoBehaviour
             // Clear out the InventoryItem
             invItem.ClearItem();
         }
-
-        //UpdateCurrentWeightAndVolume();
-        //if (invItem != null)
-            //invItem.UpdateItemNumberTexts();
     }
 
     public int AddToExistingStacks(ItemData itemDataComingFrom, int itemCount, Inventory invComingFrom, bool shouldUpdateWeightAndVolume)
@@ -333,92 +326,6 @@ public class Inventory : MonoBehaviour
 
         return false;
     }
-
-    /*public void AddItemsWeightAndVolumeToInventory(ItemData itemDataAdding, Inventory invAddingItemTo, int itemCount)
-    {
-        invAddingItemTo.currentWeight += Mathf.RoundToInt(itemDataAdding.item.weight * itemCount * 100f) / 100f;
-        invAddingItemTo.currentVolume += Mathf.RoundToInt(itemDataAdding.item.volume * itemCount * 100f) / 100f;
-
-        if (itemDataAdding.item.IsBag() || itemDataAdding.item.IsPortableContainer())
-        {
-            for (int i = 0; i < itemDataAdding.bagInventory.items.Count; i++)
-            {
-                invAddingItemTo.currentWeight += Mathf.RoundToInt(itemDataAdding.bagInventory.items[i].item.weight * itemDataAdding.bagInventory.items[i].currentStackSize * 100f) / 100f;
-                invAddingItemTo.currentVolume += Mathf.RoundToInt(itemDataAdding.bagInventory.items[i].item.volume * itemDataAdding.bagInventory.items[i].currentStackSize * 100f) / 100f;
-
-                if (itemDataAdding.bagInventory.items[i].item.IsBag() || itemDataAdding.bagInventory.items[i].item.IsPortableContainer())
-                {
-                    for (int j = 0; j < itemDataAdding.bagInventory.items[i].bagInventory.items.Count; j++)
-                    {
-                        invAddingItemTo.currentWeight += Mathf.RoundToInt(itemDataAdding.bagInventory.items[i].bagInventory.items[j].item.weight * itemDataAdding.bagInventory.items[i].bagInventory.items[j].currentStackSize * 100f) / 100f;
-                        invAddingItemTo.currentVolume += Mathf.RoundToInt(itemDataAdding.bagInventory.items[i].bagInventory.items[j].item.volume * itemDataAdding.bagInventory.items[i].bagInventory.items[j].currentStackSize * 100f) / 100f;
-                    }
-                }
-            }
-        }
-    }
-
-    public void SubtractItemsWeightAndVolumeFromInventory(ItemData itemDataRemoving, Inventory invRemovingItemFrom, InventoryItem invItemComingFrom, int itemCount, bool shouldSubtractItemRemoving, bool shouldSubtractFromParentInvsInventory)
-    {
-        if (itemDataRemoving.item == null || invRemovingItemFrom == null) // This happens when equipping a bag
-            return;
-        
-        if (shouldSubtractItemRemoving)
-        {
-            invRemovingItemFrom.currentWeight -= Mathf.RoundToInt(itemDataRemoving.item.weight * itemCount * 100f) / 100f;
-            invRemovingItemFrom.currentVolume -= Mathf.RoundToInt(itemDataRemoving.item.volume * itemCount * 100f) / 100f;
-
-            if (shouldSubtractFromParentInvsInventory && invItemComingFrom != null && invItemComingFrom.parentInvItem != null)
-            {
-                invItemComingFrom.parentInvItem.itemData.bagInventory.currentWeight -= Mathf.RoundToInt(itemDataRemoving.item.weight * itemCount * 100f) / 100f;
-                invItemComingFrom.parentInvItem.itemData.bagInventory.currentVolume -= Mathf.RoundToInt(itemDataRemoving.item.volume * itemCount * 100f) / 100f;
-
-                if (invItemComingFrom.parentInvItem.myInventory != null && invRemovingItemFrom != invItemComingFrom.parentInvItem.myInventory && invItemComingFrom.parentInvItem.myInventory != invItemComingFrom.parentInvItem.itemData.bagInventory)
-                {
-                    invItemComingFrom.parentInvItem.myInventory.currentWeight -= Mathf.RoundToInt(itemDataRemoving.item.weight * itemCount * 100f) / 100f;
-                    invItemComingFrom.parentInvItem.myInventory.currentVolume -= Mathf.RoundToInt(itemDataRemoving.item.volume * itemCount * 100f) / 100f;
-                }
-
-                if (invItemComingFrom.parentInvItem.parentInvItem != null && invItemComingFrom.parentInvItem.parentInvItem.myInventory != null && invItemComingFrom.parentInvItem.myInventory != invItemComingFrom.parentInvItem.parentInvItem.myInventory)
-                {
-                    invItemComingFrom.parentInvItem.parentInvItem.myInventory.currentWeight -= Mathf.RoundToInt(itemDataRemoving.item.weight * itemCount * 100f) / 100f;
-                    invItemComingFrom.parentInvItem.parentInvItem.myInventory.currentVolume -= Mathf.RoundToInt(itemDataRemoving.item.volume * itemCount * 100f) / 100f;
-                }
-            }
-        }
-
-        if (itemDataRemoving.item.IsBag() || itemDataRemoving.item.IsPortableContainer())
-        {
-            for (int i = 0; i < itemDataRemoving.bagInventory.items.Count; i++)
-            {
-                invRemovingItemFrom.currentWeight -= Mathf.RoundToInt(itemDataRemoving.bagInventory.items[i].item.weight * itemDataRemoving.bagInventory.items[i].currentStackSize * 100f) / 100f;
-                invRemovingItemFrom.currentVolume -= Mathf.RoundToInt(itemDataRemoving.bagInventory.items[i].item.volume * itemDataRemoving.bagInventory.items[i].currentStackSize * 100f) / 100f;
-
-                if (shouldSubtractFromParentInvsInventory && invItemComingFrom.parentInvItem != null && invItemComingFrom.parentInvItem.myInventory != null && invItemComingFrom.parentInvItem.myInventory != invRemovingItemFrom)
-                {
-                    invItemComingFrom.parentInvItem.myInventory.currentWeight -= Mathf.RoundToInt(itemDataRemoving.bagInventory.items[i].item.weight * itemDataRemoving.bagInventory.items[i].currentStackSize * 100f) / 100f;
-                    invItemComingFrom.parentInvItem.myInventory.currentVolume -= Mathf.RoundToInt(itemDataRemoving.bagInventory.items[i].item.volume * itemDataRemoving.bagInventory.items[i].currentStackSize * 100f) / 100f;
-                }
-            }
-        }
-        
-        if (invRemovingItemFrom.currentWeight <= 0.001f)
-            invRemovingItemFrom.currentWeight = 0;
-
-        if (invRemovingItemFrom.currentVolume <= 0.001f)
-            invRemovingItemFrom.currentVolume = 0;
-
-        if (invItemComingFrom.parentInvItem != null)
-        {
-            invItemComingFrom.parentInvItem.UpdateItemNumberTexts();
-            
-            if (invItemComingFrom.parentInvItem.parentInvItem != null)
-                invItemComingFrom.parentInvItem.parentInvItem.UpdateItemNumberTexts();
-        }
-
-        if (myInvUI != null)
-            myInvUI.UpdateUI();
-    }*/
 
     public void UpdateCurrentWeightAndVolume()
     {

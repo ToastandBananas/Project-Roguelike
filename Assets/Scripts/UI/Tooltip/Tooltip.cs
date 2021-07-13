@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Text;
-// using UnityEngine.UI;
+using UnityEngine.UI;
 
 public class Tooltip : MonoBehaviour
 {
@@ -10,11 +10,12 @@ public class Tooltip : MonoBehaviour
 
     [HideInInspector] public StringBuilder stringBuilder = new StringBuilder();
 
-    public void ShowTooltip()
+    public void ShowTooltip(Vector2 position)
     {
         gameObject.SetActive(true);
         textMesh.text = stringBuilder.ToString();
-        RecalculateTooltipSize();
+        rectTransform.position = position;
+        AdjustTooltipPosition();
     }
 
     public void HideTooltip()
@@ -23,8 +24,23 @@ public class Tooltip : MonoBehaviour
         stringBuilder.Clear();
     }
 
-    void RecalculateTooltipSize()
+    public virtual void BuildTooltip(ItemData itemData)
     {
-        // LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
+        // This is just meant to be overridden
+    }
+
+    void AdjustTooltipPosition()
+    {
+        float xOffset = 0f;
+        float yOffset = 0f;
+
+        if (Input.mousePosition.x <= rectTransform.sizeDelta.x + 25f)
+            xOffset = rectTransform.sizeDelta.x;
+
+        if (Input.mousePosition.y >= 1080 - rectTransform.sizeDelta.y)
+            yOffset = -rectTransform.sizeDelta.y;
+        
+        if (xOffset != 0 || yOffset != 0)
+            rectTransform.position += new Vector3(xOffset, yOffset);
     }
 }

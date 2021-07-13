@@ -2,13 +2,9 @@ using UnityEngine;
 
 public class TooltipManager : MonoBehaviour
 {
-    public InventoryTooltip[] invTooltips;
+    public InventoryTooltip invItemTooltip;
 
     PlayerEquipmentManager playerEquipmentManager;
-
-    Vector3 inventoryTooltipPosition = new Vector3(164f, 185f);
-    Vector3 equipmentTooltipPosition = new Vector3(-477f, 185f);
-    Vector3 secondaryEquipmentTooltipPosition = new Vector3(-794f, 185f);
 
     #region Singleton
     public static TooltipManager instance;
@@ -38,24 +34,18 @@ public class TooltipManager : MonoBehaviour
     {
         if (invItem != null && invItem.itemData != null)
         {
-            InventoryTooltip tooltip = GetNextAvailableInventoryTooltip();
-
-            if (tooltip != null)
-            {
-                tooltip.BuildTooltip(invItem.itemData);
-
-                //if (invItem.IsInventorySlot())
-                //{
-                    tooltip.rectTransform.localPosition = inventoryTooltipPosition;
-                    ShowMatchingEquipmentTooltip(invItem);
-                //}
-                //else
-                    //tooltip.rectTransform.localPosition = equipmentTooltipPosition;
-            }
+            invItemTooltip.BuildTooltip(invItem.itemData);
+            invItemTooltip.ShowTooltip(Input.mousePosition);
+            //ShowMatchingEquipmentTooltip(invItem);
         }
     }
 
-    void ShowMatchingEquipmentTooltip(InventoryItem invItem)
+    public void HideInventoryTooltip()
+    {
+        invItemTooltip.gameObject.SetActive(false);
+    }
+
+    /*void ShowMatchingEquipmentTooltip(InventoryItem invItem)
     {
         if (invItem.itemData.item.IsEquipment())
         {
@@ -114,14 +104,10 @@ public class TooltipManager : MonoBehaviour
         }
         
         return null;
-    }
+    }*/
 
     public void HideAllTooltips()
     {
-        for (int i = 0; i < invTooltips.Length; i++)
-        {
-            if (invTooltips[i].gameObject.activeSelf)
-                invTooltips[i].HideTooltip();
-        }
+        HideInventoryTooltip();
     }
 }

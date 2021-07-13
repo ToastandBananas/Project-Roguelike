@@ -11,17 +11,20 @@ public class Movement : MonoBehaviour
     [HideInInspector] public GameManager gm;
 
     float moveTime = 0.2f;
+    float diaganolMoveTime;
 
     public virtual void Start()
     {
+        diaganolMoveTime = moveTime / 1.414214f; // 1.414214 is the length of a diagonal movement
+
         gm = GameManager.instance;
 
         // Make sure the character is properly positioned
-        if (transform.position.x % 0.5f != 0)
-            transform.position = new Vector3(Mathf.FloorToInt(transform.position.x) + 0.5f, transform.position.y);
+        if (transform.position.x % 1f != 0)
+            transform.position = new Vector3(Mathf.RoundToInt(transform.position.x), transform.position.y);
 
-        if (transform.position.y % 0.5f != 0)
-            transform.position = new Vector3(transform.position.x, Mathf.FloorToInt(transform.position.y) + 0.5f);
+        if (transform.position.y % 1f != 0)
+            transform.position = new Vector3(transform.position.x, Mathf.RoundToInt(transform.position.y));
     }
 
     public void Move(int xDir, int yDir, bool isNPC)
@@ -58,11 +61,11 @@ public class Movement : MonoBehaviour
 
         float sqrRemainingDistance = ((Vector2)transform.position - endPos).sqrMagnitude;
 
-        float finalMoveTime = moveTime;
+        float inverseMoveTime;
         if (IsDiagonal(endPos))
-            finalMoveTime = moveTime / 1.414214f; // 1.414214 is the length of a diagonal movement
-
-        float inverseMoveTime = 1 / finalMoveTime;
+            inverseMoveTime = 1 / diaganolMoveTime;
+        else
+            inverseMoveTime = 1 / moveTime;
 
         while (sqrRemainingDistance > float.Epsilon)
         {

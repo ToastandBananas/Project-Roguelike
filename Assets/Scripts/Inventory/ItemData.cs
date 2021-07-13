@@ -416,6 +416,14 @@ public class ItemData : MonoBehaviour
         }
     }
 
+    public void ReturnToObjectPool()
+    {
+        if (bagInventory != null)
+            ReturnToItemDataContainerObjectPool();
+        else
+            ReturnToItemDataObjectPool();
+    }
+
     public void ReturnToItemDataObjectPool()
     {
         if (gm == null) gm = GameManager.instance;
