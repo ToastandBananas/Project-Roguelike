@@ -67,25 +67,25 @@ public class PlayerMovement : Movement
 
             gm.turnManager.TakePlayersTurn();
         }
-        else if (GameControls.gamePlayActions.playerMoveUpLeft.WasPressed) // Up-left
+        else if (GameControls.gamePlayActions.playerMoveUpLeft.IsPressed) // Up-left
         {
             gm.uiManager.DisableInventoryUIComponents();
             Move(-1, 1, false);
             gm.turnManager.TakePlayersTurn();
         }
-        else if (GameControls.gamePlayActions.playerMoveUpRight.WasPressed) // Up-right
+        else if (GameControls.gamePlayActions.playerMoveUpRight.IsPressed) // Up-right
         {
             gm.uiManager.DisableInventoryUIComponents();
             Move(1, 1, false);
             gm.turnManager.TakePlayersTurn();
         }
-        else if (GameControls.gamePlayActions.playerMoveDownLeft.WasPressed) // Down-left
+        else if (GameControls.gamePlayActions.playerMoveDownLeft.IsPressed) // Down-left
         {
             gm.uiManager.DisableInventoryUIComponents();
             Move(-1, -1, false);
             gm.turnManager.TakePlayersTurn();
         }
-        else if (GameControls.gamePlayActions.playerMoveDownRight.WasPressed) // Down-right
+        else if (GameControls.gamePlayActions.playerMoveDownRight.IsPressed) // Down-right
         {
             gm.uiManager.DisableInventoryUIComponents();
             Move(1, -1, false);

@@ -3,10 +3,13 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    [HideInInspector] public bool isMoving, onCooldown;
+    public bool isMoving, onCooldown;
 
     [Header("Obstacle Mask")]
     public LayerMask movementObstacleMask;
+
+    [Tooltip("Multiplier for the arc height, which is dependent on the distance from the target (set to 0 for no arc)")]
+    public float arcMultiplier = 0.1f;
 
     [HideInInspector] public GameManager gm;
 
@@ -33,10 +36,15 @@ public class Movement : MonoBehaviour
         Vector2 targetCell = startCell + new Vector2(xDir, yDir);
 
         RaycastHit2D hit = Physics2D.Raycast(targetCell, Vector2.zero, 1, movementObstacleMask);
-        
+
         // If the target tile is a walkable tile, the player moves here
         if (hit.collider == null)
-            StartCoroutine(SmoothMovement(targetCell, isNPC));
+        {
+            if (targetCell.x == startCell.x)
+                StartCoroutine(SmoothMovement(targetCell, isNPC));
+            else
+                StartCoroutine(ArcMovement(targetCell, isNPC));
+        }
         else
             StartCoroutine(BlockedMovement(targetCell));
     }
@@ -49,6 +57,59 @@ public class Movement : MonoBehaviour
             transform.localScale = Vector3.one;
     }
 
+    public IEnumerator ArcMovement(Vector2 endPos, bool isNPC)
+    {
+        isMoving = true;
+        FaceForward(endPos);
+
+        // Set pathfinding grid graph tags for current and end position nodes
+        gm.gameTiles.SetTagForNode(gm.gameTiles.gridGraph.GetNearest(transform.position).node);
+        gm.gameTiles.gridGraph.GetNearest(endPos).node.Tag = 31; // Character tag
+
+        // Cache our start position, which is really the only thing we need
+        // (in addition to our current position, and the target).
+        Vector3 startPos = transform.position;
+
+        float x0 = startPos.x;
+        float x1 = endPos.x;
+        float dist = x1 - x0;
+        float arcHeight = dist * arcMultiplier;
+        if (endPos.x < transform.position.x)
+            arcHeight *= -1f;
+
+        float inverseMoveTime;
+        if (IsDiagonal(endPos))
+            inverseMoveTime = 1 / diaganolMoveTime;
+        else
+            inverseMoveTime = 1 / moveTime;
+
+        while ((Vector2)transform.position != endPos)
+        {
+            // Compute the next position, with arc added in
+            float nextX = Mathf.MoveTowards(transform.position.x, x1, inverseMoveTime * Time.deltaTime);
+            float baseY = Mathf.Lerp(startPos.y, endPos.y, (nextX - x0) / dist);
+            float arc = arcHeight * (nextX - x0) * (nextX - x1) / (-0.25f * dist * dist);
+            Vector2 nextPos = new Vector2(nextX, baseY + arc);
+
+            // Rotate to face the next position, and then move there
+            transform.position = nextPos;
+
+            yield return null;
+        }
+
+        if (isNPC)
+            FinishTurn();
+        else
+        {
+            gm.containerInvUI.ResetContainerIcons(Direction.Center);
+            gm.containerInvUI.GetItemsAroundPlayer();
+            gm.containerInvUI.PopulateInventoryUI(gm.containerInvUI.playerPositionItems, Direction.Center);
+            gm.containerInvUI.playerPositionSideBarButton.HighlightDirectionIcon();
+        }
+
+        isMoving = false;
+    }
+
     // Move Animation
     public virtual IEnumerator SmoothMovement(Vector2 endPos, bool isNPC)
     {
@@ -59,19 +120,16 @@ public class Movement : MonoBehaviour
         gm.gameTiles.SetTagForNode(gm.gameTiles.gridGraph.GetNearest(transform.position).node);
         gm.gameTiles.gridGraph.GetNearest(endPos).node.Tag = 31; // Character tag
 
-        float sqrRemainingDistance = ((Vector2)transform.position - endPos).sqrMagnitude;
-
         float inverseMoveTime;
         if (IsDiagonal(endPos))
             inverseMoveTime = 1 / diaganolMoveTime;
         else
             inverseMoveTime = 1 / moveTime;
 
-        while (sqrRemainingDistance > float.Epsilon)
+        while ((Vector2)transform.position != endPos)
         {
             Vector3 newPosition = Vector3.MoveTowards(transform.position, endPos, inverseMoveTime * Time.deltaTime);
             transform.position = newPosition;
-            sqrRemainingDistance = ((Vector2)transform.position - endPos).sqrMagnitude;
             yield return null;
         }
 
@@ -98,6 +156,12 @@ public class Movement : MonoBehaviour
 
     public void FinishTurn()
     {
+        if (transform.position.x % 1 != 0)
+            transform.position = new Vector2(Mathf.RoundToInt(transform.position.x), transform.position.y);
+
+        if (transform.position.y % 1 != 0)
+            transform.position = new Vector2(transform.position.x, Mathf.RoundToInt(transform.position.y));
+
         gm.turnManager.npcsFinishedTakingTurnCount++;
         if (gm.turnManager.npcsFinishedTakingTurnCount == gm.turnManager.npcs.Count)
             gm.turnManager.ReadyPlayersTurn();

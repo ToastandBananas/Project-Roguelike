@@ -84,8 +84,11 @@ public class NPCMovement : Movement
             // Finish searching for a path before moving
             yield return null;
         }
-
-        StartCoroutine(SmoothMovement(GetNextPosition(), true));
+        
+        if (transform.position.x == GetNextPosition().x)
+            StartCoroutine(SmoothMovement(GetNextPosition(), true));
+        else
+            StartCoroutine(ArcMovement(GetNextPosition(), true));
     }
 
     Vector3 GetNextPosition()
