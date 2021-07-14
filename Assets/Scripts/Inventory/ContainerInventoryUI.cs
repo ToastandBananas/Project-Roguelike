@@ -803,6 +803,14 @@ public class ContainerInventoryUI : InventoryUI
         }
     }
 
+    public void OnPlayerMoved()
+    {
+        ResetContainerIcons(Direction.Center);
+        GetItemsAroundPlayer();
+        PopulateInventoryUI(gm.containerInvUI.playerPositionItems, Direction.Center);
+        playerPositionSideBarButton.HighlightDirectionIcon();
+    }
+
     public void RemoveBagFromGround()
     {
         SetSideBarIcon_Floor(activeDirection);

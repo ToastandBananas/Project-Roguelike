@@ -36,7 +36,7 @@ public class NPCAttack : Attack
 
                 if (characterManager.npcMovement.target == null)
                 {
-                    characterManager.npcMovement.FinishTurn();
+                    characterManager.npcMovement.NPCFinishTurn();
                     return;
                 }
                 else
@@ -66,7 +66,7 @@ public class NPCAttack : Attack
             SwitchTarget(characterManager.alliances.GetClosestKnownEnemy());
 
             if (characterManager.npcMovement.target == null)
-                characterManager.npcMovement.FinishTurn();
+                characterManager.npcMovement.NPCFinishTurn();
             else
                 Fight();
         }

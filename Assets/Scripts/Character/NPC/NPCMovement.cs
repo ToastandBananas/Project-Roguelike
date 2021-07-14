@@ -35,7 +35,6 @@ public class NPCMovement : Movement
     [HideInInspector] public Transform target;
     [HideInInspector] public Vector2 targetPosition;
 
-    [HideInInspector] public CharacterManager characterManager;
     [HideInInspector] public AIPath AIPath;
     [HideInInspector] public AIDestinationSetter AIDestSetter;
     Seeker seeker;
@@ -47,9 +46,9 @@ public class NPCMovement : Movement
     bool roamPositionSet;
     bool needsFleeDestination = true;
 
-    void Awake()
+    public override void Awake()
     {
-        characterManager = GetComponent<CharacterManager>();
+        base.Awake();
 
         seeker = GetComponent<Seeker>();
         AIDestSetter = GetComponent<AIDestinationSetter>();
@@ -160,7 +159,7 @@ public class NPCMovement : Movement
 
             if (distToTarget <= startFollowingDistance)
             {
-                FinishTurn();
+                NPCFinishTurn();
                 return;
             }
             else if (characterManager.npcMovement.AIDestSetter.target != theTarget)
@@ -313,7 +312,7 @@ public class NPCMovement : Movement
                 else
                 {
                     StopPathfinding();
-                    FinishTurn();
+                    NPCFinishTurn();
                 }
 
                 characterManager.npcAttack.targetInCombatRange = false;
@@ -334,7 +333,7 @@ public class NPCMovement : Movement
             else
             {
                 StopPathfinding();
-                FinishTurn();
+                NPCFinishTurn();
                 characterManager.npcAttack.targetInCombatRange = false;
                 characterManager.npcAttack.targetInAttackRange = false;
                 characterManager.stateController.SetToDefaultState(shouldFollowLeader);
@@ -355,13 +354,13 @@ public class NPCMovement : Movement
                 StartCoroutine(MoveToNextPointOnPath());
             }
             else
-                FinishTurn();
+                NPCFinishTurn();
         }
         else if (Vector2.Distance(roamPosition, transform.position) <= 0.1f)
         {
             // Get a new roamPosition when the current one is reached
             roamPositionSet = false;
-            FinishTurn();
+            NPCFinishTurn();
         }
         else
             StartCoroutine(MoveToNextPointOnPath());

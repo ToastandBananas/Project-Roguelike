@@ -22,7 +22,7 @@ public class StateController : MonoBehaviour
         switch (characterManager.stateController.currentState)
         {
             case State.Idle:
-                characterManager.npcMovement.FinishTurn();
+                characterManager.npcMovement.NPCFinishTurn();
                 break;
             case State.Patrol:
                 characterManager.npcMovement.DoPatrol();

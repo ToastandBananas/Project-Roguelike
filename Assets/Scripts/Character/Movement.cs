@@ -12,9 +12,15 @@ public class Movement : MonoBehaviour
     public float arcMultiplier = 0.1f;
 
     [HideInInspector] public GameManager gm;
+    [HideInInspector] public CharacterManager characterManager;
 
     float moveTime = 0.2f;
     float diaganolMoveTime;
+
+    public virtual void Awake()
+    {
+        characterManager = GetComponent<CharacterManager>();
+    }
 
     public virtual void Start()
     {
@@ -23,30 +29,7 @@ public class Movement : MonoBehaviour
         gm = GameManager.instance;
 
         // Make sure the character is properly positioned
-        if (transform.position.x % 1f != 0)
-            transform.position = new Vector3(Mathf.RoundToInt(transform.position.x), transform.position.y);
-
-        if (transform.position.y % 1f != 0)
-            transform.position = new Vector3(transform.position.x, Mathf.RoundToInt(transform.position.y));
-    }
-
-    public void Move(int xDir, int yDir, bool isNPC)
-    {
-        Vector2 startCell = transform.position;
-        Vector2 targetCell = startCell + new Vector2(xDir, yDir);
-
-        RaycastHit2D hit = Physics2D.Raycast(targetCell, Vector2.zero, 1, movementObstacleMask);
-
-        // If the target tile is a walkable tile, the player moves here
-        if (hit.collider == null)
-        {
-            if (targetCell.x == startCell.x)
-                StartCoroutine(SmoothMovement(targetCell, isNPC));
-            else
-                StartCoroutine(ArcMovement(targetCell, isNPC));
-        }
-        else
-            StartCoroutine(BlockedMovement(targetCell));
+        ClampPosition();
     }
 
     public void FaceForward(Vector2 targetPos)
@@ -60,6 +43,7 @@ public class Movement : MonoBehaviour
     public IEnumerator ArcMovement(Vector2 endPos, bool isNPC)
     {
         isMoving = true;
+        ClampPosition();
         FaceForward(endPos);
 
         // Set pathfinding grid graph tags for current and end position nodes
@@ -85,6 +69,12 @@ public class Movement : MonoBehaviour
 
         while ((Vector2)transform.position != endPos)
         {
+            if (dist == 0 || (-0.25f * dist * dist) == 0)
+            {
+                ClampPosition();
+                break;
+            }
+
             // Compute the next position, with arc added in
             float nextX = Mathf.MoveTowards(transform.position.x, x1, inverseMoveTime * Time.deltaTime);
             float baseY = Mathf.Lerp(startPos.y, endPos.y, (nextX - x0) / dist);
@@ -98,14 +88,9 @@ public class Movement : MonoBehaviour
         }
 
         if (isNPC)
-            FinishTurn();
+            NPCFinishTurn();
         else
-        {
-            gm.containerInvUI.ResetContainerIcons(Direction.Center);
-            gm.containerInvUI.GetItemsAroundPlayer();
-            gm.containerInvUI.PopulateInventoryUI(gm.containerInvUI.playerPositionItems, Direction.Center);
-            gm.containerInvUI.playerPositionSideBarButton.HighlightDirectionIcon();
-        }
+            gm.containerInvUI.OnPlayerMoved();
 
         isMoving = false;
     }
@@ -114,6 +99,7 @@ public class Movement : MonoBehaviour
     public virtual IEnumerator SmoothMovement(Vector2 endPos, bool isNPC)
     {
         isMoving = true;
+        ClampPosition();
         FaceForward(endPos);
 
         // Set pathfinding grid graph tags for current and end position nodes
@@ -130,20 +116,25 @@ public class Movement : MonoBehaviour
         {
             Vector3 newPosition = Vector3.MoveTowards(transform.position, endPos, inverseMoveTime * Time.deltaTime);
             transform.position = newPosition;
+
             yield return null;
         }
 
         if (isNPC)
-            FinishTurn();
+            NPCFinishTurn();
         else
-        {
-            gm.containerInvUI.ResetContainerIcons(Direction.Center);
-            gm.containerInvUI.GetItemsAroundPlayer();
-            gm.containerInvUI.PopulateInventoryUI(gm.containerInvUI.playerPositionItems, Direction.Center);
-            gm.containerInvUI.playerPositionSideBarButton.HighlightDirectionIcon();
-        }
+            gm.containerInvUI.OnPlayerMoved();
 
         isMoving = false;
+    }
+
+    void ClampPosition()
+    {
+        if (transform.position.x % 1 != 0)
+            transform.position = new Vector2(Mathf.RoundToInt(transform.position.x), transform.position.y);
+
+        if (transform.position.y % 1 != 0)
+            transform.position = new Vector2(transform.position.x, Mathf.RoundToInt(transform.position.y));
     }
 
     bool IsDiagonal(Vector2 endPos)
@@ -154,21 +145,15 @@ public class Movement : MonoBehaviour
         return false;
     }
 
-    public void FinishTurn()
+    public void NPCFinishTurn()
     {
-        if (transform.position.x % 1 != 0)
-            transform.position = new Vector2(Mathf.RoundToInt(transform.position.x), transform.position.y);
-
-        if (transform.position.y % 1 != 0)
-            transform.position = new Vector2(transform.position.x, Mathf.RoundToInt(transform.position.y));
-
         gm.turnManager.npcsFinishedTakingTurnCount++;
         if (gm.turnManager.npcsFinishedTakingTurnCount == gm.turnManager.npcs.Count)
             gm.turnManager.ReadyPlayersTurn();
     }
 
     // Blocked Animation
-    IEnumerator BlockedMovement(Vector3 end)
+    public IEnumerator BlockedMovement(Vector3 end)
     {
         isMoving = true;
 
@@ -198,7 +183,7 @@ public class Movement : MonoBehaviour
         isMoving = false;
     }
 
-    IEnumerator ActionCooldown(float cooldownTime)
+    public IEnumerator MovementCooldown(float cooldownTime)
     {
         onCooldown = true;
         while (cooldownTime > 0f)

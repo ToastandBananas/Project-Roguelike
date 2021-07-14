@@ -3,6 +3,9 @@ using System.Collections;
 
 public class CharacterStats : MonoBehaviour
 {
+    public Stat maxAP;
+    public int currentAP { get; private set; }
+
     public Stat maxPersonalInvWeight;
     public Stat maxPersonalInvVolume;
 
@@ -31,6 +34,33 @@ public class CharacterStats : MonoBehaviour
         characterManager.equipmentManager.onWeaponChanged += OnWeaponChanged;
     }
 
+    public int UseAPAndGetRemainder(int amount)
+    {
+        int remainingAmount = amount;
+        if (currentAP >= amount)
+        {
+            UseAP(amount);
+            remainingAmount = 0;
+        }
+        else
+        {
+            UseAP(currentAP);
+            remainingAmount = amount - currentAP;
+        }
+
+        return remainingAmount;
+    }
+
+    void UseAP(int amount)
+    {
+        currentAP -= amount;
+    }
+
+    public void ReplenishAP()
+    {
+        currentAP = maxAP.GetValue();
+    }
+
     public void TakeDamage(int damage)
     {
         if (canTakeDamage)
@@ -43,8 +73,6 @@ public class CharacterStats : MonoBehaviour
             currentHealth -= damage;
             if (currentHealth <= 0)
                 Die();
-            //else
-                //StartCoroutine(TakeDamageCooldown());
         }
     }
 

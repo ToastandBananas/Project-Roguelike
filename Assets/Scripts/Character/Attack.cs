@@ -34,7 +34,7 @@ public class Attack : MonoBehaviour
         if (characterManager.npcMovement != null)
             Debug.Log(name + " is attacking " + characterManager.npcMovement.target);
 
-        characterManager.npcMovement.FinishTurn();
+        characterManager.npcMovement.NPCFinishTurn();
     }
 
     public IEnumerator Attack_DualWield()

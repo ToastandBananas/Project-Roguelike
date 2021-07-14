@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [HideInInspector] public APManager apManager;
     [HideInInspector] public ContextMenu contextMenu;
     [HideInInspector] public ContainerInventoryUI containerInvUI;
     [HideInInspector] public GameTiles gameTiles;
@@ -34,6 +35,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        apManager = APManager.instance;
         contextMenu = ContextMenu.instance;
         containerInvUI = ContainerInventoryUI.instance;
         gameTiles = GameTiles.instance;

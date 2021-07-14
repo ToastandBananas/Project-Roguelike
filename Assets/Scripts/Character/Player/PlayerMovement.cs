@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerMovement : Movement
@@ -15,7 +16,7 @@ public class PlayerMovement : Movement
     void CheckForMovement()
     {
         // Do nothing if the Player is still moving
-        if (gm.turnManager.isPlayerTurn == false || isMoving || onCooldown || GameControls.gamePlayActions.leftCtrl.IsPressed)
+        if (gm.turnManager.isPlayersTurn == false || isMoving || onCooldown || GameControls.gamePlayActions.leftCtrl.IsPressed)
             return;
 
         Vector2 movementInput = GameControls.gamePlayActions.playerMovementAxis.Value;
@@ -39,57 +40,104 @@ public class PlayerMovement : Movement
             if (horizontal <= 0.3f && horizontal >= -0.3f)
             {
                 if (vertical > 0.3f) // Up
-                    Move(0, 1, false);
+                    StartCoroutine(UseAPAndMove(0, 1, false));
                 else if (vertical < -0.3f) // Down
-                    Move(0, -1, false);
+                    StartCoroutine(UseAPAndMove(0, -1, false));
             }
             else if (vertical <= 0.3f && vertical >= -0.3f)
             {
                 if (horizontal < -0.3f) // Left
-                    Move(-1, 0, false);
+                    StartCoroutine(UseAPAndMove(-1, 0, false));
                 else if (horizontal > 0.3f) // Right
-                    Move(1, 0, false);
+                    StartCoroutine(UseAPAndMove(1, 0, false));
             }
             else if (vertical > 0.3f)
             {
                 if (horizontal < -0.3f) // Up-left
-                    Move(-1, 1, false);
+                    StartCoroutine(UseAPAndMove(-1, 1, false));
                 else if (horizontal > 0.3f) // Up-right
-                    Move(1, 1, false);
+                    StartCoroutine(UseAPAndMove(1, 1, false));
             }
             else if (vertical < -0.3f)
             {
                 if (horizontal < -0.3f) // Down-left
-                    Move(-1, -1, false);
+                    StartCoroutine(UseAPAndMove(-1, -1, false));
                 else if (horizontal > 0.3f) // Down-right
-                    Move(1, -1, false);
+                    StartCoroutine(UseAPAndMove(1, -1, false));
             }
 
-            gm.turnManager.TakePlayersTurn();
+            StartCoroutine(MovementCooldown(0.25f));
+
+            if (characterManager.characterStats.currentAP == 0)
+                gm.turnManager.FinishPlayersTurn();
         }
         else if (GameControls.gamePlayActions.playerMoveUpLeft.IsPressed) // Up-left
         {
             gm.uiManager.DisableInventoryUIComponents();
-            Move(-1, 1, false);
-            gm.turnManager.TakePlayersTurn();
+            StartCoroutine(UseAPAndMove(-1, 1, false));
+            StartCoroutine(MovementCooldown(0.25f));
+
+            if (characterManager.characterStats.currentAP == 0)
+                gm.turnManager.FinishPlayersTurn();
         }
         else if (GameControls.gamePlayActions.playerMoveUpRight.IsPressed) // Up-right
         {
             gm.uiManager.DisableInventoryUIComponents();
-            Move(1, 1, false);
-            gm.turnManager.TakePlayersTurn();
+            StartCoroutine(UseAPAndMove(1, 1, false));
+            StartCoroutine(MovementCooldown(0.25f));
+
+            if (characterManager.characterStats.currentAP == 0)
+                gm.turnManager.FinishPlayersTurn();
         }
         else if (GameControls.gamePlayActions.playerMoveDownLeft.IsPressed) // Down-left
         {
             gm.uiManager.DisableInventoryUIComponents();
-            Move(-1, -1, false);
-            gm.turnManager.TakePlayersTurn();
+            StartCoroutine(UseAPAndMove(-1, -1, false));
+            StartCoroutine(MovementCooldown(0.25f));
+
+            if (characterManager.characterStats.currentAP == 0)
+                gm.turnManager.FinishPlayersTurn();
         }
         else if (GameControls.gamePlayActions.playerMoveDownRight.IsPressed) // Down-right
         {
             gm.uiManager.DisableInventoryUIComponents();
-            Move(1, -1, false);
-            gm.turnManager.TakePlayersTurn();
+            StartCoroutine(UseAPAndMove(1, -1, false));
+            StartCoroutine(MovementCooldown(0.25f));
+
+            if (characterManager.characterStats.currentAP == 0)
+                gm.turnManager.FinishPlayersTurn();
         }
+    }
+
+    public void Move(int xDir, int yDir, bool isNPC)
+    {
+        Vector2 startCell = transform.position;
+        Vector2 targetCell = startCell + new Vector2(xDir, yDir);
+
+        RaycastHit2D hit = Physics2D.Raycast(targetCell, Vector2.zero, 1, movementObstacleMask);
+
+        // If the target tile is a walkable tile, the player moves here
+        if (hit.collider == null)
+        {
+            if (targetCell.x == startCell.x)
+                StartCoroutine(SmoothMovement(targetCell, isNPC));
+            else
+                StartCoroutine(ArcMovement(targetCell, isNPC));
+        }
+        else
+            StartCoroutine(BlockedMovement(targetCell));
+    }
+
+    public IEnumerator UseAPAndMove(int xDir, int yDir, bool isNPC)
+    {
+        while (gm.turnManager.isPlayersTurn == false)
+        {
+            yield return null;
+        }
+
+        if (characterManager.characterStats.UseAPAndGetRemainder(gm.apManager.GetAPCost(ActionType.Move)) == 0)
+            Move(xDir, yDir, isNPC);
+        else
+            StartCoroutine(UseAPAndMove(xDir, yDir, isNPC));
     }
 }

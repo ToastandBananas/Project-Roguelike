@@ -6,7 +6,9 @@ public class TurnManager : MonoBehaviour
     [HideInInspector] public List<NPCMovement> npcs = new List<NPCMovement>();
     [HideInInspector] public int npcsFinishedTakingTurnCount;
 
-    [HideInInspector] public bool isPlayerTurn = true;
+    [HideInInspector] public bool isPlayersTurn = true;
+
+    GameManager gm;
 
     #region Singleton
     public static TurnManager instance;
@@ -26,9 +28,14 @@ public class TurnManager : MonoBehaviour
     }
     #endregion
 
-    public void TakePlayersTurn()
+    void Start()
     {
-        isPlayerTurn = false;
+        gm = GameManager.instance;
+    }
+
+    public void FinishPlayersTurn()
+    {
+        isPlayersTurn = false;
         npcsFinishedTakingTurnCount = 0;
 
         DoAllNPCsTurns();
@@ -36,7 +43,8 @@ public class TurnManager : MonoBehaviour
 
     public void ReadyPlayersTurn()
     {
-        isPlayerTurn = true;
+        isPlayersTurn = true;
+        gm.playerManager.playerStats.ReplenishAP();
     }
 
     public void TakeNPCTurn(NPCMovement npcMovment)

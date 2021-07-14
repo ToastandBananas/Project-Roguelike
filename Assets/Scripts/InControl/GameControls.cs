@@ -95,6 +95,15 @@ public class GameControls : MonoBehaviour
         gamePlayActions.menuUseItem.AddDefaultBinding(Mouse.MiddleButton);
         gamePlayActions.menuUseItem.AddDefaultBinding(InputControlType.RightBumper);
 
+        // Camera Zoom
+        gamePlayActions.zoomIn.AddDefaultBinding(Key.Plus);
+        gamePlayActions.zoomIn.AddDefaultBinding(Key.Equals);
+        gamePlayActions.zoomIn.AddDefaultBinding(Mouse.PositiveScrollWheel);
+
+        gamePlayActions.zoomOut.AddDefaultBinding(Key.Minus);
+        gamePlayActions.zoomOut.AddDefaultBinding(Key.Underscore);
+        gamePlayActions.zoomOut.AddDefaultBinding(Mouse.NegativeScrollWheel);
+
         // Specific Key Actions
         gamePlayActions.a.AddDefaultBinding(Key.A);
         gamePlayActions.leftCtrl.AddDefaultBinding(Key.LeftControl);

@@ -19,6 +19,10 @@ public class GamePlayActions : PlayerActionSet
     public PlayerAction menuLeft, menuRight, menuUp, menuDown;
     public PlayerAction menuContainerTakeAll, menuTakeItem, menuUseItem;
 
+    // Camera
+    public PlayerAction zoomIn, zoomOut;
+    public PlayerOneAxisAction cameraZoomAxis;
+
     // Specific Keys
     public PlayerAction a, leftCtrl, leftShift, leftAlt, enter, tab;
 
@@ -65,6 +69,11 @@ public class GamePlayActions : PlayerActionSet
         menuContainerTakeAll = CreatePlayerAction("MenuContainerTakeAll");
         menuTakeItem = CreatePlayerAction("MenuTakeItem");
         menuUseItem = CreatePlayerAction("MenuUseItem");
+
+        // Camera Zoom
+        zoomIn = CreatePlayerAction("ZoomIn");
+        zoomOut = CreatePlayerAction("ZoomOut");
+        cameraZoomAxis = CreateOneAxisPlayerAction(zoomOut, zoomIn);
 
         // Specific Key Actions
         a = CreatePlayerAction("A");
