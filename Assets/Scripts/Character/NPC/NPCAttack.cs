@@ -36,13 +36,13 @@ public class NPCAttack : Attack
 
                 if (characterManager.npcMovement.target == null)
                 {
-                    characterManager.npcMovement.NPCFinishTurn();
+                    gm.turnManager.FinishTurn(characterManager);
                     return;
                 }
                 else
                 {
                     characterManager.npcMovement.SetPathToCurrentTarget();
-                    StartCoroutine(characterManager.npcMovement.MoveToNextPointOnPath());
+                    StartCoroutine(characterManager.npcMovement.UseAPAndMove());
                 }
             }
             // If the target is close enough for combat, move in to attack
@@ -66,7 +66,7 @@ public class NPCAttack : Attack
             SwitchTarget(characterManager.alliances.GetClosestKnownEnemy());
 
             if (characterManager.npcMovement.target == null)
-                characterManager.npcMovement.NPCFinishTurn();
+                gm.turnManager.FinishTurn(characterManager);
             else
                 Fight();
         }
@@ -95,7 +95,7 @@ public class NPCAttack : Attack
         else if (targetInAttackRange == false)
         {
             characterManager.npcMovement.SetPathToCurrentTarget();
-            StartCoroutine(characterManager.npcMovement.MoveToNextPointOnPath());
+            StartCoroutine(characterManager.npcMovement.UseAPAndMove());
         }
     }
 

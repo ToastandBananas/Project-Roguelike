@@ -40,7 +40,7 @@ public class Movement : MonoBehaviour
             transform.localScale = Vector3.one;
     }
 
-    public IEnumerator ArcMovement(Vector2 endPos, bool isNPC)
+    public IEnumerator ArcMovement(Vector2 endPos, bool isNPC, int possibleMoveCount = 1)
     {
         isMoving = true;
         ClampPosition();
@@ -60,12 +60,11 @@ public class Movement : MonoBehaviour
         float arcHeight = dist * arcMultiplier;
         if (endPos.x < transform.position.x)
             arcHeight *= -1f;
-
         float inverseMoveTime;
         if (IsDiagonal(endPos))
-            inverseMoveTime = 1 / diaganolMoveTime;
+            inverseMoveTime = 1 / (diaganolMoveTime / possibleMoveCount);
         else
-            inverseMoveTime = 1 / moveTime;
+            inverseMoveTime = 1 / (moveTime / possibleMoveCount);
 
         while ((Vector2)transform.position != endPos)
         {
@@ -75,6 +74,7 @@ public class Movement : MonoBehaviour
                 break;
             }
 
+            Debug.Log("Arc movement: " + endPos);
             // Compute the next position, with arc added in
             float nextX = Mathf.MoveTowards(transform.position.x, x1, inverseMoveTime * Time.deltaTime);
             float baseY = Mathf.Lerp(startPos.y, endPos.y, (nextX - x0) / dist);
@@ -86,17 +86,13 @@ public class Movement : MonoBehaviour
 
             yield return null;
         }
-
-        if (isNPC)
-            NPCFinishTurn();
-        else
-            gm.containerInvUI.OnPlayerMoved();
-
+        
+        OnFinishedMoving(isNPC);
         isMoving = false;
     }
 
     // Move Animation
-    public virtual IEnumerator SmoothMovement(Vector2 endPos, bool isNPC)
+    public virtual IEnumerator SmoothMovement(Vector2 endPos, bool isNPC, int possibleMoveCount = 1)
     {
         isMoving = true;
         ClampPosition();
@@ -108,24 +104,40 @@ public class Movement : MonoBehaviour
 
         float inverseMoveTime;
         if (IsDiagonal(endPos))
-            inverseMoveTime = 1 / diaganolMoveTime;
+            inverseMoveTime = 1 / (diaganolMoveTime / possibleMoveCount);
         else
-            inverseMoveTime = 1 / moveTime;
+            inverseMoveTime = 1 / (moveTime / possibleMoveCount);
 
         while ((Vector2)transform.position != endPos)
         {
-            Vector3 newPosition = Vector3.MoveTowards(transform.position, endPos, inverseMoveTime * Time.deltaTime);
+            Debug.Log("Smooth movement: " + endPos);
+            Vector2 newPosition = Vector2.MoveTowards(transform.position, endPos, inverseMoveTime * Time.deltaTime);
             transform.position = newPosition;
 
             yield return null;
         }
 
+        OnFinishedMoving(isNPC);
+        isMoving = false;
+    }
+
+    public void TeleportToPosition(Vector2 endPos, bool isNPC)
+    {
+        transform.position = endPos;
+        OnFinishedMoving(isNPC);
+    }
+
+    void OnFinishedMoving(bool isNPC)
+    {
         if (isNPC)
-            NPCFinishTurn();
+        {
+            if (characterManager.characterStats.currentAP <= 0)
+                gm.turnManager.FinishTurn(characterManager);
+            else
+                characterManager.TakeTurn();
+        }
         else
             gm.containerInvUI.OnPlayerMoved();
-
-        isMoving = false;
     }
 
     void ClampPosition()
@@ -145,13 +157,6 @@ public class Movement : MonoBehaviour
         return false;
     }
 
-    public void NPCFinishTurn()
-    {
-        gm.turnManager.npcsFinishedTakingTurnCount++;
-        if (gm.turnManager.npcsFinishedTakingTurnCount == gm.turnManager.npcs.Count)
-            gm.turnManager.ReadyPlayersTurn();
-    }
-
     // Blocked Animation
     public IEnumerator BlockedMovement(Vector3 end)
     {
@@ -161,7 +166,7 @@ public class Movement : MonoBehaviour
 
         end = transform.position + ((end - transform.position) / 3);
         float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
-        float inverseMoveTime = (1 / (moveTime * 2));
+        float inverseMoveTime = 1 / (moveTime);
 
         while (sqrRemainingDistance > float.Epsilon)
         {

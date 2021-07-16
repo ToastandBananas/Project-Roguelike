@@ -44,21 +44,33 @@ public class CharacterStats : MonoBehaviour
         }
         else
         {
-            UseAP(currentAP);
             remainingAmount = amount - currentAP;
+            UseAP(currentAP);
         }
 
         return remainingAmount;
     }
 
-    void UseAP(int amount)
+    public void UseAP(int amount)
     {
+        if (characterManager.remainingAPToBeUsed > 0)
+        {
+            characterManager.remainingAPToBeUsed -= amount;
+            if (characterManager.remainingAPToBeUsed < 0)
+                characterManager.remainingAPToBeUsed = 0;
+        }
+
         currentAP -= amount;
     }
 
     public void ReplenishAP()
     {
         currentAP = maxAP.GetValue();
+    }
+
+    public void AddToCurrentAP(int amountToAdd)
+    {
+        currentAP += amountToAdd;
     }
 
     public void TakeDamage(int damage)

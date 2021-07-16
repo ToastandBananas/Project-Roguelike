@@ -5,22 +5,16 @@ public class Attack : MonoBehaviour
 {
     public int attackRange = 1;
 
-    //[HideInInspector] public ObjectPool weaponTrailObjectPool;
+    [HideInInspector] public GameManager gm;
     [HideInInspector] public CharacterManager characterManager;
     
     [HideInInspector] public bool canAttack = true;
-
-    //AudioManager audioManager;
-    //ObjectPoolManager objectPoolManager;
 
     public virtual void Start()
     {
         canAttack = true;
 
-        //audioManager = AudioManager.instance;
-        //objectPoolManager = ObjectPoolManager.instance;
-        //weaponTrailObjectPool = objectPoolManager.weaponTrailsPool;
-
+        gm = GameManager.instance;
         characterManager = GetComponent<CharacterManager>();
     }
 
@@ -34,7 +28,7 @@ public class Attack : MonoBehaviour
         if (characterManager.npcMovement != null)
             Debug.Log(name + " is attacking " + characterManager.npcMovement.target);
 
-        characterManager.npcMovement.NPCFinishTurn();
+        gm.turnManager.FinishTurn(characterManager);
     }
 
     public IEnumerator Attack_DualWield()

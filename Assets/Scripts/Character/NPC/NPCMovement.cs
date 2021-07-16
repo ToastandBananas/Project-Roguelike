@@ -63,17 +63,18 @@ public class NPCMovement : Movement
     {
         base.Start();
 
-        gm.turnManager.npcs.Add(this);
-    }
-
-    public void TakeTurn()
-    {
-        characterManager.vision.CheckEnemyVisibility();
-        characterManager.stateController.DoAction();
+        gm.turnManager.npcs.Add(characterManager);
     }
 
     public IEnumerator MoveToNextPointOnPath()
     {
+        Debug.Log("Here");
+        if (isMoving)
+        {
+            Debug.LogWarning("Trying to move twice. Fix me!");
+            yield break;
+        }
+
         yield return null;
 
         AIPath.SearchPath();
@@ -83,11 +84,62 @@ public class NPCMovement : Movement
             // Finish searching for a path before moving
             yield return null;
         }
-        
-        if (transform.position.x == GetNextPosition().x)
-            StartCoroutine(SmoothMovement(GetNextPosition(), true));
+
+        int possibleMoveCount = Mathf.FloorToInt(characterManager.characterStats.maxAP.GetValue() / gm.apManager.GetMovementAPCost());
+
+        if (characterManager.spriteRenderer.isVisible == false)
+            TeleportToPosition(GetNextPosition(), true);
+        else if (transform.position.y == GetNextPosition().y)
+            StartCoroutine(ArcMovement(GetNextPosition(), true, possibleMoveCount));
         else
-            StartCoroutine(ArcMovement(GetNextPosition(), true));
+            StartCoroutine(SmoothMovement(GetNextPosition(), true, possibleMoveCount));
+    }
+
+    public IEnumerator UseAPAndMove()
+    {
+        characterManager.actionQueued = true;
+
+        while (characterManager.isMyTurn == false)
+        {
+            yield return null;
+        }
+
+        if (characterManager.remainingAPToBeUsed > 0)
+        {
+            if (characterManager.remainingAPToBeUsed <= characterManager.characterStats.currentAP)
+            {
+                StartCoroutine(MoveToNextPointOnPath());
+                characterManager.actionQueued = false;
+                characterManager.characterStats.UseAP(characterManager.remainingAPToBeUsed);
+
+                if (characterManager.characterStats.currentAP <= 0)
+                    gm.turnManager.FinishTurn(characterManager);
+            }
+            else
+            {
+                characterManager.characterStats.UseAP(characterManager.characterStats.currentAP);
+                gm.turnManager.FinishTurn(characterManager);
+                StartCoroutine(UseAPAndMove());
+            }
+        }
+        else
+        {
+            int remainingAP = characterManager.characterStats.UseAPAndGetRemainder(gm.apManager.GetMovementAPCost());
+            if (remainingAP == 0)
+            {
+                StartCoroutine(MoveToNextPointOnPath());
+                characterManager.actionQueued = false;
+
+                if (characterManager.characterStats.currentAP <= 0)
+                    gm.turnManager.FinishTurn(characterManager);
+            }
+            else
+            {
+                characterManager.remainingAPToBeUsed = remainingAP;
+                gm.turnManager.FinishTurn(characterManager);
+                StartCoroutine(UseAPAndMove());
+            }
+        }
     }
 
     Vector3 GetNextPosition()
@@ -159,13 +211,13 @@ public class NPCMovement : Movement
 
             if (distToTarget <= startFollowingDistance)
             {
-                NPCFinishTurn();
+                gm.turnManager.FinishTurn(characterManager);
                 return;
             }
             else if (characterManager.npcMovement.AIDestSetter.target != theTarget)
                 SetTarget(theTarget);
 
-            StartCoroutine(MoveToNextPointOnPath());
+            StartCoroutine(UseAPAndMove());
         }
         else
         {
@@ -210,7 +262,7 @@ public class NPCMovement : Movement
                 SetTargetPosition(fleeDestination);
             }
 
-            StartCoroutine(MoveToNextPointOnPath());
+            StartCoroutine(UseAPAndMove());
         }
         else // If the character has reached a safe distance from the targetToFleeFrom, resume its default State
         {
@@ -255,7 +307,7 @@ public class NPCMovement : Movement
             else if (targetPosition != patrolPoints[currentPatrolPointIndex])
                 SetTargetPosition(patrolPoints[currentPatrolPointIndex]);
 
-            StartCoroutine(MoveToNextPointOnPath());
+            StartCoroutine(UseAPAndMove());
         }
         else
         {
@@ -307,12 +359,12 @@ public class NPCMovement : Movement
                 if (distanceToTarget <= maxChaseDistance)
                 {
                     SetTarget(target);
-                    StartCoroutine(MoveToNextPointOnPath());
+                    StartCoroutine(UseAPAndMove());
                 }
                 else
                 {
                     StopPathfinding();
-                    NPCFinishTurn();
+                    gm.turnManager.FinishTurn(characterManager);
                 }
 
                 characterManager.npcAttack.targetInCombatRange = false;
@@ -321,19 +373,19 @@ public class NPCMovement : Movement
         }
         else if (AIDestSetter.moveToTargetPos)
         {
-            StartCoroutine(MoveToNextPointOnPath());
+            StartCoroutine(UseAPAndMove());
         }
         else
         {
             if (characterManager.vision.knownEnemiesInRange.Count > 0)
             {
                 SetTarget(characterManager.alliances.GetClosestKnownEnemy());
-                StartCoroutine(MoveToNextPointOnPath());
+                StartCoroutine(UseAPAndMove());
             }
             else
             {
                 StopPathfinding();
-                NPCFinishTurn();
+                gm.turnManager.FinishTurn(characterManager);
                 characterManager.npcAttack.targetInCombatRange = false;
                 characterManager.npcAttack.targetInAttackRange = false;
                 characterManager.stateController.SetToDefaultState(shouldFollowLeader);
@@ -351,19 +403,19 @@ public class NPCMovement : Movement
             if (RoamingPositionValid())
             {
                 SetTargetPosition(roamPosition);
-                StartCoroutine(MoveToNextPointOnPath());
+                StartCoroutine(UseAPAndMove());
             }
             else
-                NPCFinishTurn();
+                gm.turnManager.FinishTurn(characterManager);
         }
         else if (Vector2.Distance(roamPosition, transform.position) <= 0.1f)
         {
             // Get a new roamPosition when the current one is reached
             roamPositionSet = false;
-            NPCFinishTurn();
+            gm.turnManager.FinishTurn(characterManager);
         }
         else
-            StartCoroutine(MoveToNextPointOnPath());
+            StartCoroutine(UseAPAndMove());
     }
 
     bool RoamingPositionValid()

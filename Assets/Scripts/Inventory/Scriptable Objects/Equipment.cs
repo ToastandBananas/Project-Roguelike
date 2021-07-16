@@ -16,6 +16,7 @@ public class Equipment : Item
     public override void Use(EquipmentManager equipmentManager, Inventory inventory, InventoryItem invItem, int itemCount)
     {
         bool itemUsed = false;
+        Equipment equipment = (Equipment)invItem.itemData.item;
 
         // Equip the item
         if (invItem.myEquipmentManager == null)
@@ -29,6 +30,8 @@ public class Equipment : Item
 
         if (itemUsed)
         {
+            equipmentManager.StartCoroutine(equipmentManager.UseAPAndSetupEquipment(equipment, equipmentSlot));
+
             base.Use(equipmentManager, inventory, invItem, itemCount);
             GameManager.instance.playerInvUI.UpdateUI();
             GameManager.instance.containerInvUI.UpdateUI();

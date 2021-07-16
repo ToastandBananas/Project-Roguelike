@@ -30,11 +30,11 @@ public class Interactable : MonoBehaviour
             if (distance <= interactRadius)
             {
                 if (focusedCharacter.CompareTag("Player"))
-                    Interact(playerManager.equipmentManager, playerManager.inventory, playerManager.playerGameObject.transform);
+                    Interact(playerManager.inventory, playerManager.playerGameObject.transform);
                 else
                 {
                     CharacterManager charMananager = focusedCharacter.GetComponent<CharacterManager>();
-                    Interact(charMananager.equipmentManager, charMananager.inventory, focusedCharacter);
+                    Interact(charMananager.inventory, focusedCharacter);
                     charMananager.stateController.SetToDefaultState(charMananager.npcMovement.shouldFollowLeader);
                 }
 
@@ -47,12 +47,12 @@ public class Interactable : MonoBehaviour
             // Start a single frame cooldown to prevent the player from interacting with multiple objects in a single button press
             playerManager.playerController.StartCoroutine(playerManager.playerController.InteractCooldown());
 
-            Interact(playerManager.equipmentManager, playerManager.inventory, playerManager.playerGameObject.transform);
+            Interact(playerManager.inventory, playerManager.playerGameObject.transform);
             hasInteracted = true;
         }
     }
 
-    public virtual void Interact(EquipmentManager equipmentManager, Inventory inventory, Transform whoIsInteracting)
+    public virtual void Interact(Inventory inventory, Transform whoIsInteracting)
     {
         // Debug.Log("Interacting with " + name);
     }

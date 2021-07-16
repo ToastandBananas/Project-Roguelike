@@ -4134,7 +4134,7 @@ GameObject:
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
   - component: {fileID: 519420034}
-  - component: {fileID: 519420033}
+  - component: {fileID: 519420035}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -4162,7 +4162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca16f87da75af9149a2031d32aaec4d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  target: {fileID: 549636862}
   offset: {x: 0, y: 0, z: 0}
 --- !u!20 &519420031
 Camera:
@@ -4221,19 +4221,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &519420033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60197ff1372798c4ab3771fc34db35e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ppwzCamera: {fileID: 519420031}
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4247,10 +4234,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pixelsPerUnit: 16
-  zoomScaleMax: 5
+  zoomScaleMax: 6
   zoomScaleStart: 5
-  smoothZoom: 1
-  smoothZoomDuration: 0.25
+  smoothZoom: 0
+  smoothZoomDuration: 0.1
+--- !u!114 &519420035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a160d838ff8b4b4693ac20007e008c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AssetsPPU: 16
+  m_RefResolutionX: 384
+  m_RefResolutionY: 180
+  m_UpscaleRT: 0
+  m_PixelSnapping: 0
+  m_CropFrameX: 0
+  m_CropFrameY: 0
+  m_StretchFill: 0
 --- !u!1 &520436280
 GameObject:
   m_ObjectHideFlags: 0
@@ -4618,7 +4625,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 549636862}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: 8, z: 0}
+  m_LocalPosition: {x: 0, y: 10, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1231082239}
@@ -4654,6 +4661,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackRange: 1
+  gm: {fileID: 0}
   characterManager: {fileID: 0}
   canAttack: 1
 --- !u!114 &549636867
@@ -4737,6 +4745,10 @@ MonoBehaviour:
   vision: {fileID: 0}
   boxCollider: {fileID: 0}
   rigidBody: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  actionQueued: 0
+  isMyTurn: 0
+  remainingAPToBeUsed: 0
   playerGameObject: {fileID: 0}
   playerController: {fileID: 0}
   playerEquipmentManager: {fileID: 0}
@@ -7213,7 +7225,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae474c3031262ff46a8c1596f38b6baa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseMovementCost: 100
 --- !u!1 &848710992
 GameObject:
   m_ObjectHideFlags: 0
@@ -13522,6 +13533,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackRange: 1
+  gm: {fileID: 0}
   characterManager: {fileID: 0}
   canAttack: 1
   combatRange: 8
@@ -13753,6 +13765,10 @@ MonoBehaviour:
   vision: {fileID: 0}
   boxCollider: {fileID: 0}
   rigidBody: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  actionQueued: 0
+  isMyTurn: 0
+  remainingAPToBeUsed: 0
 --- !u!114 &1347319900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15356,7 +15372,7 @@ TilemapRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0.0031446815, y: 0.0031446815, z: 0}
+  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
@@ -17370,7 +17386,7 @@ TilemapRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0.0031446815, y: 0.0031446815, z: 0}
+  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0

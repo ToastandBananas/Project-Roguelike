@@ -17,17 +17,5 @@ public class Zoom : MonoBehaviour
             ppwz.ZoomIn();
         else if (GameControls.gamePlayActions.cameraZoomAxis < 0)
             ppwz.ZoomOut();
-
-        /*if (Input.mouseScrollDelta.y != 0)
-        {
-            if (Input.mouseScrollDelta.y > 0)
-            {
-                ppwz.ZoomIn();
-            }
-            else
-            {
-                ppwz.ZoomOut();
-            }
-        }*/
     }
 }

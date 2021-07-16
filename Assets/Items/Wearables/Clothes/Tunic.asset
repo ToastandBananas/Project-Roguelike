@@ -23,7 +23,7 @@ MonoBehaviour:
   maxBaseValue: 10
   staticValue: 1
   pickupSprite: {fileID: -851715481033328299, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-  equipmentSlot: 1
+  equipmentSlot: 5
   minBaseDurability: 50
   maxBaseDurability: 72
   equippedSprite: {fileID: 8233946077316339242, guid: e44b0bda5fde2104399981aac835ec96, type: 3}

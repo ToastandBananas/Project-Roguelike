@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class EquipmentManager : MonoBehaviour
@@ -37,7 +38,85 @@ public class EquipmentManager : MonoBehaviour
         currentEquipment = new ItemData[numSlots];
     }
 
-    public virtual bool Equip(ItemData newItemData, InventoryItem invItemComingFrom, EquipmentSlot equipmentSlot)
+    public IEnumerator UseAPAndSetupEquipment(Equipment equipment, EquipmentSlot equipSlot)
+    {
+        characterManager.actionQueued = true;
+
+        while (characterManager.isMyTurn == false)
+        {
+            yield return null;
+        }
+
+        if (characterManager.remainingAPToBeUsed > 0)
+        {
+            if (characterManager.remainingAPToBeUsed <= characterManager.characterStats.currentAP)
+            {
+                if (currentEquipment[(int)equipSlot] != null)
+                {
+                    // Show the equipment's sprite on the player
+                    if (equipment.IsWeapon() == false)
+                        SetWearableSprite(equipSlot, equipment);
+                    else
+                        SetWeaponSprite(equipSlot, equipment);
+                }
+                else
+                {
+                    // Hide the equipment's sprite on the player
+                    if (equipment.IsWeapon() == false)
+                        RemoveWearableSprite(equipSlot);
+                    else
+                        RemoveWearableSprite(equipSlot);
+                }
+
+                characterManager.actionQueued = false;
+                characterManager.characterStats.UseAP(characterManager.remainingAPToBeUsed);
+
+                if (characterManager.characterStats.currentAP <= 0)
+                    gm.turnManager.FinishTurn(characterManager);
+            }
+            else
+            {
+                characterManager.characterStats.UseAP(characterManager.characterStats.currentAP);
+                gm.turnManager.FinishTurn(characterManager);
+                StartCoroutine(UseAPAndSetupEquipment(equipment, equipSlot));
+            }
+        }
+        else
+        {
+            int remainingAP = characterManager.characterStats.UseAPAndGetRemainder(gm.apManager.GetEquipAPCost(equipment));
+            if (remainingAP == 0)
+            {
+                if (currentEquipment[(int)equipSlot] != null)
+                {
+                    // Show the equipment's sprite on the player
+                    if (equipment.IsWeapon() == false)
+                        SetWearableSprite(equipSlot, equipment);
+                    else
+                        SetWeaponSprite(equipSlot, equipment);
+                }
+                else
+                {
+                    // Hide the equipment's sprite on the player
+                    if (equipment.IsWeapon() == false)
+                        RemoveWearableSprite(equipSlot);
+                    else
+                        RemoveWearableSprite(equipSlot);
+                }
+
+                characterManager.actionQueued = false;
+                if (characterManager.characterStats.currentAP <= 0)
+                    gm.turnManager.FinishTurn(characterManager);
+            }
+            else
+            {
+                characterManager.remainingAPToBeUsed = remainingAP;
+                gm.turnManager.FinishTurn(characterManager);
+                StartCoroutine(UseAPAndSetupEquipment(equipment, equipSlot));
+            }
+        }
+    }
+
+    public bool Equip(ItemData newItemData, InventoryItem invItemComingFrom, EquipmentSlot equipmentSlot)
     {
         // If the item we're equipping is a bag, make sure it's not inside of another bag. If it is, the player will need to remove it from the bag it's inside before they can equip it. 
         if (newItemData.item.IsBag() && gm.playerInvUI.ItemIsInABag(newItemData))
@@ -84,7 +163,7 @@ public class EquipmentManager : MonoBehaviour
         // Adjust the equipment manager's weight and volume
         currentWeight += Mathf.RoundToInt(equipmentItemData.item.weight * 100f) / 100f;
         currentVolume += Mathf.RoundToInt(equipmentItemData.item.volume * 100f) / 100f;
-        
+
         if (newItemData.item.IsBag())
         {
             // Setup the sidebar for the new bag
@@ -101,13 +180,13 @@ public class EquipmentManager : MonoBehaviour
             {
                 gm.uiManager.CreateNewItemDataChild(newItemData.bagInventory.items[i], bagsInventory, true);
             }
-            
+
             // Set the weight and volume of the "new" bag
             bagsInventory.UpdateCurrentWeightAndVolume();
 
             // Reset the old bag's inventory
             newItemData.bagInventory.ResetWeightAndVolume(); 
-            
+
             for (int i = 0; i < newItemData.bagInventory.items.Count; i++)
             {
                 // Return the item we took out of the "old" bag back to it's object pool
@@ -127,11 +206,11 @@ public class EquipmentManager : MonoBehaviour
         if (gm.playerInvUI.activeInventory == null && isPlayer)
             gm.playerInvUI.ShowNewInventoryItem(equipmentItemData);
 
-        // If this is a Wearable item, show the equipment's sprite on the player
-        if (equipmentItemData.item.IsWeapon() == false)
+        // Show the equipment's sprite on the player
+        /*if (equipmentItemData.item.IsWeapon() == false)
             SetWearableSprite(equipmentSlot, (Equipment)equipmentItemData.item);
         else
-            SetWeaponSprite(equipmentSlot, (Equipment)equipmentItemData.item);
+            SetWeaponSprite(equipmentSlot, (Equipment)equipmentItemData.item);*/
 
         // If the item is a bag and it was on the ground, set the sidebar icon to a floor icon
         if (newItemData.item.IsBag() && newItemData.CompareTag("Item Pickup"))
@@ -140,7 +219,7 @@ public class EquipmentManager : MonoBehaviour
         return true;
     }
 
-    public virtual bool Unequip(EquipmentSlot equipmentSlot, bool shouldAddToInventory, bool canDropItem)
+    public bool Unequip(EquipmentSlot equipmentSlot, bool shouldAddToInventory, bool canDropItem)
     {
         if (currentEquipment[(int)equipmentSlot] != null)
         {
@@ -309,7 +388,7 @@ public class EquipmentManager : MonoBehaviour
             oldItemData = currentEquipment[(int)equipmentSlot];
 
             // If the item we're equipping is a bag, we need to temporarily disable the corresponding bag inventory so that the bag that we're unequipping doesn't try to place itself in its own inventory. 
-            // It will be re-enabled in the Equip method.
+            // It will be re-enabled in the Equip method, or below if we weren't able to assign it.
             if (oldItemData.item.IsBag())
                 gm.playerInvUI.TemporarilyDisableBag(oldItemData);
 

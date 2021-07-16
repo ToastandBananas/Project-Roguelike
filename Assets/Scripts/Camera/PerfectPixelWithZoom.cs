@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.U2D;
 
 public class PerfectPixelWithZoom : MonoBehaviour
 {
@@ -7,7 +8,7 @@ public class PerfectPixelWithZoom : MonoBehaviour
     //[SerializeField] // Uncomment to watch scaling in the editor
     float pixelsPerUnitScale = 1;
 
-    [SerializeField] float zoomScaleMax = 10f;
+    [SerializeField] float zoomScaleMax = 6f;
     [SerializeField] float zoomScaleStart = 1f;
     [SerializeField] bool smoothZoom = true;
     [SerializeField] float smoothZoomDuration = 0.5f; // In seconds
@@ -16,6 +17,7 @@ public class PerfectPixelWithZoom : MonoBehaviour
 
     float cameraSize;
     Camera cameraComponent;
+    PixelPerfectCamera pixelPerfectCamera;
 
     float zoomStartTime = 0f;
     float zoomScaleMin = 2f;
@@ -28,7 +30,8 @@ public class PerfectPixelWithZoom : MonoBehaviour
     void Start()
     {
         screenHeight = Screen.height;
-        cameraComponent = gameObject.GetComponent<Camera>();
+        cameraComponent = GetComponent<Camera>();
+        pixelPerfectCamera = GetComponent<PixelPerfectCamera>();
         cameraComponent.orthographic = true;
         SetZoomImmediate(zoomScaleStart);
     }
@@ -51,13 +54,29 @@ public class PerfectPixelWithZoom : MonoBehaviour
             pixelsPerUnitScale = Mathf.Lerp(zoomCurrentValue, zoomNextValue, zoomInterpolation);
             UpdateCameraScale();
         }
+
+        if (GameControls.gamePlayActions.cameraZoomAxis > 0)
+            ZoomIn();
+        else if (GameControls.gamePlayActions.cameraZoomAxis < 0)
+            ZoomOut();
     }
 
     private void UpdateCameraScale()
     {
         // The magic formular from teh Unity Docs
-        cameraSize = (screenHeight / (pixelsPerUnitScale * pixelsPerUnit)) * 0.5f;
-        cameraComponent.orthographicSize = cameraSize;
+        // cameraSize = (screenHeight / (pixelsPerUnitScale * pixelsPerUnit)) * 0.5f;
+        // cameraComponent.orthographicSize = cameraSize;
+
+        if (zoomNextValue == 2)
+            pixelPerfectCamera.refResolutionX = 960;
+        else if (zoomNextValue == 3)
+            pixelPerfectCamera.refResolutionX = 640;
+        else if (zoomNextValue == 4)
+            pixelPerfectCamera.refResolutionX = 480;
+        else if (zoomNextValue == 5)
+            pixelPerfectCamera.refResolutionX = 384;
+        else if (zoomNextValue == 6)
+            pixelPerfectCamera.refResolutionX = 320;
     }
 
     private bool midZoom { get { return zoomInterpolation < 1; } }

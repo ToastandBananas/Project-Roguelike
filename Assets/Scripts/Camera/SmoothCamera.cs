@@ -17,7 +17,7 @@ public class SmoothCamera : MonoBehaviour
         if (target != null)
             targetPos = target.transform.position;
         else
-            Debug.LogError("Player gameobject not found!");
+            Debug.LogError("Player gameobject not found. Fix me!");
     }
     
     void LateUpdate()
@@ -33,7 +33,7 @@ public class SmoothCamera : MonoBehaviour
 
             targetPos = transform.position + (targetDirection.normalized * interpVelocity * Time.deltaTime);
 
-            transform.position = Vector3.Lerp(transform.position, targetPos + offset, 0.25f);
+            transform.position = Vector3.Lerp(transform.position, targetPos + offset, 0.5f);
         }
     }
 }

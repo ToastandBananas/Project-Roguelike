@@ -54,30 +54,16 @@ public class ItemPickup : Interactable
         }
     }
 
-    public override void Interact(EquipmentManager equipmentManager, Inventory inventory, Transform whoIsInteracting)
+    public override void Interact(Inventory inventory, Transform whoIsInteracting)
     {
-        base.Interact(equipmentManager, inventory, whoIsInteracting);
+        base.Interact(inventory, whoIsInteracting);
 
-        PickUp(equipmentManager, inventory);
+        PickUp(inventory);
     }
 
-    void PickUp(EquipmentManager equipmentManager, Inventory inventory)
+    void PickUp( Inventory inventory)
     {
-        bool wasPickedUp = false;
-        
-        if (itemData.item.IsEquipment())
-        {
-            Equipment equipment = (Equipment)itemData.item;
-            if (equipmentManager.currentEquipment[(int)equipment.equipmentSlot] == null)
-            {
-                equipmentManager.Equip(itemData, null, equipment.equipmentSlot);
-                wasPickedUp = true;
-            }
-            else
-                wasPickedUp = inventory.AddItem(null, itemData, itemCount, null, true);
-        }
-        else
-            wasPickedUp = inventory.AddItem(null, itemData, itemCount, null, true);
+        bool wasPickedUp = inventory.AddItem(null, itemData, itemCount, null, true);
 
         if (wasPickedUp)
         {

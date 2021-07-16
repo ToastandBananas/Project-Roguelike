@@ -43,6 +43,8 @@ public class PlayerManager : CharacterManager
     {
         playerEquipmentManager = PlayerEquipmentManager.instance;
         equipmentManager = playerEquipmentManager;
+
+        isMyTurn = true;
     }
 
     public Interactable GetNearestInteractable()

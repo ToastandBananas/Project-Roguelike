@@ -146,7 +146,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
     public void UseItem(int amountToUse = 1)
     {
-        if (itemData != null)
+        if (itemData != null && gm.playerManager.isMyTurn && gm.playerManager.actionQueued == false)
             itemData.item.Use(gm.playerManager.playerEquipmentManager, myInventory, this, amountToUse);
     }
 

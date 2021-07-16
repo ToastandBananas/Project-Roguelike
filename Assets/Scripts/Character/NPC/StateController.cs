@@ -8,10 +8,12 @@ public class StateController : MonoBehaviour
     public State currentState = State.Idle;
 
     CharacterManager characterManager;
+    GameManager gm;
 
     void Start()
     {
         characterManager = GetComponent<CharacterManager>();
+        gm = GameManager.instance;
 
         if (currentState == State.Idle)
             SetToDefaultState(characterManager.npcMovement.shouldFollowLeader);
@@ -19,35 +21,38 @@ public class StateController : MonoBehaviour
 
     public void DoAction()
     {
-        switch (characterManager.stateController.currentState)
+        if (characterManager.actionQueued == false)
         {
-            case State.Idle:
-                characterManager.npcMovement.NPCFinishTurn();
-                break;
-            case State.Patrol:
-                characterManager.npcMovement.DoPatrol();
-                break;
-            case State.Wander:
-                characterManager.npcMovement.WanderAround();
-                break;
-            case State.Follow:
-                characterManager.npcMovement.FollowTarget(characterManager.npcMovement.leader);
-                break;
-            case State.MoveToTarget:
-                characterManager.npcMovement.PursueTarget();
-                break;
-            case State.Fight:
-                characterManager.npcAttack.Fight();
-                break;
-            case State.Flee:
-                characterManager.npcMovement.Flee(characterManager.npcMovement.targetFleeingFrom, characterManager.npcMovement.fleeDistance);
-                break;
-            case State.Hunt:
-                break;
-            case State.FindFood:
-                break;
-            default:
-                break;
+            switch (characterManager.stateController.currentState)
+            {
+                case State.Idle:
+                    gm.turnManager.FinishTurn(characterManager);
+                    break;
+                case State.Patrol:
+                    characterManager.npcMovement.DoPatrol();
+                    break;
+                case State.Wander:
+                    characterManager.npcMovement.WanderAround();
+                    break;
+                case State.Follow:
+                    characterManager.npcMovement.FollowTarget(characterManager.npcMovement.leader);
+                    break;
+                case State.MoveToTarget:
+                    characterManager.npcMovement.PursueTarget();
+                    break;
+                case State.Fight:
+                    characterManager.npcAttack.Fight();
+                    break;
+                case State.Flee:
+                    characterManager.npcMovement.Flee(characterManager.npcMovement.targetFleeingFrom, characterManager.npcMovement.fleeDistance);
+                    break;
+                case State.Hunt:
+                    break;
+                case State.FindFood:
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class TurnManager : MonoBehaviour
 {
-    [HideInInspector] public List<NPCMovement> npcs = new List<NPCMovement>();
+    [HideInInspector] public List<CharacterManager> npcs = new List<CharacterManager>();
     [HideInInspector] public int npcsFinishedTakingTurnCount;
 
-    [HideInInspector] public bool isPlayersTurn = true;
+    public bool isPlayersTurn = true;
 
     GameManager gm;
 
@@ -31,12 +31,24 @@ public class TurnManager : MonoBehaviour
     void Start()
     {
         gm = GameManager.instance;
+        isPlayersTurn = true;
     }
 
-    public void FinishPlayersTurn()
+    public void FinishTurn(CharacterManager characterManager)
+    {
+        if (characterManager == gm.playerManager)
+            FinishPlayersTurn();
+        else
+            FinishNPCsTurn(characterManager);
+    }
+
+    void FinishPlayersTurn()
     {
         isPlayersTurn = false;
+        gm.playerManager.isMyTurn = false;
         npcsFinishedTakingTurnCount = 0;
+        
+        gm.playerManager.playerStats.ReplenishAP();
 
         DoAllNPCsTurns();
     }
@@ -44,12 +56,23 @@ public class TurnManager : MonoBehaviour
     public void ReadyPlayersTurn()
     {
         isPlayersTurn = true;
-        gm.playerManager.playerStats.ReplenishAP();
+        gm.playerManager.isMyTurn = true;
     }
 
-    public void TakeNPCTurn(NPCMovement npcMovment)
+    void FinishNPCsTurn(CharacterManager npcsCharManager)
     {
-        npcMovment.TakeTurn();
+        npcsCharManager.isMyTurn = false;
+        npcsCharManager.characterStats.ReplenishAP();
+        gm.turnManager.npcsFinishedTakingTurnCount++;
+
+        if (gm.turnManager.npcsFinishedTakingTurnCount == gm.turnManager.npcs.Count)
+            gm.turnManager.ReadyPlayersTurn();
+    }
+
+    public void TakeNPCTurn(CharacterManager charManager)
+    {
+        charManager.isMyTurn = true;
+        charManager.TakeTurn();
     }
 
     void DoAllNPCsTurns()

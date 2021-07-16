@@ -15,11 +15,17 @@ public class CharacterManager : MonoBehaviour
 
     [HideInInspector] public BoxCollider2D boxCollider;
     [HideInInspector] public Rigidbody2D rigidBody;
+    [HideInInspector] public SpriteRenderer spriteRenderer;
+
+    [HideInInspector] public bool actionQueued;
+    [HideInInspector] public bool isMyTurn = false;
+    public int remainingAPToBeUsed;
 
     public virtual void Awake()
     {
         boxCollider = GetComponent<BoxCollider2D>();
         rigidBody = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
         alliances = GetComponent<Alliances>();
         characterStats = GetComponent<CharacterStats>();
@@ -32,6 +38,17 @@ public class CharacterManager : MonoBehaviour
         TryGetComponent(out npcAttack);
         TryGetComponent(out npcMovement);
         TryGetComponent(out stateController);
+
+        actionQueued = false;
+    }
+
+    public void TakeTurn()
+    {
+        if (actionQueued == false)
+        {
+            vision.CheckEnemyVisibility();
+            stateController.DoAction();
+        }
     }
 
     public virtual void Start()

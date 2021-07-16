@@ -27,9 +27,9 @@ public class Container : Interactable
         containerInventory.myInvUI = containerInvUI;
     }
 
-    public override void Interact(EquipmentManager equipmentManager, Inventory inventory, Transform whoIsInteracting)
+    public override void Interact(Inventory inventory, Transform whoIsInteracting)
     {
-        base.Interact(equipmentManager, inventory, whoIsInteracting);
+        base.Interact(inventory, whoIsInteracting);
 
         // Open the Inventory UIs
         if (containerInvUI.inventoryParent.activeSelf == false)

@@ -22,27 +22,47 @@ public class APManager : MonoBehaviour
     }
     #endregion
 
-    public int baseMovementCost = 100;
-
-    public int GetAPCost(ActionType actionType)
-    {
-        switch (actionType)
-        {
-            case ActionType.Move:
-                return GetMovementAPCost();
-            case ActionType.Attack:
-                return 0;
-            case ActionType.Equip:
-                return 0;
-            case ActionType.Unequip:
-                return 0;
-            default:
-                return 0;
-        }
-    }
+    readonly int baseMovementCost = 40;
 
     public int GetMovementAPCost()
     {
         return baseMovementCost;
+    }
+
+    public int GetEquipAPCost(Equipment equipment)
+    {
+        switch (equipment.equipmentSlot)
+        {
+            case EquipmentSlot.Helmet:
+                return 60;
+            case EquipmentSlot.Shirt:
+                return 50;
+            case EquipmentSlot.Pants:
+                return 70;
+            case EquipmentSlot.Boots:
+                return 150;
+            case EquipmentSlot.Gloves:
+                return 60;
+            case EquipmentSlot.BodyArmor:
+                return 220;
+            case EquipmentSlot.LegArmor:
+                return 220;
+            case EquipmentSlot.RightWeapon:
+                return 50;
+            case EquipmentSlot.LeftWeapon:
+                return 50;
+            case EquipmentSlot.Ranged:
+                return 50;
+            case EquipmentSlot.Quiver:
+                return 40;
+            case EquipmentSlot.Backpack:
+                return 50;
+            case EquipmentSlot.LeftHipPouch:
+                return 100;
+            case EquipmentSlot.RightHipPouch:
+                return 100;
+            default:
+                return 50;
+        }
     }
 }
