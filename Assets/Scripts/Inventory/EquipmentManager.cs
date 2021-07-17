@@ -430,7 +430,7 @@ public class EquipmentManager : MonoBehaviour
             if (currentEquipment[i] != null)
             {
                 Equipment equipment = (Equipment)currentEquipment[i].item;
-                Unequip(equipment.equipmentSlot, shouldAddEquipmentToInventory, true);
+                Unequip((EquipmentSlot)i, shouldAddEquipmentToInventory, true);
             }
         }
     }

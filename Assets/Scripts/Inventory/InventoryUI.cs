@@ -58,7 +58,10 @@ public class InventoryUI : MonoBehaviour
         invItem.myInvUI = this;
 
         if (activeInventory == null && this == gm.playerInvUI)
+        {
             invItem.myEquipmentManager = gm.playerManager.playerEquipmentManager;
+            invItem.transform.SetSiblingIndex((int)invItem.myEquipmentManager.GetEquipmentSlotFromItemData(invItem.itemData));
+        }
 
         if (invItem.itemData.bagInventory != null)
             invItem.itemData.bagInventory.myInvUI = this;

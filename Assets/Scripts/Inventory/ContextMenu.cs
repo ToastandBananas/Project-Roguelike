@@ -60,7 +60,16 @@ public class ContextMenu : MonoBehaviour
         else if (gm.uiManager.activeInvItem != null)
         {
             if (gm.uiManager.activeInvItem.itemData.item.isUsable)
+            {
+                if (gm.uiManager.activeInvItem.itemData.item.IsWeapon())
+                {
+                    Weapon weapon = (Weapon)gm.uiManager.activeInvItem.itemData.item;
+                    if (weapon.isTwoHanded == false)
+                        CreateEquipLeftWeaponButton();
+                }
+
                 CreateUseItemButton();
+            }
 
             if (gm.uiManager.activeInvItem.itemData.currentStackSize > 1)
                 CreateSplitStackButton();
@@ -97,7 +106,7 @@ public class ContextMenu : MonoBehaviour
     {
         ContextMenuButton contextButton = GetNextInactiveButton();
         contextButton.gameObject.SetActive(true);
-        
+
         if (gm.uiManager.activeInvItem.itemData.item.IsEquipment() == false && gm.uiManager.activeInvItem.itemData.item.IsConsumable() == false)
             contextButton.textMesh.text = "Use";
         else if (gm.uiManager.activeInvItem.itemData.item.IsConsumable())
@@ -108,6 +117,8 @@ public class ContextMenu : MonoBehaviour
             else
                 contextButton.textMesh.text = "Drink";
         }
+        else if (gm.uiManager.activeInvItem.itemData.item.IsWeapon())
+            contextButton.textMesh.text = "Equip Right";
         else
             contextButton.textMesh.text = "Equip";
 
@@ -120,6 +131,23 @@ public class ContextMenu : MonoBehaviour
         DisableContextMenu();
     }
 
+    void CreateEquipLeftWeaponButton()
+    {
+        ContextMenuButton contextButton = GetNextInactiveButton();
+        contextButton.gameObject.SetActive(true);
+
+        contextButton.textMesh.text = "Equip Left";
+
+        contextButton.button.onClick.AddListener(EquipLeftWeapon);
+    }
+    
+    void EquipLeftWeapon()
+    {
+        Weapon weapon = (Weapon)contextActiveInvItem.itemData.item;
+        weapon.Use(gm.playerManager.playerEquipmentManager, EquipmentSlot.LeftWeapon, contextActiveInvItem.myInventory, contextActiveInvItem, 1);
+        DisableContextMenu();
+    }
+
     void CreateUnequipButton()
     {
         ContextMenuButton contextButton = GetNextInactiveButton();
@@ -129,13 +157,6 @@ public class ContextMenu : MonoBehaviour
 
         contextButton.button.onClick.AddListener(UseItem);
     }
-
-    /*void Unequip()
-    {
-        Equipment equipment = (Equipment)contextActiveInvItem.itemData.item;
-        gm.playerManager.equipmentManager.Unequip(equipment.equipmentSlot, true, true);
-        DisableContextMenu();
-    }*/
 
     void CreateTransferButton()
     {

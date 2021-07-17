@@ -9,34 +9,34 @@ public class EquippedItemsSpriteManager : MonoBehaviour
         switch (equipSlot)
         {
             case EquipmentSlot.Helmet:
-                helmet.sprite = equipment.equippedSprite;
+                helmet.sprite = equipment.primaryEquippedSprite;
                 break;
             case EquipmentSlot.Shirt:
-                shirt.sprite = equipment.equippedSprite;
+                shirt.sprite = equipment.primaryEquippedSprite;
                 break;
             case EquipmentSlot.Pants:
-                pants.sprite = equipment.equippedSprite;
+                pants.sprite = equipment.primaryEquippedSprite;
                 break;
             case EquipmentSlot.Boots:
-                boots.sprite = equipment.equippedSprite;
+                boots.sprite = equipment.primaryEquippedSprite;
                 break;
             case EquipmentSlot.Gloves:
-                gloves.sprite = equipment.equippedSprite;
+                gloves.sprite = equipment.primaryEquippedSprite;
                 break;
             case EquipmentSlot.BodyArmor:
-                bodyArmor.sprite = equipment.equippedSprite;
+                bodyArmor.sprite = equipment.primaryEquippedSprite;
                 break;
             case EquipmentSlot.LegArmor:
-                legArmor.sprite = equipment.equippedSprite;
-                break;
-            case EquipmentSlot.RightWeapon:
-                rightWeapon.sprite = equipment.equippedSprite;
+                legArmor.sprite = equipment.primaryEquippedSprite;
                 break;
             case EquipmentSlot.LeftWeapon:
-                leftWeapon.sprite = equipment.equippedSprite;
+                leftWeapon.sprite = equipment.secondaryEquippedSprite;
+                break;
+            case EquipmentSlot.RightWeapon:
+                rightWeapon.sprite = equipment.primaryEquippedSprite;
                 break;
             case EquipmentSlot.Ranged:
-                leftWeapon.sprite = equipment.equippedSprite;
+                rightWeapon.sprite = equipment.primaryEquippedSprite;
                 break;
             default:
                 break;
@@ -68,14 +68,14 @@ public class EquippedItemsSpriteManager : MonoBehaviour
             case EquipmentSlot.LegArmor:
                 legArmor.sprite = null;
                 break;
-            case EquipmentSlot.RightWeapon:
-                rightWeapon.sprite = null;
-                break;
             case EquipmentSlot.LeftWeapon:
                 leftWeapon.sprite = null;
                 break;
+            case EquipmentSlot.RightWeapon:
+                rightWeapon.sprite = null;
+                break;
             case EquipmentSlot.Ranged:
-                leftWeapon.sprite = null;
+                rightWeapon.sprite = null;
                 break;
             default:
                 break;

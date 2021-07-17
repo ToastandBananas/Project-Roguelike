@@ -8121,7 +8121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   leftWeapon: {fileID: 260916208}
-  rightWeapon: {fileID: 260916208}
+  rightWeapon: {fileID: 2054815691}
   helmet: {fileID: 1942553741}
   shirt: {fileID: 1053763793}
   bodyArmor: {fileID: 2056517707}

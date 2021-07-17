@@ -146,8 +146,20 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
     public void UseItem(int amountToUse = 1)
     {
+        EquipmentSlot equipSlot = 0;
+        if (itemData.item.IsEquipment())
+        {
+            if (myEquipmentManager != null)
+                equipSlot = gm.playerManager.playerEquipmentManager.GetEquipmentSlotFromItemData(itemData);
+            else
+            {
+                Equipment equipment = (Equipment)itemData.item;
+                equipSlot = equipment.equipmentSlot;
+            }
+        }
+
         if (itemData != null && gm.playerManager.isMyTurn && gm.playerManager.actionQueued == false)
-            itemData.item.Use(gm.playerManager.playerEquipmentManager, myInventory, this, amountToUse);
+            itemData.item.Use(gm.playerManager.playerEquipmentManager, equipSlot, myInventory, this, amountToUse);
     }
 
     public void UpdateAllItemTexts()

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum EquipmentSlot { Helmet, Shirt, Pants, Boots, Gloves, BodyArmor, LegArmor, RightWeapon, LeftWeapon, Ranged, Quiver, Backpack, LeftHipPouch, RightHipPouch }
+public enum EquipmentSlot { Helmet, Shirt, Pants, Boots, Gloves, BodyArmor, LegArmor, LeftWeapon, RightWeapon, Ranged, Quiver, Backpack, LeftHipPouch, RightHipPouch }
 
 [CreateAssetMenu(fileName = "New Equipment", menuName = "Inventory/Equipment")]
 public class Equipment : Item
@@ -11,9 +11,10 @@ public class Equipment : Item
     public int maxBaseDurability = 100;
 
     [Header("Sprites")]
-    public Sprite equippedSprite;
+    public Sprite primaryEquippedSprite;
+    public Sprite secondaryEquippedSprite;
 
-    public override void Use(EquipmentManager equipmentManager, Inventory inventory, InventoryItem invItem, int itemCount)
+    public override void Use(EquipmentManager equipmentManager, EquipmentSlot equipSlot, Inventory inventory, InventoryItem invItem, int itemCount)
     {
         bool itemUsed = false;
         bool itemEquipped = false;
@@ -21,11 +22,11 @@ public class Equipment : Item
 
         // Setup temporary ItemDatas so that we can update the characters stats when they finish equipping/unequipping the item
         ItemData oldItemData = null;
-        if (equipmentManager.currentEquipment[(int)equipmentSlot] != null)
+        if (equipmentManager.currentEquipment[(int)equipSlot] != null)
         {
-            oldItemData = GameManager.instance.objectPoolManager.GetItemDataFromPool(equipmentManager.currentEquipment[(int)equipmentSlot].item);
+            oldItemData = GameManager.instance.objectPoolManager.GetItemDataFromPool(equipmentManager.currentEquipment[(int)equipSlot].item);
             oldItemData.gameObject.SetActive(true);
-            oldItemData.TransferData(equipmentManager.currentEquipment[(int)equipmentSlot], oldItemData);
+            oldItemData.TransferData(equipmentManager.currentEquipment[(int)equipSlot], oldItemData);
             Inventory playersInv = null;
             if (invItem.itemData.item.IsBag())
             {
@@ -47,24 +48,24 @@ public class Equipment : Item
         // Equip the item
         if (invItem.myEquipmentManager == null)
         {
-            itemUsed = equipmentManager.Equip(invItem.itemData, invItem, equipmentSlot);
+            itemUsed = equipmentManager.Equip(invItem.itemData, invItem, equipSlot);
             itemEquipped = true;
         }
         else
         {
             // Unequip the item
-            EquipmentSlot equipSlot = invItem.myEquipmentManager.GetEquipmentSlotFromItemData(invItem.itemData);
-            itemUsed = equipmentManager.Unequip(equipSlot, true, true);
+            EquipmentSlot itemDatasEquipSlot = invItem.myEquipmentManager.GetEquipmentSlotFromItemData(invItem.itemData);
+            itemUsed = equipmentManager.Unequip(itemDatasEquipSlot, true, true);
         }
 
         if (itemUsed)
         {
             if (itemEquipped)
-                equipmentManager.StartCoroutine(equipmentManager.UseAPAndSetupEquipment(newEquipment, equipmentSlot, itemDataUsing, oldItemData));
+                equipmentManager.StartCoroutine(equipmentManager.UseAPAndSetupEquipment(newEquipment, equipSlot, itemDataUsing, oldItemData));
             else
-                equipmentManager.StartCoroutine(equipmentManager.UseAPAndSetupEquipment(newEquipment, equipmentSlot, null, oldItemData));
+                equipmentManager.StartCoroutine(equipmentManager.UseAPAndSetupEquipment(newEquipment, equipSlot, null, oldItemData));
 
-            base.Use(equipmentManager, inventory, invItem, itemCount);
+            base.Use(equipmentManager, equipSlot, inventory, invItem, itemCount);
             GameManager.instance.playerInvUI.UpdateUI();
             GameManager.instance.containerInvUI.UpdateUI();
         }
