@@ -73,8 +73,7 @@ public class Movement : MonoBehaviour
                 ClampPosition();
                 break;
             }
-
-            Debug.Log("Arc movement: " + endPos);
+            //if (isNPC) Debug.Log("Arc movement: " + endPos);
             // Compute the next position, with arc added in
             float nextX = Mathf.MoveTowards(transform.position.x, x1, inverseMoveTime * Time.deltaTime);
             float baseY = Mathf.Lerp(startPos.y, endPos.y, (nextX - x0) / dist);
@@ -86,9 +85,9 @@ public class Movement : MonoBehaviour
 
             yield return null;
         }
-        
-        OnFinishedMoving(isNPC);
+
         isMoving = false;
+        OnFinishedMoving(isNPC);
     }
 
     // Move Animation
@@ -110,15 +109,15 @@ public class Movement : MonoBehaviour
 
         while ((Vector2)transform.position != endPos)
         {
-            Debug.Log("Smooth movement: " + endPos);
+            // if (isNPC) Debug.Log("Smooth movement: " + endPos);
             Vector2 newPosition = Vector2.MoveTowards(transform.position, endPos, inverseMoveTime * Time.deltaTime);
             transform.position = newPosition;
 
             yield return null;
         }
 
-        OnFinishedMoving(isNPC);
         isMoving = false;
+        OnFinishedMoving(isNPC);
     }
 
     public void TeleportToPosition(Vector2 endPos, bool isNPC)

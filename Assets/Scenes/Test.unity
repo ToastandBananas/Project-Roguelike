@@ -2129,7 +2129,7 @@ MonoBehaviour:
   sideBarParent: {fileID: 374535749}
   minimizeButtonText: {fileID: 849786489}
   invItemsParentRectTransform: {fileID: 297821066}
-  scrollRect: {fileID: 0}
+  scrollRect: {fileID: 327111989}
   scrollbar: {fileID: 964339538}
   inventoryItemObjectPool: {fileID: 297821068}
   inventoryNameText: {fileID: 488818798}
@@ -4664,6 +4664,7 @@ MonoBehaviour:
   gm: {fileID: 0}
   characterManager: {fileID: 0}
   canAttack: 1
+  isAttacking: 0
 --- !u!114 &549636867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4790,21 +4791,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxAP:
     baseValue: 100
+    modifiers: 
   maxPersonalInvWeight:
     baseValue: 20
+    modifiers: 
   maxPersonalInvVolume:
     baseValue: 20
+    modifiers: 
   maxHealth:
     baseValue: 100
+    modifiers: 
   damage:
     baseValue: 0
+    modifiers: 
   defense:
     baseValue: 0
+    modifiers: 
   characterManager: {fileID: 0}
   hitCollider: {fileID: 0}
   canTakeDamage: 1
   treeDamage:
     baseValue: 0
+    modifiers: 
 --- !u!114 &549636873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13536,6 +13544,7 @@ MonoBehaviour:
   gm: {fileID: 0}
   characterManager: {fileID: 0}
   canAttack: 1
+  isAttacking: 0
   combatRange: 8
   targetInCombatRange: 0
   targetInAttackRange: 0
@@ -13838,16 +13847,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxAP:
     baseValue: 100
+    modifiers: 
   maxPersonalInvWeight:
     baseValue: 20
+    modifiers: 
   maxPersonalInvVolume:
     baseValue: 10
+    modifiers: 
   maxHealth:
     baseValue: 100
+    modifiers: 
   damage:
     baseValue: 0
+    modifiers: 
   defense:
     baseValue: 0
+    modifiers: 
   characterManager: {fileID: 0}
   hitCollider: {fileID: 0}
   canTakeDamage: 1
@@ -87649,6 +87664,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1574032252}
     m_Modifications:
+    - target: {fileID: 1135539086, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1135539086, guid: 70a73e195f003d542871d25da2e96444, type: 3}
       propertyPath: m_ChildControlWidth
       value: 1

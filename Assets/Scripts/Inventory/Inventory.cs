@@ -67,7 +67,7 @@ public class Inventory : MonoBehaviour
     public bool AddItem(InventoryItem invItemComingFrom, ItemData itemDataComingFrom, int itemCount, Inventory invComingFrom, bool shouldUpdateWeightAndVolume)
     {
         // Prevent putting bags in bags
-        if (invItemComingFrom.itemData.item.IsBag() && gameObject.CompareTag("Item Pickup"))
+        if (itemDataComingFrom.item.IsBag() && gameObject.CompareTag("Item Pickup"))
         {
             Debug.Log("You can't put that in here.");
             return false;
@@ -136,10 +136,10 @@ public class Inventory : MonoBehaviour
             if (itemDataComingFrom.item.IsBag() || itemDataComingFrom.item.IsPortableContainer())
             {
                 Inventory itemDataComingFromsInv = null;
-                if (invComingFrom == null && itemDataComingFrom.item.IsBag())
+                if (itemDataComingFrom.CompareTag("Item Pickup") && itemDataComingFrom.item.IsBag()) // If this is a bag we're picking up from the ground
+                    itemDataComingFromsInv = itemDataComingFrom.bagInventory;
+                else if (invComingFrom == null && itemDataComingFrom.item.IsBag())
                     itemDataComingFromsInv = gm.playerInvUI.GetInventoryFromBagEquipSlot(itemDataComingFrom);
-                else if (itemDataComingFrom.CompareTag("Item Pickup") && itemDataComingFrom.item.IsBag()) // If this is a bag we're picking up from the ground
-                    itemDataComingFromsInv = invComingFrom;
                 else
                     itemDataComingFromsInv = itemDataComingFrom.bagInventory; // If this bag is inside a container or one of the player's inventories
                 

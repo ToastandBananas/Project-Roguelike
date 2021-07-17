@@ -6,7 +6,7 @@ public class Stat
 {
     [SerializeField] int baseValue;
 
-    List<int> modifiers = new List<int>();
+    [SerializeField] List<int> modifiers = new List<int>();
 
     public int GetValue()
     {

@@ -30,6 +30,8 @@ public class CharacterStats : MonoBehaviour
         characterManager = GetComponentInParent<CharacterManager>();
         hitCollider = GetComponent<BoxCollider2D>();
 
+        currentAP = maxAP.GetValue();
+
         characterManager.equipmentManager.onWearableChanged += OnWearableChanged;
         characterManager.equipmentManager.onWeaponChanged += OnWeaponChanged;
     }

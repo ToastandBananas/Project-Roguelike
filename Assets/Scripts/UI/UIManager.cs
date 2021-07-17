@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -51,7 +52,7 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
-        if (gm.playerManager.playerMovement.isMoving == false)
+        if (gm.playerManager.playerMovement.isMoving == false && gm.playerManager.actionQueued == false)
         {
             // Skip these button presses if we're currently dragging items
             if (invItemsDragging.Count == 0)
@@ -160,7 +161,7 @@ public class UIManager : MonoBehaviour
                         DisableInventoryUIComponents();
 
                         // Reset variables and clear out our lists:
-                        Reset();
+                        ResetSelections();
                     }
                     else if (invItemsDragging.Count > 0)
                     {
@@ -175,7 +176,7 @@ public class UIManager : MonoBehaviour
                         DisableInventoryUIComponents();
 
                         // Reset variables and clear out our lists:
-                        Reset();
+                        ResetSelections();
                     }
                 }
                 else if (activeInvItem != null)
@@ -445,6 +446,41 @@ public class UIManager : MonoBehaviour
     void DragAndDrop_DropItem(InventoryItem draggedInvItem)
     {
         int startingItemCount = draggedInvItem.itemData.currentStackSize;
+        float bagInvWeight = 0;
+        float bagInvVolume = 0;
+
+        // If the item we're dragging is a bag or portable container, cache their inventory's weight
+        if (draggedInvItem.itemData.item.IsBag() || draggedInvItem.itemData.item.IsPortableContainer())
+        {
+            if (draggedInvItem.myEquipmentManager != null)
+            {
+                Inventory playersInv = gm.playerInvUI.GetInventoryFromBagEquipSlot(draggedInvItem.itemData);
+                bagInvWeight = playersInv.currentWeight;
+                bagInvVolume = playersInv.currentVolume;
+            }
+            else
+            {
+                bagInvWeight = draggedInvItem.itemData.bagInventory.currentWeight;
+                bagInvVolume = draggedInvItem.itemData.bagInventory.currentVolume;
+            }
+        }
+
+        // Setup for when we unequip an item
+        EquipmentSlot draggedInvItemsEquipSlot = 0;
+        ItemData equippedItemData = null;
+        if (draggedInvItem.myEquipmentManager != null)
+        {
+            draggedInvItemsEquipSlot = draggedInvItem.myEquipmentManager.GetEquipmentSlotFromItemData(draggedInvItem.itemData);
+            equippedItemData = gm.objectPoolManager.GetItemDataFromPool(draggedInvItem.itemData.item);
+            equippedItemData.gameObject.SetActive(true);
+            equippedItemData.TransferData(draggedInvItem.itemData, equippedItemData);
+            if (draggedInvItem.itemData.item.IsBag())
+            {
+                Inventory playersInv = gm.playerInvUI.GetInventoryFromBagEquipSlot(draggedInvItem.itemData);
+                equippedItemData.bagInventory.currentWeight = playersInv.currentWeight;
+                equippedItemData.bagInventory.currentVolume = playersInv.currentVolume;
+            }
+        }
 
         // If we drag and drop an item onto a container sidebar button, place the item in the corresponding inventory/ground space
         if (activeContainerSideBarButton != null)
@@ -470,6 +506,12 @@ public class UIManager : MonoBehaviour
                     if (draggedInvItem.itemData.item.IsBag() && gm.containerInvUI.activeInventory == draggedInvItem.itemData.bagInventory)
                         gm.containerInvUI.RemoveBagFromGround();
 
+                    // Calculate and use AP
+                    if (draggedInvItem.myEquipmentManager != null)
+                        StartCoroutine(draggedInvItem.myEquipmentManager.UseAPAndSetupEquipment((Equipment)equippedItemData.item, draggedInvItemsEquipSlot, null, equippedItemData));
+                    else
+                        StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
+
                     // If we took the item from an inventory, remove the item
                     RemoveDraggedItem(draggedInvItem, startingItemCount);
                 }
@@ -490,6 +532,12 @@ public class UIManager : MonoBehaviour
                     // If the item was a bag and we took it from the ground
                     if (draggedInvItem.itemData.item.IsBag() && gm.containerInvUI.activeInventory == draggedInvItem.itemData.bagInventory)
                         gm.containerInvUI.RemoveBagFromGround();
+
+                    // Calculate and use AP
+                    if (draggedInvItem.myEquipmentManager != null)
+                        StartCoroutine(draggedInvItem.myEquipmentManager.UseAPAndSetupEquipment((Equipment)equippedItemData.item, draggedInvItemsEquipSlot, null, equippedItemData));
+                    else
+                        StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
 
                     // Remove, unequip or clear the item we were dragging, depending where it's coming from
                     RemoveDraggedItem(draggedInvItem, startingItemCount);
@@ -517,6 +565,17 @@ public class UIManager : MonoBehaviour
                 // If the item was a bag and we took it from the ground
                 if (draggedInvItem.itemData.item.IsBag() && gm.containerInvUI.activeInventory == draggedInvItem.itemData.bagInventory)
                     gm.containerInvUI.RemoveBagFromGround();
+
+                // Calculate and use AP
+                if (draggedInvItem.myEquipmentManager != null)
+                    StartCoroutine(draggedInvItem.myEquipmentManager.UseAPAndSetupEquipment((Equipment)equippedItemData.item, draggedInvItemsEquipSlot, null, equippedItemData));
+                else
+                {
+                    if (gm.containerInvUI.activeInventory == null || (draggedInvItem.itemData.item.IsBag() && gm.containerInvUI.activeInventory == draggedInvItem.itemData.bagInventory))
+                        StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+                    else
+                        StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
+                }
 
                 // Remove, unequip or clear the item we were dragging, depending where it's coming from
                 RemoveDraggedItem(draggedInvItem, startingItemCount);
@@ -552,6 +611,12 @@ public class UIManager : MonoBehaviour
                     // Update weight/volume
                     draggedInvItem.UpdateInventoryWeightAndVolume();
 
+                    // Calculate and use AP
+                    if (draggedInvItem.myEquipmentManager != null)
+                        StartCoroutine(draggedInvItem.myEquipmentManager.UseAPAndSetupEquipment((Equipment)equippedItemData.item, draggedInvItemsEquipSlot, null, equippedItemData));
+                    else
+                        StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+
                     // Remove, unequip or clear the item we were dragging, depending where it's coming from
                     RemoveDraggedItem(draggedInvItem, startingItemCount);
                 }
@@ -568,7 +633,18 @@ public class UIManager : MonoBehaviour
                     StartCoroutine(gm.containerInvUI.PlayAddItemEffect(draggedInvItem.itemData.item.pickupSprite, gm.containerInvUI.activeContainerSideBarButton, null));
                 else
                     StartCoroutine(gm.containerInvUI.PlayAddItemEffect(draggedInvItem.itemData.item.pickupSprite, null, gm.playerInvUI.activePlayerInvSideBarButton));
-                
+
+                // Calculate and use AP
+                if (draggedInvItem.myEquipmentManager != null)
+                    StartCoroutine(draggedInvItem.myEquipmentManager.UseAPAndSetupEquipment((Equipment)equippedItemData.item, draggedInvItemsEquipSlot, null, equippedItemData));
+                else
+                {
+                    if (activeInvUI == gm.containerInvUI || gm.containerInvUI.activeInventory != null)
+                        StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
+                    else
+                        StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+                }
+
                 // Remove, unequip or clear the item we were dragging, depending where it's coming from
                 RemoveDraggedItem(draggedInvItem, startingItemCount);
             }
@@ -584,6 +660,12 @@ public class UIManager : MonoBehaviour
 
                 // Update weight/volume
                 draggedInvItem.UpdateInventoryWeightAndVolume();
+
+                // Calculate and use AP
+                if (draggedInvItem.myEquipmentManager != null)
+                    StartCoroutine(draggedInvItem.myEquipmentManager.UseAPAndSetupEquipment((Equipment)equippedItemData.item, draggedInvItemsEquipSlot, null, equippedItemData));
+                else
+                    StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
 
                 // Remove, unequip or clear the item we were dragging, depending where it's coming from
                 RemoveDraggedItem(draggedInvItem, startingItemCount);
@@ -715,7 +797,6 @@ public class UIManager : MonoBehaviour
             else if (activeInvItem.itemData.item.maxStackSize > 1 && activeInvItem.itemData.currentStackSize < activeInvItem.itemData.item.maxStackSize 
                 && activeInvItem.itemData.StackableItemsDataIsEqual(activeInvItem.itemData, draggedInvItem.itemData))
             {
-                //int startingStackSize = draggedInvItem.itemData.currentStackSize;
                 activeInvItem.itemData.AddToItemsStack(draggedInvItem);
 
                 if (draggedInvItem.itemData.currentStackSize == 0)
@@ -739,6 +820,53 @@ public class UIManager : MonoBehaviour
 
         // Disable all of the ghost items
         ResetandHideGhostItems();
+    }
+
+    public IEnumerator UseAPAndTransferItem(Item item, int itemCount, float invWeight, float invVolume, bool transferringInventoryToInventory)
+    {
+        gm.playerManager.actionQueued = true;
+
+        while (gm.turnManager.isPlayersTurn == false)
+        {
+            yield return null;
+        }
+
+        if (gm.playerManager.remainingAPToBeUsed > 0)
+        {
+            if (gm.playerManager.remainingAPToBeUsed <= gm.playerManager.characterStats.currentAP)
+            {
+                //Move(xDir, yDir, false);
+                gm.playerManager.actionQueued = false;
+                gm.playerManager.characterStats.UseAP(gm.playerManager.remainingAPToBeUsed);
+
+                if (gm.playerManager.characterStats.currentAP <= 0)
+                    gm.turnManager.FinishTurn(gm.playerManager);
+            }
+            else
+            {
+                gm.playerManager.characterStats.UseAP(gm.playerManager.characterStats.currentAP);
+                gm.turnManager.FinishTurn(gm.playerManager);
+                StartCoroutine(UseAPAndTransferItem(item, itemCount, invWeight, invVolume, transferringInventoryToInventory));
+            }
+        }
+        else
+        {
+            int remainingAP = gm.playerManager.characterStats.UseAPAndGetRemainder(gm.apManager.GetTransferItemCost(item, itemCount, invWeight, invVolume, transferringInventoryToInventory));
+            if (remainingAP == 0)
+            {
+                //Move(xDir, yDir, false);
+                gm.playerManager.actionQueued = false;
+
+                if (gm.playerManager.characterStats.currentAP <= 0)
+                    gm.turnManager.FinishTurn(gm.playerManager);
+            }
+            else
+            {
+                gm.playerManager.remainingAPToBeUsed = remainingAP;
+                gm.turnManager.FinishTurn(gm.playerManager);
+                StartCoroutine(UseAPAndTransferItem(item, itemCount, invWeight, invVolume, transferringInventoryToInventory));
+            }
+        }
     }
 
     void PlaceItemBackToOriginalPosition(InventoryItem draggedInvItem)
@@ -1210,7 +1338,7 @@ public class UIManager : MonoBehaviour
         return false;
     }
 
-    public void Reset()
+    public void ResetSelections()
     {
         // Remove highlighting for any selected items
         for (int i = 0; i < selectedItems.Count; i++)

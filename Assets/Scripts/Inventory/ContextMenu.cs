@@ -127,15 +127,15 @@ public class ContextMenu : MonoBehaviour
 
         contextButton.textMesh.text = "Unequip";
 
-        contextButton.button.onClick.AddListener(Unequip);
+        contextButton.button.onClick.AddListener(UseItem);
     }
 
-    void Unequip()
+    /*void Unequip()
     {
         Equipment equipment = (Equipment)contextActiveInvItem.itemData.item;
         gm.playerManager.equipmentManager.Unequip(equipment.equipmentSlot, true, true);
         DisableContextMenu();
-    }
+    }*/
 
     void CreateTransferButton()
     {
@@ -180,10 +180,10 @@ public class ContextMenu : MonoBehaviour
 
         contextButton.textMesh.text = "Drop";
 
-        contextButton.button.onClick.AddListener(DropItem);
+        contextButton.button.onClick.AddListener(TransferItem);
     }
 
-    void DropItem()
+    /*void DropItem()
     {
         List<ItemData> itemsListAddingTo = gm.containerInvUI.GetItemsListFromActiveDirection();
         Vector3 dropPos = gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromActiveDirection();
@@ -197,7 +197,20 @@ public class ContextMenu : MonoBehaviour
             if (contextActiveInvItem.myEquipmentManager != null)
             {
                 Equipment equipment = (Equipment)contextActiveInvItem.itemData.item;
+                EquipmentSlot equipSlot = gm.playerManager.equipmentManager.GetEquipmentSlotFromItemData(contextActiveInvItem.itemData);
+
+                // Setup a temp ItemData for the UseAPAndSetupEquipment method
+                ItemData equipmentsItemData = gm.objectPoolManager.GetItemDataFromPool(contextActiveInvItem.itemData.item);
+                equipmentsItemData.gameObject.SetActive(true);
+                equipmentsItemData.TransferData(contextActiveInvItem.itemData, equipmentsItemData);
+                if (contextActiveInvItem.itemData.bagInventory != null)
+                {
+                    equipmentsItemData.bagInventory.currentWeight = contextActiveInvItem.itemData.bagInventory.currentWeight;
+                    equipmentsItemData.bagInventory.currentVolume = contextActiveInvItem.itemData.bagInventory.currentVolume;
+                }
+
                 gm.playerManager.equipmentManager.Unequip(equipment.equipmentSlot, false, false);
+                gm.playerManager.equipmentManager.StartCoroutine(gm.playerManager.equipmentManager.UseAPAndSetupEquipment(equipment, equipSlot, null, equipmentsItemData));
 
                 gm.playerInvUI.UpdateUI();
             }
@@ -209,7 +222,7 @@ public class ContextMenu : MonoBehaviour
         }
 
         DisableContextMenu();
-    }
+    }*/
 
     ContextMenuButton GetNextInactiveButton()
     {

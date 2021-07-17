@@ -18,6 +18,7 @@ public class PerfectPixelWithZoom : MonoBehaviour
     float cameraSize;
     Camera cameraComponent;
     PixelPerfectCamera pixelPerfectCamera;
+    GameManager gm;
 
     float zoomStartTime = 0f;
     float zoomScaleMin = 2f;
@@ -32,6 +33,7 @@ public class PerfectPixelWithZoom : MonoBehaviour
         screenHeight = Screen.height;
         cameraComponent = GetComponent<Camera>();
         pixelPerfectCamera = GetComponent<PixelPerfectCamera>();
+        gm = GameManager.instance;
         cameraComponent.orthographic = true;
         SetZoomImmediate(zoomScaleStart);
     }
@@ -55,10 +57,13 @@ public class PerfectPixelWithZoom : MonoBehaviour
             UpdateCameraScale();
         }
 
-        if (GameControls.gamePlayActions.cameraZoomAxis > 0)
-            ZoomIn();
-        else if (GameControls.gamePlayActions.cameraZoomAxis < 0)
-            ZoomOut();
+        if (gm.uiManager.activeInvUI == null)
+        {
+            if (GameControls.gamePlayActions.cameraZoomAxis > 0)
+                ZoomIn();
+            else if (GameControls.gamePlayActions.cameraZoomAxis < 0)
+                ZoomOut();
+        }
     }
 
     private void UpdateCameraScale()

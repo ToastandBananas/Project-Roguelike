@@ -68,13 +68,6 @@ public class NPCMovement : Movement
 
     public IEnumerator MoveToNextPointOnPath()
     {
-        Debug.Log("Here");
-        if (isMoving)
-        {
-            Debug.LogWarning("Trying to move twice. Fix me!");
-            yield break;
-        }
-
         yield return null;
 
         AIPath.SearchPath();
@@ -111,9 +104,6 @@ public class NPCMovement : Movement
                 StartCoroutine(MoveToNextPointOnPath());
                 characterManager.actionQueued = false;
                 characterManager.characterStats.UseAP(characterManager.remainingAPToBeUsed);
-
-                if (characterManager.characterStats.currentAP <= 0)
-                    gm.turnManager.FinishTurn(characterManager);
             }
             else
             {
@@ -129,9 +119,6 @@ public class NPCMovement : Movement
             {
                 StartCoroutine(MoveToNextPointOnPath());
                 characterManager.actionQueued = false;
-
-                if (characterManager.characterStats.currentAP <= 0)
-                    gm.turnManager.FinishTurn(characterManager);
             }
             else
             {

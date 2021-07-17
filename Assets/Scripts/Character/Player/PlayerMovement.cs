@@ -34,7 +34,7 @@ public class PlayerMovement : Movement
             {
                 gm.uiManager.ShowHiddenItems();
                 gm.uiManager.ResetandHideGhostItems();
-                gm.uiManager.Reset();
+                gm.uiManager.ResetSelections();
             }
 
             if (horizontal <= 0.3f && horizontal >= -0.3f)

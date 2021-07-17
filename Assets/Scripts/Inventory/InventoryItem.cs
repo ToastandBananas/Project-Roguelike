@@ -204,6 +204,16 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
     public void TransferItem()
     {
+        int startingItemCount = itemData.currentStackSize;
+        float bagInvWeight = 0;
+        float bagInvVolume = 0;
+
+        if (itemData.item.IsBag() || itemData.item.IsPortableContainer())
+        {
+            bagInvWeight = itemData.bagInventory.currentWeight;
+            bagInvVolume = itemData.bagInventory.currentVolume;
+        }
+
         // If we're taking this item from a container or the ground
         if (myEquipmentManager == null && (myInventory == null || myInventory.myInvUI == gm.containerInvUI))
         {
@@ -215,6 +225,12 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                     gm.playerInvUI.activeInventory.UpdateCurrentWeightAndVolume();
                     UpdateInventoryWeightAndVolume();
                     myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.activePlayerInvSideBarButton));
+
+                    // Calculate and use AP
+                    if (myInventory != null && (itemData.item.IsBag() == false || itemData.bagInventory != gm.containerInvUI.activeInventory))
+                        gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
+                    else
+                        gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
 
                     // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
                     if (itemData.item.IsBag() && gm.containerInvUI.activeInventory == itemData.bagInventory)
@@ -231,6 +247,13 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 gm.playerInvUI.keysInventory.UpdateCurrentWeightAndVolume();
                 UpdateInventoryWeightAndVolume();
                 myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.keysSideBarButton));
+
+                // Calculate and use AP
+                if (myInventory != null)
+                    gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
+                else
+                    gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+
                 ClearItem();
             }
             else if (itemData.item.itemType == ItemType.Ammo)
@@ -244,6 +267,13 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                         gm.playerInvUI.quiverInventory.UpdateCurrentWeightAndVolume();
                         UpdateInventoryWeightAndVolume();
                         myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.quiverSidebarButton));
+
+                        // Calculate and use AP
+                        if (myInventory != null)
+                            gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
+                        else
+                            gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+
                         ClearItem();
                     }
                 }
@@ -267,11 +297,32 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
                     if (myEquipmentManager != null)
                     {
+                        // Create a temporary ItemData object for use in the UseAPAndSetupEquipment method
+                        ItemData tempItemData = gm.objectPoolManager.GetItemDataFromPool(itemData.item);
+                        tempItemData.gameObject.SetActive(true);
+                        tempItemData.TransferData(itemData, tempItemData);
+                        if (itemData.bagInventory != null)
+                        {
+                            tempItemData.bagInventory.currentWeight = itemData.bagInventory.currentWeight;
+                            tempItemData.bagInventory.currentVolume = itemData.bagInventory.currentVolume;
+                        }
+
                         EquipmentSlot equipmentSlot = myEquipmentManager.GetEquipmentSlotFromItemData(itemData);
                         myEquipmentManager.Unequip(equipmentSlot, false, false);
+
+                        // Calculate and use AP
+                        myEquipmentManager.StartCoroutine(myEquipmentManager.UseAPAndSetupEquipment((Equipment)tempItemData.item, equipmentSlot, null, tempItemData));
                     }
                     else
+                    {
+                        // Calculate and use AP
+                        if (myInventory != null)
+                            gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
+                        else
+                            gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+
                         ClearItem();
+                    }
                 }
                 else if (itemData.currentStackSize > 1) // If there wasn't room for all of the items, try adding them one at a time
                 {
@@ -303,6 +354,25 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                     List<ItemData> itemsListAddingTo = gm.containerInvUI.GetItemsListFromActiveDirection();
                     Vector3 dropPos = gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromActiveDirection();
 
+                    // Create a temporary ItemData object for use in the UseAPAndSetupEquipment method
+                    ItemData tempItemData = gm.objectPoolManager.GetItemDataFromPool(itemData.item);
+                    tempItemData.gameObject.SetActive(true);
+                    tempItemData.TransferData(itemData, tempItemData);
+                    if (itemData.item.IsBag())
+                    {
+                        if (myEquipmentManager != null)
+                        {
+                            Inventory playersInv = gm.playerInvUI.GetInventoryFromBagEquipSlot(itemData);
+                            tempItemData.bagInventory.currentWeight = playersInv.currentWeight;
+                            tempItemData.bagInventory.currentVolume = playersInv.currentVolume;
+                        }
+                        else
+                        {
+                            tempItemData.bagInventory.currentWeight = itemData.bagInventory.currentWeight;
+                            tempItemData.bagInventory.currentVolume = itemData.bagInventory.currentVolume;
+                        }
+                    }
+
                     if (gm.uiManager.IsRoomOnGround(itemData, itemsListAddingTo, dropPos))
                     {
                         gm.dropItemController.DropItem(dropPos, itemData, itemData.currentStackSize, gm.playerInvUI.activeInventory, this);
@@ -316,13 +386,26 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                         {
                             EquipmentSlot equipmentSlot = myEquipmentManager.GetEquipmentSlotFromItemData(itemData);
                             myEquipmentManager.Unequip(equipmentSlot, false, false);
+
+                            // Calculate and use AP
+                            myEquipmentManager.StartCoroutine(myEquipmentManager.UseAPAndSetupEquipment((Equipment)tempItemData.item, equipmentSlot, null, tempItemData));
                         }
                         else
+                        {
+                            // Calculate and use AP
+                            gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+
                             ClearItem();
+                        }
                     }
                 }
                 else
+                {
+                    // Calculate and use AP
+                    gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+
                     ClearItem();
+                }
             }
 
             gm.playerInvUI.UpdateUI();
@@ -427,6 +510,15 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
     bool AddItemToInventory_OneAtATime(Inventory invComingFrom, Inventory invAddingTo, ItemData itemData)
     {
         int stackSize = itemData.currentStackSize;
+        float bagInvWeight = 0;
+        float bagInvVolume = 0;
+
+        if (itemData.item.IsBag() || itemData.item.IsPortableContainer())
+        {
+            bagInvWeight = itemData.bagInventory.currentWeight;
+            bagInvVolume = itemData.bagInventory.currentVolume;
+        }
+
         bool someAdded = false;
         for (int i = 0; i < stackSize; i++)
         {
@@ -438,12 +530,29 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 if (itemData.currentStackSize == 0) // If the entire stack was added
                 {
                     gm.containerInvUI.GetItemDatasInventoryItem(itemData).UpdateInventoryWeightAndVolume();
+                    gm.containerInvUI.RemoveBagFromGround();
+
+                    // Calculate and use AP
+                    if (invComingFrom != null)
+                        gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, stackSize, bagInvWeight, bagInvVolume, true));
+                    else
+                        gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, stackSize, bagInvWeight, bagInvVolume, false));
+
                     ClearItem();
                     return someAdded;
                 }
             }
             else // If there's no longer any room, break out of the loop & update the UI numbers
             {
+                gm.containerInvUI.RemoveBagFromGround();
+
+                // Calculate and use AP
+                int amountAdded = stackSize - itemData.currentStackSize;
+                if (invComingFrom != null)
+                    gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, amountAdded, bagInvWeight, bagInvVolume, true));
+                else
+                    gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, amountAdded, bagInvWeight, bagInvVolume, false));
+
                 gm.containerInvUI.UpdateUI();
                 return someAdded;
             }

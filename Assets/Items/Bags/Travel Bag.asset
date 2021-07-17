@@ -30,3 +30,4 @@ MonoBehaviour:
   sidebarSprite: {fileID: -462824376789195924, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
   maxWeight: 50
   maxVolume: 20
+  singleItemVolumeLimit: 0

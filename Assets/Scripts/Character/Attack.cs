@@ -9,6 +9,7 @@ public class Attack : MonoBehaviour
     [HideInInspector] public CharacterManager characterManager;
     
     [HideInInspector] public bool canAttack = true;
+    [HideInInspector] public bool isAttacking;
 
     public virtual void Start()
     {

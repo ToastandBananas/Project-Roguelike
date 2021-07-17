@@ -35,7 +35,7 @@ public class TooltipManager : MonoBehaviour
         if (invItem != null && invItem.itemData != null)
         {
             invItemTooltip.BuildTooltip(invItem.itemData);
-            invItemTooltip.ShowTooltip(Input.mousePosition);
+            StartCoroutine(invItemTooltip.ShowTooltip(Input.mousePosition));
             //ShowMatchingEquipmentTooltip(invItem);
         }
     }

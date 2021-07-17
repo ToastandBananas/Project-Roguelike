@@ -29,7 +29,24 @@ public class APManager : MonoBehaviour
         return baseMovementCost;
     }
 
-    public int GetEquipAPCost(Equipment equipment)
+    public int GetTransferItemCost(Item item, int itemCount, float invWeight, float invVolume, bool transferringInventoryToInventory)
+    {
+        float cost = (item.weight + item.volume) * itemCount;
+        cost += invWeight + invVolume;
+
+        if (transferringInventoryToInventory)
+            cost *= 2;
+
+        cost = Mathf.RoundToInt(cost);
+
+        if (cost == 0)
+            cost = 1;
+
+        // Debug.Log(cost);
+        return (int)cost;
+    }
+
+    public int GetEquipAPCost(Equipment equipment, float bagInvWeight)
     {
         switch (equipment.equipmentSlot)
         {
@@ -54,13 +71,13 @@ public class APManager : MonoBehaviour
             case EquipmentSlot.Ranged:
                 return 50;
             case EquipmentSlot.Quiver:
-                return 40;
+                return 40 + Mathf.RoundToInt(bagInvWeight);
             case EquipmentSlot.Backpack:
-                return 50;
+                return 50 + Mathf.RoundToInt(bagInvWeight);
             case EquipmentSlot.LeftHipPouch:
-                return 100;
+                return 100 + Mathf.RoundToInt(bagInvWeight);
             case EquipmentSlot.RightHipPouch:
-                return 100;
+                return 100 + Mathf.RoundToInt(bagInvWeight);
             default:
                 return 50;
         }

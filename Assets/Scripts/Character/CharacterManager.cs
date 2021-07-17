@@ -44,7 +44,7 @@ public class CharacterManager : MonoBehaviour
 
     public void TakeTurn()
     {
-        if (actionQueued == false)
+        if (actionQueued == false && movement.isMoving == false)
         {
             vision.CheckEnemyVisibility();
             stateController.DoAction();

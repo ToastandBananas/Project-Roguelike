@@ -38,7 +38,7 @@ public class EquipmentManager : MonoBehaviour
         currentEquipment = new ItemData[numSlots];
     }
 
-    public IEnumerator UseAPAndSetupEquipment(Equipment equipment, EquipmentSlot equipSlot)
+    public IEnumerator UseAPAndSetupEquipment(Equipment equipment, EquipmentSlot equipSlot, ItemData newItemData, ItemData oldItemData)
     {
         characterManager.actionQueued = true;
 
@@ -51,22 +51,13 @@ public class EquipmentManager : MonoBehaviour
         {
             if (characterManager.remainingAPToBeUsed <= characterManager.characterStats.currentAP)
             {
-                if (currentEquipment[(int)equipSlot] != null)
-                {
-                    // Show the equipment's sprite on the player
-                    if (equipment.IsWeapon() == false)
-                        SetWearableSprite(equipSlot, equipment);
-                    else
-                        SetWeaponSprite(equipSlot, equipment);
-                }
-                else
-                {
-                    // Hide the equipment's sprite on the player
-                    if (equipment.IsWeapon() == false)
-                        RemoveWearableSprite(equipSlot);
-                    else
-                        RemoveWearableSprite(equipSlot);
-                }
+                SetEquippedSprite(equipSlot, equipment);
+                OnEquipmentChanged(oldItemData, newItemData);
+
+                if (newItemData != null)
+                    newItemData.ReturnToObjectPool();
+                if (oldItemData != null)
+                    oldItemData.ReturnToObjectPool();
 
                 characterManager.actionQueued = false;
                 characterManager.characterStats.UseAP(characterManager.remainingAPToBeUsed);
@@ -78,30 +69,34 @@ public class EquipmentManager : MonoBehaviour
             {
                 characterManager.characterStats.UseAP(characterManager.characterStats.currentAP);
                 gm.turnManager.FinishTurn(characterManager);
-                StartCoroutine(UseAPAndSetupEquipment(equipment, equipSlot));
+                StartCoroutine(UseAPAndSetupEquipment(equipment, equipSlot, newItemData, oldItemData));
             }
         }
         else
         {
-            int remainingAP = characterManager.characterStats.UseAPAndGetRemainder(gm.apManager.GetEquipAPCost(equipment));
+            float newBagInvWeight = 0;
+            float oldBagInvWeight = 0;
+            if (newItemData != null && newItemData.item.IsBag())
+                newBagInvWeight += newItemData.bagInventory.currentWeight;
+            if (oldItemData != null && oldItemData.item.IsBag())
+                oldBagInvWeight += oldItemData.bagInventory.currentWeight;
+            
+            int APCost = 0;
+            if (newItemData != null)
+                APCost += gm.apManager.GetEquipAPCost(equipment, newBagInvWeight);
+            if (oldItemData != null)
+                APCost += gm.apManager.GetEquipAPCost(equipment, oldBagInvWeight);
+            
+            int remainingAP = characterManager.characterStats.UseAPAndGetRemainder(APCost);
             if (remainingAP == 0)
             {
-                if (currentEquipment[(int)equipSlot] != null)
-                {
-                    // Show the equipment's sprite on the player
-                    if (equipment.IsWeapon() == false)
-                        SetWearableSprite(equipSlot, equipment);
-                    else
-                        SetWeaponSprite(equipSlot, equipment);
-                }
-                else
-                {
-                    // Hide the equipment's sprite on the player
-                    if (equipment.IsWeapon() == false)
-                        RemoveWearableSprite(equipSlot);
-                    else
-                        RemoveWearableSprite(equipSlot);
-                }
+                SetEquippedSprite(equipSlot, equipment);
+                OnEquipmentChanged(oldItemData, newItemData);
+
+                if (newItemData != null)
+                    newItemData.ReturnToObjectPool();
+                if (oldItemData != null)
+                    oldItemData.ReturnToObjectPool();
 
                 characterManager.actionQueued = false;
                 if (characterManager.characterStats.currentAP <= 0)
@@ -111,7 +106,7 @@ public class EquipmentManager : MonoBehaviour
             {
                 characterManager.remainingAPToBeUsed = remainingAP;
                 gm.turnManager.FinishTurn(characterManager);
-                StartCoroutine(UseAPAndSetupEquipment(equipment, equipSlot));
+                StartCoroutine(UseAPAndSetupEquipment(equipment, equipSlot, newItemData, oldItemData));
             }
         }
     }
@@ -206,12 +201,6 @@ public class EquipmentManager : MonoBehaviour
         if (gm.playerInvUI.activeInventory == null && isPlayer)
             gm.playerInvUI.ShowNewInventoryItem(equipmentItemData);
 
-        // Show the equipment's sprite on the player
-        /*if (equipmentItemData.item.IsWeapon() == false)
-            SetWearableSprite(equipmentSlot, (Equipment)equipmentItemData.item);
-        else
-            SetWeaponSprite(equipmentSlot, (Equipment)equipmentItemData.item);*/
-
         // If the item is a bag and it was on the ground, set the sidebar icon to a floor icon
         if (newItemData.item.IsBag() && newItemData.CompareTag("Item Pickup"))
             gm.containerInvUI.SetSideBarIcon_Floor(gm.containerInvUI.activeDirection);
@@ -289,7 +278,9 @@ public class EquipmentManager : MonoBehaviour
 
                     if (itemWasAddedToInv)
                     {
-                        invItemComingFrom.UpdateInventoryWeightAndVolume();
+                        if (invItemComingFrom != null && invItemComingFrom.myInventory != null)
+                            invItemComingFrom.UpdateInventoryWeightAndVolume();
+
                         gm.playerInvUI.backpackInventory.UpdateCurrentWeightAndVolume();
                         StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.backpackSidebarButton));
                         addItemEffectPlayed = true;
@@ -299,7 +290,9 @@ public class EquipmentManager : MonoBehaviour
 
                     if (itemWasAddedToInv && addItemEffectPlayed == false)
                     {
-                        invItemComingFrom.UpdateInventoryWeightAndVolume();
+                        if (invItemComingFrom != null && invItemComingFrom.myInventory != null)
+                            invItemComingFrom.UpdateInventoryWeightAndVolume();
+
                         gm.playerInvUI.leftHipPouchInventory.UpdateCurrentWeightAndVolume();
                         StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.leftHipPouchSidebarButton));
                         addItemEffectPlayed = true;
@@ -309,7 +302,9 @@ public class EquipmentManager : MonoBehaviour
 
                     if (itemWasAddedToInv && addItemEffectPlayed == false)
                     {
-                        invItemComingFrom.UpdateInventoryWeightAndVolume();
+                        if (invItemComingFrom != null && invItemComingFrom.myInventory != null)
+                            invItemComingFrom.UpdateInventoryWeightAndVolume();
+
                         gm.playerInvUI.rightHipPouchInventory.UpdateCurrentWeightAndVolume();
                         StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.rightHipPouchSidebarButton));
                         addItemEffectPlayed = true;
@@ -319,7 +314,9 @@ public class EquipmentManager : MonoBehaviour
 
                     if (itemWasAddedToInv && addItemEffectPlayed == false)
                     {
-                        invItemComingFrom.UpdateInventoryWeightAndVolume();
+                        if (invItemComingFrom != null && invItemComingFrom.myInventory != null)
+                            invItemComingFrom.UpdateInventoryWeightAndVolume();
+
                         gm.playerInvUI.personalInventory.UpdateCurrentWeightAndVolume();
                         StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.personalInventorySideBarButton));
                     }
@@ -346,12 +343,6 @@ public class EquipmentManager : MonoBehaviour
                 return false;
             else
             {
-                // If this is a Wearable Item, set the scriptableObject to null
-                if (oldItemData.item.IsWeapon() == false)
-                    RemoveWearableSprite(equipmentSlot);
-                else  // If this is a Weapon Item, get rid of the weapon's gameobject
-                    RemoveWeaponSprite(equipmentSlot);
-
                 // Adjust the equipment manager's weight and volume
                 oldItemData.currentStackSize = stackSize;
                 currentWeight -= Mathf.RoundToInt(oldItemData.item.weight * oldItemData.currentStackSize * 100f) / 100f;
@@ -397,14 +388,7 @@ public class EquipmentManager : MonoBehaviour
         }
 
         if (canAssignEquipment) // If we are able to assign the equipment
-        {
-            if (onWearableChanged != null && newItemData.item.IsWeapon() == false)
-                onWearableChanged.Invoke(newItemData, oldItemData);
-            else if (onWeaponChanged != null && newItemData.item.IsWeapon())
-                onWeaponChanged.Invoke(newItemData, oldItemData);
-
             currentEquipment[(int)equipmentSlot] = newItemData;
-        }
         else if (oldItemData.item.IsBag()) // If we aren't able to assign the equipment
         {
             gm.playerInvUI.ReenableBag(oldItemData); // Re-enable the bag, since we disabled it earlier
@@ -423,11 +407,20 @@ public class EquipmentManager : MonoBehaviour
     public virtual void UnassignEquipment(ItemData oldItemData, EquipmentSlot equipmentSlot)
     {
         currentEquipment[(int)equipmentSlot] = null;
+    }
 
-        if (onWearableChanged != null && oldItemData.item.IsWeapon() == false)
-            onWearableChanged.Invoke(null, oldItemData);
-        else if (onWeaponChanged != null && oldItemData.item.IsWeapon())
-            onWeaponChanged.Invoke(null, oldItemData);
+    public void OnEquipmentChanged(ItemData oldItemData, ItemData newItemData)
+    {
+        Equipment equipment = null;
+        if (newItemData != null)
+            equipment = (Equipment)newItemData.item;
+        else
+            equipment = (Equipment)oldItemData.item;
+
+        if (onWearableChanged != null && equipment.IsWeapon() == false)
+            onWearableChanged.Invoke(newItemData, oldItemData);
+        else if (onWeaponChanged != null && equipment.IsWeapon())
+            onWeaponChanged.Invoke(newItemData, oldItemData);
     }
 
     public void UnequipAll(bool shouldAddEquipmentToInventory)
@@ -462,6 +455,26 @@ public class EquipmentManager : MonoBehaviour
         }
 
         return false;
+    }
+    
+    void SetEquippedSprite(EquipmentSlot equipSlot, Equipment equipment)
+    {
+        if (currentEquipment[(int)equipSlot] != null)
+        {
+            // Show the equipment's sprite on the player
+            if (equipment.IsWeapon() == false)
+                SetWearableSprite(equipSlot, equipment);
+            else
+                SetWeaponSprite(equipSlot, equipment);
+        }
+        else
+        {
+            // Hide the equipment's sprite on the player
+            if (equipment.IsWeapon() == false)
+                RemoveWearableSprite(equipSlot);
+            else
+                RemoveWeaponSprite(equipSlot);
+        }
     }
 
     void SetWearableSprite(EquipmentSlot wearableSlot, Equipment equipment)
