@@ -513,17 +513,17 @@ public class EquipmentManager : MonoBehaviour
                 if (weapon.isTwoHanded)
                 {
                     RemoveWeaponSprite(EquipmentSlot.LeftWeapon);
-                    characterManager.equippedItemsSpriteManager.SetupTwoHandedWeaponStance(this, characterManager);
+                    characterManager.humanoidSpriteManager.SetupTwoHandedWeaponStance(this, characterManager);
                 }
                 // If the new weapon is one-handed and our right weapon is now null, remove our right weapon sprite and set our character's sprites to the one-handed stance
                 else if (equipSlot == EquipmentSlot.LeftWeapon && currentEquipment[(int)EquipmentSlot.RightWeapon] == null)
                 {
                     RemoveWeaponSprite(EquipmentSlot.RightWeapon);
-                    characterManager.equippedItemsSpriteManager.SetupOneHandedWeaponStance(this, characterManager);
+                    characterManager.humanoidSpriteManager.SetupOneHandedWeaponStance(this, characterManager);
                 }
                 // If the new weapon is one-handed, just set our character's sprites to the one-handed stance
                 else if (weapon.isTwoHanded == false)
-                    characterManager.equippedItemsSpriteManager.SetupOneHandedWeaponStance(this, characterManager);
+                    characterManager.humanoidSpriteManager.SetupOneHandedWeaponStance(this, characterManager);
             }
         }
         else // If we unequipped an item
@@ -538,29 +538,29 @@ public class EquipmentManager : MonoBehaviour
 
                 // If the weapon we're unequipping is two-handed, set our character's sprites back to the one-handed stance
                 if (weapon.isTwoHanded)
-                    characterManager.equippedItemsSpriteManager.SetupOneHandedWeaponStance(this, characterManager);
+                    characterManager.humanoidSpriteManager.SetupOneHandedWeaponStance(this, characterManager);
             }
         }
     }
 
     void SetWearableSprite(EquipmentSlot wearableSlot, Equipment equipment)
     {
-        characterManager.equippedItemsSpriteManager.AssignSprite(wearableSlot, equipment, this);
+        characterManager.humanoidSpriteManager.AssignSprite(wearableSlot, equipment, this);
     }
 
     void RemoveWearableSprite(EquipmentSlot wearableSlot)
     {
-        characterManager.equippedItemsSpriteManager.RemoveSprite(wearableSlot);
+        characterManager.humanoidSpriteManager.RemoveSprite(wearableSlot);
     }
 
     void SetWeaponSprite(EquipmentSlot weaponSlot, Equipment equipment)
     {
-        characterManager.equippedItemsSpriteManager.AssignSprite(weaponSlot, equipment, this);
+        characterManager.humanoidSpriteManager.AssignSprite(weaponSlot, equipment, this);
     }
 
     void RemoveWeaponSprite(EquipmentSlot weaponSlot)
     {
-        characterManager.equippedItemsSpriteManager.RemoveSprite(weaponSlot);
+        characterManager.humanoidSpriteManager.RemoveSprite(weaponSlot);
     }
 
     public void SheathWeapon(EquipmentSlot weaponSlot)

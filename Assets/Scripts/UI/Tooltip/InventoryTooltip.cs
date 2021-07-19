@@ -13,9 +13,11 @@ public class InventoryTooltip : Tooltip
             
             // One/two handed
             if (weapon.isTwoHanded)
-                stringBuilder.Append("<i>Two-Handed</i>\n");
+                stringBuilder.Append("<i>Two-Handed -  ");
             else
-                stringBuilder.Append("<i>One-Handed</i>\n");
+                stringBuilder.Append("<i>One-Handed -  ");
+
+            stringBuilder.Append(weapon.weaponType + "</i>\n");
         }
 
         stringBuilder.Append("\n");

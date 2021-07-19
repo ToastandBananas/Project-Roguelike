@@ -1,12 +1,43 @@
 using UnityEngine;
 
-public class EquippedItemsSpriteManager : MonoBehaviour
+public class HumanoidSpriteManager : CharacterSpriteManager
 {
-    public SpriteRenderer leftWeapon, rightWeapon, helmet, shirt, bodyArmor, pants, legArmor, boots, gloves, cape;
+    [Header("Hair")]
+    public Sprite hairSprite;
+    public SpriteRenderer hair, beard;
+    public Color hairColor;
+
+    [Header("Equipment Sprites")]
+    public SpriteRenderer leftWeapon;
+    public SpriteRenderer rightWeapon, helmet, shirt, bodyArmor, pants, legArmor, boots, gloves, cape;
+
+    void Start()
+    {
+        if (hair != null)
+            hair.color = hairColor;
+        if (beard != null)
+            beard.color = hairColor;
+    }
+
+    public void ShowHair()
+    {
+        hair.enabled = true;
+    }
+
+    public void HideHair()
+    {
+        hair.enabled = false;
+    }
+
+    public void SetHairColor(Color color)
+    {
+        hairColor = color;
+        hair.color = hairColor;
+    }
 
     public void SetupOneHandedWeaponStance(EquipmentManager equipmentManager, CharacterManager characterManager)
     {
-        characterManager.SetToDefaultCharacterSprite();
+        SetToDefaultCharacterSprite(characterManager);
 
         if (equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt] != null)
         {
@@ -35,8 +66,8 @@ public class EquippedItemsSpriteManager : MonoBehaviour
 
     public void SetupTwoHandedWeaponStance(EquipmentManager equipmentManager, CharacterManager characterManager)
     {
-        characterManager.SetToSecondaryCharacterSprite();
-        
+        SetToSecondaryCharacterSprite(characterManager);
+
         if (equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt] != null)
         {
             Equipment equipment = (Equipment)equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].item;
