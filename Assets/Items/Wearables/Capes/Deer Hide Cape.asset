@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5612873fceb0a9c44b1b7bf1782bfa41, type: 3}
+  m_Name: Deer Hide Cape
+  m_EditorClassIdentifier: 
+  name: Deer Hide Cape
+  itemType: 3
+  description: A simple cape made of deer hide. Helps keep your upper body warm.
+  maxStackSize: 1
+  weight: 3.55
+  volume: 1.4
+  isUsable: 1
+  minBaseValue: 10
+  maxBaseValue: 18
+  staticValue: 1
+  pickupSprite: {fileID: -1148262350419438075, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+  equipmentSlot: 14
+  minBaseDurability: 70
+  maxBaseDurability: 110
+  primaryEquippedSprite: {fileID: 487791989738457031, guid: 992907f17986c6e4db17537373ad9f85, type: 3}
+  secondaryEquippedSprite: {fileID: 0}
+  minBaseDefense: 2
+  maxBaseDefense: 3
+  coldResistance: 0
+  heatResistance: 0

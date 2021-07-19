@@ -151,7 +151,7 @@ public class EquipmentManager : MonoBehaviour
             else
                 equipmentItemData.ReturnToItemDataObjectPool();
 
-            Debug.Log("Can't equip item");
+            Debug.Log("Can't equip item because there's nowhere to put your currently equipped item.");
             return false;
         }
 
@@ -208,7 +208,7 @@ public class EquipmentManager : MonoBehaviour
         return true;
     }
 
-    public bool Unequip(EquipmentSlot equipmentSlot, bool shouldAddToInventory, bool canDropItem)
+    public bool Unequip(EquipmentSlot equipmentSlot, bool shouldAddToInventory, bool canDropItem, bool forceUnequip)
     {
         if (currentEquipment[(int)equipmentSlot] != null)
         {
@@ -339,7 +339,7 @@ public class EquipmentManager : MonoBehaviour
             if (shouldDropItem && canDropItem)
                 isRoomOnGround = gm.uiManager.IsRoomOnGround(oldItemData, gm.containerInvUI.playerPositionItems, gm.playerManager.transform.position);
 
-            if (shouldDropItem && canDropItem && isRoomOnGround == false)
+            if (forceUnequip == false && shouldDropItem && canDropItem && isRoomOnGround == false)
                 return false;
             else
             {
@@ -348,10 +348,10 @@ public class EquipmentManager : MonoBehaviour
                 currentWeight -= Mathf.RoundToInt(oldItemData.item.weight * oldItemData.currentStackSize * 100f) / 100f;
                 currentVolume -= Mathf.RoundToInt(oldItemData.item.volume * oldItemData.currentStackSize * 100f) / 100f;
 
-                UnassignEquipment(oldItemData, equipmentSlot);
-
                 // If we determined we should drop the item, then drop it
-                if (shouldDropItem && canDropItem)
+                if (forceUnequip && shouldDropItem)
+                    gm.dropItemController.ForceDropNearest(oldItemData, oldItemData.currentStackSize, invComingFrom, invItemComingFrom);
+                else if (shouldDropItem && canDropItem)
                     gm.dropItemController.DropItem(characterManager.transform.position, oldItemData, oldItemData.currentStackSize, invComingFrom, invItemComingFrom);
 
                 // If the item was a bag, be sure to subtract the weight/volume of the bag's contents
@@ -365,18 +365,22 @@ public class EquipmentManager : MonoBehaviour
             }
         }
 
+        UnassignEquipment(equipmentSlot);
+
         return true;
     }
 
     public virtual bool AssignEquipment(ItemData newItemData, EquipmentSlot equipmentSlot)
     {
         ItemData oldItemData = null;
+        Weapon oldWeapon = null;
         bool canAssignEquipment = true;
 
         // If there's already an Item in this slot
         if (currentEquipment[(int)equipmentSlot] != null)
         {
             oldItemData = currentEquipment[(int)equipmentSlot];
+            oldWeapon = (Weapon)oldItemData.item;
 
             // If the item we're equipping is a bag, we need to temporarily disable the corresponding bag inventory so that the bag that we're unequipping doesn't try to place itself in its own inventory. 
             // It will be re-enabled in the Equip method, or below if we weren't able to assign it.
@@ -384,11 +388,27 @@ public class EquipmentManager : MonoBehaviour
                 gm.playerInvUI.TemporarilyDisableBag(oldItemData);
 
             // Try to unequip the old Item
-            canAssignEquipment = Unequip(equipmentSlot, true, true);
+            canAssignEquipment = Unequip(equipmentSlot, true, true, false);
         }
 
         if (canAssignEquipment) // If we are able to assign the equipment
+        {
+            // Assign the new equipment to the appropriate slot
             currentEquipment[(int)equipmentSlot] = newItemData;
+
+            // If the new item is a weapon
+            if (newItemData.item.IsWeapon())
+            {
+                Weapon weapon = (Weapon)newItemData.item;
+
+                // If the weapon we're equipping is two-handed and there's a weapon equipped in our off-hand, unequip it
+                if (weapon.isTwoHanded && currentEquipment[(int)EquipmentSlot.LeftWeapon] != null)
+                    Unequip(EquipmentSlot.LeftWeapon, true, true, true);
+                // If we're equipping a weapon to our left hand and we already have a two-handed weapon equipped, unequip it
+                else if (TwoHandedWeaponEquipped() && equipmentSlot == EquipmentSlot.LeftWeapon)
+                    Unequip(EquipmentSlot.RightWeapon, true, true, true);
+            }
+        }
         else if (oldItemData.item.IsBag()) // If we aren't able to assign the equipment
         {
             gm.playerInvUI.ReenableBag(oldItemData); // Re-enable the bag, since we disabled it earlier
@@ -404,7 +424,7 @@ public class EquipmentManager : MonoBehaviour
         return canAssignEquipment;
     }
 
-    public virtual void UnassignEquipment(ItemData oldItemData, EquipmentSlot equipmentSlot)
+    public virtual void UnassignEquipment(EquipmentSlot equipmentSlot)
     {
         currentEquipment[(int)equipmentSlot] = null;
     }
@@ -430,7 +450,7 @@ public class EquipmentManager : MonoBehaviour
             if (currentEquipment[i] != null)
             {
                 Equipment equipment = (Equipment)currentEquipment[i].item;
-                Unequip((EquipmentSlot)i, shouldAddEquipmentToInventory, true);
+                Unequip((EquipmentSlot)i, shouldAddEquipmentToInventory, true, false);
             }
         }
     }
@@ -456,30 +476,76 @@ public class EquipmentManager : MonoBehaviour
 
         return false;
     }
+
+    public bool TwoHandedWeaponEquipped()
+    {
+        if (currentEquipment[(int)EquipmentSlot.RightWeapon] != null)
+        {
+            Weapon weapon = (Weapon)currentEquipment[(int)EquipmentSlot.RightWeapon].item;
+            if (weapon.isTwoHanded)
+                return true;
+        }
+        else if (currentEquipment[(int)EquipmentSlot.LeftWeapon] != null)
+        {
+            Weapon weapon = (Weapon)currentEquipment[(int)EquipmentSlot.LeftWeapon].item;
+            if (weapon.isTwoHanded)
+                return true;
+        }
+
+        return false;
+    }
     
     void SetEquippedSprite(EquipmentSlot equipSlot, Equipment equipment)
     {
+        // If we equipped an item
         if (currentEquipment[(int)equipSlot] != null)
         {
             // Show the equipment's sprite on the player
             if (equipment.IsWeapon() == false)
                 SetWearableSprite(equipSlot, equipment);
             else
+            {
                 SetWeaponSprite(equipSlot, equipment);
+
+                Weapon weapon = (Weapon)equipment;
+
+                // If the new weapon is two-handed, remove our left weapon sprite if we have one and set our character's sprites to the two-handed stance
+                if (weapon.isTwoHanded)
+                {
+                    RemoveWeaponSprite(EquipmentSlot.LeftWeapon);
+                    characterManager.equippedItemsSpriteManager.SetupTwoHandedWeaponStance(this, characterManager);
+                }
+                // If the new weapon is one-handed and our right weapon is now null, remove our right weapon sprite and set our character's sprites to the one-handed stance
+                else if (equipSlot == EquipmentSlot.LeftWeapon && currentEquipment[(int)EquipmentSlot.RightWeapon] == null)
+                {
+                    RemoveWeaponSprite(EquipmentSlot.RightWeapon);
+                    characterManager.equippedItemsSpriteManager.SetupOneHandedWeaponStance(this, characterManager);
+                }
+                // If the new weapon is one-handed, just set our character's sprites to the one-handed stance
+                else if (weapon.isTwoHanded == false)
+                    characterManager.equippedItemsSpriteManager.SetupOneHandedWeaponStance(this, characterManager);
+            }
         }
-        else
+        else // If we unequipped an item
         {
             // Hide the equipment's sprite on the player
             if (equipment.IsWeapon() == false)
                 RemoveWearableSprite(equipSlot);
             else
+            {
+                Weapon weapon = (Weapon)equipment;
                 RemoveWeaponSprite(equipSlot);
+
+                // If the weapon we're unequipping is two-handed, set our character's sprites back to the one-handed stance
+                if (weapon.isTwoHanded)
+                    characterManager.equippedItemsSpriteManager.SetupOneHandedWeaponStance(this, characterManager);
+            }
         }
     }
 
     void SetWearableSprite(EquipmentSlot wearableSlot, Equipment equipment)
     {
-        characterManager.equippedItemsSpriteManager.AssignSprite(wearableSlot, equipment);
+        characterManager.equippedItemsSpriteManager.AssignSprite(wearableSlot, equipment, this);
     }
 
     void RemoveWearableSprite(EquipmentSlot wearableSlot)
@@ -489,7 +555,7 @@ public class EquipmentManager : MonoBehaviour
 
     void SetWeaponSprite(EquipmentSlot weaponSlot, Equipment equipment)
     {
-        characterManager.equippedItemsSpriteManager.AssignSprite(weaponSlot, equipment);
+        characterManager.equippedItemsSpriteManager.AssignSprite(weaponSlot, equipment, this);
     }
 
     void RemoveWeaponSprite(EquipmentSlot weaponSlot)

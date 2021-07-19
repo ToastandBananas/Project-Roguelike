@@ -32,6 +32,30 @@ public class DropItemController : MonoBehaviour
         gm = GameManager.instance;
     }
 
+    public void ForceDropNearest(ItemData itemData, int amountToDrop, Inventory invComingFrom, InventoryItem invItemComingFrom)
+    {
+        if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.Center), gm.playerManager.transform.position))
+            DropItem(gm.playerManager.transform.position, itemData, amountToDrop, invComingFrom, invItemComingFrom);
+        else if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.North), gm.playerManager.transform.position + new Vector3(0, 1)))
+            DropItem(gm.playerManager.transform.position + new Vector3(0, 1), itemData, amountToDrop, invComingFrom, invItemComingFrom);
+        else if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.East), gm.playerManager.transform.position + new Vector3(1, 0)))
+            DropItem(gm.playerManager.transform.position + new Vector3(1, 0), itemData, amountToDrop, invComingFrom, invItemComingFrom);
+        else if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.South), gm.playerManager.transform.position + new Vector3(0, -1)))
+            DropItem(gm.playerManager.transform.position + new Vector3(0, -1), itemData, amountToDrop, invComingFrom, invItemComingFrom);
+        else if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.West), gm.playerManager.transform.position + new Vector3(-1, 0)))
+            DropItem(gm.playerManager.transform.position + new Vector3(-1, 0), itemData, amountToDrop, invComingFrom, invItemComingFrom);
+        else if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.Northwest), gm.playerManager.transform.position + new Vector3(-1, 1)))
+            DropItem(gm.playerManager.transform.position + new Vector3(-1, 1), itemData, amountToDrop, invComingFrom, invItemComingFrom);
+        else if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.Northeast), gm.playerManager.transform.position + new Vector3(1, 1)))
+            DropItem(gm.playerManager.transform.position + new Vector3(1, 1), itemData, amountToDrop, invComingFrom, invItemComingFrom);
+        else if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.Southwest), gm.playerManager.transform.position + new Vector3(-1, -1)))
+            DropItem(gm.playerManager.transform.position + new Vector3(-1, -1), itemData, amountToDrop, invComingFrom, invItemComingFrom);
+        else if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.Southeast), gm.playerManager.transform.position + new Vector3(1, -1)))
+            DropItem(gm.playerManager.transform.position + new Vector3(1, -1), itemData, amountToDrop, invComingFrom, invItemComingFrom);
+        else
+            DropItem(gm.playerManager.transform.position, itemData, amountToDrop, invComingFrom, invItemComingFrom); // Drop at the player's position as a last resort
+    }
+
     public void DropItem(Vector3 dropPosition, ItemData itemData, int amountToDrop, Inventory invComingFrom, InventoryItem invItemComingFrom)
     {
         ItemPickup newItemPickup = null;
@@ -224,23 +248,25 @@ public class DropItemController : MonoBehaviour
 
     public Direction GetDirectionFromDropPosition(Vector3 dropPosition)
     {
-        if (dropPosition == gm.playerManager.transform.position)
+        Vector3 clampedDropPos = new Vector3(Mathf.RoundToInt(dropPosition.x), Mathf.RoundToInt(dropPosition.y));
+
+        if (clampedDropPos == gm.playerManager.transform.position)
             return Direction.Center;
-        else if (dropPosition == gm.playerManager.transform.position + new Vector3(0, 1))
+        else if (clampedDropPos == gm.playerManager.transform.position + new Vector3(0, 1))
             return Direction.North;
-        else if (dropPosition == gm.playerManager.transform.position + new Vector3(0, -1))
+        else if (clampedDropPos == gm.playerManager.transform.position + new Vector3(0, -1))
             return Direction.South;
-        else if (dropPosition == gm.playerManager.transform.position + new Vector3(-1, 0))
+        else if (clampedDropPos == gm.playerManager.transform.position + new Vector3(-1, 0))
             return Direction.West;
-        else if (dropPosition == gm.playerManager.transform.position + new Vector3(1, 0))
+        else if (clampedDropPos == gm.playerManager.transform.position + new Vector3(1, 0))
             return Direction.East;
-        else if (dropPosition == gm.playerManager.transform.position + new Vector3(-1, 1))
+        else if (clampedDropPos == gm.playerManager.transform.position + new Vector3(-1, 1))
             return Direction.Northwest;
-        else if (dropPosition == gm.playerManager.transform.position + new Vector3(1, 1))
+        else if (clampedDropPos == gm.playerManager.transform.position + new Vector3(1, 1))
             return Direction.Northeast;
-        else if (dropPosition == gm.playerManager.transform.position + new Vector3(-1, -1))
+        else if (clampedDropPos == gm.playerManager.transform.position + new Vector3(-1, -1))
             return Direction.Southwest;
-        else if (dropPosition == gm.playerManager.transform.position + new Vector3(1, -1))
+        else if (clampedDropPos == gm.playerManager.transform.position + new Vector3(1, -1))
             return Direction.Southeast;
         else
             return Direction.Center;

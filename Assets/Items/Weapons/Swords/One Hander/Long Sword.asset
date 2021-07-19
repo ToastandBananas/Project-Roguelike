@@ -25,12 +25,12 @@ MonoBehaviour:
   pickupSprite: {fileID: 2451652252212011429, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
   equipmentSlot: 8
   minBaseDurability: 75
-  maxBaseDurability: 100
+  maxBaseDurability: 120
   primaryEquippedSprite: {fileID: 1560336491388677395, guid: f20a51d4e8c99fb4b989b0d8c061c05f, type: 3}
   secondaryEquippedSprite: {fileID: -8058364674454502543, guid: 8577904861824ce49815bed093713a61, type: 3}
   isTwoHanded: 0
   attackRange: 1
-  minBaseDamage: 1
-  maxBaseDamage: 5
+  minBaseDamage: 4
+  maxBaseDamage: 7
   minBaseTreeDamage: 1
   maxBaseTreeDamage: 2

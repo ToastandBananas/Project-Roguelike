@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
 {
+    [Header("Character Sprites")]
+    public Sprite defaultCharacterSprite;
+    public Sprite secondaryCharacterSprite;
+    public Sprite deathSprite;
+
     [HideInInspector] public Alliances alliances;
     [HideInInspector] public EquippedItemsSpriteManager equippedItemsSpriteManager;
     [HideInInspector] public EquipmentManager equipmentManager;
@@ -49,6 +54,16 @@ public class CharacterManager : MonoBehaviour
             vision.CheckEnemyVisibility();
             stateController.DoAction();
         }
+    }
+
+    public void SetToDefaultCharacterSprite()
+    {
+        spriteRenderer.sprite = defaultCharacterSprite;
+    }
+
+    public void SetToSecondaryCharacterSprite()
+    {
+        spriteRenderer.sprite = secondaryCharacterSprite;
     }
 
     public virtual void Start()

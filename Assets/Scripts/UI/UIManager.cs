@@ -898,7 +898,7 @@ public class UIManager : MonoBehaviour
         {
             // If we're taking the item from the player's equipment menu, unequip the item
             draggedInvItem.itemData.currentStackSize = startingItemCount;
-            draggedInvItem.myEquipmentManager.Unequip(draggedInvItem.myEquipmentManager.GetEquipmentSlotFromItemData(draggedInvItem.itemData), false, false);
+            draggedInvItem.myEquipmentManager.Unequip(draggedInvItem.myEquipmentManager.GetEquipmentSlotFromItemData(draggedInvItem.itemData), false, false, false);
         }
         else // If the item was on the ground, simply clear out the InventoryItem we were dragging
             draggedInvItem.ClearItem();

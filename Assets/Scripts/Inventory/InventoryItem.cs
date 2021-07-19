@@ -320,7 +320,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                         }
 
                         EquipmentSlot equipmentSlot = myEquipmentManager.GetEquipmentSlotFromItemData(itemData);
-                        myEquipmentManager.Unequip(equipmentSlot, false, false);
+                        myEquipmentManager.Unequip(equipmentSlot, false, false, false);
 
                         // Calculate and use AP
                         myEquipmentManager.StartCoroutine(myEquipmentManager.UseAPAndSetupEquipment((Equipment)tempItemData.item, equipmentSlot, null, tempItemData));
@@ -397,7 +397,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                         if (myEquipmentManager != null)
                         {
                             EquipmentSlot equipmentSlot = myEquipmentManager.GetEquipmentSlotFromItemData(itemData);
-                            myEquipmentManager.Unequip(equipmentSlot, false, false);
+                            myEquipmentManager.Unequip(equipmentSlot, false, false, false);
 
                             // Calculate and use AP
                             myEquipmentManager.StartCoroutine(myEquipmentManager.UseAPAndSetupEquipment((Equipment)tempItemData.item, equipmentSlot, null, tempItemData));

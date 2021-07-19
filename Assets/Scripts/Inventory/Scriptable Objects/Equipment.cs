@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum EquipmentSlot { Helmet, Shirt, Pants, Boots, Gloves, BodyArmor, LegArmor, LeftWeapon, RightWeapon, Ranged, Quiver, Backpack, LeftHipPouch, RightHipPouch }
+public enum EquipmentSlot { Helmet, Shirt, Pants, Boots, Gloves, BodyArmor, LegArmor, LeftWeapon, RightWeapon, Ranged, Quiver, Backpack, LeftHipPouch, RightHipPouch, Cape }
 
 [CreateAssetMenu(fileName = "New Equipment", menuName = "Inventory/Equipment")]
 public class Equipment : Item
@@ -55,7 +55,7 @@ public class Equipment : Item
         {
             // Unequip the item
             EquipmentSlot itemDatasEquipSlot = invItem.myEquipmentManager.GetEquipmentSlotFromItemData(invItem.itemData);
-            itemUsed = equipmentManager.Unequip(itemDatasEquipSlot, true, true);
+            itemUsed = equipmentManager.Unequip(itemDatasEquipSlot, true, true, false);
         }
 
         if (itemUsed)
