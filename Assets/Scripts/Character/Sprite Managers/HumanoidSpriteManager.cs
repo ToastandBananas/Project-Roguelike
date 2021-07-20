@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class HumanoidSpriteManager : CharacterSpriteManager
@@ -11,8 +12,12 @@ public class HumanoidSpriteManager : CharacterSpriteManager
     public SpriteRenderer leftWeapon;
     public SpriteRenderer rightWeapon, helmet, shirt, bodyArmor, pants, legArmor, boots, gloves, cape;
 
+    GameManager gm;
+
     void Start()
     {
+        gm = GameManager.instance;
+
         if (hair != null)
             hair.color = hairColor;
         if (beard != null)
@@ -62,6 +67,8 @@ public class HumanoidSpriteManager : CharacterSpriteManager
             Equipment equipment = (Equipment)equipmentManager.currentEquipment[(int)EquipmentSlot.Cape].item;
             cape.sprite = equipment.primaryEquippedSprite;
         }
+
+        characterManager.equipmentManager.isTwoHanding = false;
     }
 
     public void SetupTwoHandedWeaponStance(EquipmentManager equipmentManager, CharacterManager characterManager)
@@ -90,6 +97,57 @@ public class HumanoidSpriteManager : CharacterSpriteManager
         {
             Equipment equipment = (Equipment)equipmentManager.currentEquipment[(int)EquipmentSlot.Cape].item;
             cape.sprite = equipment.secondaryEquippedSprite;
+        }
+
+        characterManager.equipmentManager.isTwoHanding = true;
+    }
+
+    public void SwapStance(EquipmentManager equipmentManager, CharacterManager characterManager)
+    {
+        if (equipmentManager.isTwoHanding)
+            SetupOneHandedWeaponStance(equipmentManager, characterManager);
+        else
+            SetupTwoHandedWeaponStance(equipmentManager, characterManager);
+    }
+
+    public IEnumerator UseAPAndSwapStance(EquipmentManager equipmentManager, CharacterManager characterManager)
+    {
+        characterManager.actionQueued = true;
+
+        while (characterManager.isMyTurn == false || characterManager.movement.isMoving)
+        {
+            yield return null;
+        }
+
+        if (characterManager.remainingAPToBeUsed > 0)
+        {
+            if (characterManager.remainingAPToBeUsed <= characterManager.characterStats.currentAP)
+            {
+                characterManager.actionQueued = false;
+                characterManager.characterStats.UseAP(characterManager.remainingAPToBeUsed);
+                SwapStance(equipmentManager, characterManager);
+            }
+            else
+            {
+                characterManager.characterStats.UseAP(characterManager.characterStats.currentAP);
+                gm.turnManager.FinishTurn(characterManager);
+                StartCoroutine(UseAPAndSwapStance(equipmentManager, characterManager));
+            }
+        }
+        else
+        {
+            int remainingAP = characterManager.characterStats.UseAPAndGetRemainder(gm.apManager.GetSwapStanceAPCost(characterManager));
+            if (remainingAP == 0)
+            {
+                characterManager.actionQueued = false;
+                SwapStance(equipmentManager, characterManager);
+            }
+            else
+            {
+                characterManager.remainingAPToBeUsed = remainingAP;
+                gm.turnManager.FinishTurn(characterManager);
+                StartCoroutine(UseAPAndSwapStance(equipmentManager, characterManager));
+            }
         }
     }
 

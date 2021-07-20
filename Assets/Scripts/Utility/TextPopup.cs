@@ -20,8 +20,8 @@ public class TextPopup : MonoBehaviour
     readonly float increaseScaleAmount = 0.2f;
     readonly float decreaseScaleAmount = 0.25f;
     
-    Vector3 moveVector = new Vector3(0.3f, 0.5f);
-    Vector3 offset = new Vector2(0.35f, 0.35f);
+    Vector3 moveVector = new Vector3(1.5f, 1.75f);
+    Vector3 offset = new Vector2(0.2f, 0.2f);
 
     void Update()
     {
@@ -134,7 +134,7 @@ public class TextPopup : MonoBehaviour
     {
         // Reset the size, move vector and disappear timer
         transform.localScale = Vector3.one;
-        moveVector = new Vector3(0.2f, 0.4f);
+        moveVector = new Vector3(1.5f, 1.75f);
         disappearTimer = DISAPPEAR_TIMER_MAX;
     }
 }

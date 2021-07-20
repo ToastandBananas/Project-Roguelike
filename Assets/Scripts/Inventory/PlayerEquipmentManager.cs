@@ -23,4 +23,13 @@ public class PlayerEquipmentManager : EquipmentManager
     {
         base.Start();
     }
+
+    void Update()
+    {
+        if (GameControls.gamePlayActions.playerSwitchStance.WasPressed && gm.uiManager.UIMenuActive() == false)
+        {
+            if (IsDualWielding() == false && PrimaryWeaponEquipped() && GetPrimaryWeapon().isTwoHanded == false)
+                StartCoroutine(characterManager.humanoidSpriteManager.UseAPAndSwapStance(this, characterManager));
+        }
+    }
 }

@@ -21,7 +21,7 @@ public class EquipmentManager : MonoBehaviour
 
     [HideInInspector] public GameManager gm;
     [HideInInspector] public CharacterManager characterManager;
-    [HideInInspector] public bool isPlayer;
+    [HideInInspector] public bool isPlayer, isTwoHanding;
 
     public virtual void Start()
     {
@@ -547,6 +547,27 @@ public class EquipmentManager : MonoBehaviour
         if (currentEquipment[(int)EquipmentSlot.LeftWeapon].damage + randomDamageOffset <= 0)
             randomDamageOffset = 0;
         return currentEquipment[(int)EquipmentSlot.LeftWeapon].damage + randomDamageOffset;
+    }
+
+    public Weapon GetPrimaryWeapon()
+    {
+        if (currentEquipment[(int)EquipmentSlot.RightWeapon] == null)
+            return null;
+        return (Weapon)currentEquipment[(int)EquipmentSlot.RightWeapon].item;
+    }
+
+    public Weapon GetSecondaryWeapon()
+    {
+        if (currentEquipment[(int)EquipmentSlot.LeftWeapon] == null)
+            return null;
+        return (Weapon)currentEquipment[(int)EquipmentSlot.LeftWeapon].item;
+    }
+
+    public Weapon GetRangedWeapon()
+    {
+        if (currentEquipment[(int)EquipmentSlot.Ranged] == null)
+            return null;
+        return (Weapon)currentEquipment[(int)EquipmentSlot.Ranged].item;
     }
 
     void SetEquippedSprite(EquipmentSlot equipSlot, Equipment equipment)

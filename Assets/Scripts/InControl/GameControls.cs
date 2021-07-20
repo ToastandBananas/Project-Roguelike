@@ -23,6 +23,9 @@ public class GameControls : MonoBehaviour
         gamePlayActions.playerAttack.AddDefaultBinding(InputControlType.LeftTrigger); // Attack
         gamePlayActions.playerAttack.AddDefaultBinding(Key.Space);
 
+        gamePlayActions.playerSwitchStance.AddDefaultBinding(InputControlType.LeftBumper); // Switch Stance
+        gamePlayActions.playerSwitchStance.AddDefaultBinding(Key.Tab);
+
         // Movement
         gamePlayActions.playerMoveUp.AddDefaultBinding(InputControlType.LeftStickUp); // Up
         gamePlayActions.playerMoveUp.AddDefaultBinding(Key.W);

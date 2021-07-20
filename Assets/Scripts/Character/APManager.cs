@@ -29,9 +29,63 @@ public class APManager : MonoBehaviour
         return baseMovementCost;
     }
 
-    public int GetAttackAPCost(CharacterManager characterManager, AttackType attackType)
+    public int GetAttackAPCost(CharacterManager characterManager, Weapon weapon, AttackType attackType)
     {
-        return 100;
+        switch (attackType)
+        {
+            case AttackType.Unarmed:
+                return 50;
+            case AttackType.PrimaryWeapon:
+                return CalculateMeleeAttackAPCost(characterManager, weapon);
+            case AttackType.SecondaryWeapon:
+                return CalculateMeleeAttackAPCost(characterManager, weapon);
+            case AttackType.DualWield:
+                if (characterManager.attack.dualWieldAttackCount == 0)
+                    return CalculateMeleeAttackAPCost(characterManager, weapon);
+                else
+                    return CalculateDualWieldSecondAttackAPCost(characterManager, weapon);
+            case AttackType.Ranged:
+                return CalculateMeleeAttackAPCost(characterManager, weapon);
+            case AttackType.Throwing:
+                return CalculateThrowAPCost(characterManager, weapon);
+            case AttackType.Magic:
+                return 100;
+            default:
+                return 100;
+        }
+    }
+
+    int CalculateMeleeAttackAPCost(CharacterManager characterManager, Weapon weapon)
+    {
+        float amount = 50 + (weapon.volume * 3) + (weapon.weight * 2);
+        if (characterManager.equipmentManager.isTwoHanding)
+            amount *= 1.35f;
+
+        Debug.Log(Mathf.RoundToInt(amount));
+        return Mathf.RoundToInt(amount);
+    }
+
+    int CalculateDualWieldSecondAttackAPCost(CharacterManager characterManager, Weapon weapon)
+    {
+        Debug.Log(Mathf.RoundToInt(CalculateMeleeAttackAPCost(characterManager, weapon) * 0.7f));
+        return Mathf.RoundToInt(CalculateMeleeAttackAPCost(characterManager, weapon) * 0.7f);
+    }
+
+    int CalculateShootAPCost(CharacterManager characterManager, Weapon weapon)
+    {
+        Debug.Log(Mathf.RoundToInt(50 + (weapon.volume * 3) + (weapon.weight * 2)));
+        return Mathf.RoundToInt(50 + (weapon.volume * 3) + (weapon.weight * 2));
+    }
+
+    int CalculateThrowAPCost(CharacterManager characterManager, Item item)
+    {
+        Debug.Log(40 + (item.volume * 2) + (item.weight * 3));
+        return Mathf.RoundToInt(40 + (item.volume * 2) + (item.weight * 3));
+    }
+
+    public int GetSwapStanceAPCost(CharacterManager characterManager)
+    {
+        return 15;
     }
 
     public int GetTransferItemCost(Item item, int itemCount, float invWeight, float invVolume, bool transferringInventoryToInventory)

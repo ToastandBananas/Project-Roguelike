@@ -64,13 +64,6 @@ public class UIManager : MonoBehaviour
                     ToggleInventory();
                 }
 
-                // Disable Inventory menus if they are open and tab is pressed
-                if (GameControls.gamePlayActions.tab.WasPressed)
-                {
-                    ClearSelectedItems(false);
-                    DisableInventoryMenus();
-                }
-
                 // Take everything from an open container or the ground
                 if (GameControls.gamePlayActions.menuContainerTakeAll.WasPressed && gm.containerInvUI.inventoryParent.activeSelf)
                 {
@@ -251,6 +244,16 @@ public class UIManager : MonoBehaviour
             // Disable the context menu if we left click
             if (GameControls.gamePlayActions.menuSelect.WasPressed && gm.contextMenu.isActive && activeContextMenuButton == null)
                 StartCoroutine(gm.contextMenu.DelayDisableContextMenu());
+        }
+    }
+
+    void LateUpdate()
+    {
+        // Disable Inventory menus if they are open and tab is pressed
+        if (GameControls.gamePlayActions.tab.WasPressed)
+        {
+            ClearSelectedItems(false);
+            DisableInventoryMenus();
         }
     }
 

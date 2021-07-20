@@ -8,6 +8,7 @@ public class CharacterManager : MonoBehaviour
     [HideInInspector] public EquipmentManager equipmentManager;
     [HideInInspector] public Inventory inventory;
     [HideInInspector] public Movement movement;
+    [HideInInspector] public Attack attack;
     [HideInInspector] public NPCAttack npcAttack;
     [HideInInspector] public NPCMovement npcMovement;
     [HideInInspector] public StateController stateController;
@@ -33,17 +34,22 @@ public class CharacterManager : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         alliances = GetComponent<Alliances>();
+        attack = GetComponent<Attack>();
         characterStats = GetComponent<CharacterStats>();
         characterSpriteManager = transform.GetComponentInChildren<CharacterSpriteManager>();
         humanoidSpriteManager = (HumanoidSpriteManager)characterSpriteManager;
         movement = GetComponent<Movement>();
         vision = GetComponentInChildren<Vision>();
-        
+
+        if (isNPC)
+        {
+            npcAttack = (NPCAttack)attack;
+            npcMovement = (NPCMovement)movement;
+            TryGetComponent(out stateController);
+        }
+
         TryGetComponent(out equipmentManager);
         TryGetComponent(out inventory);
-        TryGetComponent(out npcAttack);
-        TryGetComponent(out npcMovement);
-        TryGetComponent(out stateController);
 
         actionQueued = false;
     }

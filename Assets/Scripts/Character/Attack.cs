@@ -13,7 +13,7 @@ public class Attack : MonoBehaviour
     [HideInInspector] public bool canAttack = true;
     [HideInInspector] public bool isAttacking;
 
-    int dualWieldAttackCount = 0;
+    [HideInInspector] public int dualWieldAttackCount = 0;
 
     public virtual void Start()
     {
@@ -61,13 +61,13 @@ public class Attack : MonoBehaviour
     public void DoMeleeAttack(Stats targetsStats)
     {
         if (characterManager.equipmentManager.IsDualWielding())
-            StartCoroutine(UseAPAndAttack(targetsStats, AttackType.DualWield));
+            StartCoroutine(UseAPAndAttack(targetsStats, characterManager.equipmentManager.GetPrimaryWeapon(), AttackType.DualWield));
         else if (characterManager.equipmentManager.PrimaryWeaponEquipped())
-            StartCoroutine(UseAPAndAttack(targetsStats, AttackType.PrimaryWeapon));
+            StartCoroutine(UseAPAndAttack(targetsStats, characterManager.equipmentManager.GetPrimaryWeapon(), AttackType.PrimaryWeapon));
         else if (characterManager.equipmentManager.SecondaryWeaponEquipped())
-            StartCoroutine(UseAPAndAttack(targetsStats, AttackType.SecondaryWeapon));
+            StartCoroutine(UseAPAndAttack(targetsStats, characterManager.equipmentManager.GetSecondaryWeapon(), AttackType.SecondaryWeapon));
         else // Punch, if no weapons equipped
-            StartCoroutine(UseAPAndAttack(targetsStats, AttackType.Unarmed));
+            StartCoroutine(UseAPAndAttack(targetsStats, null, AttackType.Unarmed));
     }
 
     public void UnarmedAttack(Stats targetsStats)
@@ -94,7 +94,7 @@ public class Attack : MonoBehaviour
         {
             PrimaryWeaponAttack(targetsStats);
             dualWieldAttackCount++;
-            StartCoroutine(UseAPAndAttack(targetsStats, AttackType.DualWield));
+            StartCoroutine(UseAPAndAttack(targetsStats, characterManager.equipmentManager.GetSecondaryWeapon(), AttackType.DualWield));
         }
         else
         {
@@ -103,7 +103,7 @@ public class Attack : MonoBehaviour
         }
     }
 
-    public IEnumerator UseAPAndAttack(Stats targetsStats, AttackType attackType)
+    public IEnumerator UseAPAndAttack(Stats targetsStats, Weapon weapon, AttackType attackType)
     {
         characterManager.actionQueued = true;
 
@@ -116,40 +116,30 @@ public class Attack : MonoBehaviour
         {
             if (characterManager.remainingAPToBeUsed <= characterManager.characterStats.currentAP)
             {
-                DoAttack(targetsStats, attackType);
                 characterManager.actionQueued = false;
                 characterManager.characterStats.UseAP(characterManager.remainingAPToBeUsed);
-
-                //if (characterManager.characterStats.currentAP <= 0)
-                    //gm.turnManager.FinishTurn(characterManager);
-                //else if (gameObject.CompareTag("NPC"))
-                    //characterManager.TakeTurn();
+                DoAttack(targetsStats, attackType);
             }
             else
             {
                 characterManager.characterStats.UseAP(characterManager.characterStats.currentAP);
                 gm.turnManager.FinishTurn(characterManager);
-                StartCoroutine(UseAPAndAttack(targetsStats, attackType));
+                StartCoroutine(UseAPAndAttack(targetsStats, weapon, attackType));
             }
         }
         else
         {
-            int remainingAP = characterManager.characterStats.UseAPAndGetRemainder(gm.apManager.GetAttackAPCost(characterManager, attackType));
+            int remainingAP = characterManager.characterStats.UseAPAndGetRemainder(gm.apManager.GetAttackAPCost(characterManager, weapon, attackType));
             if (remainingAP == 0)
             {
-                DoAttack(targetsStats, attackType);
                 characterManager.actionQueued = false;
-
-                //if (characterManager.characterStats.currentAP <= 0)
-                    //gm.turnManager.FinishTurn(characterManager);
-                //else if (gameObject.CompareTag("NPC"))
-                    //characterManager.TakeTurn();
+                DoAttack(targetsStats, attackType);
             }
             else
             {
                 characterManager.remainingAPToBeUsed = remainingAP;
                 gm.turnManager.FinishTurn(characterManager);
-                StartCoroutine(UseAPAndAttack(targetsStats, attackType));
+                StartCoroutine(UseAPAndAttack(targetsStats, weapon, attackType));
             }
         }
     }
