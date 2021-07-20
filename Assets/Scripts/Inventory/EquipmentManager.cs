@@ -14,6 +14,11 @@ public class EquipmentManager : MonoBehaviour
 
     public float currentWeight, currentVolume;
 
+    [Header("Starting Equipment")]
+    public Equipment startingHelmet;
+    public Equipment startingCape, startingShirt, startingPants, startingBoots, startingGloves, startingBodyArmor, startingLegArmor, startingLeftWeapon, startingRightWeapon, startingRangedWeapon;
+    public Equipment startingQuiver, startingBackpack, startingLeftHipPouch, startingRightHipPouch;
+
     [HideInInspector] public GameManager gm;
     [HideInInspector] public CharacterManager characterManager;
     [HideInInspector] public bool isPlayer;
@@ -33,9 +38,10 @@ public class EquipmentManager : MonoBehaviour
             isPlayer = true;
             itemsParent = gm.playerInvUI.equipmentSideBarButton.transform.GetChild(1);
         }
+        
+        currentEquipment = new ItemData[System.Enum.GetNames(typeof(EquipmentSlot)).Length];
 
-        int numSlots = System.Enum.GetNames(typeof(EquipmentSlot)).Length;
-        currentEquipment = new ItemData[numSlots];
+        SetupStartingEquipment();
     }
 
     public IEnumerator UseAPAndSetupEquipment(Equipment equipment, EquipmentSlot equipSlot, ItemData newItemData, ItemData oldItemData)
@@ -494,7 +500,55 @@ public class EquipmentManager : MonoBehaviour
 
         return false;
     }
-    
+
+    public bool IsDualWielding()
+    {
+        if (currentEquipment[(int)EquipmentSlot.RightWeapon] != null && currentEquipment[(int)EquipmentSlot.LeftWeapon] != null)
+            return true;
+
+        return false;
+    }
+
+    public bool PrimaryWeaponEquipped()
+    {
+        if (currentEquipment[(int)EquipmentSlot.RightWeapon] != null)
+            return true;
+
+        return false;
+    }
+
+    public bool SecondaryWeaponEquipped()
+    {
+        if (currentEquipment[(int)EquipmentSlot.LeftWeapon] != null)
+            return true;
+
+        return false;
+    }
+
+    public bool MeleeWeaponEquipped()
+    {
+        if (currentEquipment[(int)EquipmentSlot.LeftWeapon] != null || currentEquipment[(int)EquipmentSlot.RightWeapon] != null)
+            return true;
+
+        return false;
+    }
+
+    public int GetPrimaryWeaponAttackDamage()
+    {
+        int randomDamageOffset = Mathf.RoundToInt(Random.Range(currentEquipment[(int)EquipmentSlot.RightWeapon].damage * -0.2f, currentEquipment[(int)EquipmentSlot.RightWeapon].damage * 0.2f));
+        if (currentEquipment[(int)EquipmentSlot.RightWeapon].damage + randomDamageOffset <= 0)
+            randomDamageOffset = 0;
+        return currentEquipment[(int)EquipmentSlot.RightWeapon].damage + randomDamageOffset;
+    }
+
+    public int GetSecondaryWeaponAttackDamage()
+    {
+        int randomDamageOffset = Mathf.RoundToInt(Random.Range(currentEquipment[(int)EquipmentSlot.LeftWeapon].damage * -0.2f, currentEquipment[(int)EquipmentSlot.LeftWeapon].damage * 0.2f));
+        if (currentEquipment[(int)EquipmentSlot.LeftWeapon].damage + randomDamageOffset <= 0)
+            randomDamageOffset = 0;
+        return currentEquipment[(int)EquipmentSlot.LeftWeapon].damage + randomDamageOffset;
+    }
+
     void SetEquippedSprite(EquipmentSlot equipSlot, Equipment equipment)
     {
         // If we equipped an item
@@ -502,23 +556,23 @@ public class EquipmentManager : MonoBehaviour
         {
             // Show the equipment's sprite on the player
             if (equipment.IsWeapon() == false)
-                SetWearableSprite(equipSlot, equipment);
+                SetEquipmentSprite(equipSlot, equipment);
             else
             {
-                SetWeaponSprite(equipSlot, equipment);
+                SetEquipmentSprite(equipSlot, equipment);
 
                 Weapon weapon = (Weapon)equipment;
 
                 // If the new weapon is two-handed, remove our left weapon sprite if we have one and set our character's sprites to the two-handed stance
                 if (weapon.isTwoHanded)
                 {
-                    RemoveWeaponSprite(EquipmentSlot.LeftWeapon);
+                    RemoveEquipmentSprite(EquipmentSlot.LeftWeapon);
                     characterManager.humanoidSpriteManager.SetupTwoHandedWeaponStance(this, characterManager);
                 }
                 // If the new weapon is one-handed and our right weapon is now null, remove our right weapon sprite and set our character's sprites to the one-handed stance
                 else if (equipSlot == EquipmentSlot.LeftWeapon && currentEquipment[(int)EquipmentSlot.RightWeapon] == null)
                 {
-                    RemoveWeaponSprite(EquipmentSlot.RightWeapon);
+                    RemoveEquipmentSprite(EquipmentSlot.RightWeapon);
                     characterManager.humanoidSpriteManager.SetupOneHandedWeaponStance(this, characterManager);
                 }
                 // If the new weapon is one-handed, just set our character's sprites to the one-handed stance
@@ -530,11 +584,11 @@ public class EquipmentManager : MonoBehaviour
         {
             // Hide the equipment's sprite on the player
             if (equipment.IsWeapon() == false)
-                RemoveWearableSprite(equipSlot);
+                RemoveEquipmentSprite(equipSlot);
             else
             {
                 Weapon weapon = (Weapon)equipment;
-                RemoveWeaponSprite(equipSlot);
+                RemoveEquipmentSprite(equipSlot);
 
                 // If the weapon we're unequipping is two-handed, set our character's sprites back to the one-handed stance
                 if (weapon.isTwoHanded)
@@ -543,24 +597,14 @@ public class EquipmentManager : MonoBehaviour
         }
     }
 
-    void SetWearableSprite(EquipmentSlot wearableSlot, Equipment equipment)
+    void SetEquipmentSprite(EquipmentSlot equipSlot, Equipment equipment)
     {
-        characterManager.humanoidSpriteManager.AssignSprite(wearableSlot, equipment, this);
+        characterManager.humanoidSpriteManager.AssignSprite(equipSlot, equipment, this);
     }
 
-    void RemoveWearableSprite(EquipmentSlot wearableSlot)
+    void RemoveEquipmentSprite(EquipmentSlot equipSlot)
     {
-        characterManager.humanoidSpriteManager.RemoveSprite(wearableSlot);
-    }
-
-    void SetWeaponSprite(EquipmentSlot weaponSlot, Equipment equipment)
-    {
-        characterManager.humanoidSpriteManager.AssignSprite(weaponSlot, equipment, this);
-    }
-
-    void RemoveWeaponSprite(EquipmentSlot weaponSlot)
-    {
-        characterManager.humanoidSpriteManager.RemoveSprite(weaponSlot);
+        characterManager.humanoidSpriteManager.RemoveSprite(equipSlot);
     }
 
     public void SheathWeapon(EquipmentSlot weaponSlot)
@@ -573,5 +617,48 @@ public class EquipmentManager : MonoBehaviour
     {
         // TODO
         Debug.Log("Unsheathing weapon");
+    }
+
+    void SetupStartingEquipment()
+    {
+        EquipNewEquipment(startingHelmet, EquipmentSlot.Helmet);
+        EquipNewEquipment(startingCape, EquipmentSlot.Cape);
+        EquipNewEquipment(startingShirt, EquipmentSlot.Shirt);
+        EquipNewEquipment(startingPants, EquipmentSlot.Pants);
+        EquipNewEquipment(startingBoots, EquipmentSlot.Boots);
+        EquipNewEquipment(startingGloves, EquipmentSlot.Gloves);
+        EquipNewEquipment(startingBodyArmor, EquipmentSlot.BodyArmor);
+        EquipNewEquipment(startingLegArmor, EquipmentSlot.LegArmor);
+        EquipNewEquipment(startingLeftWeapon, EquipmentSlot.LeftWeapon);
+        EquipNewEquipment(startingRightWeapon, EquipmentSlot.RightWeapon);
+        EquipNewEquipment(startingRangedWeapon, EquipmentSlot.Ranged);
+        EquipNewEquipment(startingQuiver, EquipmentSlot.Quiver);
+        EquipNewEquipment(startingBackpack, EquipmentSlot.Backpack);
+        EquipNewEquipment(startingLeftHipPouch, EquipmentSlot.LeftHipPouch);
+        EquipNewEquipment(startingRightHipPouch, EquipmentSlot.RightHipPouch);
+    }
+
+    void EquipNewEquipment(Equipment equipment, EquipmentSlot equipSlot)
+    {
+        if (equipment != null)
+        {
+            ItemData newItemData = gm.objectPoolManager.GetItemDataFromPool(equipment);
+            newItemData.gameObject.SetActive(true);
+            newItemData.transform.SetParent(itemsParent);
+            newItemData.item = equipment;
+            newItemData.RandomizeData();
+
+            currentEquipment[(int)equipSlot] = newItemData;
+            SetEquipmentSprite(equipSlot, equipment);
+
+            #if UNITY_EDITOR
+                newItemData.gameObject.name = newItemData.itemName;
+            #endif
+
+            if (equipment.IsWeapon() && onWeaponChanged != null)
+                onWeaponChanged.Invoke(newItemData, null);
+            else if (equipment.IsWearable() && onWearableChanged != null)
+                onWearableChanged.Invoke(newItemData, null);
+        }
     }
 }

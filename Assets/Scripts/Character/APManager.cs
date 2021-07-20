@@ -29,6 +29,11 @@ public class APManager : MonoBehaviour
         return baseMovementCost;
     }
 
+    public int GetAttackAPCost(CharacterManager characterManager, AttackType attackType)
+    {
+        return 100;
+    }
+
     public int GetTransferItemCost(Item item, int itemCount, float invWeight, float invVolume, bool transferringInventoryToInventory)
     {
         float cost = (item.weight + item.volume) * itemCount;

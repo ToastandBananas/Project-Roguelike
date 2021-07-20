@@ -21,7 +21,7 @@ public class GameControls : MonoBehaviour
         gamePlayActions.playerSwapWeapon.AddDefaultBinding(Key.LeftAlt);
 
         gamePlayActions.playerAttack.AddDefaultBinding(InputControlType.LeftTrigger); // Attack
-        gamePlayActions.playerAttack.AddDefaultBinding(Mouse.LeftButton);
+        gamePlayActions.playerAttack.AddDefaultBinding(Key.Space);
 
         // Movement
         gamePlayActions.playerMoveUp.AddDefaultBinding(InputControlType.LeftStickUp); // Up

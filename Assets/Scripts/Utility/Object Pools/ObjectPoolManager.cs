@@ -11,6 +11,7 @@ public class ObjectPoolManager : MonoBehaviour
     public ItemPickupObjectPool portableContainerPickupsPool;
     public ItemDataObjectPool itemDataObjectPool;
     public ItemDataObjectPool itemDataContainerObjectPool;
+    public TextPopupObjectPool textPopupObjectPool;
 
     #region Singleton
     public static ObjectPoolManager instance;

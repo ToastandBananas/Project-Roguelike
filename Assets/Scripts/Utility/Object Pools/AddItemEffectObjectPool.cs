@@ -5,7 +5,7 @@ public class AddItemEffectObjectPool : ObjectPool
 {
     [HideInInspector] public List<AddItemEffect> pooledAddItemEffects = new List<AddItemEffect>();
 
-    public override void Start()
+    public override void Awake()
     {
         Init();
     }

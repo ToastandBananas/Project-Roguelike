@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerManager : CharacterManager
 {
     [HideInInspector] public GameObject playerGameObject;
+    [HideInInspector] public PlayerAttack playerAttack;
     [HideInInspector] public PlayerController playerController;
     [HideInInspector] public PlayerEquipmentManager playerEquipmentManager;
     [HideInInspector] public PlayerMovement playerMovement;
@@ -33,6 +34,7 @@ public class PlayerManager : CharacterManager
         base.Awake();
 
         playerGameObject = gameObject;
+        playerAttack = GetComponent<PlayerAttack>();
         playerController = GetComponent<PlayerController>();
         playerMovement = GetComponent<PlayerMovement>();
         playerStats = GetComponent<PlayerStats>();

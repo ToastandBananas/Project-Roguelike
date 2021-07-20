@@ -24,8 +24,7 @@ public class InventoryTooltip : Tooltip
 
         // Description
         if (itemData.item.description != "")
-            stringBuilder.Append(FormatString(itemData.item.description, 30) + "\n\n");
-            //stringBuilder.Append(itemData.item.description + "\n\n");
+            stringBuilder.Append(Utilities.FormatStringIntoParagraphs(itemData.item.description, 30) + "\n\n");
         
         if (itemData.item.IsWeapon()) 
         {

@@ -3,9 +3,13 @@ using UnityEngine;
 
 public class PlayerMovement : Movement
 {
+    PlayerManager playerManager;
+
     public override void Start()
     {
         base.Start();
+
+        playerManager = (PlayerManager)characterManager;
     }
     
     void Update()
@@ -25,6 +29,8 @@ public class PlayerMovement : Movement
         float horizontal = movementInput.x;
         float vertical   = movementInput.y;
 
+        RaycastHit2D hit;
+
         if (horizontal > 0.3f || horizontal < -0.3f || vertical > 0.3f || vertical < -0.3f) // Account for stick drift (which is quite common)
         {
             gm.uiManager.DisableInventoryUIComponents();
@@ -40,30 +46,78 @@ public class PlayerMovement : Movement
             if (horizontal <= 0.3f && horizontal >= -0.3f)
             {
                 if (vertical > 0.3f) // Up
-                    StartCoroutine(UseAPAndMove(0, 1));
+                {
+                    hit = RaycastMovePosition(transform.position, transform.position + new Vector3(0, 1));
+                    if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats))
+                        playerManager.playerAttack.DetermineAttack(stats);
+                    else
+                        StartCoroutine(UseAPAndMove(0, 1));
+                }
                 else if (vertical < -0.3f) // Down
-                    StartCoroutine(UseAPAndMove(0, -1));
+                {
+                    hit = RaycastMovePosition(transform.position, transform.position + new Vector3(0, -1));
+                    if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats))
+                        playerManager.playerAttack.DetermineAttack(stats);
+                    else
+                        StartCoroutine(UseAPAndMove(0, -1));
+                }
             }
             else if (vertical <= 0.3f && vertical >= -0.3f)
             {
                 if (horizontal < -0.3f) // Left
-                    StartCoroutine(UseAPAndMove(-1, 0));
+                {
+                    hit = RaycastMovePosition(transform.position, transform.position + new Vector3(-1, 0));
+                    if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats))
+                        playerManager.playerAttack.DetermineAttack(stats);
+                    else
+                        StartCoroutine(UseAPAndMove(-1, 0));
+                }
                 else if (horizontal > 0.3f) // Right
-                    StartCoroutine(UseAPAndMove(1, 0));
+                {
+                    hit = RaycastMovePosition(transform.position, transform.position + new Vector3(1, 0));
+                    if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats))
+                        playerManager.playerAttack.DetermineAttack(stats);
+                    else
+                        StartCoroutine(UseAPAndMove(1, 0));
+                }
             }
             else if (vertical > 0.3f)
             {
                 if (horizontal < -0.3f) // Up-left
-                    StartCoroutine(UseAPAndMove(-1, 1));
+                {
+                    hit = RaycastMovePosition(transform.position, transform.position + new Vector3(-1, 1));
+                    if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats))
+                        playerManager.playerAttack.DetermineAttack(stats);
+                    else
+                        StartCoroutine(UseAPAndMove(-1, 1));
+                }
                 else if (horizontal > 0.3f) // Up-right
-                    StartCoroutine(UseAPAndMove(1, 1));
+                {
+                    hit = RaycastMovePosition(transform.position, transform.position + new Vector3(1, 1));
+                    if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats))
+                        playerManager.playerAttack.DetermineAttack(stats);
+                    else
+                        StartCoroutine(UseAPAndMove(1, 1));
+                }
             }
             else if (vertical < -0.3f)
             {
                 if (horizontal < -0.3f) // Down-left
-                    StartCoroutine(UseAPAndMove(-1, -1));
+                {
+                    hit = RaycastMovePosition(transform.position, transform.position + new Vector3(-1, -1));
+                    if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats))
+                        playerManager.playerAttack.DetermineAttack(stats);
+                    else
+                        StartCoroutine(UseAPAndMove(-1, -1));
+                }
                 else if (horizontal > 0.3f) // Down-right
-                    StartCoroutine(UseAPAndMove(1, -1));
+                {
+                    hit = RaycastMovePosition(transform.position, transform.position + new Vector3(1, -1));
+                    if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats))
+                        playerManager.playerAttack.DetermineAttack(stats);
+                    else
+                        StartCoroutine(UseAPAndMove(1, -1));
+                }
             }
 
             StartCoroutine(MovementCooldown(0.25f));
@@ -71,25 +125,49 @@ public class PlayerMovement : Movement
         else if (GameControls.gamePlayActions.playerMoveUpLeft.IsPressed) // Up-left
         {
             gm.uiManager.DisableInventoryUIComponents();
-            StartCoroutine(UseAPAndMove(-1, 1));
+
+            hit = RaycastMovePosition(transform.position, transform.position + new Vector3(-1, 1));
+            if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats))
+                playerManager.playerAttack.DetermineAttack(stats);
+            else
+                StartCoroutine(UseAPAndMove(-1, 1));
+
             StartCoroutine(MovementCooldown(0.25f));
         }
         else if (GameControls.gamePlayActions.playerMoveUpRight.IsPressed) // Up-right
         {
             gm.uiManager.DisableInventoryUIComponents();
-            StartCoroutine(UseAPAndMove(1, 1));
+
+            hit = RaycastMovePosition(transform.position, transform.position + new Vector3(1, 1));
+            if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats))
+                playerManager.playerAttack.DetermineAttack(stats);
+            else
+                StartCoroutine(UseAPAndMove(1, 1));
+
             StartCoroutine(MovementCooldown(0.25f));
         }
         else if (GameControls.gamePlayActions.playerMoveDownLeft.IsPressed) // Down-left
         {
             gm.uiManager.DisableInventoryUIComponents();
-            StartCoroutine(UseAPAndMove(-1, -1));
+
+            hit = RaycastMovePosition(transform.position, transform.position + new Vector3(-1, -1));
+            if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats))
+                playerManager.playerAttack.DetermineAttack(stats);
+            else
+                StartCoroutine(UseAPAndMove(-1, -1));
+
             StartCoroutine(MovementCooldown(0.25f));
         }
         else if (GameControls.gamePlayActions.playerMoveDownRight.IsPressed) // Down-right
         {
             gm.uiManager.DisableInventoryUIComponents();
-            StartCoroutine(UseAPAndMove(1, -1));
+
+            hit = RaycastMovePosition(transform.position, transform.position + new Vector3(1, -1));
+            if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats))
+                playerManager.playerAttack.DetermineAttack(stats);
+            else
+                StartCoroutine(UseAPAndMove(1, -1));
+
             StartCoroutine(MovementCooldown(0.25f));
         }
     }
@@ -99,18 +177,23 @@ public class PlayerMovement : Movement
         Vector2 startCell = transform.position;
         Vector2 targetCell = startCell + new Vector2(xDir, yDir);
 
-        RaycastHit2D hit = Physics2D.Raycast(targetCell, Vector2.zero, 1, movementObstacleMask);
+        RaycastHit2D hit = RaycastMovePosition(startCell, targetCell);
 
         // If the target tile is a walkable tile, the player moves here
         if (hit.collider == null)
         {
             if (targetCell.y == startCell.y)
-                StartCoroutine(ArcMovement(targetCell, isNPC));
+                StartCoroutine(ArcMovement(targetCell));
             else
-                StartCoroutine(SmoothMovement(targetCell, isNPC));
+                StartCoroutine(SmoothMovement(targetCell));
         }
         else
             StartCoroutine(BlockedMovement(targetCell));
+    }
+
+    public RaycastHit2D RaycastMovePosition(Vector2 startCell, Vector2 targetCell)
+    {
+        return Physics2D.Raycast(targetCell, Vector2.zero, 1, movementObstacleMask);
     }
 
     public IEnumerator UseAPAndMove(int xDir, int yDir)

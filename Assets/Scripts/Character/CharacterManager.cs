@@ -14,17 +14,21 @@ public class CharacterManager : MonoBehaviour
     [HideInInspector] public CharacterStats characterStats;
     [HideInInspector] public Vision vision;
 
-    [HideInInspector] public BoxCollider2D boxCollider;
+    [HideInInspector] public CircleCollider2D circleCollider;
     [HideInInspector] public Rigidbody2D rigidBody;
     [HideInInspector] public SpriteRenderer spriteRenderer;
 
+    [HideInInspector] public bool isNPC;
     [HideInInspector] public bool actionQueued;
     [HideInInspector] public bool isMyTurn = false;
     public int remainingAPToBeUsed;
 
     public virtual void Awake()
     {
-        boxCollider = GetComponent<BoxCollider2D>();
+        if (gameObject.CompareTag("NPC"))
+            isNPC = true;
+
+        circleCollider = GetComponent<CircleCollider2D>();
         rigidBody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 

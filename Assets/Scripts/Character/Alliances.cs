@@ -32,24 +32,24 @@ public class Alliances : MonoBehaviour
         return false;
     }
 
-    public Transform GetClosestKnownEnemy()
+    public CharacterManager GetClosestKnownEnemy()
     {
         if (characterManager.vision.knownEnemiesInRange.Count > 0)
         {
-            Transform closestEnemy = null;
+            CharacterManager closestEnemy = null;
             float distanceToClosestEnemy = 0;
 
-            foreach (Transform enemy in characterManager.vision.knownEnemiesInRange)
+            foreach (CharacterManager enemy in characterManager.vision.knownEnemiesInRange)
             {
                 if (closestEnemy == null)
                 {
                     closestEnemy = enemy;
                     if (characterManager.vision.knownEnemiesInRange.Count > 1)
-                        distanceToClosestEnemy = Vector2.Distance(enemy.position, transform.position);
+                        distanceToClosestEnemy = Vector2.Distance(enemy.transform.position, transform.position);
                 }
                 else
                 {
-                    float distanceToEnemy = Vector2.Distance(enemy.position, transform.position);
+                    float distanceToEnemy = Vector2.Distance(enemy.transform.position, transform.position);
                     if (distanceToEnemy < distanceToClosestEnemy)
                     {
                         closestEnemy = enemy;
@@ -64,24 +64,24 @@ public class Alliances : MonoBehaviour
         return null;
     }
 
-    public Transform GetClosestAlly()
+    public CharacterManager GetClosestAlly()
     {
         if (characterManager.vision.alliesInRange.Count > 0)
         {
-            Transform closestAlly = null;
+            CharacterManager closestAlly = null;
             float distanceToClosestAlly = 0;
 
-            foreach (Transform ally in characterManager.vision.alliesInRange)
+            foreach (CharacterManager ally in characterManager.vision.alliesInRange)
             {
                 if (closestAlly == null)
                 {
                     closestAlly = ally;
                     if (characterManager.vision.alliesInRange.Count > 1)
-                        distanceToClosestAlly = Vector2.Distance(ally.position, transform.position);
+                        distanceToClosestAlly = Vector2.Distance(ally.transform.position, transform.position);
                 }
                 else
                 {
-                    float distanceToAlly = Vector2.Distance(ally.position, transform.position);
+                    float distanceToAlly = Vector2.Distance(ally.transform.position, transform.position);
                     if (distanceToAlly < distanceToClosestAlly)
                     {
                         closestAlly = ally;

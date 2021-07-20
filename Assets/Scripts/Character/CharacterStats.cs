@@ -1,7 +1,6 @@
 using UnityEngine;
-using System.Collections;
 
-public class CharacterStats : MonoBehaviour
+public class CharacterStats : Stats
 {
     public Stat maxAP;
     public int currentAP { get; private set; }
@@ -9,26 +8,14 @@ public class CharacterStats : MonoBehaviour
     public Stat maxPersonalInvWeight;
     public Stat maxPersonalInvVolume;
 
-    public Stat maxHealth;
-    public int currentHealth { get; private set; }
-
     public Stat damage;
     public Stat defense;
 
     [HideInInspector] public CharacterManager characterManager;
-    [HideInInspector] public BoxCollider2D hitCollider;
-
-    [HideInInspector] public bool canTakeDamage = true;
-
-    void Awake()
-    {
-        currentHealth = maxHealth.GetValue();
-    }
 
     void Start()
     {
         characterManager = GetComponentInParent<CharacterManager>();
-        hitCollider = GetComponent<BoxCollider2D>();
 
         currentAP = maxAP.GetValue();
 
@@ -75,35 +62,18 @@ public class CharacterStats : MonoBehaviour
         currentAP += amountToAdd;
     }
 
-    public void TakeDamage(int damage)
+    public override void TakeDamage(int damage)
     {
-        if (canTakeDamage)
-        {
-            damage -= defense.GetValue();
-
-            if (damage <= 0)
-                damage = 1;
-
-            currentHealth -= damage;
-            if (currentHealth <= 0)
-                Die();
-        }
+        damage -= defense.GetValue();
+        base.TakeDamage(damage);
     }
 
-    public IEnumerator TakeDamageCooldown()
-    {
-        canTakeDamage = false;
-        yield return new WaitForSeconds(0.25f);
-        canTakeDamage = true;
-    }
-
-    public virtual void Die()
+    public override void Die()
     {
         Debug.Log(name + " died.");
-        characterManager.boxCollider.enabled = false;
+        characterManager.circleCollider.enabled = false;
         characterManager.vision.visionCollider.enabled = false;
         characterManager.vision.enabled = false;
-        hitCollider.enabled = false;
 
         if (characterManager.stateController != null)
             characterManager.stateController.enabled = false;

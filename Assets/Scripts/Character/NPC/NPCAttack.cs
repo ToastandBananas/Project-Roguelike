@@ -22,9 +22,9 @@ public class NPCAttack : Attack
         // If the NPC has a target
         if (characterManager.npcMovement.target != null)
         {
-            float distanceToTarget = Vector2.Distance(characterManager.npcMovement.target.position, transform.position);
-            int distX = Mathf.RoundToInt(Mathf.Abs(transform.position.x - characterManager.npcMovement.target.position.x));
-            int distY = Mathf.RoundToInt(Mathf.Abs(transform.position.y - characterManager.npcMovement.target.position.y));
+            float distanceToTarget = Vector2.Distance(characterManager.npcMovement.target.transform.position, transform.position);
+            int distX = Mathf.RoundToInt(Mathf.Abs(transform.position.x - characterManager.npcMovement.target.transform.position.x));
+            int distY = Mathf.RoundToInt(Mathf.Abs(transform.position.y - characterManager.npcMovement.target.transform.position.y));
 
             targetInAttackRange = TargetInAttackRange();
 
@@ -72,7 +72,7 @@ public class NPCAttack : Attack
         }
     }
 
-    public void SwitchTarget(Transform newTarget)
+    public void SwitchTarget(CharacterManager newTarget)
     {
         Debug.Log("Switching target...");
         characterManager.npcMovement.SetTarget(newTarget);
@@ -89,14 +89,18 @@ public class NPCAttack : Attack
     {
         // If close enough, do attack animation
         if (targetInAttackRange)
-        {
-            DoAttack();
-        }
+            DetermineAttack(characterManager.npcMovement.target.characterStats);
         else if (targetInAttackRange == false)
         {
             characterManager.npcMovement.SetPathToCurrentTarget();
             StartCoroutine(characterManager.npcMovement.UseAPAndMove());
         }
+    }
+
+    public override void DetermineAttack(Stats targetsStats)
+    {
+        DoMeleeAttack(targetsStats);
+        Debug.Log(name + " attacked the player.");
     }
 
     void SetMoveToTargetPos(bool moveToTargetPos)
@@ -117,8 +121,8 @@ public class NPCAttack : Attack
 
     public bool TargetInAttackRange()
     {
-        int distX = Mathf.RoundToInt(Mathf.Abs(transform.position.x - characterManager.npcMovement.target.position.x));
-        int distY = Mathf.RoundToInt(Mathf.Abs(transform.position.y - characterManager.npcMovement.target.position.y));
+        int distX = Mathf.RoundToInt(Mathf.Abs(transform.position.x - characterManager.npcMovement.target.transform.position.x));
+        int distY = Mathf.RoundToInt(Mathf.Abs(transform.position.y - characterManager.npcMovement.target.transform.position.y));
         
         if (distX <= attackRange && distY <= attackRange)
             return true;

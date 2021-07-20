@@ -15,11 +15,11 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public TurnManager turnManager;
     [HideInInspector] public UIManager uiManager;
 
-    #region Singleton
     public static GameManager instance;
 
     void Awake()
     {
+        #region Singleton
         if (instance != null)
         {
             if (instance != this)
@@ -30,8 +30,10 @@ public class GameManager : MonoBehaviour
         }
         else
             instance = this;
+        #endregion
+
+        objectPoolManager = GetComponent<ObjectPoolManager>();
     }
-    #endregion
 
     void Start()
     {
@@ -42,7 +44,6 @@ public class GameManager : MonoBehaviour
         playerInvUI = PlayerInventoryUI.instance;
         playerManager = PlayerManager.instance;
         dropItemController = DropItemController.instance;
-        objectPoolManager = ObjectPoolManager.instance;
         stackSizeSelector = StackSizeSelector.instance;
         tooltipManager = TooltipManager.instance;
         turnManager = TurnManager.instance;

@@ -40,7 +40,7 @@ public class Movement : MonoBehaviour
             transform.localScale = Vector3.one;
     }
 
-    public IEnumerator ArcMovement(Vector2 endPos, bool isNPC, int possibleMoveCount = 1)
+    public IEnumerator ArcMovement(Vector2 endPos, int possibleMoveCount = 1)
     {
         isMoving = true;
         ClampPosition();
@@ -87,11 +87,11 @@ public class Movement : MonoBehaviour
         }
 
         isMoving = false;
-        OnFinishedMoving(isNPC);
+        OnFinishedMoving();
     }
 
     // Move Animation
-    public virtual IEnumerator SmoothMovement(Vector2 endPos, bool isNPC, int possibleMoveCount = 1)
+    public virtual IEnumerator SmoothMovement(Vector2 endPos, int possibleMoveCount = 1)
     {
         isMoving = true;
         ClampPosition();
@@ -117,23 +117,26 @@ public class Movement : MonoBehaviour
         }
 
         isMoving = false;
-        OnFinishedMoving(isNPC);
+        OnFinishedMoving();
     }
 
-    public void TeleportToPosition(Vector2 endPos, bool isNPC)
+    public void TeleportToPosition(Vector2 endPos)
     {
         transform.position = endPos;
-        OnFinishedMoving(isNPC);
+        OnFinishedMoving();
     }
 
-    void OnFinishedMoving(bool isNPC)
+    void OnFinishedMoving()
     {
-        if (isNPC)
+        if (characterManager.isNPC)
         {
-            if (characterManager.characterStats.currentAP <= 0)
-                gm.turnManager.FinishTurn(characterManager);
-            else
-                characterManager.TakeTurn();
+            if (characterManager.actionQueued == false)
+            {
+                if (characterManager.characterStats.currentAP <= 0)
+                    gm.turnManager.FinishTurn(characterManager);
+                else
+                    characterManager.TakeTurn();
+            }
         }
         else
             gm.containerInvUI.OnPlayerMoved();
@@ -185,6 +188,7 @@ public class Movement : MonoBehaviour
         }
 
         isMoving = false;
+        OnFinishedMoving();
     }
 
     public IEnumerator MovementCooldown(float cooldownTime)

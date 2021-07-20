@@ -1479,6 +1479,36 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 193172372}
   m_CullTransparentMesh: 1
+--- !u!1 &212394773
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 212394774}
+  m_Layer: 6
+  m_Name: Equipment
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &212394774
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212394773}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1347319892}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &218378755
 GameObject:
   m_ObjectHideFlags: 0
@@ -1782,6 +1812,59 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
   m_PrefabInstance: {fileID: 1048482991}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &230709571
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 230709572}
+  - component: {fileID: 230709573}
+  m_Layer: 5
+  m_Name: Text Popups
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &230709572
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 230709571}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1117274219}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 50, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &230709573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 230709571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 625c9d1d5eb229843b0cf7b40b908c10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectToPool: {fileID: 7845070733247297723, guid: f28f077ef6a03a249a26793ba4c5b99b, type: 3}
+  amountToPool: 15
+  pooledObjects: []
+  hasBeenInitialized: 0
+  pooledTextPopups: []
 --- !u!1 &252370508
 GameObject:
   m_ObjectHideFlags: 0
@@ -2104,7 +2187,7 @@ RectTransform:
   m_Children:
   - {fileID: 1167777805}
   m_Father: {fileID: 1117274219}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
@@ -4772,7 +4855,7 @@ SpriteRenderer:
   m_SortingLayerID: 792488805
   m_SortingLayer: 6
   m_SortingOrder: 0
-  m_Sprite: {fileID: 2807314771408455767, guid: e211e1b4a22c9b8478afb28b669f6bab, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7f1f03550b4155340b1eec075b651700, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -4911,13 +4994,14 @@ MonoBehaviour:
   stateController: {fileID: 0}
   characterStats: {fileID: 0}
   vision: {fileID: 0}
-  boxCollider: {fileID: 0}
+  circleCollider: {fileID: 0}
   rigidBody: {fileID: 0}
   spriteRenderer: {fileID: 0}
   actionQueued: 0
   isMyTurn: 0
   remainingAPToBeUsed: 0
   playerGameObject: {fileID: 0}
+  playerAttack: {fileID: 0}
   playerController: {fileID: 0}
   playerEquipmentManager: {fileID: 0}
   playerMovement: {fileID: 0}
@@ -4941,6 +5025,21 @@ MonoBehaviour:
   currentEquipment: []
   currentWeight: 0
   currentVolume: 0
+  startingHelmet: {fileID: 0}
+  startingCape: {fileID: 0}
+  startingShirt: {fileID: 0}
+  startingPants: {fileID: 0}
+  startingBoots: {fileID: 0}
+  startingGloves: {fileID: 0}
+  startingBodyArmor: {fileID: 0}
+  startingLegArmor: {fileID: 0}
+  startingLeftWeapon: {fileID: 0}
+  startingRightWeapon: {fileID: 0}
+  startingRangedWeapon: {fileID: 0}
+  startingQuiver: {fileID: 0}
+  startingBackpack: {fileID: 0}
+  startingLeftHipPouch: {fileID: 0}
+  startingRightHipPouch: {fileID: 0}
   gm: {fileID: 0}
   characterManager: {fileID: 0}
   isPlayer: 0
@@ -4956,6 +5055,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d736b902204c96945a223b177122d373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth:
+    baseValue: 100
+    modifiers: 
+  canTakeDamage: 1
   maxAP:
     baseValue: 100
     modifiers: 
@@ -4965,9 +5068,6 @@ MonoBehaviour:
   maxPersonalInvVolume:
     baseValue: 25
     modifiers: 
-  maxHealth:
-    baseValue: 100
-    modifiers: 
   damage:
     baseValue: 0
     modifiers: 
@@ -4975,8 +5075,6 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   characterManager: {fileID: 0}
-  hitCollider: {fileID: 0}
-  canTakeDamage: 1
   treeDamage:
     baseValue: 0
     modifiers: 
@@ -5550,7 +5648,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7091190729595735504, guid: 2dc8b065fb3d2194faf6beefc11766fc, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7091190729595735504, guid: 2dc8b065fb3d2194faf6beefc11766fc, type: 3}
       propertyPath: m_AnchorMax.x
@@ -6637,7 +6735,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1117274219}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -7460,6 +7558,7 @@ MonoBehaviour:
   portableContainerPickupsPool: {fileID: 1408412572}
   itemDataObjectPool: {fileID: 861536275}
   itemDataContainerObjectPool: {fileID: 288634251}
+  textPopupObjectPool: {fileID: 230709573}
 --- !u!114 &840856821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8374,7 +8473,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59b559e0a2a435d41bafba1e9eaa5ca7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultCharacterSprite: {fileID: 2807314771408455767, guid: e211e1b4a22c9b8478afb28b669f6bab, type: 3}
+  defaultCharacterSprite: {fileID: 21300000, guid: 7f1f03550b4155340b1eec075b651700, type: 3}
   secondaryCharacterSprite: {fileID: 21300000, guid: 4267fe348beb44449be30f8bb5d37a0c, type: 3}
   deathSprite: {fileID: 0}
   hairSprite: {fileID: 9030113176026869921, guid: 16ab00b87e95c8740b70e66d06f34f80, type: 3}
@@ -8555,7 +8654,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1347319892}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &906846105
 CircleCollider2D:
@@ -11268,6 +11367,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
+  - {fileID: 230709572}
   - {fileID: 1403562115}
   - {fileID: 266385948}
   - {fileID: 1997841274}
@@ -11696,7 +11796,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1117274219}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -13926,7 +14026,7 @@ SpriteRenderer:
   m_SortingLayerID: 792488805
   m_SortingLayer: 6
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1140199423863768445, guid: e211e1b4a22c9b8478afb28b669f6bab, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0e96580f4e4eed24c8c1207b30756e93, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -13949,6 +14049,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1843916194}
+  - {fileID: 212394774}
   - {fileID: 906846103}
   - {fileID: 1850000026}
   m_Father: {fileID: 0}
@@ -14109,7 +14210,7 @@ MonoBehaviour:
   stateController: {fileID: 0}
   characterStats: {fileID: 0}
   vision: {fileID: 0}
-  boxCollider: {fileID: 0}
+  circleCollider: {fileID: 0}
   rigidBody: {fileID: 0}
   spriteRenderer: {fileID: 0}
   actionQueued: 0
@@ -14141,10 +14242,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6047b93602bce0c4092128b0a1491c7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemsParent: {fileID: 1843916194}
+  itemsParent: {fileID: 212394774}
   currentEquipment: []
   currentWeight: 0
   currentVolume: 0
+  startingHelmet: {fileID: 0}
+  startingCape: {fileID: 11400000, guid: 2fb7207c417486743bc66a2925b9efe5, type: 2}
+  startingShirt: {fileID: 0}
+  startingPants: {fileID: 0}
+  startingBoots: {fileID: 0}
+  startingGloves: {fileID: 0}
+  startingBodyArmor: {fileID: 0}
+  startingLegArmor: {fileID: 0}
+  startingLeftWeapon: {fileID: 0}
+  startingRightWeapon: {fileID: 11400000, guid: d6f97f541b67b45468a1503beb004a57, type: 2}
+  startingRangedWeapon: {fileID: 0}
+  startingQuiver: {fileID: 0}
+  startingBackpack: {fileID: 0}
+  startingLeftHipPouch: {fileID: 0}
+  startingRightHipPouch: {fileID: 0}
   gm: {fileID: 0}
   characterManager: {fileID: 0}
   isPlayer: 0
@@ -14182,6 +14298,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6433cf7fa4649649bc7bcf1e6911f0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth:
+    baseValue: 100
+    modifiers: 
+  canTakeDamage: 1
   maxAP:
     baseValue: 100
     modifiers: 
@@ -14191,9 +14311,6 @@ MonoBehaviour:
   maxPersonalInvVolume:
     baseValue: 10
     modifiers: 
-  maxHealth:
-    baseValue: 100
-    modifiers: 
   damage:
     baseValue: 0
     modifiers: 
@@ -14201,8 +14318,6 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   characterManager: {fileID: 0}
-  hitCollider: {fileID: 0}
-  canTakeDamage: 1
 --- !u!4 &1392199866 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
@@ -14382,7 +14497,7 @@ RectTransform:
   m_Children:
   - {fileID: 44885702}
   m_Father: {fileID: 1117274219}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
@@ -17245,7 +17360,7 @@ RectTransform:
   m_Children:
   - {fileID: 7062943188304769678}
   m_Father: {fileID: 1117274219}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -86117,7 +86232,7 @@ Transform:
   - {fileID: 218378756}
   - {fileID: 488487452}
   m_Father: {fileID: 1347319892}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1850000027
 MonoBehaviour:
@@ -86131,8 +86246,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59b559e0a2a435d41bafba1e9eaa5ca7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultCharacterSprite: {fileID: -1140199423863768445, guid: e211e1b4a22c9b8478afb28b669f6bab, type: 3}
-  secondaryCharacterSprite: {fileID: 0}
+  defaultCharacterSprite: {fileID: 21300000, guid: 0e96580f4e4eed24c8c1207b30756e93, type: 3}
+  secondaryCharacterSprite: {fileID: 21300000, guid: 9301d580430d6e84cb9cbd7b3ac4662a, type: 3}
   deathSprite: {fileID: 0}
   hairSprite: {fileID: 0}
   hair: {fileID: 0}
@@ -87183,7 +87298,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4237178433494171497, guid: 027e949e899ca394da0c8ed245bdfb6d, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4237178433494171497, guid: 027e949e899ca394da0c8ed245bdfb6d, type: 3}
       propertyPath: m_AnchorMax.x

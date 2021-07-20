@@ -11,7 +11,7 @@ public class NPCMovement : Movement
     public bool shouldAlwaysFleeCombat;
 
     [Header("Follow State Variables")]
-    public Transform leader;
+    public CharacterManager leader;
     public float startFollowingDistance = 3f;
     public float slowDownDistance = 4f;
     public bool shouldFollowLeader;
@@ -32,7 +32,7 @@ public class NPCMovement : Movement
     [HideInInspector] public int currentPatrolPointIndex;
     [HideInInspector] public bool initialPatrolPointSet;
 
-    [HideInInspector] public Transform target;
+    [HideInInspector] public CharacterManager target;
     [HideInInspector] public Vector2 targetPosition;
 
     [HideInInspector] public AIPath AIPath;
@@ -81,11 +81,11 @@ public class NPCMovement : Movement
         int possibleMoveCount = Mathf.FloorToInt(characterManager.characterStats.maxAP.GetValue() / gm.apManager.GetMovementAPCost());
 
         if (characterManager.spriteRenderer.isVisible == false)
-            TeleportToPosition(GetNextPosition(), true);
+            TeleportToPosition(GetNextPosition());
         else if (transform.position.y == GetNextPosition().y)
-            StartCoroutine(ArcMovement(GetNextPosition(), true, possibleMoveCount));
+            StartCoroutine(ArcMovement(GetNextPosition(), possibleMoveCount));
         else
-            StartCoroutine(SmoothMovement(GetNextPosition(), true, possibleMoveCount));
+            StartCoroutine(SmoothMovement(GetNextPosition(), possibleMoveCount));
     }
 
     public IEnumerator UseAPAndMove()
@@ -166,11 +166,11 @@ public class NPCMovement : Movement
     }
 
     #region Set Pathfinding Target
-    public void SetTarget(Transform targetTransform)
+    public void SetTarget(CharacterManager targetsCharManager)
     {
         // Set pathfinding variables
-        target = targetTransform;
-        AIDestSetter.target = targetTransform;
+        target = targetsCharManager;
+        AIDestSetter.target = targetsCharManager.transform;
         AIDestSetter.moveToTargetPos = false;
     }
 
@@ -190,11 +190,11 @@ public class NPCMovement : Movement
     #endregion
 
     #region Follow
-    public void FollowTarget(Transform theTarget)
+    public void FollowTarget(CharacterManager theTarget)
     {
         if (theTarget != null)
         {
-            float distToTarget = Vector2.Distance(theTarget.position, transform.position);
+            float distToTarget = Vector2.Distance(theTarget.transform.position, transform.position);
 
             if (distToTarget <= startFollowingDistance)
             {
@@ -215,7 +215,7 @@ public class NPCMovement : Movement
 
     public void FollowPlayer()
     {
-        FollowTarget(PlayerManager.instance.playerGameObject.transform);
+        FollowTarget(PlayerManager.instance);
     }
     #endregion
 
@@ -332,7 +332,7 @@ public class NPCMovement : Movement
     {
         if (target != null)
         {
-            float distanceToTarget = Vector2.Distance(target.position, transform.position);
+            float distanceToTarget = Vector2.Distance(target.transform.position, transform.position);
 
             if (distanceToTarget <= characterManager.npcAttack.combatRange && characterManager.stateController.currentState != State.Fight)
             {

@@ -5,10 +5,10 @@ public class Vision : MonoBehaviour
 {
     public float lookRadius = 12f;
 
-    public List<Transform> enemiesInRange = new List<Transform>();
-    [HideInInspector] public List<Transform> alliesInRange = new List<Transform>();
+    public List<CharacterManager> enemiesInRange = new List<CharacterManager>();
+    [HideInInspector] public List<CharacterManager> alliesInRange = new List<CharacterManager>();
 
-    public List<Transform> knownEnemiesInRange = new List<Transform>();
+    public List<CharacterManager> knownEnemiesInRange = new List<CharacterManager>();
 
     [HideInInspector] public CircleCollider2D visionCollider;
 
@@ -28,15 +28,15 @@ public class Vision : MonoBehaviour
 
     public void CheckEnemyVisibility()
     {
-        foreach (Transform enemy in enemiesInRange)
+        foreach (CharacterManager enemy in enemiesInRange)
         {
-            Vector2 direction = (enemy.position - transform.position).normalized;
-            float rayLength = Vector2.Distance(enemy.position, transform.position);
+            Vector2 direction = (enemy.transform.position - transform.position).normalized;
+            float rayLength = Vector2.Distance(enemy.transform.position, transform.position);
 
             RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, rayLength, sightObstacleMask);
 
             // If the character has a direct line of sight (meaning no obstacles in the way) to the enemy in question and they weren't visible previously, add them to the knownEnemiesInRange list
-            if (hit.collider == null && knownEnemiesInRange.Contains(enemy) == false && IsFacingTransform(enemy))
+            if (hit.collider == null && knownEnemiesInRange.Contains(enemy) == false && IsFacingTransform(enemy.transform))
             {
                 knownEnemiesInRange.Add(enemy);
 
@@ -44,7 +44,7 @@ public class Vision : MonoBehaviour
                 {
                     if (characterManager.npcMovement.shouldAlwaysFleeCombat)
                     {
-                        characterManager.npcMovement.targetFleeingFrom = enemy;
+                        characterManager.npcMovement.targetFleeingFrom = enemy.transform;
                         characterManager.stateController.SetCurrentState(State.Flee);
                     }
                     else if (characterManager.npcMovement.target == null)
@@ -67,7 +67,7 @@ public class Vision : MonoBehaviour
                     }
                     else
                     {
-                        Vector2 lastKnownEnemyPosition = enemy.position;
+                        Vector2 lastKnownEnemyPosition = enemy.transform.position;
                         characterManager.npcMovement.SetTargetPosition(lastKnownEnemyPosition);
                         characterManager.stateController.SetCurrentState(State.MoveToTarget);
                     }
@@ -88,11 +88,11 @@ public class Vision : MonoBehaviour
     {
         if (collision.gameObject != transform.parent.gameObject && (collision.CompareTag("NPC") || (collision.CompareTag("Player") && transform.parent.gameObject.CompareTag("Player") == false)))
         {
-            Alliances npcAlliances = collision.GetComponent<Alliances>();
-            if (characterManager.alliances.IsEnemy(npcAlliances.myFaction) && enemiesInRange.Contains(collision.transform) == false)
-                enemiesInRange.Add(collision.transform);
-            else if (characterManager.alliances.IsAlly(npcAlliances.myFaction) && alliesInRange.Contains(collision.transform) == false)
-                alliesInRange.Add(collision.transform);
+            CharacterManager charManager = collision.GetComponent<CharacterManager>();
+            if (characterManager.alliances.IsEnemy(charManager.alliances.myFaction) && enemiesInRange.Contains(charManager) == false)
+                enemiesInRange.Add(charManager);
+            else if (characterManager.alliances.IsAlly(charManager.alliances.myFaction) && alliesInRange.Contains(charManager) == false)
+                alliesInRange.Add(charManager);
         }
     }
 
@@ -100,15 +100,15 @@ public class Vision : MonoBehaviour
     {
         if (collision.gameObject != transform.parent.gameObject && (collision.CompareTag("NPC") || (collision.CompareTag("Player") && transform.parent.gameObject.CompareTag("Player") == false)))
         {
-            Alliances npcAlliances = collision.GetComponent<Alliances>();
-            if (characterManager.alliances.IsEnemy(npcAlliances.myFaction))
+            CharacterManager charManager = collision.GetComponent<CharacterManager>();
+            if (characterManager.alliances.IsEnemy(charManager.alliances.myFaction))
             {
-                enemiesInRange.Remove(collision.transform);
-                if (knownEnemiesInRange.Contains(collision.transform))
-                    knownEnemiesInRange.Remove(collision.transform);
+                enemiesInRange.Remove(charManager);
+                if (knownEnemiesInRange.Contains(charManager))
+                    knownEnemiesInRange.Remove(charManager);
             }
-            else if (characterManager.alliances.IsAlly(npcAlliances.myFaction))
-                alliesInRange.Remove(collision.transform);
+            else if (characterManager.alliances.IsAlly(charManager.alliances.myFaction))
+                alliesInRange.Remove(charManager);
         }
     }
 
