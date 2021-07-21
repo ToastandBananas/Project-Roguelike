@@ -14,15 +14,15 @@ public class ContainerInventoryUI : InventoryUI
     [Header("Max Ground Volume")]
     public float emptyTileMaxVolume = 1000f;
 
-    public List<ItemData> playerPositionItems = new List<ItemData>();
-    public List<ItemData> northItems = new List<ItemData>();
-    public List<ItemData> southItems = new List<ItemData>();
-    public List<ItemData> westItems = new List<ItemData>();
-    public List<ItemData> eastItems = new List<ItemData>();
-    public List<ItemData> northwestItems = new List<ItemData>();
-    public List<ItemData> northeastItems = new List<ItemData>();
-    public List<ItemData> southwestItems = new List<ItemData>();
-    public List<ItemData> southeastItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> playerPositionItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> northItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> southItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> westItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> eastItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> northwestItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> northeastItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> southwestItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> southeastItems = new List<ItemData>();
 
     [HideInInspector] public Inventory playerPositionInventory, northInventory, southInventory, westInventory, eastInventory, northwestInventory, northeastInventory, southwestInventory, southeastInventory;
 
@@ -104,7 +104,10 @@ public class ContainerInventoryUI : InventoryUI
     void GetItemsAtPosition(Vector2 position, List<ItemData> itemsList, Direction direction)
     {
         RaycastHit2D[] hits = Physics2D.RaycastAll(position, Vector2.zero, 1, interactableMask);
-
+        for (int i = 0; i < hits.Length; i++)
+        {
+            Debug.Log(hits[i].collider.name);
+        }
         SetSideBarIcon_Floor(direction);
 
         for (int i = 0; i < hits.Length; i++)
@@ -128,6 +131,19 @@ public class ContainerInventoryUI : InventoryUI
                         for (int j = 0; j < inventory.items.Count; j++)
                         {
                             itemsList.Add(inventory.items[j]);
+                        }
+
+                        if (hits[i].collider.CompareTag("Dead Body"))
+                        {
+                            hits[i].collider.TryGetComponent(out EquipmentManager equipmentManager);
+                            if (equipmentManager != null)
+                            {
+                                for (int j = 0; j < equipmentManager.currentEquipment.Length; j++)
+                                {
+                                    if (equipmentManager.currentEquipment[j] != null)
+                                        itemsList.Add(equipmentManager.currentEquipment[j]);
+                                }
+                            }
                         }
 
                         SetSideBarIcon_Container(direction, inventory);
@@ -508,9 +524,15 @@ public class ContainerInventoryUI : InventoryUI
 
     void SetupContainerUI(Inventory inventory, Image sideBarIcon, List<ItemData> itemsList)
     {
-        inventoryNameText.text = inventory.container.name + " Inventory";
+        if (inventory.container != null)
+        {
+            inventoryNameText.text = inventory.container.name + " Inventory";
+            inventory.container.spriteRenderer.sprite = GetContainerIcon(inventory, true);
+        }
+        else if (inventory.CompareTag("Dead Body"))
+            inventoryNameText.text = inventory.gameObject.name + "'s Inventory";
+
         sideBarIcon.sprite = GetContainerIcon(inventory, true);
-        inventory.container.spriteRenderer.sprite = GetContainerIcon(inventory, true);
         activeInventory = inventory;
         weightText.text = GetTotalWeight(itemsList).ToString() + "/" + inventory.maxWeight.ToString();
         volumeText.text = GetTotalVolume(itemsList).ToString() + "/" + inventory.maxVolume.ToString();
@@ -518,13 +540,19 @@ public class ContainerInventoryUI : InventoryUI
 
     Sprite GetContainerIcon(Inventory inventory, bool containerIsActive)
     {
+        if (inventory.container == null)
+            return floorIconSprite;
+
         if (containerIsActive)
         {
             if (inventory.container.sidebarSpriteOpen != null)
                 return inventory.container.sidebarSpriteOpen;
         }
 
-        return inventory.container.sidebarSpriteClosed;
+        if (inventory.container.sidebarSpriteClosed != null)
+            return inventory.container.sidebarSpriteClosed;
+        else
+            return floorIconSprite;
     }
 
     public void ResetContainerIcons(Direction newDirection)
@@ -543,55 +571,73 @@ public class ContainerInventoryUI : InventoryUI
 
         if (playerPositionInventory != null)
         {
-            playerPositionInventory.container.spriteRenderer.sprite = GetContainerIcon(playerPositionInventory, false);
+            if (playerPositionInventory.container != null)
+                playerPositionInventory.container.spriteRenderer.sprite = GetContainerIcon(playerPositionInventory, false);
+
             playerPositionSideBarButton.icon.sprite = GetContainerIcon(playerPositionInventory, false);
         }
 
         if (northInventory != null)
         {
-            northInventory.container.spriteRenderer.sprite = GetContainerIcon(northInventory, false);
+            if (northInventory.container != null)
+                northInventory.container.spriteRenderer.sprite = GetContainerIcon(northInventory, false);
+
             northSideBarButton.icon.sprite = GetContainerIcon(northInventory, false);
         }
 
         if (southInventory != null)
         {
-            southInventory.container.spriteRenderer.sprite = GetContainerIcon(southInventory, false);
+            if (southInventory.container != null)
+                southInventory.container.spriteRenderer.sprite = GetContainerIcon(southInventory, false);
+
             southSideBarButton.icon.sprite = GetContainerIcon(southInventory, false);
         }
 
         if (westInventory != null)
         {
-            westInventory.container.spriteRenderer.sprite = GetContainerIcon(westInventory, false);
+            if (westInventory.container != null)
+                westInventory.container.spriteRenderer.sprite = GetContainerIcon(westInventory, false);
+
             westSideBarButton.icon.sprite = GetContainerIcon(westInventory, false);
         }
 
         if (eastInventory != null)
         {
-            eastInventory.container.spriteRenderer.sprite = GetContainerIcon(eastInventory, false);
+            if (eastInventory.container != null)
+                eastInventory.container.spriteRenderer.sprite = GetContainerIcon(eastInventory, false);
+
             eastSideBarButton.icon.sprite = GetContainerIcon(eastInventory, false);
         }
 
         if (northwestInventory != null)
         {
-            northwestInventory.container.spriteRenderer.sprite = GetContainerIcon(northwestInventory, false);
+            if (northwestInventory.container != null)
+                northwestInventory.container.spriteRenderer.sprite = GetContainerIcon(northwestInventory, false);
+
             northwestSideBarButton.icon.sprite = GetContainerIcon(northwestInventory, false);
         }
 
         if (northeastInventory != null)
         {
-            northeastInventory.container.spriteRenderer.sprite = GetContainerIcon(northeastInventory, false);
+            if (northeastInventory.container != null)
+                northeastInventory.container.spriteRenderer.sprite = GetContainerIcon(northeastInventory, false);
+
             northeastSideBarButton.icon.sprite = GetContainerIcon(northeastInventory, false);
         }
 
         if (southwestInventory != null)
         {
-            southwestInventory.container.spriteRenderer.sprite = GetContainerIcon(southwestInventory, false);
+            if (southwestInventory.container != null)
+                southwestInventory.container.spriteRenderer.sprite = GetContainerIcon(southwestInventory, false);
+
             southwestSideBarButton.icon.sprite = GetContainerIcon(southwestInventory, false);
         }
 
         if (southeastInventory != null)
         {
-            southeastInventory.container.spriteRenderer.sprite = GetContainerIcon(southeastInventory, false);
+            if (southeastInventory.container != null)
+                southeastInventory.container.spriteRenderer.sprite = GetContainerIcon(southeastInventory, false);
+
             southeastSideBarButton.icon.sprite = GetContainerIcon(southeastInventory, false);
         }
     }

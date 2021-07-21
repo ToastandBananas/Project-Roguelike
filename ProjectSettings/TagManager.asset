@@ -10,6 +10,7 @@ TagManager:
   - Item Pickup
   - Item Data Object
   - Item Data Container Object
+  - Dead Body
   layers:
   - Default
   - TransparentFX

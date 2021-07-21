@@ -43,6 +43,8 @@ public class PlayerManager : CharacterManager
 
     public override void Start()
     {
+        base.Start();
+
         playerEquipmentManager = PlayerEquipmentManager.instance;
         equipmentManager = playerEquipmentManager;
 

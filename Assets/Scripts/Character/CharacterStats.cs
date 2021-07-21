@@ -13,9 +13,12 @@ public class CharacterStats : Stats
 
     [HideInInspector] public CharacterManager characterManager;
 
+    GameManager gm;
+
     void Start()
     {
         characterManager = GetComponentInParent<CharacterManager>();
+        gm = GameManager.instance;
 
         currentAP = maxAP.GetValue();
 
@@ -70,13 +73,26 @@ public class CharacterStats : Stats
 
     public override void Die()
     {
+        base.Die();
         Debug.Log(name + " died.");
-        characterManager.circleCollider.enabled = false;
         characterManager.vision.visionCollider.enabled = false;
         characterManager.vision.enabled = false;
+        characterManager.attack.enabled = false;
 
-        if (characterManager.stateController != null)
+        gameObject.tag = "Dead Body";
+        gameObject.layer = 13;
+
+        if (characterManager.isNPC)
+        {
+            gm.turnManager.npcs.Remove(characterManager);
             characterManager.stateController.enabled = false;
+            characterManager.npcMovement.AIDestSetter.enabled = false;
+            characterManager.npcMovement.AIPath.enabled = false;
+            if (characterManager.IsNextToPlayer())
+                gm.containerInvUI.GetItemsAroundPlayer();
+        }
+
+        characterManager.movement.enabled = false;
     }
 
     public virtual void OnWearableChanged(ItemData newItemData, ItemData oldItemData)

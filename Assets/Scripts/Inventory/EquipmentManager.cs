@@ -23,6 +23,8 @@ public class EquipmentManager : MonoBehaviour
     [HideInInspector] public CharacterManager characterManager;
     [HideInInspector] public bool isPlayer, isTwoHanding;
 
+    float twoHandedDamageMultiplier = 1.35f;
+
     public virtual void Start()
     {
         gm = GameManager.instance;
@@ -535,18 +537,30 @@ public class EquipmentManager : MonoBehaviour
 
     public int GetPrimaryWeaponAttackDamage()
     {
-        int randomDamageOffset = Mathf.RoundToInt(Random.Range(currentEquipment[(int)EquipmentSlot.RightWeapon].damage * -0.2f, currentEquipment[(int)EquipmentSlot.RightWeapon].damage * 0.2f));
-        if (currentEquipment[(int)EquipmentSlot.RightWeapon].damage + randomDamageOffset <= 0)
-            randomDamageOffset = 0;
-        return currentEquipment[(int)EquipmentSlot.RightWeapon].damage + randomDamageOffset;
+        int damage = currentEquipment[(int)EquipmentSlot.RightWeapon].damage;
+        damage += Mathf.RoundToInt(Random.Range(damage * -0.2f, damage * 0.2f));
+
+        if (characterManager.equipmentManager.TwoHandedWeaponEquipped() == false && characterManager.equipmentManager.isTwoHanding)
+            damage = Mathf.RoundToInt(damage * twoHandedDamageMultiplier);
+
+        if (damage <= 0)
+            damage = 1;
+
+        return damage;
     }
 
     public int GetSecondaryWeaponAttackDamage()
     {
-        int randomDamageOffset = Mathf.RoundToInt(Random.Range(currentEquipment[(int)EquipmentSlot.LeftWeapon].damage * -0.2f, currentEquipment[(int)EquipmentSlot.LeftWeapon].damage * 0.2f));
-        if (currentEquipment[(int)EquipmentSlot.LeftWeapon].damage + randomDamageOffset <= 0)
-            randomDamageOffset = 0;
-        return currentEquipment[(int)EquipmentSlot.LeftWeapon].damage + randomDamageOffset;
+        int damage = currentEquipment[(int)EquipmentSlot.LeftWeapon].damage;
+        damage += Mathf.RoundToInt(Random.Range(damage * -0.2f, damage * 0.2f));
+
+        if (characterManager.equipmentManager.TwoHandedWeaponEquipped() == false && characterManager.equipmentManager.isTwoHanding)
+            damage = Mathf.RoundToInt(damage * twoHandedDamageMultiplier);
+
+        if (damage <= 0)
+            damage = 1;
+
+        return damage;
     }
 
     public Weapon GetPrimaryWeapon()

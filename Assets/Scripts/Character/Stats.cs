@@ -6,6 +6,7 @@ public class Stats : MonoBehaviour
     public int currentHealth { get; private set; }
 
     [HideInInspector] public bool canTakeDamage = true;
+    [HideInInspector] public bool isDeadOrDestroyed;
 
     void Awake()
     {
@@ -29,6 +30,7 @@ public class Stats : MonoBehaviour
 
     public virtual void Die()
     {
+        isDeadOrDestroyed = true;
         // This is just meant to be overridden
     }
 }

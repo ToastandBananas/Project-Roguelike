@@ -188,7 +188,9 @@ public class Movement : MonoBehaviour
         }
 
         isMoving = false;
-        OnFinishedMoving();
+
+        if (characterManager.isNPC)
+            OnFinishedMoving();
     }
 
     public IEnumerator MovementCooldown(float cooldownTime)

@@ -24,6 +24,8 @@ public class CharacterManager : MonoBehaviour
     [HideInInspector] public bool isMyTurn = false;
     public int remainingAPToBeUsed;
 
+    GameManager gm;
+
     public virtual void Awake()
     {
         if (gameObject.CompareTag("NPC"))
@@ -54,17 +56,28 @@ public class CharacterManager : MonoBehaviour
         actionQueued = false;
     }
 
+    public virtual void Start()
+    {
+        gm = GameManager.instance;
+    }
+
     public void TakeTurn()
     {
-        if (actionQueued == false && movement.isMoving == false)
+        if (actionQueued == false && movement.isMoving == false && characterStats.isDeadOrDestroyed == false)
         {
             vision.CheckEnemyVisibility();
             stateController.DoAction();
         }
     }
 
-    public virtual void Start()
+    public bool IsNextToPlayer()
     {
-        
+        int distX = Mathf.RoundToInt(Mathf.Abs(transform.position.x - gm.playerManager.transform.position.x));
+        int distY = Mathf.RoundToInt(Mathf.Abs(transform.position.y - gm.playerManager.transform.position.y));
+
+        if (distX <= 1 && distY <= 1)
+            return true;
+
+        return false;
     }
 }

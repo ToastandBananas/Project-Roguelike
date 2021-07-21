@@ -4913,7 +4913,7 @@ MonoBehaviour:
   gm: {fileID: 0}
   characterManager: {fileID: 0}
   canAttack: 1
-  isAttacking: 0
+  dualWieldAttackCount: 0
 --- !u!114 &549636867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4989,6 +4989,7 @@ MonoBehaviour:
   equipmentManager: {fileID: 0}
   inventory: {fileID: 0}
   movement: {fileID: 0}
+  attack: {fileID: 0}
   npcAttack: {fileID: 0}
   npcMovement: {fileID: 0}
   stateController: {fileID: 0}
@@ -4997,6 +4998,7 @@ MonoBehaviour:
   circleCollider: {fileID: 0}
   rigidBody: {fileID: 0}
   spriteRenderer: {fileID: 0}
+  isNPC: 0
   actionQueued: 0
   isMyTurn: 0
   remainingAPToBeUsed: 0
@@ -5043,6 +5045,7 @@ MonoBehaviour:
   gm: {fileID: 0}
   characterManager: {fileID: 0}
   isPlayer: 0
+  isTwoHanding: 0
 --- !u!114 &549636872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7145,7 +7148,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -462824376789195924, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+  m_Sprite: {fileID: 8092910920630753460, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -13515,7 +13518,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 2807314771408455767, guid: e211e1b4a22c9b8478afb28b669f6bab, type: 3}
+  m_Sprite: {fileID: -2439337279369745927, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -13980,7 +13983,7 @@ MonoBehaviour:
   gm: {fileID: 0}
   characterManager: {fileID: 0}
   canAttack: 1
-  isAttacking: 0
+  dualWieldAttackCount: 0
   combatRange: 8
   targetInCombatRange: 0
   targetInAttackRange: 0
@@ -14205,6 +14208,7 @@ MonoBehaviour:
   equipmentManager: {fileID: 0}
   inventory: {fileID: 0}
   movement: {fileID: 0}
+  attack: {fileID: 0}
   npcAttack: {fileID: 0}
   npcMovement: {fileID: 0}
   stateController: {fileID: 0}
@@ -14213,6 +14217,7 @@ MonoBehaviour:
   circleCollider: {fileID: 0}
   rigidBody: {fileID: 0}
   spriteRenderer: {fileID: 0}
+  isNPC: 0
   actionQueued: 0
   isMyTurn: 0
   remainingAPToBeUsed: 0
@@ -14264,6 +14269,7 @@ MonoBehaviour:
   gm: {fileID: 0}
   characterManager: {fileID: 0}
   isPlayer: 0
+  isTwoHanding: 0
 --- !u!114 &1347319902
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -11,8 +11,6 @@ public class Attack : MonoBehaviour
     [HideInInspector] public CharacterManager characterManager;
     
     [HideInInspector] public bool canAttack = true;
-    [HideInInspector] public bool isAttacking;
-
     [HideInInspector] public int dualWieldAttackCount = 0;
 
     public virtual void Start()
@@ -112,6 +110,12 @@ public class Attack : MonoBehaviour
             yield return null;
         }
 
+        if (TargetInAttackRange(targetsStats.transform) == false)
+        {
+            CancelAttack();
+            yield break;
+        }
+
         if (characterManager.remainingAPToBeUsed > 0)
         {
             if (characterManager.remainingAPToBeUsed <= characterManager.characterStats.currentAP)
@@ -142,6 +146,27 @@ public class Attack : MonoBehaviour
                 StartCoroutine(UseAPAndAttack(targetsStats, weapon, attackType));
             }
         }
+    }
+
+    public bool TargetInAttackRange(Transform target)
+    {
+        int distX = Mathf.RoundToInt(Mathf.Abs(transform.position.x - target.position.x));
+        int distY = Mathf.RoundToInt(Mathf.Abs(transform.position.y - target.position.y));
+
+        if (distX <= attackRange && distY <= attackRange)
+            return true;
+
+        return false;
+    }
+
+    public void CancelAttack()
+    {
+        Debug.Log("Attack cancelled");
+        dualWieldAttackCount = 0;
+        characterManager.remainingAPToBeUsed = 0;
+        characterManager.actionQueued = false;
+        if (characterManager.isNPC)
+            characterManager.TakeTurn();
     }
 
     /*public void ShowWeaponTrail(HeldWeapon heldWeapon)

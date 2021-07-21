@@ -26,7 +26,7 @@ public class NPCAttack : Attack
             int distX = Mathf.RoundToInt(Mathf.Abs(transform.position.x - characterManager.npcMovement.target.transform.position.x));
             int distY = Mathf.RoundToInt(Mathf.Abs(transform.position.y - characterManager.npcMovement.target.transform.position.y));
 
-            targetInAttackRange = TargetInAttackRange();
+            targetInAttackRange = TargetInAttackRange(characterManager.npcMovement.target.transform);
 
             // If the target is too far away for combat, grab the nearest known enemy and pursue them. Otherwise, if there are no known enemies, go back to the default State
             if (distanceToTarget > combatRange)
@@ -117,16 +117,5 @@ public class NPCAttack : Attack
     void KeepDistanceAndShoot()
     {
         // TODO
-    }
-
-    public bool TargetInAttackRange()
-    {
-        int distX = Mathf.RoundToInt(Mathf.Abs(transform.position.x - characterManager.npcMovement.target.transform.position.x));
-        int distY = Mathf.RoundToInt(Mathf.Abs(transform.position.y - characterManager.npcMovement.target.transform.position.y));
-        
-        if (distX <= attackRange && distY <= attackRange)
-            return true;
-
-        return false;
     }
 }

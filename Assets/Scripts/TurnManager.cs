@@ -66,7 +66,7 @@ public class TurnManager : MonoBehaviour
         npcsCharManager.characterStats.ReplenishAP();
         gm.turnManager.npcsFinishedTakingTurnCount++;
 
-        if (gm.turnManager.npcsFinishedTakingTurnCount == gm.turnManager.npcs.Count)
+        if (gm.turnManager.npcsFinishedTakingTurnCount >= gm.turnManager.npcs.Count)
             gm.turnManager.ReadyPlayersTurn();
     }
 
