@@ -48,7 +48,7 @@ public class PlayerMovement : Movement
                 if (vertical > 0.3f) // Up
                 {
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(0, 1));
-                    if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats))
+                    if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDeadOrDestroyed == false)
                         playerManager.playerAttack.DetermineAttack(stats);
                     else
                         StartCoroutine(UseAPAndMove(0, 1));
@@ -56,7 +56,7 @@ public class PlayerMovement : Movement
                 else if (vertical < -0.3f) // Down
                 {
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(0, -1));
-                    if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats))
+                    if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDeadOrDestroyed == false)
                         playerManager.playerAttack.DetermineAttack(stats);
                     else
                         StartCoroutine(UseAPAndMove(0, -1));
@@ -67,7 +67,7 @@ public class PlayerMovement : Movement
                 if (horizontal < -0.3f) // Left
                 {
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(-1, 0));
-                    if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats))
+                    if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDeadOrDestroyed == false)
                         playerManager.playerAttack.DetermineAttack(stats);
                     else
                         StartCoroutine(UseAPAndMove(-1, 0));
@@ -75,7 +75,7 @@ public class PlayerMovement : Movement
                 else if (horizontal > 0.3f) // Right
                 {
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(1, 0));
-                    if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats))
+                    if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDeadOrDestroyed == false)
                         playerManager.playerAttack.DetermineAttack(stats);
                     else
                         StartCoroutine(UseAPAndMove(1, 0));
@@ -86,7 +86,7 @@ public class PlayerMovement : Movement
                 if (horizontal < -0.3f) // Up-left
                 {
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(-1, 1));
-                    if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats))
+                    if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDeadOrDestroyed == false)
                         playerManager.playerAttack.DetermineAttack(stats);
                     else
                         StartCoroutine(UseAPAndMove(-1, 1));
@@ -94,7 +94,7 @@ public class PlayerMovement : Movement
                 else if (horizontal > 0.3f) // Up-right
                 {
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(1, 1));
-                    if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats))
+                    if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDeadOrDestroyed == false)
                         playerManager.playerAttack.DetermineAttack(stats);
                     else
                         StartCoroutine(UseAPAndMove(1, 1));
@@ -105,7 +105,7 @@ public class PlayerMovement : Movement
                 if (horizontal < -0.3f) // Down-left
                 {
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(-1, -1));
-                    if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats))
+                    if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDeadOrDestroyed == false)
                         playerManager.playerAttack.DetermineAttack(stats);
                     else
                         StartCoroutine(UseAPAndMove(-1, -1));
@@ -113,7 +113,7 @@ public class PlayerMovement : Movement
                 else if (horizontal > 0.3f) // Down-right
                 {
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(1, -1));
-                    if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats))
+                    if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDeadOrDestroyed == false)
                         playerManager.playerAttack.DetermineAttack(stats);
                     else
                         StartCoroutine(UseAPAndMove(1, -1));
@@ -127,7 +127,7 @@ public class PlayerMovement : Movement
             gm.uiManager.DisableInventoryUIComponents();
 
             hit = RaycastMovePosition(transform.position, transform.position + new Vector3(-1, 1));
-            if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats))
+            if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDeadOrDestroyed == false)
                 playerManager.playerAttack.DetermineAttack(stats);
             else
                 StartCoroutine(UseAPAndMove(-1, 1));
@@ -139,7 +139,7 @@ public class PlayerMovement : Movement
             gm.uiManager.DisableInventoryUIComponents();
 
             hit = RaycastMovePosition(transform.position, transform.position + new Vector3(1, 1));
-            if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats))
+            if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDeadOrDestroyed == false)
                 playerManager.playerAttack.DetermineAttack(stats);
             else
                 StartCoroutine(UseAPAndMove(1, 1));
@@ -151,7 +151,7 @@ public class PlayerMovement : Movement
             gm.uiManager.DisableInventoryUIComponents();
 
             hit = RaycastMovePosition(transform.position, transform.position + new Vector3(-1, -1));
-            if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats))
+            if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDeadOrDestroyed == false)
                 playerManager.playerAttack.DetermineAttack(stats);
             else
                 StartCoroutine(UseAPAndMove(-1, -1));
@@ -163,7 +163,7 @@ public class PlayerMovement : Movement
             gm.uiManager.DisableInventoryUIComponents();
 
             hit = RaycastMovePosition(transform.position, transform.position + new Vector3(1, -1));
-            if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats))
+            if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDeadOrDestroyed == false)
                 playerManager.playerAttack.DetermineAttack(stats);
             else
                 StartCoroutine(UseAPAndMove(1, -1));

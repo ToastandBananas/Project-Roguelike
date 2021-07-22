@@ -61,13 +61,13 @@ public class APManager : MonoBehaviour
         if (characterManager.equipmentManager.isTwoHanding)
             amount *= 1.35f;
 
-        Debug.Log(Mathf.RoundToInt(amount));
+        //Debug.Log(Mathf.RoundToInt(amount));
         return Mathf.RoundToInt(amount);
     }
 
     int CalculateDualWieldSecondAttackAPCost(CharacterManager characterManager, Weapon weapon)
     {
-        Debug.Log(Mathf.RoundToInt(CalculateMeleeAttackAPCost(characterManager, weapon) * 0.7f));
+        //Debug.Log(Mathf.RoundToInt(CalculateMeleeAttackAPCost(characterManager, weapon) * 0.7f));
         return Mathf.RoundToInt(CalculateMeleeAttackAPCost(characterManager, weapon) * 0.7f);
     }
 

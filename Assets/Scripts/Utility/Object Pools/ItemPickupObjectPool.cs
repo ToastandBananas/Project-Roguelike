@@ -5,7 +5,7 @@ public class ItemPickupObjectPool : ObjectPool
 {
     [HideInInspector] public List<ItemPickup> pooledItemPickups = new List<ItemPickup>();
 
-    public override void Awake()
+    public override void Start()
     {
         Init();
     }

@@ -16,4 +16,9 @@ public class CharacterSpriteManager : MonoBehaviour
     {
         characterManager.spriteRenderer.sprite = secondaryCharacterSprite;
     }
+
+    public virtual void SetToDeathSprite(CharacterManager characterManager)
+    {
+        characterManager.spriteRenderer.sprite = deathSprite;
+    }
 }

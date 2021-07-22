@@ -494,6 +494,13 @@ public class UIManager : MonoBehaviour
             // If putting in a container
             if (inv != null)
             {
+                if (inv.CompareTag("Dead Body"))
+                {
+                    Debug.Log("You cannot store items on a dead body.");
+                    PlaceItemBackToOriginalPosition(draggedInvItem);
+                    return;
+                }
+
                 // Try adding the item to the corresponding inventory
                 if (inv.AddItem(draggedInvItem, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, true))
                 {
@@ -594,6 +601,13 @@ public class UIManager : MonoBehaviour
             // If the activeInvUI has an inventory open
             if (activeInvUI.activeInventory != null)
             {
+                if (activeInvUI == gm.containerInvUI && activeInvUI.activeInventory.CompareTag("Dead Body"))
+                {
+                    Debug.Log("You cannot store items on a dead body.");
+                    PlaceItemBackToOriginalPosition(draggedInvItem);
+                    return;
+                }
+
                 // Try adding the item to the inventory
                 wasAddedToInventory = activeInvUI.activeInventory.AddItem(draggedInvItem, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, true);
 

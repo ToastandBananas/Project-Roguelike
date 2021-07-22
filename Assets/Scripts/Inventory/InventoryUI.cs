@@ -62,6 +62,9 @@ public class InventoryUI : MonoBehaviour
             invItem.myEquipmentManager = gm.playerManager.playerEquipmentManager;
             invItem.transform.SetSiblingIndex((int)invItem.myEquipmentManager.GetEquipmentSlotFromItemData(invItem.itemData));
         }
+        
+        if (activeInventory != null)
+            activeInventory.myInvUI = this;
 
         if (invItem.itemData.bagInventory != null)
             invItem.itemData.bagInventory.myInvUI = this;
@@ -123,6 +126,9 @@ public class InventoryUI : MonoBehaviour
             isActive = false;
             isMinimized = false;
             DeselectScrollbar();
+
+            if (gm.uiManager.activeInvUI == this)
+                gm.uiManager.activeInvUI = null;
 
             // Close the context menu, stackSizeSelector and any active tooltips
             gm.uiManager.DisableInventoryUIComponents();

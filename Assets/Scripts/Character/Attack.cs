@@ -110,7 +110,7 @@ public class Attack : MonoBehaviour
             yield return null;
         }
 
-        if (TargetInAttackRange(targetsStats.transform) == false)
+        if (TargetInAttackRange(targetsStats.transform) == false || targetsStats.isDeadOrDestroyed)
         {
             CancelAttack();
             yield break;
@@ -161,11 +161,10 @@ public class Attack : MonoBehaviour
 
     public void CancelAttack()
     {
-        Debug.Log("Attack cancelled");
         dualWieldAttackCount = 0;
         characterManager.remainingAPToBeUsed = 0;
         characterManager.actionQueued = false;
-        if (characterManager.isNPC)
+        if (characterManager.isNPC && characterManager.characterStats.isDeadOrDestroyed == false)
             characterManager.TakeTurn();
     }
 

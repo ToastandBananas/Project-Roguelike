@@ -8,6 +8,7 @@ public class ContainerInventoryUI : InventoryUI
     public Sprite floorIconSprite;
 
     [Header("Side Bar Buttons")]
+    public InventoryCycler inventoryCycler;
     public ContainerSideBarButton playerPositionSideBarButton;
     public ContainerSideBarButton northSideBarButton, southSideBarButton, westSideBarButton, eastSideBarButton, northwestSideBarButton, northeastSideBarButton, southwestSideBarButton, southeastSideBarButton;
 
@@ -24,7 +25,27 @@ public class ContainerInventoryUI : InventoryUI
     [HideInInspector] public List<ItemData> southwestItems = new List<ItemData>();
     [HideInInspector] public List<ItemData> southeastItems = new List<ItemData>();
 
+    public List<ItemData> playerPositionGroundItems = new List<ItemData>();
+    public List<ItemData> northGroundItems = new List<ItemData>();
+    public List<ItemData> southGroundItems = new List<ItemData>();
+    public List<ItemData> westGroundItems = new List<ItemData>();
+    public List<ItemData> eastGroundItems = new List<ItemData>();
+    public List<ItemData> northwestGroundItems = new List<ItemData>();
+    public List<ItemData> northeastGroundItems = new List<ItemData>();
+    public List<ItemData> southwestGroundItems = new List<ItemData>();
+    public List<ItemData> southeastGroundItems = new List<ItemData>();
+
     [HideInInspector] public Inventory playerPositionInventory, northInventory, southInventory, westInventory, eastInventory, northwestInventory, northeastInventory, southwestInventory, southeastInventory;
+
+    [HideInInspector] public List<Inventory> playerPositionInventories = new List<Inventory>();
+    [HideInInspector] public List<Inventory> northInventories = new List<Inventory>();
+    [HideInInspector] public List<Inventory> southInventories = new List<Inventory>();
+    [HideInInspector] public List<Inventory> westInventories = new List<Inventory>();
+    [HideInInspector] public List<Inventory> eastInventories = new List<Inventory>();
+    [HideInInspector] public List<Inventory> northwestInventories = new List<Inventory>();
+    [HideInInspector] public List<Inventory> northeastInventories = new List<Inventory>();
+    [HideInInspector] public List<Inventory> southwestInventories = new List<Inventory>();
+    [HideInInspector] public List<Inventory> southeastInventories = new List<Inventory>();
 
     [HideInInspector] public Direction activeDirection;
     [HideInInspector] public ContainerSideBarButton activeContainerSideBarButton;
@@ -51,7 +72,7 @@ public class ContainerInventoryUI : InventoryUI
     public override void Start()
     {
         base.Start();
-
+        
         interactableMask = LayerMask.GetMask("Interactable", "Interactable Objects");
 
         inventoryItemObjectPool.Init();
@@ -72,6 +93,16 @@ public class ContainerInventoryUI : InventoryUI
         ClearInventoryUI();
         activeDirection = direction;
 
+        // Set container open icon sprite (when applicable) and header/volume/weight text
+        SetUpInventoryUI(direction);
+
+        // Setup the inventory cycler 
+        if (gm.containerInvUI.GetInventoriesListFromDirection(gm.containerInvUI.activeDirection).Count > 1 
+            || (gm.containerInvUI.GetInventoriesListFromDirection(gm.containerInvUI.activeDirection).Count > 0 && gm.containerInvUI.GetGroundItemsListFromDirection(gm.containerInvUI.activeDirection).Count > 0))
+            gm.containerInvUI.inventoryCycler.Show();
+        else
+            gm.containerInvUI.inventoryCycler.Hide();
+
         for (int i = 0; i < itemsList.Count; i++)
         {
             InventoryItem invItem = ShowNewInventoryItem(itemsList[i]);
@@ -81,9 +112,6 @@ public class ContainerInventoryUI : InventoryUI
             if (invItem.myInventory != null && invItem.myInventory.CompareTag("Item Pickup") && invItem.itemData.item.IsBag())
                 invItem.disclosureWidget.ExpandDisclosureWidget();
         }
-
-        // Set container open icon sprite (when applicable) and header/volume/weight text
-        SetUpInventoryUI(direction);
     }
 
     public void GetItemsAroundPlayer()
@@ -104,56 +132,48 @@ public class ContainerInventoryUI : InventoryUI
     void GetItemsAtPosition(Vector2 position, List<ItemData> itemsList, Direction direction)
     {
         RaycastHit2D[] hits = Physics2D.RaycastAll(position, Vector2.zero, 1, interactableMask);
-        for (int i = 0; i < hits.Length; i++)
-        {
-            Debug.Log(hits[i].collider.name);
-        }
         SetSideBarIcon_Floor(direction);
 
         for (int i = 0; i < hits.Length; i++)
         {
-            if (hits[i].collider != null)
+            if (hits[i].collider != null && hits[i].collider.CompareTag("NPC") == false)
             {
-                if (hits[i].collider.CompareTag("NPC") == false && hits[i].collider.TryGetComponent(out Inventory inventory))
+                if (hits[i].collider.TryGetComponent(out Inventory inventory))
                 {
-                    if (hits[i].collider.TryGetComponent(out ItemData itemData))
+                    if ((hits[i].collider.TryGetComponent(out ItemData itemData) && itemData.item.IsBag()) || itemData == null)
+                        GetInventoriesListFromDirection(direction).Add(inventory);
+
+                    if (GetDirectionalInventory(direction) == null)
                     {
-                        itemsList.Add(itemData);
-                        if (itemData.item.IsBag())
+                        itemsList.Clear();
+                        if (itemData == null || itemData.item.IsBag())
                         {
                             SetSideBarIcon_Container(direction, inventory);
                             AssignDirectionalInventory(direction, inventory);
                         }
-                    }
-                    else
-                    {
-                        // Get each item in the container's inventory
-                        for (int j = 0; j < inventory.items.Count; j++)
-                        {
-                            itemsList.Add(inventory.items[j]);
-                        }
 
-                        if (hits[i].collider.CompareTag("Dead Body"))
+                        if (itemData != null)
+                            itemsList.Add(itemData);
+                        else
                         {
-                            hits[i].collider.TryGetComponent(out EquipmentManager equipmentManager);
-                            if (equipmentManager != null)
+                            // Get each item in the container's inventory
+                            for (int j = 0; j < inventory.items.Count; j++)
                             {
-                                for (int j = 0; j < equipmentManager.currentEquipment.Length; j++)
-                                {
-                                    if (equipmentManager.currentEquipment[j] != null)
-                                        itemsList.Add(equipmentManager.currentEquipment[j]);
-                                }
+                                itemsList.Add(inventory.items[j]);
                             }
                         }
-
-                        SetSideBarIcon_Container(direction, inventory);
-                        AssignDirectionalInventory(direction, inventory);
                     }
                 }
-                else
+                else if (hits[i].collider.TryGetComponent(out ItemData itemData))
                 {
-                    // Get each item on the ground
-                    itemsList.Add(hits[i].collider.GetComponent<ItemData>());
+                    if (GetDirectionalInventory(direction) == null)
+                    {
+                        // Get each item on the ground
+                        itemsList.Add(itemData);
+                        GetGroundItemsListFromDirection(direction).Add(itemData);
+                    }
+                    else
+                        GetGroundItemsListFromDirection(direction).Add(itemData);
                 }
             }
         }
@@ -353,7 +373,7 @@ public class ContainerInventoryUI : InventoryUI
         }
     }
 
-    void SetUpInventoryUI(Direction direction)
+    public void SetUpInventoryUI(Direction direction)
     {
         switch (direction)
         {
@@ -470,29 +490,7 @@ public class ContainerInventoryUI : InventoryUI
 
     public List<ItemData> GetItemsListFromActiveDirection()
     {
-        switch (activeDirection)
-        {
-            case Direction.Center:
-                return playerPositionItems;
-            case Direction.North:
-                return northItems;
-            case Direction.South:
-                return southItems;
-            case Direction.West:
-                return westItems;
-            case Direction.East:
-                return eastItems;
-            case Direction.Northwest:
-                return northwestItems;
-            case Direction.Northeast:
-                return northeastItems;
-            case Direction.Southwest:
-                return southwestItems;
-            case Direction.Southeast:
-                return southeastItems;
-            default:
-                return null;
-        }
+        return GetItemsListFromDirection(activeDirection);
     }
 
     public List<ItemData> GetItemsListFromDirection(Direction direction)
@@ -531,17 +529,33 @@ public class ContainerInventoryUI : InventoryUI
         }
         else if (inventory.CompareTag("Dead Body"))
             inventoryNameText.text = inventory.gameObject.name + "'s Inventory";
+        else
+            inventoryNameText.text = "Inventory";
 
         sideBarIcon.sprite = GetContainerIcon(inventory, true);
         activeInventory = inventory;
-        weightText.text = GetTotalWeight(itemsList).ToString() + "/" + inventory.maxWeight.ToString();
-        volumeText.text = GetTotalVolume(itemsList).ToString() + "/" + inventory.maxVolume.ToString();
+
+        if (inventory.CompareTag("Dead Body"))
+        {
+            weightText.text = GetTotalWeight(itemsList).ToString();
+            volumeText.text = GetTotalVolume(itemsList).ToString();
+        }
+        else
+        {
+            weightText.text = GetTotalWeight(itemsList).ToString() + "/" + inventory.maxWeight.ToString();
+            volumeText.text = GetTotalVolume(itemsList).ToString() + "/" + inventory.maxVolume.ToString();
+        }
     }
 
     Sprite GetContainerIcon(Inventory inventory, bool containerIsActive)
     {
         if (inventory.container == null)
-            return floorIconSprite;
+        {
+            if (inventory.inventoryOwner != null)
+                return inventory.inventoryOwner.characterSpriteManager.deathSprite;
+            else
+                return floorIconSprite;
+        }
 
         if (containerIsActive)
         {
@@ -646,9 +660,23 @@ public class ContainerInventoryUI : InventoryUI
     {
         if (activeInventory != null)
         {
-            inventoryNameText.text = activeInventory.container.name + " Inventory";
-            weightText.text = (Mathf.RoundToInt(activeInventory.currentWeight * 100f) / 100f).ToString() + "/" + activeInventory.maxWeight.ToString();
-            volumeText.text = (Mathf.RoundToInt(activeInventory.currentVolume * 100f) / 100f).ToString() + "/" + activeInventory.maxVolume.ToString();
+            if (activeInventory.container != null)
+                inventoryNameText.text = activeInventory.container.name + " Inventory";
+            else if (activeInventory.CompareTag("Dead Body"))
+                inventoryNameText.text = activeInventory.gameObject.name + "'s Inventory";
+            else
+                inventoryNameText.text = "Inventory";
+            
+            if (activeInventory.CompareTag("Dead Body"))
+            {
+                weightText.text = (Mathf.RoundToInt(activeInventory.currentWeight * 100f) / 100f).ToString();
+                volumeText.text = (Mathf.RoundToInt(activeInventory.currentVolume * 100f) / 100f).ToString();
+            }
+            else
+            {
+                weightText.text = (Mathf.RoundToInt(activeInventory.currentWeight * 100f) / 100f).ToString() + "/" + activeInventory.maxWeight.ToString();
+                volumeText.text = (Mathf.RoundToInt(activeInventory.currentVolume * 100f) / 100f).ToString() + "/" + activeInventory.maxVolume.ToString();
+            }
         }
         else
         {
@@ -707,41 +735,10 @@ public class ContainerInventoryUI : InventoryUI
 
     public void AddItemToActiveDirectionList(ItemData itemDataToAdd)
     {
-        switch (activeDirection)
-        {
-            case Direction.Center:
-                playerPositionItems.Add(itemDataToAdd);
-                break;
-            case Direction.North:
-                northItems.Add(itemDataToAdd);
-                break;
-            case Direction.South:
-                southItems.Add(itemDataToAdd);
-                break;
-            case Direction.West:
-                westItems.Add(itemDataToAdd);
-                break;
-            case Direction.East:
-                eastItems.Add(itemDataToAdd);
-                break;
-            case Direction.Northwest:
-                northwestItems.Add(itemDataToAdd);
-                break;
-            case Direction.Northeast:
-                northeastItems.Add(itemDataToAdd);
-                break;
-            case Direction.Southwest:
-                southwestItems.Add(itemDataToAdd);
-                break;
-            case Direction.Southeast:
-                southeastItems.Add(itemDataToAdd);
-                break;
-            default:
-                break;
-        }
+        AddItemToDirectionalListFromDirection(itemDataToAdd, activeDirection);
     }
 
-    public void AddItemToListFromDirection(ItemData itemDataToAdd, Direction direction)
+    public void AddItemToDirectionalListFromDirection(ItemData itemDataToAdd, Direction direction)
     {
         switch (direction)
         {
@@ -784,38 +781,56 @@ public class ContainerInventoryUI : InventoryUI
             case Direction.Center:
                 if (playerPositionItems.Contains(itemDataToRemove))
                     playerPositionItems.Remove(itemDataToRemove);
+                if (playerPositionGroundItems.Contains(itemDataToRemove))
+                    playerPositionGroundItems.Remove(itemDataToRemove);
                 break;
             case Direction.North:
                 if (northItems.Contains(itemDataToRemove))
                     northItems.Remove(itemDataToRemove);
+                if (northGroundItems.Contains(itemDataToRemove))
+                    northGroundItems.Remove(itemDataToRemove);
                 break;
             case Direction.South:
                 if (southItems.Contains(itemDataToRemove))
                     southItems.Remove(itemDataToRemove);
+                if (southGroundItems.Contains(itemDataToRemove))
+                    southGroundItems.Remove(itemDataToRemove);
                 break;
             case Direction.West:
                 if (westItems.Contains(itemDataToRemove))
                     westItems.Remove(itemDataToRemove);
+                if (westGroundItems.Contains(itemDataToRemove))
+                    westGroundItems.Remove(itemDataToRemove);
                 break;
             case Direction.East:
                 if (eastItems.Contains(itemDataToRemove))
                     eastItems.Remove(itemDataToRemove);
+                if (eastGroundItems.Contains(itemDataToRemove))
+                    eastGroundItems.Remove(itemDataToRemove);
                 break;
             case Direction.Northwest:
                 if (northwestItems.Contains(itemDataToRemove))
                     northwestItems.Remove(itemDataToRemove);
+                if (northwestGroundItems.Contains(itemDataToRemove))
+                    northwestGroundItems.Remove(itemDataToRemove);
                 break;
             case Direction.Northeast:
                 if (northeastItems.Contains(itemDataToRemove))
                     northeastItems.Remove(itemDataToRemove);
+                if (northeastGroundItems.Contains(itemDataToRemove))
+                    northeastGroundItems.Remove(itemDataToRemove);
                 break;
             case Direction.Southwest:
                 if (southwestItems.Contains(itemDataToRemove))
                     southwestItems.Remove(itemDataToRemove);
+                if (southwestGroundItems.Contains(itemDataToRemove))
+                    southwestGroundItems.Remove(itemDataToRemove);
                 break;
             case Direction.Southeast:
                 if (southeastItems.Contains(itemDataToRemove))
                     southeastItems.Remove(itemDataToRemove);
+                if (southeastGroundItems.Contains(itemDataToRemove))
+                    southeastGroundItems.Remove(itemDataToRemove);
                 break;
             default:
                 break;
@@ -849,6 +864,87 @@ public class ContainerInventoryUI : InventoryUI
         }
     }
 
+    public List<Inventory> GetInventoriesListFromDirection(Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.Center:
+                return playerPositionInventories;
+            case Direction.North:
+                return northInventories;
+            case Direction.South:
+                return southInventories;
+            case Direction.West:
+                return westInventories;
+            case Direction.East:
+                return eastInventories;
+            case Direction.Northwest:
+                return northwestInventories;
+            case Direction.Northeast:
+                return northeastInventories;
+            case Direction.Southwest:
+                return southwestInventories;
+            case Direction.Southeast:
+                return southeastInventories;
+            default:
+                return null;
+        }
+    }
+
+    public Inventory GetDirectionalInventory(Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.Center:
+                return playerPositionInventory;
+            case Direction.North:
+                return northInventory;
+            case Direction.South:
+                return southInventory;
+            case Direction.West:
+                return westInventory;
+            case Direction.East:
+                return eastInventory;
+            case Direction.Northwest:
+                return northwestInventory;
+            case Direction.Northeast:
+                return northeastInventory;
+            case Direction.Southwest:
+                return southwestInventory;
+            case Direction.Southeast:
+                return southeastInventory;
+            default:
+                return null;
+        }
+    }
+
+    public List<ItemData> GetGroundItemsListFromDirection(Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.Center:
+                return playerPositionGroundItems;
+            case Direction.North:
+                return northGroundItems;
+            case Direction.South:
+                return southGroundItems;
+            case Direction.West:
+                return westGroundItems;
+            case Direction.East:
+                return eastGroundItems;
+            case Direction.Northwest:
+                return northwestGroundItems;
+            case Direction.Northeast:
+                return northeastGroundItems;
+            case Direction.Southwest:
+                return southwestGroundItems;
+            case Direction.Southeast:
+                return southeastGroundItems;
+            default:
+                return null;
+        }
+    }
+
     public void OnPlayerMoved()
     {
         ResetContainerIcons(Direction.Center);
@@ -867,14 +963,34 @@ public class ContainerInventoryUI : InventoryUI
     void ClearAllLists()
     {
         playerPositionItems.Clear();
-        westItems.Clear();
-        eastItems.Clear();
         northItems.Clear();
         southItems.Clear();
+        westItems.Clear();
+        eastItems.Clear();
         northwestItems.Clear();
         northeastItems.Clear();
         southwestItems.Clear();
         southeastItems.Clear();
+
+        playerPositionGroundItems.Clear();
+        northGroundItems.Clear();
+        southGroundItems.Clear();
+        westGroundItems.Clear();
+        eastGroundItems.Clear();
+        northwestGroundItems.Clear();
+        northeastGroundItems.Clear();
+        southwestGroundItems.Clear();
+        southeastGroundItems.Clear();
+
+        playerPositionInventories.Clear();
+        northInventories.Clear();
+        southInventories.Clear();
+        westInventories.Clear();
+        eastInventories.Clear();
+        northwestInventories.Clear();
+        northeastInventories.Clear();
+        southwestInventories.Clear();
+        southeastInventories.Clear();
 
         playerPositionInventory = null;
         northInventory = null;

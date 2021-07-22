@@ -31,7 +31,7 @@ MonoBehaviour:
   weaponType: 0
   isTwoHanded: 1
   attackRange: 1
-  minBaseDamage: 8
-  maxBaseDamage: 13
+  minBaseDamage: 10
+  maxBaseDamage: 17
   minBaseTreeDamage: 3
   maxBaseTreeDamage: 5

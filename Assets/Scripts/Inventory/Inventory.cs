@@ -19,6 +19,7 @@ public class Inventory : MonoBehaviour
     public Transform itemsParent;
     public List<ItemData> items = new List<ItemData>();
 
+    [HideInInspector] public CharacterManager inventoryOwner;
     [HideInInspector] public Container container;
     [HideInInspector] public InventoryUI myInvUI;
 
@@ -37,6 +38,7 @@ public class Inventory : MonoBehaviour
         {
             gm = GameManager.instance;
             TryGetComponent(out container);
+            TryGetComponent(out inventoryOwner);
 
             // Populate the items list if there are any children on the itemsParent
             for (int i = 0; i < itemsParent.childCount; i++)
@@ -123,7 +125,7 @@ public class Inventory : MonoBehaviour
             if (gm.uiManager.activeContainerSideBarButton != null && gm.uiManager.activeContainerSideBarButton.GetInventory().CompareTag("Item Pickup") == false
                 && this == gm.uiManager.activeContainerSideBarButton.GetInventory())
             {
-                gm.containerInvUI.AddItemToListFromDirection(itemDataToAdd, gm.uiManager.activeContainerSideBarButton.directionFromPlayer);
+                gm.containerInvUI.AddItemToDirectionalListFromDirection(itemDataToAdd, gm.uiManager.activeContainerSideBarButton.directionFromPlayer);
             }
             else if (gm.uiManager.activeContainerSideBarButton == null && myInvUI == gm.containerInvUI && gm.containerInvUI.activeInventory != null && gm.containerInvUI.activeInventory.CompareTag("Item Pickup") == false)
                 gm.containerInvUI.AddItemToActiveDirectionList(itemDataToAdd);
@@ -302,7 +304,7 @@ public class Inventory : MonoBehaviour
                 }
             }
         }
-
+        
         if (maxWeight - currentWeight >= itemWeight && maxVolume - currentVolume >= itemVolume)
             return true;
 

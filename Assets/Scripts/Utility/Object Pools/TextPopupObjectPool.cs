@@ -5,7 +5,7 @@ public class TextPopupObjectPool : ObjectPool
 {
     [HideInInspector] public List<TextPopup> pooledTextPopups = new List<TextPopup>();
 
-    public override void Awake()
+    public override void Start()
     {
         Init();
     }

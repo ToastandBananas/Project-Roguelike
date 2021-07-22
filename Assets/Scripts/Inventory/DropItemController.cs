@@ -141,7 +141,7 @@ public class DropItemController : MonoBehaviour
                 gm.containerInvUI.ShowNewInventoryItem(newItemPickup.itemData);
 
             // Add the item to the player position items list
-            gm.containerInvUI.AddItemToListFromDirection(newItemPickup.itemData, Direction.Center);
+            gm.containerInvUI.AddItemToDirectionalListFromDirection(newItemPickup.itemData, Direction.Center);
 
             // If our active direction is the centered, update the container UI numbers
             if (gm.containerInvUI.activeDirection == Direction.Center)

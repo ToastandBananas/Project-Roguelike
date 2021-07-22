@@ -31,6 +31,5 @@ public class Stats : MonoBehaviour
     public virtual void Die()
     {
         isDeadOrDestroyed = true;
-        // This is just meant to be overridden
     }
 }

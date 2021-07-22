@@ -75,6 +75,12 @@ public class NPCAttack : Attack
     public void SwitchTarget(CharacterManager newTarget)
     {
         Debug.Log("Switching target...");
+        if (newTarget == null)
+        {
+            characterManager.stateController.SetToDefaultState(characterManager.npcMovement.shouldFollowLeader);
+            return;
+        }
+
         characterManager.npcMovement.SetTarget(newTarget);
 
         if (characterManager.npcMovement.target == null)
@@ -100,7 +106,6 @@ public class NPCAttack : Attack
     public override void DetermineAttack(Stats targetsStats)
     {
         DoMeleeAttack(targetsStats);
-        Debug.Log(name + " attacked the player.");
     }
 
     void SetMoveToTargetPos(bool moveToTargetPos)

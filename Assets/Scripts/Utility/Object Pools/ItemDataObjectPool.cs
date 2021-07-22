@@ -5,7 +5,7 @@ public class ItemDataObjectPool : ObjectPool
 {
     [HideInInspector] public List<ItemData> pooledItemDatas = new List<ItemData>();
 
-    public override void Awake()
+    public override void Start()
     {
         Init();
     }

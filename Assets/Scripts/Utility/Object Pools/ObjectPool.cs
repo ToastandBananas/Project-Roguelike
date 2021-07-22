@@ -10,7 +10,7 @@ public class ObjectPool : MonoBehaviour
 
     [HideInInspector] public bool hasBeenInitialized;
     
-    public virtual void Awake()
+    public virtual void Start()
     {
         Init();
     }

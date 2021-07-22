@@ -225,7 +225,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             bagInvWeight = itemData.bagInventory.currentWeight;
             bagInvVolume = itemData.bagInventory.currentVolume;
         }
-
+        
         // If we're taking this item from a container or the ground
         if (myEquipmentManager == null && (myInventory == null || myInventory.myInvUI == gm.containerInvUI))
         {
@@ -301,6 +301,12 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         {
             if (gm.containerInvUI.activeInventory != null) // If we're trying to place the item in a container
             {
+                if (gm.containerInvUI.activeInventory.CompareTag("Dead Body"))
+                {
+                    Debug.Log("You cannot store items on a dead body.");
+                    return;
+                }
+
                 if (gm.containerInvUI.activeInventory.AddItem(this, itemData, itemData.currentStackSize, myInventory, true)) // Try adding the item's entire stack
                 {
                     gm.containerInvUI.activeInventory.UpdateCurrentWeightAndVolume();

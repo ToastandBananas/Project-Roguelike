@@ -24,6 +24,26 @@ public class HumanoidSpriteManager : CharacterSpriteManager
             beard.color = hairColor;
     }
 
+    public override void SetToDeathSprite(CharacterManager characterManager)
+    {
+        base.SetToDeathSprite(characterManager);
+
+        if (hair != null)
+            hair.sprite = null;
+        if (beard != null)
+            beard.sprite = null;
+        leftWeapon.sprite = null;
+        rightWeapon.sprite = null;
+        helmet.sprite = null;
+        shirt.sprite = null;
+        bodyArmor.sprite = null;
+        pants.sprite = null;
+        legArmor.sprite = null;
+        boots.sprite = null;
+        gloves.sprite = null;
+        cape.sprite = null;
+    }
+
     public void ShowHair()
     {
         hair.enabled = true;
@@ -62,12 +82,6 @@ public class HumanoidSpriteManager : CharacterSpriteManager
             gloves.sprite = equipment.primaryEquippedSprite;
         }
 
-        if (equipmentManager.currentEquipment[(int)EquipmentSlot.Cape] != null)
-        {
-            Equipment equipment = (Equipment)equipmentManager.currentEquipment[(int)EquipmentSlot.Cape].item;
-            cape.sprite = equipment.primaryEquippedSprite;
-        }
-
         characterManager.equipmentManager.isTwoHanding = false;
     }
 
@@ -91,12 +105,6 @@ public class HumanoidSpriteManager : CharacterSpriteManager
         {
             Equipment equipment = (Equipment)equipmentManager.currentEquipment[(int)EquipmentSlot.Gloves].item;
             gloves.sprite = equipment.secondaryEquippedSprite;
-        }
-
-        if (equipmentManager.currentEquipment[(int)EquipmentSlot.Cape] != null)
-        {
-            Equipment equipment = (Equipment)equipmentManager.currentEquipment[(int)EquipmentSlot.Cape].item;
-            cape.sprite = equipment.secondaryEquippedSprite;
         }
 
         characterManager.equipmentManager.isTwoHanding = true;
@@ -195,10 +203,7 @@ public class HumanoidSpriteManager : CharacterSpriteManager
                 rightWeapon.sprite = equipment.primaryEquippedSprite;
                 break;
             case EquipmentSlot.Cape:
-                if (equipmentManager.TwoHandedWeaponEquipped())
-                    cape.sprite = equipment.secondaryEquippedSprite;
-                else
-                    cape.sprite = equipment.primaryEquippedSprite;
+                cape.sprite = equipment.primaryEquippedSprite;
                 break;
             default:
                 break;

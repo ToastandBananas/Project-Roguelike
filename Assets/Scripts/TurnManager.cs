@@ -72,15 +72,23 @@ public class TurnManager : MonoBehaviour
 
     public void TakeNPCTurn(CharacterManager charManager)
     {
-        charManager.isMyTurn = true;
-        charManager.TakeTurn();
+        if (gm.playerManager.playerStats.isDeadOrDestroyed == false)
+        {
+            charManager.isMyTurn = true;
+            charManager.TakeTurn();
+        }
     }
 
     void DoAllNPCsTurns()
     {
-        for (int i = 0; i < npcs.Count; i++)
+        if (npcs.Count > 0)
         {
-            TakeNPCTurn(npcs[i]);
+            for (int i = 0; i < npcs.Count; i++)
+            {
+                TakeNPCTurn(npcs[i]);
+            }
         }
+        else
+            ReadyPlayersTurn();
     }
 }
