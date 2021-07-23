@@ -26,7 +26,7 @@ public class PlayerEquipmentManager : EquipmentManager
 
     void Update()
     {
-        if (GameControls.gamePlayActions.playerSwitchStance.WasPressed && gm.uiManager.UIMenuActive() == false)
+        if (GameControls.gamePlayActions.playerSwitchStance.WasPressed)
         {
             if (IsDualWielding() == false && PrimaryWeaponEquipped() && GetPrimaryWeapon().isTwoHanded == false)
                 StartCoroutine(characterManager.humanoidSpriteManager.UseAPAndSwapStance(this, characterManager));

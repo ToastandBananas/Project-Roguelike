@@ -14,7 +14,7 @@ public class Bag : Equipment
     {
         // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
         if (invItem.myInvUI == GameManager.instance.containerInvUI && invItem.itemData.bagInventory == GameManager.instance.containerInvUI.activeInventory)
-            GameManager.instance.containerInvUI.RemoveBagFromGround();
+            GameManager.instance.containerInvUI.RemoveBagFromGround(invItem.itemData.bagInventory);
 
         base.Use(equipmentManager, equipSlot, inventory, invItem, itemCount);
     }

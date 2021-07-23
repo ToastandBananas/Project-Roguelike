@@ -20,7 +20,7 @@ public class PlayerMovement : Movement
     void CheckForMovement()
     {
         // Do nothing if the Player is still moving
-        if (gm.turnManager.isPlayersTurn == false || isMoving || onCooldown || characterManager.actionQueued || GameControls.gamePlayActions.leftCtrl.IsPressed)
+        if (gm.turnManager.IsPlayersTurn() == false || isMoving || onCooldown || characterManager.actionQueued || GameControls.gamePlayActions.leftCtrl.IsPressed)
             return;
 
         Vector2 movementInput = GameControls.gamePlayActions.playerMovementAxis.Value;
@@ -200,7 +200,7 @@ public class PlayerMovement : Movement
     {
         characterManager.actionQueued = true;
 
-        while (gm.turnManager.isPlayersTurn == false)
+        while (gm.turnManager.IsPlayersTurn() == false)
         {
             yield return null;
         }

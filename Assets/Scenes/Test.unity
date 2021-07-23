@@ -328,6 +328,7 @@ MonoBehaviour:
   inventoryOwner: {fileID: 0}
   container: {fileID: 0}
   myInvUI: {fileID: 0}
+  myItemData: {fileID: 0}
   hasBeenInitialized: 0
 --- !u!1001 &65902591
 PrefabInstance:
@@ -2247,6 +2248,15 @@ MonoBehaviour:
   northeastItems: []
   southwestItems: []
   southeastItems: []
+  playerPositionGroundItems: []
+  northGroundItems: []
+  southGroundItems: []
+  westGroundItems: []
+  eastGroundItems: []
+  northwestGroundItems: []
+  northeastGroundItems: []
+  southwestGroundItems: []
+  southeastGroundItems: []
   playerPositionInventory: {fileID: 0}
   northInventory: {fileID: 0}
   southInventory: {fileID: 0}
@@ -2894,6 +2904,7 @@ MonoBehaviour:
   inventoryOwner: {fileID: 0}
   container: {fileID: 0}
   myInvUI: {fileID: 0}
+  myItemData: {fileID: 0}
   hasBeenInitialized: 0
 --- !u!1 &344627691
 GameObject:
@@ -6322,6 +6333,7 @@ MonoBehaviour:
   inventoryOwner: {fileID: 0}
   container: {fileID: 0}
   myInvUI: {fileID: 0}
+  myItemData: {fileID: 0}
   hasBeenInitialized: 0
 --- !u!1 &673731263
 GameObject:
@@ -7693,7 +7705,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcs: []
   npcsFinishedTakingTurnCount: 0
-  isPlayersTurn: 1
 --- !u!114 &840856818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8420,6 +8431,7 @@ MonoBehaviour:
   inventoryOwner: {fileID: 0}
   container: {fileID: 0}
   myInvUI: {fileID: 0}
+  myItemData: {fileID: 0}
   hasBeenInitialized: 0
 --- !u!114 &875541887
 MonoBehaviour:
@@ -10706,6 +10718,7 @@ MonoBehaviour:
   inventoryOwner: {fileID: 0}
   container: {fileID: 0}
   myInvUI: {fileID: 0}
+  myItemData: {fileID: 0}
   hasBeenInitialized: 0
 --- !u!1001 &1027435609
 PrefabInstance:
@@ -11247,6 +11260,7 @@ MonoBehaviour:
   inventoryOwner: {fileID: 0}
   container: {fileID: 0}
   myInvUI: {fileID: 0}
+  myItemData: {fileID: 0}
   hasBeenInitialized: 0
 --- !u!1001 &1085512424
 PrefabInstance:
@@ -14627,6 +14641,7 @@ MonoBehaviour:
   inventoryOwner: {fileID: 0}
   container: {fileID: 0}
   myInvUI: {fileID: 0}
+  myItemData: {fileID: 0}
   hasBeenInitialized: 0
 --- !u!114 &1347319903
 MonoBehaviour:
@@ -16016,6 +16031,7 @@ MonoBehaviour:
   inventoryOwner: {fileID: 0}
   container: {fileID: 0}
   myInvUI: {fileID: 0}
+  myItemData: {fileID: 0}
   hasBeenInitialized: 0
 --- !u!4 &1519758761 stripped
 Transform:

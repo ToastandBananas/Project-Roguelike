@@ -22,6 +22,7 @@ public class Inventory : MonoBehaviour
     [HideInInspector] public CharacterManager inventoryOwner;
     [HideInInspector] public Container container;
     [HideInInspector] public InventoryUI myInvUI;
+    [HideInInspector] public ItemData myItemData; // For bags and the like
 
     [HideInInspector] public bool hasBeenInitialized;
     
@@ -39,6 +40,7 @@ public class Inventory : MonoBehaviour
             gm = GameManager.instance;
             TryGetComponent(out container);
             TryGetComponent(out inventoryOwner);
+            TryGetComponent(out myItemData);
 
             // Populate the items list if there are any children on the itemsParent
             for (int i = 0; i < itemsParent.childCount; i++)

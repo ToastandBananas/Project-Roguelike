@@ -1,13 +1,10 @@
 using System.Collections.Generic;
-using System.Collections;
 using UnityEngine;
 
 public class TurnManager : MonoBehaviour
 {
     [HideInInspector] public List<CharacterManager> npcs = new List<CharacterManager>();
     [HideInInspector] public int npcsFinishedTakingTurnCount;
-
-    public bool isPlayersTurn = true;
 
     GameManager gm;
 
@@ -32,7 +29,6 @@ public class TurnManager : MonoBehaviour
     void Start()
     {
         gm = GameManager.instance;
-        isPlayersTurn = true;
     }
 
     public void FinishTurn(CharacterManager characterManager)
@@ -45,7 +41,6 @@ public class TurnManager : MonoBehaviour
 
     void FinishPlayersTurn()
     {
-        isPlayersTurn = false;
         gm.playerManager.isMyTurn = false;
         npcsFinishedTakingTurnCount = 0;
         
@@ -56,7 +51,6 @@ public class TurnManager : MonoBehaviour
 
     public void ReadyPlayersTurn()
     {
-        isPlayersTurn = true;
         gm.playerManager.isMyTurn = true;
     }
 
@@ -90,5 +84,10 @@ public class TurnManager : MonoBehaviour
         }
         else
             ReadyPlayersTurn();
+    }
+
+    public bool IsPlayersTurn()
+    {
+        return gm.playerManager.isMyTurn;
     }
 }

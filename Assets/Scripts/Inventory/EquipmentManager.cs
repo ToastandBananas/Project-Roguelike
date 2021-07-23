@@ -46,7 +46,7 @@ public class EquipmentManager : MonoBehaviour
         SetupStartingEquipment();
     }
 
-    public IEnumerator UseAPAndSetupEquipment(Equipment equipment, EquipmentSlot equipSlot, ItemData newItemData, ItemData oldItemData)
+    public IEnumerator UseAPAndSetupEquipment(Equipment equipment, EquipmentSlot equipSlot, ItemData newItemData, ItemData oldItemData, bool droppingEquipment)
     {
         characterManager.actionQueued = true;
 
@@ -59,7 +59,7 @@ public class EquipmentManager : MonoBehaviour
         {
             if (characterManager.remainingAPToBeUsed <= characterManager.characterStats.currentAP)
             {
-                SetEquippedSprite(equipSlot, equipment);
+                SetEquippedSprite(equipSlot, equipment, droppingEquipment);
                 OnEquipmentChanged(oldItemData, newItemData);
 
                 if (newItemData != null)
@@ -77,7 +77,7 @@ public class EquipmentManager : MonoBehaviour
             {
                 characterManager.characterStats.UseAP(characterManager.characterStats.currentAP);
                 gm.turnManager.FinishTurn(characterManager);
-                StartCoroutine(UseAPAndSetupEquipment(equipment, equipSlot, newItemData, oldItemData));
+                StartCoroutine(UseAPAndSetupEquipment(equipment, equipSlot, newItemData, oldItemData, droppingEquipment));
             }
         }
         else
@@ -98,7 +98,7 @@ public class EquipmentManager : MonoBehaviour
             int remainingAP = characterManager.characterStats.UseAPAndGetRemainder(APCost);
             if (remainingAP == 0)
             {
-                SetEquippedSprite(equipSlot, equipment);
+                SetEquippedSprite(equipSlot, equipment, droppingEquipment);
                 OnEquipmentChanged(oldItemData, newItemData);
 
                 if (newItemData != null)
@@ -114,7 +114,7 @@ public class EquipmentManager : MonoBehaviour
             {
                 characterManager.remainingAPToBeUsed = remainingAP;
                 gm.turnManager.FinishTurn(characterManager);
-                StartCoroutine(UseAPAndSetupEquipment(equipment, equipSlot, newItemData, oldItemData));
+                StartCoroutine(UseAPAndSetupEquipment(equipment, equipSlot, newItemData, oldItemData, droppingEquipment));
             }
         }
     }
@@ -173,11 +173,6 @@ public class EquipmentManager : MonoBehaviour
             gm.playerInvUI.EquipBag(newItemData);
 
             Inventory bagsInventory = gm.playerInvUI.GetInventoryFromBagEquipSlot(newItemData);
-            Inventory itemDataComingFromsInv = null;
-            if (newItemData.CompareTag("Item Pickup")) // If this is a bag we're picking up from the ground
-                itemDataComingFromsInv = newItemData.bagInventory;
-            else if (invItemComingFrom != null)
-                itemDataComingFromsInv = invItemComingFrom.myInventory; // If this bag is inside a container or one of the player's inventories
 
             for (int i = 0; i < newItemData.bagInventory.items.Count; i++)
             {
@@ -211,7 +206,10 @@ public class EquipmentManager : MonoBehaviour
 
         // If the item is a bag and it was on the ground, set the sidebar icon to a floor icon
         if (newItemData.item.IsBag() && newItemData.CompareTag("Item Pickup"))
+        {
             gm.containerInvUI.SetSideBarIcon_Floor(gm.containerInvUI.activeDirection);
+            gm.containerInvUI.GetInventoriesListFromDirection(gm.containerInvUI.activeDirection).Remove(newItemData.bagInventory);
+        }
 
         return true;
     }
@@ -584,10 +582,10 @@ public class EquipmentManager : MonoBehaviour
         return (Weapon)currentEquipment[(int)EquipmentSlot.Ranged].item;
     }
 
-    void SetEquippedSprite(EquipmentSlot equipSlot, Equipment equipment)
+    void SetEquippedSprite(EquipmentSlot equipSlot, Equipment equipment, bool droppingEquipment)
     {
         // If we equipped an item
-        if (currentEquipment[(int)equipSlot] != null)
+        if (droppingEquipment == false && currentEquipment[(int)equipSlot] != null)
         {
             // Show the equipment's sprite on the player
             if (equipment.IsWeapon() == false)

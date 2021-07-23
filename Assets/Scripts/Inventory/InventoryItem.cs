@@ -246,7 +246,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
                     // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
                     if (itemData.item.IsBag() && gm.containerInvUI.activeInventory == itemData.bagInventory)
-                        gm.containerInvUI.RemoveBagFromGround();
+                        gm.containerInvUI.RemoveBagFromGround(itemData.bagInventory);
 
                     ClearItem();
                 }
@@ -329,7 +329,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                         myEquipmentManager.Unequip(equipmentSlot, false, false, false);
 
                         // Calculate and use AP
-                        myEquipmentManager.StartCoroutine(myEquipmentManager.UseAPAndSetupEquipment((Equipment)tempItemData.item, equipmentSlot, null, tempItemData));
+                        myEquipmentManager.StartCoroutine(myEquipmentManager.UseAPAndSetupEquipment((Equipment)tempItemData.item, equipmentSlot, null, tempItemData, false));
                     }
                     else
                     {
@@ -406,7 +406,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                             myEquipmentManager.Unequip(equipmentSlot, false, false, false);
 
                             // Calculate and use AP
-                            myEquipmentManager.StartCoroutine(myEquipmentManager.UseAPAndSetupEquipment((Equipment)tempItemData.item, equipmentSlot, null, tempItemData));
+                            myEquipmentManager.StartCoroutine(myEquipmentManager.UseAPAndSetupEquipment((Equipment)tempItemData.item, equipmentSlot, null, tempItemData, true));
                         }
                         else
                         {
@@ -446,7 +446,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
                 // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
                 if (itemAdding.IsBag() && gm.containerInvUI.activeInventory == itemToAdd.bagInventory)
-                    gm.containerInvUI.RemoveBagFromGround();
+                    gm.containerInvUI.RemoveBagFromGround(itemToAdd.bagInventory);
             }
         }
 
@@ -462,7 +462,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
                 // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
                 if (itemAdding.IsBag() && gm.containerInvUI.activeInventory == itemToAdd.bagInventory)
-                    gm.containerInvUI.RemoveBagFromGround();
+                    gm.containerInvUI.RemoveBagFromGround(itemToAdd.bagInventory);
             }
         }
 
@@ -477,7 +477,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
                 // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
                 if (itemAdding.IsBag() && gm.containerInvUI.activeInventory == itemToAdd.bagInventory)
-                    gm.containerInvUI.RemoveBagFromGround();
+                    gm.containerInvUI.RemoveBagFromGround(itemToAdd.bagInventory);
             }
         }
 
@@ -491,7 +491,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
                 // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
                 if (itemAdding.IsBag() && gm.containerInvUI.activeInventory == itemToAdd.bagInventory)
-                    gm.containerInvUI.RemoveBagFromGround();
+                    gm.containerInvUI.RemoveBagFromGround(itemToAdd.bagInventory);
             }
         }
 
@@ -505,7 +505,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
                 // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
                 if (itemAdding.IsBag() && gm.containerInvUI.activeInventory == itemToAdd.bagInventory)
-                    gm.containerInvUI.RemoveBagFromGround();
+                    gm.containerInvUI.RemoveBagFromGround(itemToAdd.bagInventory);
             }
         }
 
@@ -520,7 +520,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
                 // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
                 if (itemAdding.IsBag() && gm.containerInvUI.activeInventory == itemToAdd.bagInventory)
-                    gm.containerInvUI.RemoveBagFromGround();
+                    gm.containerInvUI.RemoveBagFromGround(itemToAdd.bagInventory);
             }
         }
     }
@@ -548,7 +548,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 if (itemData.currentStackSize == 0) // If the entire stack was added
                 {
                     gm.containerInvUI.GetItemDatasInventoryItem(itemData).UpdateInventoryWeightAndVolume();
-                    gm.containerInvUI.RemoveBagFromGround();
+
+                    if (itemData.item.IsBag())
+                        gm.containerInvUI.RemoveBagFromGround(itemData.bagInventory);
 
                     // Calculate and use AP
                     if (invComingFrom != null)
@@ -562,7 +564,8 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             }
             else // If there's no longer any room, break out of the loop & update the UI numbers
             {
-                gm.containerInvUI.RemoveBagFromGround();
+                if (itemData.item.IsBag())
+                    gm.containerInvUI.RemoveBagFromGround(itemData.bagInventory);
 
                 // Calculate and use AP
                 int amountAdded = stackSize - itemData.currentStackSize;

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,25 +16,25 @@ public class ContainerInventoryUI : InventoryUI
     [Header("Max Ground Volume")]
     public float emptyTileMaxVolume = 1000f;
 
-    [HideInInspector] public List<ItemData> playerPositionItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> northItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> southItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> westItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> eastItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> northwestItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> northeastItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> southwestItems = new List<ItemData>();
-    [HideInInspector] public List<ItemData> southeastItems = new List<ItemData>();
+    public List<ItemData> playerPositionItems = new List<ItemData>();
+    public List<ItemData> northItems = new List<ItemData>();
+    public List<ItemData> southItems = new List<ItemData>();
+    public List<ItemData> westItems = new List<ItemData>();
+    public List<ItemData> eastItems = new List<ItemData>();
+    public List<ItemData> northwestItems = new List<ItemData>();
+    public List<ItemData> northeastItems = new List<ItemData>();
+    public List<ItemData> southwestItems = new List<ItemData>();
+    public List<ItemData> southeastItems = new List<ItemData>();
 
-    public List<ItemData> playerPositionGroundItems = new List<ItemData>();
-    public List<ItemData> northGroundItems = new List<ItemData>();
-    public List<ItemData> southGroundItems = new List<ItemData>();
-    public List<ItemData> westGroundItems = new List<ItemData>();
-    public List<ItemData> eastGroundItems = new List<ItemData>();
-    public List<ItemData> northwestGroundItems = new List<ItemData>();
-    public List<ItemData> northeastGroundItems = new List<ItemData>();
-    public List<ItemData> southwestGroundItems = new List<ItemData>();
-    public List<ItemData> southeastGroundItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> playerPositionGroundItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> northGroundItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> southGroundItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> westGroundItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> eastGroundItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> northwestGroundItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> northeastGroundItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> southwestGroundItems = new List<ItemData>();
+    [HideInInspector] public List<ItemData> southeastGroundItems = new List<ItemData>();
 
     [HideInInspector] public Inventory playerPositionInventory, northInventory, southInventory, westInventory, eastInventory, northwestInventory, northeastInventory, southwestInventory, southeastInventory;
 
@@ -76,6 +77,7 @@ public class ContainerInventoryUI : InventoryUI
         interactableMask = LayerMask.GetMask("Interactable", "Interactable Objects");
 
         inventoryItemObjectPool.Init();
+        inventoryCycler.Init();
 
         for (int i = 0; i < inventoryItemObjectPool.pooledInventoryItems.Count; i++)
         {
@@ -84,6 +86,12 @@ public class ContainerInventoryUI : InventoryUI
 
         GetItemsAroundPlayer();
         PopulateInventoryUI(playerPositionItems, Direction.Center);
+    }
+
+    public IEnumerator DelayPopulateInventoryUI(List<ItemData> itemsList, Direction direction)
+    {
+        yield return null;
+        PopulateInventoryUI(itemsList, direction);
     }
 
     // This method runs when the user clicks on a container side bar icon
@@ -97,8 +105,7 @@ public class ContainerInventoryUI : InventoryUI
         SetUpInventoryUI(direction);
 
         // Setup the inventory cycler 
-        if (gm.containerInvUI.GetInventoriesListFromDirection(gm.containerInvUI.activeDirection).Count > 1 
-            || (gm.containerInvUI.GetInventoriesListFromDirection(gm.containerInvUI.activeDirection).Count > 0 && gm.containerInvUI.GetGroundItemsListFromDirection(gm.containerInvUI.activeDirection).Count > 0))
+        if (gm.containerInvUI.GetInventoriesListFromDirection(gm.containerInvUI.activeDirection).Count > 0 && gm.containerInvUI.GetInventoriesListFromDirection(gm.containerInvUI.activeDirection)[0].CompareTag("Object") == false)
             gm.containerInvUI.inventoryCycler.Show();
         else
             gm.containerInvUI.inventoryCycler.Hide();
@@ -385,7 +392,7 @@ public class ContainerInventoryUI : InventoryUI
                 {
                     inventoryNameText.text = "Items Under Self";
                     weightText.text = GetTotalWeight(playerPositionItems).ToString();
-                    volumeText.text = GetTotalVolume(playerPositionItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    volumeText.text = GetTotalVolume(playerPositionItems).ToString();
                 }
                 break;
             case Direction.North:
@@ -396,7 +403,7 @@ public class ContainerInventoryUI : InventoryUI
                 {
                     inventoryNameText.text = "Items North of Self";
                     weightText.text = GetTotalWeight(northItems).ToString();
-                    volumeText.text = GetTotalVolume(northItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    volumeText.text = GetTotalVolume(northItems).ToString();
                 }
                 break;
             case Direction.South:
@@ -407,7 +414,7 @@ public class ContainerInventoryUI : InventoryUI
                 {
                     inventoryNameText.text = "Items South of Self";
                     weightText.text = GetTotalWeight(southItems).ToString();
-                    volumeText.text = GetTotalVolume(southItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    volumeText.text = GetTotalVolume(southItems).ToString();
                 }
                 break;
             case Direction.West:
@@ -418,7 +425,7 @@ public class ContainerInventoryUI : InventoryUI
                 {
                     inventoryNameText.text = "Items West of Self";
                     weightText.text = GetTotalWeight(westItems).ToString();
-                    volumeText.text = GetTotalVolume(westItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    volumeText.text = GetTotalVolume(westItems).ToString();
                 }
                 break;
             case Direction.East:
@@ -429,7 +436,7 @@ public class ContainerInventoryUI : InventoryUI
                 {
                     inventoryNameText.text = "Items East of Self";
                     weightText.text = GetTotalWeight(eastItems).ToString();
-                    volumeText.text = GetTotalVolume(eastItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    volumeText.text = GetTotalVolume(eastItems).ToString();
                 }
                 break;
             case Direction.Northwest:
@@ -440,7 +447,7 @@ public class ContainerInventoryUI : InventoryUI
                 {
                     inventoryNameText.text = "Items Northwest of Self";
                     weightText.text = GetTotalWeight(northwestItems).ToString();
-                    volumeText.text = GetTotalVolume(northwestItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    volumeText.text = GetTotalVolume(northwestItems).ToString();
                 }
                 break;
             case Direction.Northeast:
@@ -451,7 +458,7 @@ public class ContainerInventoryUI : InventoryUI
                 {
                     inventoryNameText.text = "Items Northeast of Self";
                     weightText.text = GetTotalWeight(northeastItems).ToString();
-                    volumeText.text = GetTotalVolume(northeastItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    volumeText.text = GetTotalVolume(northeastItems).ToString();
                 }
                 break;
             case Direction.Southwest:
@@ -462,7 +469,7 @@ public class ContainerInventoryUI : InventoryUI
                 {
                     inventoryNameText.text = "Items Southwest of Self";
                     weightText.text = GetTotalWeight(southwestItems).ToString();
-                    volumeText.text = GetTotalVolume(southwestItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    volumeText.text = GetTotalVolume(southwestItems).ToString();
                 }
                 break;
             case Direction.Southeast:
@@ -473,7 +480,7 @@ public class ContainerInventoryUI : InventoryUI
                 {
                     inventoryNameText.text = "Items Southeast of Self";
                     weightText.text = GetTotalWeight(southeastItems).ToString();
-                    volumeText.text = GetTotalVolume(southeastItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    volumeText.text = GetTotalVolume(southeastItems).ToString();
                 }
                 break;
             default:
@@ -685,47 +692,47 @@ public class ContainerInventoryUI : InventoryUI
                 case Direction.Center:
                     inventoryNameText.text = "Items Under Self";
                     weightText.text = GetTotalWeight(playerPositionItems).ToString();
-                    volumeText.text = GetTotalVolume(playerPositionItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    volumeText.text = GetTotalVolume(playerPositionItems).ToString();
                     break;
                 case Direction.North:
                     inventoryNameText.text = "Items North of Self";
                     weightText.text = GetTotalWeight(northItems).ToString();
-                    volumeText.text = GetTotalVolume(northItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    volumeText.text = GetTotalVolume(northItems).ToString();
                     break;
                 case Direction.South:
                     inventoryNameText.text = "Items South of Self";
                     weightText.text = GetTotalWeight(southItems).ToString();
-                    volumeText.text = GetTotalVolume(southItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    volumeText.text = GetTotalVolume(southItems).ToString();
                     break;
                 case Direction.West:
                     inventoryNameText.text = "Items West of Self";
                     weightText.text = GetTotalWeight(westItems).ToString();
-                    volumeText.text = GetTotalVolume(westItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    volumeText.text = GetTotalVolume(westItems).ToString();
                     break;
                 case Direction.East:
                     inventoryNameText.text = "Items East of Self";
                     weightText.text = GetTotalWeight(eastItems).ToString();
-                    volumeText.text = GetTotalVolume(eastItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    volumeText.text = GetTotalVolume(eastItems).ToString();
                     break;
                 case Direction.Northwest:
                     inventoryNameText.text = "Items Northwest of Self";
                     weightText.text = GetTotalWeight(northwestItems).ToString();
-                    volumeText.text = GetTotalVolume(northwestItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    volumeText.text = GetTotalVolume(northwestItems).ToString();
                     break;
                 case Direction.Northeast:
                     inventoryNameText.text = "Items Northeast of Self";
                     weightText.text = GetTotalWeight(northeastItems).ToString();
-                    volumeText.text = GetTotalVolume(northeastItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    volumeText.text = GetTotalVolume(northeastItems).ToString();
                     break;
                 case Direction.Southwest:
                     inventoryNameText.text = "Items Southwest of Self";
                     weightText.text = GetTotalWeight(southwestItems).ToString();
-                    volumeText.text = GetTotalVolume(southwestItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    volumeText.text = GetTotalVolume(southwestItems).ToString();
                     break;
                 case Direction.Southeast:
                     inventoryNameText.text = "Items Southeast of Self";
                     weightText.text = GetTotalWeight(southeastItems).ToString();
-                    volumeText.text = GetTotalVolume(southeastItems).ToString() + "/" + emptyTileMaxVolume.ToString();
+                    volumeText.text = GetTotalVolume(southeastItems).ToString();
                     break;
                 default:
                     break;
@@ -945,6 +952,42 @@ public class ContainerInventoryUI : InventoryUI
         }
     }
 
+    public void AddItemToGroundItemsListFromDirection(ItemData itemData, Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.Center:
+                playerPositionGroundItems.Add(itemData);
+                break;
+            case Direction.North:
+                northGroundItems.Add(itemData);
+                break;
+            case Direction.South:
+                southGroundItems.Add(itemData);
+                break;
+            case Direction.West:
+                westGroundItems.Add(itemData);
+                break;
+            case Direction.East:
+                eastGroundItems.Add(itemData);
+                break;
+            case Direction.Northwest:
+                northwestGroundItems.Add(itemData);
+                break;
+            case Direction.Northeast:
+                northeastGroundItems.Add(itemData);
+                break;
+            case Direction.Southwest:
+                southwestGroundItems.Add(itemData);
+                break;
+            case Direction.Southeast:
+                southeastGroundItems.Add(itemData);
+                break;
+            default:
+                break;
+        }
+    }
+
     public void OnPlayerMoved()
     {
         ResetContainerIcons(Direction.Center);
@@ -953,11 +996,70 @@ public class ContainerInventoryUI : InventoryUI
         playerPositionSideBarButton.HighlightDirectionIcon();
     }
 
-    public void RemoveBagFromGround()
+    public void RemoveBagFromGround(Inventory bagsInventory)
     {
-        SetSideBarIcon_Floor(activeDirection);
-        activeInventory = null;
-        RemoveDirectionalInventory(activeDirection);
+        List<Inventory> inventoriesList = GetInventoriesListFromDirection(activeDirection);
+        inventoriesList.Remove(bagsInventory);
+
+        if (inventoriesList.Count > 0)
+        {
+            activeInventory = inventoriesList[0];
+            AssignDirectionalInventory(activeDirection, inventoriesList[0]);
+            PopulateDirectionalItemsList(activeInventory, activeDirection);
+            StartCoroutine(DelayPopulateInventoryUI(GetItemsListFromActiveDirection(), activeDirection));
+        }
+        else
+        {
+            activeInventory = null;
+            RemoveDirectionalInventory(activeDirection);
+            inventoryCycler.Hide();
+            PopulateDirectionalItemsList(GetGroundItemsListFromDirection(activeDirection), activeDirection);
+            StartCoroutine(DelayPopulateInventoryUI(GetItemsListFromActiveDirection(), activeDirection));
+            GetSideBarButtonFromDirection(activeDirection).icon.sprite = floorIconSprite;
+        }
+    }
+
+    public void PopulateDirectionalItemsList(Inventory inventory, Direction direction)
+    {
+        List<ItemData> directionalItemsList = GetItemsListFromDirection(direction);
+        directionalItemsList.Clear();
+
+        if (inventory.CompareTag("Item Pickup"))
+            directionalItemsList.Add(inventory.myItemData);
+        else
+        {
+            for (int i = 0; i < inventory.items.Count; i++)
+            {
+                directionalItemsList.Add(inventory.items[i]);
+            }
+        }
+    }
+
+    public void PopulateDirectionalItemsList(List<ItemData> groundItemsList, Direction direction)
+    {
+        List<ItemData> directionalItemsList = GetItemsListFromDirection(direction);
+        directionalItemsList.Clear();
+
+        for (int i = 0; i < groundItemsList.Count; i++)
+        {
+            directionalItemsList.Add(groundItemsList[i]);
+        }
+    }
+
+    public float GetTotalVolumeForTile(Direction direction)
+    {
+        float totalVolume = 0;
+        
+        totalVolume += GetTotalVolume(gm.containerInvUI.GetGroundItemsListFromDirection(direction));
+
+        List<Inventory> inventoriesList = gm.containerInvUI.GetInventoriesListFromDirection(direction);
+        for (int i = 0; i < inventoriesList.Count; i++)
+        {
+            totalVolume += GetTotalVolume(inventoriesList[i].items);
+        }
+
+        Debug.Log(totalVolume);
+        return Mathf.RoundToInt(totalVolume * 100f) / 100f;
     }
 
     void ClearAllLists()

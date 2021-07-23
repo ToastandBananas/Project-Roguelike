@@ -106,7 +106,7 @@ public class DropItemController : MonoBehaviour
             if (invComingFrom != null)
                 bagInv.ResetWeightAndVolume(); // Reset the bag's inventory
             else // If the bag is coming from the ground
-                gm.containerInvUI.RemoveBagFromGround();
+                gm.containerInvUI.RemoveBagFromGround(itemData.bagInventory);
 
             for (int i = 0; i < bagInv.items.Count; i++)
             {
@@ -124,44 +124,82 @@ public class DropItemController : MonoBehaviour
             // Play the add item effect
             StartCoroutine(gm.containerInvUI.PlayAddItemEffect(itemData.item.pickupSprite, gm.containerInvUI.GetSideBarButtonFromDirection(gm.containerInvUI.activeDirection), null));
 
-            // Show the item in our container inventory UI
-            gm.containerInvUI.ShowNewInventoryItem(newItemPickup.itemData);
+            // If the ground items list is active
+            if (gm.containerInvUI.activeInventory == null)
+            {
+                // Show the item in our container inventory UI
+                gm.containerInvUI.ShowNewInventoryItem(newItemPickup.itemData);
 
-            // Add the item to our active direction's items list and update the container UI numbers
-            gm.containerInvUI.AddItemToActiveDirectionList(newItemPickup.itemData);
-            gm.containerInvUI.UpdateUI();
+                // Add the item to our active direction's items list and update the container UI numbers
+                gm.containerInvUI.AddItemToActiveDirectionList(newItemPickup.itemData);
+                gm.containerInvUI.UpdateUI();
+            }
         }
         else if (dropPosition == gm.playerManager.transform.position) // If the drop position is the player's position
         {
             // Play the add item effect
             StartCoroutine(gm.containerInvUI.PlayAddItemEffect(itemData.item.pickupSprite, gm.containerInvUI.playerPositionSideBarButton, null));
 
-            // If our active direction is the centered, show the item in our container inventory UI
-            if (gm.containerInvUI.activeDirection == Direction.Center)
-                gm.containerInvUI.ShowNewInventoryItem(newItemPickup.itemData);
+            // If the ground items list is active
+            if (gm.containerInvUI.activeInventory == null)
+            {
+                // If our active direction is centered, show the item in our container inventory UI
+                if (gm.containerInvUI.activeDirection == Direction.Center)
+                    gm.containerInvUI.ShowNewInventoryItem(newItemPickup.itemData);
 
-            // Add the item to the player position items list
-            gm.containerInvUI.AddItemToDirectionalListFromDirection(newItemPickup.itemData, Direction.Center);
+                // Add the item to the player position items list
+                gm.containerInvUI.AddItemToDirectionalListFromDirection(newItemPickup.itemData, Direction.Center);
 
-            // If our active direction is the centered, update the container UI numbers
-            if (gm.containerInvUI.activeDirection == Direction.Center)
-                gm.containerInvUI.UpdateUI();
+                // If our active direction is the centered, update the container UI numbers
+                if (gm.containerInvUI.activeDirection == Direction.Center)
+                    gm.containerInvUI.UpdateUI();
+            }
         }
         else // If the drop position is not our active direction or the player's position
         {
             // Play the add item effect
             StartCoroutine(gm.containerInvUI.PlayAddItemEffect(itemData.item.pickupSprite, gm.containerInvUI.GetSideBarButtonFromDirection(dropDirection), null));
 
-            // Add the item to the appropriate directional list
-            List<ItemData> itemsList = gm.containerInvUI.GetItemsListFromDirection(dropDirection);
-            itemsList.Add(newItemPickup.itemData);
+            // If there's no inventories (such as a bag) on this drop space
+            if (gm.containerInvUI.GetInventoriesListFromDirection(dropDirection).Count == 0)
+            {
+                // Add the item to the appropriate directional list
+                List<ItemData> itemsList = gm.containerInvUI.GetItemsListFromDirection(dropDirection);
+
+                if (newItemPickup.itemData.item.IsBag())
+                {
+                    itemsList.Clear();
+                    gm.containerInvUI.AssignDirectionalInventory(dropDirection, newItemPickup.itemData.bagInventory);
+                }
+
+                itemsList.Add(newItemPickup.itemData);
+            }
         }
 
-        // If the item we're dropping is a bag, set the container sidebar icon to our bag icon
+        // If the item we're dropping is a bag, set our active inventory to the bag's inventory, add the bag to the appropriate lists and setup the UI
         if (itemData.item.IsBag())
         {
+            gm.containerInvUI.GetInventoriesListFromDirection(dropDirection).Add(newItemPickup.itemData.bagInventory);
+
             Bag bag = (Bag)itemData.item;
             gm.containerInvUI.GetSideBarButtonFromDirection(dropDirection).icon.sprite = bag.sidebarSprite;
+            gm.containerInvUI.AssignDirectionalInventory(dropDirection, newItemPickup.itemData.bagInventory);
+
+            List<ItemData> itemsList = gm.containerInvUI.GetItemsListFromDirection(dropDirection);
+            itemsList.Clear();
+            itemsList.Add(newItemPickup.itemData);
+
+            if (dropDirection == gm.containerInvUI.activeDirection)
+            {
+                gm.containerInvUI.activeInventory = newItemPickup.itemData.bagInventory;
+                gm.containerInvUI.PopulateInventoryUI(gm.containerInvUI.GetItemsListFromActiveDirection(), gm.containerInvUI.activeDirection);
+            }
+        }
+        else // If the item we're dropping is not a bag, assign the item to the appropriate lists
+        {
+            gm.containerInvUI.AddItemToGroundItemsListFromDirection(newItemPickup.itemData, dropDirection);
+            if (gm.containerInvUI.activeInventory == null && gm.containerInvUI.GetItemsListFromDirection(dropDirection).Contains(newItemPickup.itemData) == false)
+                gm.containerInvUI.AddItemToDirectionalListFromDirection(newItemPickup.itemData, dropDirection);
         }
 
         itemData.currentStackSize = 0;

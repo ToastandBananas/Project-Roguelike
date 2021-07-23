@@ -24,7 +24,7 @@ public class GameControls : MonoBehaviour
         gamePlayActions.playerAttack.AddDefaultBinding(Key.Space);
 
         gamePlayActions.playerSwitchStance.AddDefaultBinding(InputControlType.LeftBumper); // Switch Stance
-        gamePlayActions.playerSwitchStance.AddDefaultBinding(Key.Tab);
+        gamePlayActions.playerSwitchStance.AddDefaultBinding(Key.F);
 
         // Movement
         gamePlayActions.playerMoveUp.AddDefaultBinding(InputControlType.LeftStickUp); // Up
@@ -59,6 +59,7 @@ public class GameControls : MonoBehaviour
 
         // UI Actions
         gamePlayActions.playerInventory.AddDefaultBinding(Key.I);
+        gamePlayActions.playerInventory.AddDefaultBinding(Key.Tab);
         gamePlayActions.playerInventory.AddDefaultBinding(InputControlType.Pause);
         gamePlayActions.playerInventory.AddDefaultBinding(InputControlType.Options);
 

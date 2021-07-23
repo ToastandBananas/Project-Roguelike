@@ -28,6 +28,7 @@ public class Vision : MonoBehaviour
 
     public void CheckEnemyVisibility()
     {
+        Debug.Log("Checking enemy visibility");
         foreach (CharacterManager enemy in enemiesInRange)
         {
             Vector2 direction = (enemy.transform.position - transform.position).normalized;
@@ -78,9 +79,9 @@ public class Vision : MonoBehaviour
 
     public bool IsFacingTransform(Transform targetTransform)
     {
-        if ((transform.position.x <= targetTransform.position.x && transform.localScale.x == 1) || (transform.position.x >= targetTransform.position.x && transform.localScale.x == -1))
+        if ((transform.parent.position.x <= targetTransform.position.x && transform.parent.localScale.x == 1) || (transform.parent.position.x >= targetTransform.position.x && transform.parent.localScale.x == -1))
             return true;
-
+        
         return false;        
     }
 

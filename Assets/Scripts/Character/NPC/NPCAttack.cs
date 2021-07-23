@@ -78,6 +78,7 @@ public class NPCAttack : Attack
         if (newTarget == null)
         {
             characterManager.stateController.SetToDefaultState(characterManager.npcMovement.shouldFollowLeader);
+            characterManager.TakeTurn();
             return;
         }
 

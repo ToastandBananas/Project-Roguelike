@@ -128,7 +128,10 @@ public class InventoryUI : MonoBehaviour
             DeselectScrollbar();
 
             if (gm.uiManager.activeInvUI == this)
+            {
+                gm.uiManager.ResetSelections();
                 gm.uiManager.activeInvUI = null;
+            }
 
             // Close the context menu, stackSizeSelector and any active tooltips
             gm.uiManager.DisableInventoryUIComponents();

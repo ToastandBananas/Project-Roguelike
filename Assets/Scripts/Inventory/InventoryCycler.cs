@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class InventoryCycler : MonoBehaviour
 {
-    GameManager gm;
-
     bool isActive;
 
-    void Start()
+    GameManager gm;
+
+    public void Init()
     {
         gm = GameManager.instance;
     }
@@ -32,29 +32,20 @@ public class InventoryCycler : MonoBehaviour
         else
             gm.containerInvUI.activeInventory = invList[currentInventoriesIndex + 1];
 
-        gm.containerInvUI.AssignDirectionalInventory(gm.containerInvUI.activeDirection, gm.containerInvUI.activeInventory);
-
-        List<ItemData> directionalItemsList = gm.containerInvUI.GetItemsListFromActiveDirection();
-        directionalItemsList.Clear();
-
         if (gm.containerInvUI.activeInventory != null)
-        {
-            for (int i = 0; i < gm.containerInvUI.activeInventory.items.Count; i++)
-            {
-                directionalItemsList.Add(gm.containerInvUI.activeInventory.items[i]);
-            }
-        }
+            gm.containerInvUI.AssignDirectionalInventory(gm.containerInvUI.activeDirection, gm.containerInvUI.activeInventory);
+        else
+            gm.containerInvUI.RemoveDirectionalInventory(gm.containerInvUI.activeDirection);
+        
+        if (gm.containerInvUI.activeInventory != null)
+            gm.containerInvUI.PopulateDirectionalItemsList(gm.containerInvUI.activeInventory, gm.containerInvUI.activeDirection);
         else
         {
-            List<ItemData> groundItemsList = gm.containerInvUI.GetGroundItemsListFromDirection(gm.containerInvUI.activeDirection);
-            for (int i = 0; i < groundItemsList.Count; i++)
-            {
-                Debug.Log(groundItemsList[i].itemName);
-                directionalItemsList.Add(groundItemsList[i]);
-            }
+            gm.containerInvUI.PopulateDirectionalItemsList(gm.containerInvUI.GetGroundItemsListFromDirection(gm.containerInvUI.activeDirection), gm.containerInvUI.activeDirection);
+            gm.containerInvUI.GetSideBarButtonFromDirection(gm.containerInvUI.activeDirection).icon.sprite = gm.containerInvUI.floorIconSprite;
         }
-
-        gm.containerInvUI.PopulateInventoryUI(directionalItemsList, gm.containerInvUI.activeDirection);
+        
+        gm.containerInvUI.PopulateInventoryUI(gm.containerInvUI.GetItemsListFromActiveDirection(), gm.containerInvUI.activeDirection);
     }
 
     public void CycleToPreviousInventory()
@@ -77,29 +68,20 @@ public class InventoryCycler : MonoBehaviour
         else
             gm.containerInvUI.activeInventory = invList[currentInventoriesIndex - 1];
 
-        gm.containerInvUI.AssignDirectionalInventory(gm.containerInvUI.activeDirection, gm.containerInvUI.activeInventory);
-
-        List<ItemData> directionalItemsList = gm.containerInvUI.GetItemsListFromActiveDirection();
-        directionalItemsList.Clear();
+        if (gm.containerInvUI.activeInventory != null)
+            gm.containerInvUI.AssignDirectionalInventory(gm.containerInvUI.activeDirection, gm.containerInvUI.activeInventory);
+        else
+            gm.containerInvUI.RemoveDirectionalInventory(gm.containerInvUI.activeDirection);
 
         if (gm.containerInvUI.activeInventory != null)
-        {
-            for (int i = 0; i < gm.containerInvUI.activeInventory.items.Count; i++)
-            {
-                directionalItemsList.Add(gm.containerInvUI.activeInventory.items[i]);
-            }
-        }
+            gm.containerInvUI.PopulateDirectionalItemsList(gm.containerInvUI.activeInventory, gm.containerInvUI.activeDirection);
         else
         {
-            List<ItemData> groundItemsList = gm.containerInvUI.GetGroundItemsListFromDirection(gm.containerInvUI.activeDirection);
-            for (int i = 0; i < groundItemsList.Count; i++)
-            {
-                Debug.Log(groundItemsList[i].itemName);
-                directionalItemsList.Add(groundItemsList[i]);
-            }
+            gm.containerInvUI.PopulateDirectionalItemsList(gm.containerInvUI.GetGroundItemsListFromDirection(gm.containerInvUI.activeDirection), gm.containerInvUI.activeDirection);
+            gm.containerInvUI.GetSideBarButtonFromDirection(gm.containerInvUI.activeDirection).icon.sprite = gm.containerInvUI.floorIconSprite;
         }
 
-        gm.containerInvUI.PopulateInventoryUI(directionalItemsList, gm.containerInvUI.activeDirection);
+        gm.containerInvUI.PopulateInventoryUI(gm.containerInvUI.GetItemsListFromActiveDirection(), gm.containerInvUI.activeDirection);
     }
 
     public void Show()

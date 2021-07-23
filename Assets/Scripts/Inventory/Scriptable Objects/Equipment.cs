@@ -61,9 +61,9 @@ public class Equipment : Item
         if (itemUsed)
         {
             if (itemEquipped)
-                equipmentManager.StartCoroutine(equipmentManager.UseAPAndSetupEquipment(newEquipment, equipSlot, itemDataUsing, oldItemData));
+                equipmentManager.StartCoroutine(equipmentManager.UseAPAndSetupEquipment(newEquipment, equipSlot, itemDataUsing, oldItemData, false));
             else
-                equipmentManager.StartCoroutine(equipmentManager.UseAPAndSetupEquipment(newEquipment, equipSlot, null, oldItemData));
+                equipmentManager.StartCoroutine(equipmentManager.UseAPAndSetupEquipment(newEquipment, equipSlot, null, oldItemData, false));
 
             base.Use(equipmentManager, equipSlot, inventory, invItem, itemCount);
             GameManager.instance.playerInvUI.UpdateUI();
