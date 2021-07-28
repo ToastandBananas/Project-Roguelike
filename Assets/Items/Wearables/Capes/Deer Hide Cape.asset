@@ -28,7 +28,17 @@ MonoBehaviour:
   maxBaseDurability: 110
   primaryEquippedSprite: {fileID: 487791989738457031, guid: 992907f17986c6e4db17537373ad9f85, type: 3}
   secondaryEquippedSprite: {fileID: 0}
-  minBaseDefense: 2
-  maxBaseDefense: 3
+  minBaseTorsoDefense: 2
+  maxBaseTorsoDefense: 4
+  minBaseHeadDefense: 0
+  maxBaseHeadDefense: 0
+  minBaseArmDefense: 1
+  maxBaseArmDefense: 2
+  minBaseHandDefense: 0
+  maxBaseHandDefense: 0
+  minBaseLegDefense: 1
+  maxBaseLegDefense: 2
+  minBaseFootDefense: 0
+  maxBaseFootDefense: 0
   coldResistance: 0
   heatResistance: 0

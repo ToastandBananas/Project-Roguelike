@@ -1,26 +1,67 @@
 using System.Collections;
 using UnityEngine;
 
+public enum BodyPart { Torso, Head, LeftArm, RightArm, LeftLeg, RightLeg, LeftHand, RightHand, LeftFoot, RightFoot }
+
 public class CharacterStats : Stats
 {
+    public Stat maxHeadHealth;
+    public int currentHeadHealth { get; private set; }
+    public Stat maxLeftArmHealth;
+    public int currentLeftArmHealth { get; private set; }
+    public Stat maxRightArmHealth;
+    public int currentRightArmHealth { get; private set; }
+    public Stat maxLeftHandHealth;
+    public int currentLeftHandHealth { get; private set; }
+    public Stat maxRightHandHealth;
+    public int currentRightHandHealth { get; private set; }
+    public Stat maxLeftLegHealth;
+    public int currentLeftLegHealth { get; private set; }
+    public Stat maxRightLegHealth;
+    public int currentRightLegHealth { get; private set; }
+    public Stat maxLeftFootHealth;
+    public int currentLeftFootHealth { get; private set; }
+    public Stat maxRightFootHealth;
+    public int currentRightFootHealth { get; private set; }
+
+    [Header("Defense")]
+    public Stat torsoDefense;
+    public Stat headDefense;
+    public Stat armDefense;
+    public Stat handDefense;
+    public Stat legDefense;
+    public Stat footDefense;
+
+    [Header("AP")]
     public Stat maxAP;
     public int currentAP { get; private set; }
 
+    [Header("Weight/Volume")]
     public Stat maxPersonalInvWeight;
     public Stat maxPersonalInvVolume;
 
-    public Stat damage;
-    public Stat defense;
+    [Header("Damage")]
+    public Stat unarmedDamage;
 
     [HideInInspector] public CharacterManager characterManager;
+
+    public override void Awake()
+    {
+        base.Awake();
+        
+        currentHeadHealth = maxHeadHealth.GetValue();
+        currentLeftArmHealth = maxLeftArmHealth.GetValue();
+        currentRightArmHealth = maxRightArmHealth.GetValue();
+        currentLeftLegHealth = maxLeftLegHealth.GetValue();
+        currentRightLegHealth = maxRightLegHealth.GetValue();
+        currentAP = maxAP.GetValue();
+    }
 
     public override void Start()
     {
         base.Start();
 
         characterManager = GetComponentInParent<CharacterManager>();
-
-        currentAP = maxAP.GetValue();
 
         characterManager.equipmentManager.onWearableChanged += OnWearableChanged;
         characterManager.equipmentManager.onWeaponChanged += OnWeaponChanged;
@@ -120,15 +161,120 @@ public class CharacterStats : Stats
 
     public override int TakeDamage(int damage)
     {
-        damage -= defense.GetValue();
-        return base.TakeDamage(damage);
+        return TakeLocationalDamage(damage, GetBodyPartToHit());
+    }
+
+    int TakeLocationalDamage(int damage, BodyPart bodyPart)
+    {
+        damage -= GetDefense(bodyPart);
+
+        if (canTakeDamage)
+        {
+            if (damage <= 0)
+                damage = 1;
+
+            TextPopup.CreateDamagePopup(transform.position, damage, false);
+
+            switch (bodyPart)
+            {
+                case BodyPart.Torso:
+                    currentHealth -= damage;
+                    break;
+                case BodyPart.Head:
+                    currentHeadHealth -= damage;
+                    break;
+                case BodyPart.LeftArm:
+                    currentLeftArmHealth -= damage;
+                    break;
+                case BodyPart.RightArm:
+                    currentRightArmHealth -= damage;
+                    break;
+                case BodyPart.LeftLeg:
+                    currentLeftLegHealth -= damage;
+                    break;
+                case BodyPart.RightLeg:
+                    currentRightLegHealth -= damage;
+                    break;
+                case BodyPart.LeftHand:
+                    currentLeftHandHealth -= damage;
+                    break;
+                case BodyPart.RightHand:
+                    currentRightHandHealth -= damage;
+                    break;
+                case BodyPart.LeftFoot:
+                    currentLeftFootHealth -= damage;
+                    break;
+                case BodyPart.RightFoot:
+                    currentRightFootHealth -= damage;
+                    break;
+                default:
+                    break;
+            }
+            
+            if (currentHealth <= 0 || currentHeadHealth <= 0)
+                Die();
+        }
+
+        return damage;
+    }
+
+    BodyPart GetBodyPartToHit()
+    {
+        int random = Random.Range(0, 100);
+        if (random < 40)
+            return BodyPart.Torso;
+        else if (random < 48)
+            return BodyPart.Head;
+        else if (random < 58)
+            return BodyPart.LeftArm;
+        else if (random < 68)
+            return BodyPart.RightArm;
+        else if (random < 78)
+            return BodyPart.LeftLeg;
+        else if (random < 88)
+            return BodyPart.RightArm;
+        else if (random < 92)
+            return BodyPart.LeftHand;
+        else if (random < 96)
+            return BodyPart.RightHand;
+        else if (random < 98)
+            return BodyPart.LeftFoot;
+        else
+            return BodyPart.RightFoot;
+    }
+
+    int GetDefense(BodyPart bodyPart)
+    {
+        switch (bodyPart)
+        {
+            case BodyPart.Torso:
+                return torsoDefense.GetValue();
+            case BodyPart.Head:
+                return headDefense.GetValue();
+            case BodyPart.LeftArm:
+                return armDefense.GetValue();
+            case BodyPart.RightArm:
+                return armDefense.GetValue();
+            case BodyPart.LeftLeg:
+                return legDefense.GetValue();
+            case BodyPart.RightLeg:
+                return legDefense.GetValue();
+            case BodyPart.LeftHand:
+                return handDefense.GetValue();
+            case BodyPart.RightHand:
+                return handDefense.GetValue();
+            case BodyPart.LeftFoot:
+                return footDefense.GetValue();
+            case BodyPart.RightFoot:
+                return footDefense.GetValue();
+            default:
+                return torsoDefense.GetValue();
+        }
     }
 
     public override void Die()
     {
         isDeadOrDestroyed = true;
-
-        gm.flavorText.WriteLine(gm.flavorText.GetPronoun(characterManager, true) + " died.");
 
         if (characterManager.isNPC) // If an NPC dies
         {
@@ -185,31 +331,35 @@ public class CharacterStats : Stats
         }
 
         characterManager.characterSpriteManager.SetToDeathSprite(characterManager);
+
+        gm.flavorText.StartCoroutine(gm.flavorText.DelayWriteLine(gm.flavorText.GetPronoun(characterManager, true) + " died."));
     }
 
     public virtual void OnWearableChanged(ItemData newItemData, ItemData oldItemData)
     {
         if (newItemData != null)
         {
-            defense.AddModifier(newItemData.defense);
+            torsoDefense.AddModifier(newItemData.torsoDefense);
+            headDefense.AddModifier(newItemData.headDefense);
+            armDefense.AddModifier(newItemData.armDefense);
+            handDefense.AddModifier(newItemData.handDefense);
+            legDefense.AddModifier(newItemData.legDefense);
+            footDefense.AddModifier(newItemData.footDefense);
         }
 
         if (oldItemData != null)
         {
-            defense.RemoveModifier(oldItemData.defense);
+            torsoDefense.RemoveModifier(oldItemData.torsoDefense);
+            headDefense.RemoveModifier(newItemData.headDefense);
+            armDefense.RemoveModifier(newItemData.armDefense);
+            handDefense.RemoveModifier(newItemData.handDefense);
+            legDefense.RemoveModifier(newItemData.legDefense);
+            footDefense.RemoveModifier(newItemData.footDefense);
         }
     }
 
     public virtual void OnWeaponChanged(ItemData newItemData, ItemData oldItemData)
     {
-        if (newItemData != null)
-        {
-            damage.AddModifier(newItemData.damage);
-        }
-
-        if (oldItemData != null)
-        {
-            damage.RemoveModifier(oldItemData.damage);
-        }
+        
     }
 }

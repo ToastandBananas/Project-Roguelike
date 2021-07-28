@@ -1298,7 +1298,7 @@ public class UIManager : MonoBehaviour
         return newItemDataObject;
     }
 
-    public bool UIMenuActive()
+    public bool InventoryMenusOpen()
     {
         if (gm.playerInvUI.inventoryParent.activeSelf || gm.containerInvUI.inventoryParent.activeSelf)
             return true;

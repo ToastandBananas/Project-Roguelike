@@ -2,15 +2,16 @@ using UnityEngine;
 
 public class Stats : MonoBehaviour
 {
+    [Header("Health")]
     public Stat maxHealth;
-    public int currentHealth { get; private set; }
+    [HideInInspector] public int currentHealth;
 
     [HideInInspector] public bool canTakeDamage = true;
     [HideInInspector] public bool isDeadOrDestroyed;
 
     [HideInInspector] public GameManager gm;
 
-    void Awake()
+    public virtual void Awake()
     {
         currentHealth = maxHealth.GetValue();
     }

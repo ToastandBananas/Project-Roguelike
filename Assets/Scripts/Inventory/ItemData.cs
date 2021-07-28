@@ -23,7 +23,12 @@ public class ItemData : MonoBehaviour
     public int treeDamage;
 
     [Header("Armor Data")]
-    public int defense;
+    public int torsoDefense;
+    public int headDefense;
+    public int armDefense;
+    public int handDefense;
+    public int legDefense;
+    public int footDefense;
 
     [Header("Shield Data")]
     public int shieldBashDamage;
@@ -75,7 +80,12 @@ public class ItemData : MonoBehaviour
         dataReceiver.treeDamage = dataGiver.treeDamage;
 
         // Armor Data
-        dataReceiver.defense = dataGiver.defense;
+        dataReceiver.torsoDefense = dataGiver.torsoDefense;
+        dataReceiver.headDefense = dataGiver.headDefense;
+        dataReceiver.armDefense = dataGiver.armDefense;
+        dataReceiver.handDefense = dataGiver.handDefense;
+        dataReceiver.legDefense = dataGiver.legDefense;
+        dataReceiver.footDefense = dataGiver.footDefense;
 
         // Shield Data
         dataReceiver.shieldBashDamage = dataGiver.shieldBashDamage;
@@ -122,12 +132,16 @@ public class ItemData : MonoBehaviour
             else if (item.IsWearable())
             {
                 Wearable wearable = (Wearable)equipment;
-                defense = Random.Range(wearable.minBaseDefense, wearable.maxBaseDefense + 1);
+                torsoDefense = Random.Range(wearable.minBaseTorsoDefense, wearable.maxBaseTorsoDefense + 1);
+                headDefense = Random.Range(wearable.minBaseHeadDefense, wearable.maxBaseHeadDefense + 1);
+                armDefense = Random.Range(wearable.minBaseArmDefense, wearable.maxBaseArmDefense + 1);
+                handDefense = Random.Range(wearable.minBaseHandDefense, wearable.maxBaseHandDefense + 1);
+                legDefense = Random.Range(wearable.minBaseLegDefense, wearable.maxBaseLegDefense + 1);
+                footDefense = Random.Range(wearable.minBaseFootDefense, wearable.maxBaseFootDefense + 1);
             }
             else if (item.IsShield())
             {
                 Shield shield = (Shield)equipment;
-                defense = Random.Range(shield.minBaseDefense, shield.maxBaseDefense + 1);
                 shieldBashDamage = Random.Range(shield.minShieldBashDamage, shield.maxShieldBashDamage + 1);
             }
         }
@@ -210,7 +224,14 @@ public class ItemData : MonoBehaviour
         damage = 0;
         treeDamage = 0;
         shieldBashDamage = 0;
-        defense = 0;
+
+        torsoDefense = 0;
+        headDefense = 0;
+        armDefense = 0;
+        handDefense = 0;
+        legDefense = 0;
+        footDefense = 0;
+
         freshness = 0;
         uses = 0;
 }
@@ -246,12 +267,16 @@ public class ItemData : MonoBehaviour
             else if (item.IsWearable())
             {
                 Wearable wearable = (Wearable)equipment;
-                totalPointsPossible += (wearable.maxBaseDefense - wearable.minBaseDefense) * 2;
+                totalPointsPossible += (wearable.maxBaseTorsoDefense - wearable.minBaseTorsoDefense) * 2;
+                totalPointsPossible += (wearable.maxBaseHeadDefense - wearable.minBaseHeadDefense) * 2;
+                totalPointsPossible += (wearable.maxBaseArmDefense - wearable.minBaseArmDefense) * 2;
+                totalPointsPossible += (wearable.maxBaseHandDefense - wearable.minBaseHandDefense) * 2;
+                totalPointsPossible += (wearable.maxBaseLegDefense - wearable.minBaseLegDefense) * 2;
+                totalPointsPossible += (wearable.maxBaseFootDefense - wearable.minBaseFootDefense) * 2;
             }
             else if (item.IsShield())
             {
                 Shield shield = (Shield)equipment;
-                totalPointsPossible += (shield.maxBaseDefense - shield.minBaseDefense) * 2;
                 totalPointsPossible += (shield.maxShieldBashDamage - shield.minShieldBashDamage);
             }
         }
@@ -291,12 +316,16 @@ public class ItemData : MonoBehaviour
             else if (item.IsWearable())
             {
                 Wearable wearable = (Wearable)equipment;
-                pointIncrease += (defense - wearable.minBaseDefense) * 2; // Defense contributes to value twice as much
+                pointIncrease += (torsoDefense - wearable.minBaseTorsoDefense) * 2; // Defense contributes to value twice as much
+                pointIncrease += (headDefense - wearable.minBaseHeadDefense) * 2;
+                pointIncrease += (armDefense - wearable.minBaseArmDefense) * 2;
+                pointIncrease += (handDefense - wearable.minBaseHandDefense) * 2;
+                pointIncrease += (legDefense - wearable.minBaseLegDefense) * 2;
+                pointIncrease += (footDefense - wearable.minBaseFootDefense) * 2;
             }
             else if (item.IsShield())
             {
                 Shield shield = (Shield)equipment;
-                pointIncrease += (defense - shield.minBaseDefense) * 2; // Defense contributes to value twice as much
                 pointIncrease += (shieldBashDamage = shield.minShieldBashDamage);
             }
         }
@@ -343,19 +372,39 @@ public class ItemData : MonoBehaviour
             else if (item.IsWearable())
             {
                 Wearable wearable = (Wearable)equipment;
-                if (defense > wearable.maxBaseDefense)
-                    defense = wearable.maxBaseDefense;
-                else if (defense < wearable.minBaseDefense)
-                    defense = wearable.minBaseDefense;
+                if (torsoDefense > wearable.maxBaseTorsoDefense)
+                    torsoDefense = wearable.maxBaseTorsoDefense;
+                else if (torsoDefense < wearable.minBaseTorsoDefense)
+                    torsoDefense = wearable.minBaseTorsoDefense;
+
+                if (headDefense > wearable.maxBaseHeadDefense)
+                    headDefense = wearable.maxBaseHeadDefense;
+                else if (headDefense < wearable.minBaseHeadDefense)
+                    headDefense = wearable.minBaseHeadDefense;
+
+                if (armDefense > wearable.maxBaseArmDefense)
+                    armDefense = wearable.maxBaseArmDefense;
+                else if (armDefense < wearable.minBaseArmDefense)
+                    armDefense = wearable.minBaseArmDefense;
+
+                if (handDefense > wearable.maxBaseHandDefense)
+                    handDefense = wearable.maxBaseHandDefense;
+                else if (handDefense < wearable.minBaseHandDefense)
+                    handDefense = wearable.minBaseHandDefense;
+
+                if (legDefense > wearable.maxBaseLegDefense)
+                    legDefense = wearable.maxBaseLegDefense;
+                else if (legDefense < wearable.minBaseLegDefense)
+                    legDefense = wearable.minBaseLegDefense;
+
+                if (footDefense > wearable.maxBaseFootDefense)
+                    footDefense = wearable.maxBaseFootDefense;
+                else if (footDefense < wearable.minBaseFootDefense)
+                    footDefense = wearable.minBaseFootDefense;
             }
             else if (item.IsShield())
             {
                 Shield shield = (Shield)equipment;
-                if (defense > shield.maxBaseDefense)
-                    defense = shield.maxBaseDefense;
-                else if (defense < shield.minBaseDefense)
-                    defense = shield.minBaseDefense;
-
                 if (shieldBashDamage > shield.maxShieldBashDamage)
                     shieldBashDamage = shield.maxShieldBashDamage;
                 else if (shieldBashDamage < shield.minShieldBashDamage)

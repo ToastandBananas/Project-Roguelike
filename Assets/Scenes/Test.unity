@@ -857,7 +857,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 600}
+  m_SizeDelta: {x: 0, y: 1080}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &134291594
 MonoBehaviour:
@@ -966,7 +966,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.05660379, g: 0.05660379, b: 0.05660379, a: 0.9372549}
+  m_Color: {r: 0.05660379, g: 0.05660379, b: 0.05660379, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5335,9 +5335,55 @@ MonoBehaviour:
   maxHealth:
     baseValue: 100
     modifiers: 
+  currentHealth: 0
   canTakeDamage: 1
   isDeadOrDestroyed: 0
   gm: {fileID: 0}
+  maxHeadHealth:
+    baseValue: 50
+    modifiers: 
+  maxLeftArmHealth:
+    baseValue: 75
+    modifiers: 
+  maxRightArmHealth:
+    baseValue: 75
+    modifiers: 
+  maxLeftHandHealth:
+    baseValue: 35
+    modifiers: 
+  maxRightHandHealth:
+    baseValue: 35
+    modifiers: 
+  maxLeftLegHealth:
+    baseValue: 75
+    modifiers: 
+  maxRightLegHealth:
+    baseValue: 75
+    modifiers: 
+  maxLeftFootHealth:
+    baseValue: 35
+    modifiers: 
+  maxRightFootHealth:
+    baseValue: 35
+    modifiers: 
+  torsoDefense:
+    baseValue: 0
+    modifiers: 
+  headDefense:
+    baseValue: 0
+    modifiers: 
+  armDefense:
+    baseValue: 0
+    modifiers: 
+  handDefense:
+    baseValue: 0
+    modifiers: 
+  legDefense:
+    baseValue: 0
+    modifiers: 
+  footDefense:
+    baseValue: 0
+    modifiers: 
   maxAP:
     baseValue: 100
     modifiers: 
@@ -5347,10 +5393,7 @@ MonoBehaviour:
   maxPersonalInvVolume:
     baseValue: 25
     modifiers: 
-  damage:
-    baseValue: 0
-    modifiers: 
-  defense:
+  unarmedDamage:
     baseValue: 0
     modifiers: 
   characterManager: {fileID: 0}
@@ -11080,7 +11123,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 737486873}
   m_HandleRect: {fileID: 737486872}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -14099,7 +14142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.05660379, g: 0.05660379, b: 0.05660379, a: 0.9372549}
+  m_Color: {r: 0.05660379, g: 0.05660379, b: 0.05660379, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -15409,11 +15452,57 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth:
-    baseValue: 100
+    baseValue: 80
     modifiers: 
+  currentHealth: 0
   canTakeDamage: 1
   isDeadOrDestroyed: 0
   gm: {fileID: 0}
+  maxHeadHealth:
+    baseValue: 40
+    modifiers: 
+  maxLeftArmHealth:
+    baseValue: 60
+    modifiers: 
+  maxRightArmHealth:
+    baseValue: 60
+    modifiers: 
+  maxLeftHandHealth:
+    baseValue: 25
+    modifiers: 
+  maxRightHandHealth:
+    baseValue: 25
+    modifiers: 
+  maxLeftLegHealth:
+    baseValue: 60
+    modifiers: 
+  maxRightLegHealth:
+    baseValue: 60
+    modifiers: 
+  maxLeftFootHealth:
+    baseValue: 25
+    modifiers: 
+  maxRightFootHealth:
+    baseValue: 25
+    modifiers: 
+  torsoDefense:
+    baseValue: 0
+    modifiers: 
+  headDefense:
+    baseValue: 0
+    modifiers: 
+  armDefense:
+    baseValue: 0
+    modifiers: 
+  handDefense:
+    baseValue: 0
+    modifiers: 
+  legDefense:
+    baseValue: 0
+    modifiers: 
+  footDefense:
+    baseValue: 0
+    modifiers: 
   maxAP:
     baseValue: 100
     modifiers: 
@@ -15423,10 +15512,7 @@ MonoBehaviour:
   maxPersonalInvVolume:
     baseValue: 10
     modifiers: 
-  damage:
-    baseValue: 0
-    modifiers: 
-  defense:
+  unarmedDamage:
     baseValue: 0
     modifiers: 
   characterManager: {fileID: 0}

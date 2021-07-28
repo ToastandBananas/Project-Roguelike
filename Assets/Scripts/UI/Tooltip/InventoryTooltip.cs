@@ -42,18 +42,31 @@ public class InventoryTooltip : Tooltip
         }
         else if (itemData.item.IsShield())
         {
-            // Defense
-            stringBuilder.Append("Defense: " + itemData.defense + "\n");
-
             // Shield bash damage
             stringBuilder.Append("Shield Bash Damage: " + itemData.shieldBashDamage + "\n\n");
         }
         else if (itemData.item.IsWearable())
         {
             Wearable wearable = (Wearable)itemData.item;
-
+            
             // Defense
-            stringBuilder.Append("Defense: " + itemData.defense + "\n");
+            if (itemData.headDefense > 0)
+                stringBuilder.Append("Head Defense: " + itemData.headDefense + "\n");
+
+            if (itemData.torsoDefense > 0)
+                stringBuilder.Append("Torso Defense: " + itemData.torsoDefense + "\n");
+
+            if (itemData.armDefense > 0)
+                stringBuilder.Append("Arms Defense: " + itemData.armDefense + "\n");
+
+            if (itemData.handDefense > 0)
+                stringBuilder.Append("Hands Defense: " + itemData.handDefense + "\n");
+
+            if (itemData.legDefense > 0)
+                stringBuilder.Append("Legs Defense: " + itemData.legDefense + "\n");
+
+            if (itemData.footDefense > 0)
+                stringBuilder.Append("Feet Defense: " + itemData.footDefense + "\n");
 
             // Cold resistance
             if (wearable.coldResistance > 0)

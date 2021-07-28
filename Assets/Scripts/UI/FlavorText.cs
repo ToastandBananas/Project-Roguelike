@@ -53,6 +53,12 @@ public class FlavorText : MonoBehaviour
         StartCoroutine(SetupScrollbar());
     }
 
+    public IEnumerator DelayWriteLine(string input)
+    {
+        yield return null;
+        WriteLine(input);
+    }
+
     public void WriteAttackLine(AttackType attackType, CharacterManager attacker, CharacterManager victim, int damage)
     {
         switch (attackType)
