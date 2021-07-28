@@ -205,6 +205,8 @@ public class DropItemController : MonoBehaviour
         itemData.currentStackSize = 0;
         if (invItemComingFrom != null)
             invItemComingFrom.UpdateInventoryWeightAndVolume();
+
+        gm.flavorText.WriteDropItemLine(itemData, amountToDrop);
     }
 
     public void SetupItemPickup(ItemPickup newItemPickup, ItemData itemData, int amountToDrop, Vector3 dropPosition)

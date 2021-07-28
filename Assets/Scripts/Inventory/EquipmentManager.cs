@@ -211,6 +211,8 @@ public class EquipmentManager : MonoBehaviour
             gm.containerInvUI.GetInventoriesListFromDirection(gm.containerInvUI.activeDirection).Remove(newItemData.bagInventory);
         }
 
+        gm.flavorText.WriteEquipLine(newItemData);
+
         return true;
     }
 
@@ -290,6 +292,7 @@ public class EquipmentManager : MonoBehaviour
                         gm.playerInvUI.backpackInventory.UpdateCurrentWeightAndVolume();
                         StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.backpackSidebarButton));
                         addItemEffectPlayed = true;
+                        gm.flavorText.WriteUnquipLine(oldItemData);
                     }
                     else if (gm.playerInvUI.leftHipPouchEquipped && gm.playerInvUI.leftHipPouchInventory != invComingFrom)
                         itemWasAddedToInv = gm.playerInvUI.leftHipPouchInventory.AddItem(invItemComingFrom, oldItemData, oldItemData.currentStackSize, invComingFrom, true);
@@ -302,6 +305,7 @@ public class EquipmentManager : MonoBehaviour
                         gm.playerInvUI.leftHipPouchInventory.UpdateCurrentWeightAndVolume();
                         StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.leftHipPouchSidebarButton));
                         addItemEffectPlayed = true;
+                        gm.flavorText.WriteUnquipLine(oldItemData);
                     }
                     else if (itemWasAddedToInv == false && gm.playerInvUI.rightHipPouchEquipped && gm.playerInvUI.rightHipPouchInventory != invComingFrom)
                         itemWasAddedToInv = gm.playerInvUI.rightHipPouchInventory.AddItem(invItemComingFrom, oldItemData, oldItemData.currentStackSize, invComingFrom, true);
@@ -314,6 +318,7 @@ public class EquipmentManager : MonoBehaviour
                         gm.playerInvUI.rightHipPouchInventory.UpdateCurrentWeightAndVolume();
                         StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.rightHipPouchSidebarButton));
                         addItemEffectPlayed = true;
+                        gm.flavorText.WriteUnquipLine(oldItemData);
                     }
                     else if (itemWasAddedToInv == false)
                         itemWasAddedToInv = gm.playerInvUI.personalInventory.AddItem(invItemComingFrom, oldItemData, oldItemData.currentStackSize, invComingFrom, true);
@@ -325,6 +330,7 @@ public class EquipmentManager : MonoBehaviour
 
                         gm.playerInvUI.personalInventory.UpdateCurrentWeightAndVolume();
                         StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.personalInventorySideBarButton));
+                        gm.flavorText.WriteUnquipLine(oldItemData);
                     }
                     else if (itemWasAddedToInv == false) // If we can't add it to the Inventory, drop it, but first we need to run the rest of the code in this method, so we'll just set a bool for now
                         shouldDropItem = true;
@@ -356,9 +362,15 @@ public class EquipmentManager : MonoBehaviour
 
                 // If we determined we should drop the item, then drop it
                 if (forceUnequip && shouldDropItem)
+                {
+                    gm.flavorText.WriteUnquipLine(oldItemData);
                     gm.dropItemController.ForceDropNearest(oldItemData, oldItemData.currentStackSize, invComingFrom, invItemComingFrom);
+                }
                 else if (shouldDropItem && canDropItem)
+                {
+                    gm.flavorText.WriteUnquipLine(oldItemData);
                     gm.dropItemController.DropItem(characterManager.transform.position, oldItemData, oldItemData.currentStackSize, invComingFrom, invItemComingFrom);
+                }
 
                 // If the item was a bag, be sure to subtract the weight/volume of the bag's contents
                 if (oldItemData.item.IsBag())

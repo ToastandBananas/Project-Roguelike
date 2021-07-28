@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7476aa059066dea4eba063a8f3820f3a, type: 3}
   m_Name: Stone Arrows
   m_EditorClassIdentifier: 
-  name: Stone Arrow(s)
+  name: Stone Arrow
   itemType: 2
   description: A simple wooden arrow with an arrowhead made of stone.
   maxStackSize: 50

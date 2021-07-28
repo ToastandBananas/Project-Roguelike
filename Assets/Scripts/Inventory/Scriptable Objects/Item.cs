@@ -22,7 +22,7 @@ public class Item : ScriptableObject
     [Header("Pickup Sprite")]
     public Sprite pickupSprite;
 
-    public virtual void Use(EquipmentManager equipmentManager, EquipmentSlot equipSlot, Inventory inventory, InventoryItem invItem, int itemCount)
+    public virtual void Use(CharacterManager characterManager, EquipmentSlot equipSlot, Inventory inventory, InventoryItem invItem, int itemCount)
     {
         if (invItem != null && invItem.itemData != null)
         {

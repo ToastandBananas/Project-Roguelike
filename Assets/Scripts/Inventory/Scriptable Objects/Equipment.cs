@@ -14,7 +14,7 @@ public class Equipment : Item
     public Sprite primaryEquippedSprite;
     public Sprite secondaryEquippedSprite;
 
-    public override void Use(EquipmentManager equipmentManager, EquipmentSlot equipSlot, Inventory inventory, InventoryItem invItem, int itemCount)
+    public override void Use(CharacterManager characterManager, EquipmentSlot equipSlot, Inventory inventory, InventoryItem invItem, int itemCount)
     {
         bool itemUsed = false;
         bool itemEquipped = false;
@@ -22,11 +22,11 @@ public class Equipment : Item
 
         // Setup temporary ItemDatas so that we can update the characters stats when they finish equipping/unequipping the item
         ItemData oldItemData = null;
-        if (equipmentManager.currentEquipment[(int)equipSlot] != null)
+        if (characterManager.equipmentManager.currentEquipment[(int)equipSlot] != null)
         {
-            oldItemData = GameManager.instance.objectPoolManager.GetItemDataFromPool(equipmentManager.currentEquipment[(int)equipSlot].item);
+            oldItemData = GameManager.instance.objectPoolManager.GetItemDataFromPool(characterManager.equipmentManager.currentEquipment[(int)equipSlot].item);
             oldItemData.gameObject.SetActive(true);
-            oldItemData.TransferData(equipmentManager.currentEquipment[(int)equipSlot], oldItemData);
+            oldItemData.TransferData(characterManager.equipmentManager.currentEquipment[(int)equipSlot], oldItemData);
             Inventory playersInv = null;
             if (invItem.itemData.item.IsBag())
             {
@@ -48,24 +48,25 @@ public class Equipment : Item
         // Equip the item
         if (invItem.myEquipmentManager == null)
         {
-            itemUsed = equipmentManager.Equip(invItem.itemData, invItem, equipSlot);
+            itemUsed = characterManager.equipmentManager.Equip(invItem.itemData, invItem, equipSlot);
             itemEquipped = true;
         }
         else
         {
             // Unequip the item
             EquipmentSlot itemDatasEquipSlot = invItem.myEquipmentManager.GetEquipmentSlotFromItemData(invItem.itemData);
-            itemUsed = equipmentManager.Unequip(itemDatasEquipSlot, true, true, false);
+            itemUsed = characterManager.equipmentManager.Unequip(itemDatasEquipSlot, true, true, false);
         }
 
         if (itemUsed)
         {
             if (itemEquipped)
-                equipmentManager.StartCoroutine(equipmentManager.UseAPAndSetupEquipment(newEquipment, equipSlot, itemDataUsing, oldItemData, false));
+                characterManager.equipmentManager.StartCoroutine(characterManager.equipmentManager.UseAPAndSetupEquipment(newEquipment, equipSlot, itemDataUsing, oldItemData, false));
             else
-                equipmentManager.StartCoroutine(equipmentManager.UseAPAndSetupEquipment(newEquipment, equipSlot, null, oldItemData, false));
+                characterManager.equipmentManager.StartCoroutine(characterManager.equipmentManager.UseAPAndSetupEquipment(newEquipment, equipSlot, null, oldItemData, false));
 
-            base.Use(equipmentManager, equipSlot, inventory, invItem, itemCount);
+            base.Use(characterManager, equipSlot, inventory, invItem, itemCount);
+
             GameManager.instance.playerInvUI.UpdateUI();
             GameManager.instance.containerInvUI.UpdateUI();
         }

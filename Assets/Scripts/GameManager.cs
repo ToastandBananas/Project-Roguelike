@@ -6,11 +6,13 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public ContextMenu contextMenu;
     [HideInInspector] public ContainerInventoryUI containerInvUI;
     [HideInInspector] public GameTiles gameTiles;
+    [HideInInspector] public FlavorText flavorText;
     [HideInInspector] public PlayerInventoryUI playerInvUI;
     [HideInInspector] public PlayerManager playerManager;
     [HideInInspector] public DropItemController dropItemController;
     [HideInInspector] public ObjectPoolManager objectPoolManager;
     [HideInInspector] public StackSizeSelector stackSizeSelector;
+    [HideInInspector] public TileInfo tileInfo;
     [HideInInspector] public TooltipManager tooltipManager;
     [HideInInspector] public TurnManager turnManager;
     [HideInInspector] public UIManager uiManager;
@@ -40,11 +42,13 @@ public class GameManager : MonoBehaviour
         apManager = APManager.instance;
         contextMenu = ContextMenu.instance;
         containerInvUI = ContainerInventoryUI.instance;
+        flavorText = FlavorText.instance;
         gameTiles = GameTiles.instance;
         playerInvUI = PlayerInventoryUI.instance;
         playerManager = PlayerManager.instance;
         dropItemController = DropItemController.instance;
         stackSizeSelector = StackSizeSelector.instance;
+        tileInfo = TileInfo.instance;
         tooltipManager = TooltipManager.instance;
         turnManager = TurnManager.instance;
         uiManager = UIManager.instance;

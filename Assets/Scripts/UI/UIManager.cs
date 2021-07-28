@@ -486,7 +486,7 @@ public class UIManager : MonoBehaviour
             {
                 if (inv.CompareTag("Dead Body"))
                 {
-                    Debug.Log("You cannot store items on a dead body.");
+                    gm.flavorText.WriteLine("<i>You cannot store items on a dead body.</i>");
                     PlaceItemBackToOriginalPosition(draggedInvItem);
                     return;
                 }
@@ -511,6 +511,9 @@ public class UIManager : MonoBehaviour
                         StartCoroutine(draggedInvItem.myEquipmentManager.UseAPAndSetupEquipment((Equipment)equippedItemData.item, draggedInvItemsEquipSlot, null, equippedItemData, false));
                     else
                         StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
+
+                    // Write some flavor text
+                    gm.flavorText.WriteTransferItemLine(draggedInvItem.itemData, startingItemCount, draggedInvItem.myEquipmentManager, draggedInvItem.myInventory, inv);
 
                     // If we took the item from an inventory, remove the item
                     RemoveDraggedItem(draggedInvItem, startingItemCount);
@@ -577,6 +580,9 @@ public class UIManager : MonoBehaviour
                         StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
                 }
 
+                // Write some flavor text
+                gm.flavorText.WriteTakeItemLine(draggedInvItem.itemData, startingItemCount, draggedInvItem.myInventory, inv);
+
                 // Remove, unequip or clear the item we were dragging, depending where it's coming from
                 RemoveDraggedItem(draggedInvItem, startingItemCount);
             }
@@ -593,7 +599,7 @@ public class UIManager : MonoBehaviour
             {
                 if (activeInvUI == gm.containerInvUI && activeInvUI.activeInventory.CompareTag("Dead Body"))
                 {
-                    Debug.Log("You cannot store items on a dead body.");
+                    gm.flavorText.WriteLine("<i>You cannot store items on a dead body.</i>");
                     PlaceItemBackToOriginalPosition(draggedInvItem);
                     return;
                 }
@@ -652,6 +658,12 @@ public class UIManager : MonoBehaviour
                         StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
                 }
 
+                // Write some flavor text
+                if (activeInvUI == gm.containerInvUI)
+                    gm.flavorText.WriteTransferItemLine(draggedInvItem.itemData, startingItemCount, draggedInvItem.myEquipmentManager, draggedInvItem.myInventory, activeInvUI.activeInventory);
+                else
+                    gm.flavorText.WriteTakeItemLine(draggedInvItem.itemData, startingItemCount, draggedInvItem.myInventory, activeInvUI.activeInventory);
+
                 // Remove, unequip or clear the item we were dragging, depending where it's coming from
                 RemoveDraggedItem(draggedInvItem, startingItemCount);
             }
@@ -684,7 +696,7 @@ public class UIManager : MonoBehaviour
             if (activeInvItem.itemData.item.IsBag()) // If it's a bag, try adding the item
             {
                 if (activeInvItem.disclosureWidget.expandedItems.Contains(draggedInvItem))
-                    Debug.Log("This item is already in the " + activeInvItem.itemData.itemName);
+                    gm.flavorText.WriteLine("<i>This item is already in the " + activeInvItem.itemData.itemName + ".</i>");
                 else if (draggedInvItem.itemData.item.IsBag() == false)
                 {
                     bool hasRoom = activeInvItem.itemData.bagInventory.HasRoomInInventory(draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize);
@@ -740,12 +752,12 @@ public class UIManager : MonoBehaviour
                     }
                 }
                 else
-                    Debug.Log("You can't put that in the " + activeInvItem.itemData.itemName);
+                    gm.flavorText.WriteLine("<i>You can't put that in the " + activeInvItem.itemData.itemName + ".</i>");
             }
             else if (activeInvItem.itemData.item.IsPortableContainer()) // If it's a portable container, try adding the item
             {
                 if (activeInvItem.disclosureWidget.expandedItems.Contains(draggedInvItem))
-                    Debug.Log("This item is already in the " + activeInvItem.itemData.itemName);
+                    gm.flavorText.WriteLine("<i>This item is already in the " + activeInvItem.itemData.itemName + ".</i>");
                 else if (draggedInvItem.itemData.item.IsBag() == false && draggedInvItem.itemData.item.IsPortableContainer() == false)
                 {
                     bool hasRoom = activeInvItem.itemData.bagInventory.HasRoomInInventory(draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize);
@@ -798,7 +810,7 @@ public class UIManager : MonoBehaviour
                     }
                 }
                 else
-                    Debug.Log("You can't put that in the " + activeInvItem.itemData.itemName);
+                    gm.flavorText.WriteLine("<i>You can't put that in the " + activeInvItem.itemData.itemName + ".</i>");
             }
             // If we the item we're dragging and dropping is the same as the active item and they have equal values, add to the active item's stack size
             else if (activeInvItem.itemData.item.maxStackSize > 1 && activeInvItem.itemData.currentStackSize < activeInvItem.itemData.item.maxStackSize 
@@ -808,6 +820,8 @@ public class UIManager : MonoBehaviour
 
                 if (draggedInvItem.itemData.currentStackSize == 0)
                     RemoveDraggedItem(draggedInvItem, startingItemCount);
+
+                gm.flavorText.WriteLine("You combined two stacks of " + activeInvItem.itemData.itemName + "s.");
 
                 activeInvItem.UpdateInventoryWeightAndVolume();
             }
@@ -1341,7 +1355,11 @@ public class UIManager : MonoBehaviour
         else if (gm.containerInvUI.emptyTileMaxVolume - gm.containerInvUI.GetTotalVolumeForTile(gm.dropItemController.GetDirectionFromDropPosition(groundPosition)) - itemDataComingFrom.item.volume >= 0)
             return true;
 
-        Debug.Log("There's not enough room on the ground to place the " + itemDataComingFrom.itemName);
+        if (itemDataComingFrom.currentStackSize == 1)
+            gm.flavorText.WriteLine("<i>There's not enough room on the ground to drop the " + itemDataComingFrom.itemName + ".</i>");
+        else
+            gm.flavorText.WriteLine("<i>There's not enough room on the ground to drop the " + itemDataComingFrom.itemName + "s.</i>");
+
         return false;
     }
 

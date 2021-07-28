@@ -141,4 +141,9 @@ public class APManager : MonoBehaviour
                 return 50;
         }
     }
+
+    public int GetConsumeAPCost(Consumable consumable)
+    {
+        return Mathf.RoundToInt((consumable.volume * 100) + (consumable.weight * 100));
+    }
 }

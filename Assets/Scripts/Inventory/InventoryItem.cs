@@ -159,7 +159,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         }
 
         if (itemData != null && gm.playerManager.isMyTurn && gm.playerManager.actionQueued == false)
-            itemData.item.Use(gm.playerManager.playerEquipmentManager, equipSlot, myInventory, this, amountToUse);
+            itemData.item.Use(gm.playerManager, equipSlot, myInventory, this, amountToUse);
     }
 
     public void UpdateAllItemTexts()
@@ -248,6 +248,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                     if (itemData.item.IsBag() && gm.containerInvUI.activeInventory == itemData.bagInventory)
                         gm.containerInvUI.RemoveBagFromGround(itemData.bagInventory);
 
+                    // Write some flavor text
+                    gm.flavorText.WriteTakeItemLine(itemData, startingItemCount, myInventory, gm.playerInvUI.activeInventory);
+
                     ClearItem();
                 }
                 else // If there wasn't enough room in the inventory, try adding 1 at a time, until we can't fit anymore
@@ -265,6 +268,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                     gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
                 else
                     gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+
+                // Write some flavor text
+                gm.flavorText.WriteTakeItemLine(itemData, startingItemCount, myInventory, gm.playerInvUI.activeInventory);
 
                 ClearItem();
             }
@@ -285,6 +291,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                             gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
                         else
                             gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+
+                        // Write some flavor text
+                        gm.flavorText.WriteTakeItemLine(itemData, startingItemCount, myInventory, gm.playerInvUI.activeInventory);
 
                         ClearItem();
                     }
@@ -328,6 +337,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                         EquipmentSlot equipmentSlot = myEquipmentManager.GetEquipmentSlotFromItemData(itemData);
                         myEquipmentManager.Unequip(equipmentSlot, false, false, false);
 
+                        // Write some flavor text
+                        gm.flavorText.WriteTransferItemLine(itemData, startingItemCount, myEquipmentManager, myInventory, gm.containerInvUI.activeInventory);
+
                         // Calculate and use AP
                         myEquipmentManager.StartCoroutine(myEquipmentManager.UseAPAndSetupEquipment((Equipment)tempItemData.item, equipmentSlot, null, tempItemData, false));
                     }
@@ -338,6 +350,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                             gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
                         else
                             gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+
+                        // Write some flavor text
+                        gm.flavorText.WriteTransferItemLine(itemData, startingItemCount, myEquipmentManager, myInventory, gm.containerInvUI.activeInventory);
 
                         ClearItem();
                     }
@@ -350,6 +365,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                         gm.containerInvUI.activeInventory.UpdateCurrentWeightAndVolume();
                         UpdateInventoryWeightAndVolume();
                         myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemData.item.pickupSprite, gm.containerInvUI.activeContainerSideBarButton, null));
+
+                        // Write some flavor text
+                        gm.flavorText.WriteTransferItemLine(itemData, startingItemCount - itemData.currentStackSize, myEquipmentManager, myInventory, gm.containerInvUI.activeInventory);
                     }
                 }
             }
@@ -438,6 +456,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         // If the item is ammunition, try adding here first
         if (itemAdding.itemType == ItemType.Ammo && gm.playerInvUI.quiverEquipped && itemToAdd.currentStackSize > 0)
         {
+            int startingStackSize = itemToAdd.currentStackSize;
             bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.quiverInventory, itemToAdd);
             if (someAdded)
             {
@@ -454,6 +473,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         if (itemToAdd != null && itemToAdd.currentStackSize > 0 && gm.playerInvUI.activeInventory != null && (gm.playerInvUI.activeInventory != gm.playerInvUI.keysInventory || itemToAdd.item.itemType == ItemType.Key) && itemToAdd.item.maxStackSize > 1
             && gm.playerInvUI.activeInventory != gm.playerInvUI.quiverInventory)
         {
+            int startingStackSize = itemToAdd.currentStackSize;
             bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.activeInventory, itemToAdd);
             if (someAdded)
             {
@@ -469,6 +489,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         // Now try to fit the item in other equipped bags
         if (itemToAdd != null && itemToAdd.currentStackSize > 0 && gm.playerInvUI.backpackEquipped && gm.playerInvUI.activeInventory != gm.playerInvUI.backpackInventory)
         {
+            int startingStackSize = itemToAdd.currentStackSize;
             bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.backpackInventory, itemToAdd);
             if (someAdded)
             {
@@ -483,6 +504,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
         if (itemToAdd != null && itemToAdd.currentStackSize > 0 && gm.playerInvUI.leftHipPouchEquipped && gm.playerInvUI.activeInventory != gm.playerInvUI.leftHipPouchInventory)
         {
+            int startingStackSize = itemToAdd.currentStackSize;
             bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.leftHipPouchInventory, itemToAdd);
             if (someAdded)
             {
@@ -497,6 +519,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
         if (itemToAdd != null && itemToAdd.currentStackSize > 0 && gm.playerInvUI.rightHipPouchEquipped && gm.playerInvUI.activeInventory != gm.playerInvUI.rightHipPouchInventory)
         {
+            int startingStackSize = itemToAdd.currentStackSize;
             bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.rightHipPouchInventory, itemToAdd);
             if (someAdded)
             {
@@ -512,6 +535,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         // Now try to fit the item in the player's personal inventory
         if (itemToAdd != null && itemToAdd.currentStackSize > 0 && gm.playerInvUI.activeInventory != gm.playerInvUI.personalInventory)
         {
+            int startingStackSize = itemToAdd.currentStackSize;
             bool someAdded = AddItemToInventory_OneAtATime(myInventory, gm.playerInvUI.personalInventory, itemToAdd);
             if (someAdded)
             {
@@ -558,6 +582,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                     else
                         gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, stackSize, bagInvWeight, bagInvVolume, false));
 
+                    // Write some flavor text
+                    gm.flavorText.WriteTakeItemLine(itemData, stackSize, invComingFrom, invAddingTo);
+
                     ClearItem();
                     return someAdded;
                 }
@@ -573,6 +600,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                     gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, amountAdded, bagInvWeight, bagInvVolume, true));
                 else
                     gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, amountAdded, bagInvWeight, bagInvVolume, false));
+
+                // Write some flavor text
+                gm.flavorText.WriteTakeItemLine(itemData, stackSize - itemData.currentStackSize, invComingFrom, invAddingTo);
 
                 gm.containerInvUI.UpdateUI();
                 return someAdded;
@@ -611,10 +641,18 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                                 itemDatasInvItem.UpdateInventoryWeightAndVolume();
 
                             if (itemDataComingFrom.currentStackSize == 0)
+                            {
+                                // Write some flavor text
+                                gm.flavorText.WriteDropItemLine(itemDataComingFrom, itemCount);
                                 return;
+                            }
                         }
                         else
+                        {
+                            // Write some flavor text
+                            gm.flavorText.WriteDropItemLine(itemDataComingFrom, itemCount - itemDataComingFrom.currentStackSize);
                             return;
+                        }
                     }
                     else
                         break;

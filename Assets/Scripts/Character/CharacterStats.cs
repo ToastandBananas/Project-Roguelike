@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class CharacterStats : Stats
@@ -13,12 +14,11 @@ public class CharacterStats : Stats
 
     [HideInInspector] public CharacterManager characterManager;
 
-    GameManager gm;
-
-    void Start()
+    public override void Start()
     {
+        base.Start();
+
         characterManager = GetComponentInParent<CharacterManager>();
-        gm = GameManager.instance;
 
         currentAP = maxAP.GetValue();
 
@@ -65,16 +65,71 @@ public class CharacterStats : Stats
         currentAP += amountToAdd;
     }
 
-    public override void TakeDamage(int damage)
+    public void Consume(Consumable consumable)
+    {
+        Heal(consumable.healAmount);
+        gm.flavorText.WriteConsumeLine(consumable, characterManager);
+    }
+
+    public IEnumerator UseAPAndConsume(Consumable consumable)
+    {
+        characterManager.actionQueued = true;
+
+        while (gm.turnManager.IsPlayersTurn() == false)
+        {
+            yield return null;
+        }
+
+        if (characterManager.remainingAPToBeUsed > 0)
+        {
+            if (characterManager.remainingAPToBeUsed <= characterManager.characterStats.currentAP)
+            {
+                Consume(consumable);
+                characterManager.actionQueued = false;
+                characterManager.characterStats.UseAP(characterManager.remainingAPToBeUsed);
+
+                if (characterManager.characterStats.currentAP <= 0)
+                    gm.turnManager.FinishTurn(characterManager);
+            }
+            else
+            {
+                characterManager.characterStats.UseAP(characterManager.characterStats.currentAP);
+                gm.turnManager.FinishTurn(characterManager);
+                StartCoroutine(UseAPAndConsume(consumable));
+            }
+        }
+        else
+        {
+            int remainingAP = characterManager.characterStats.UseAPAndGetRemainder(gm.apManager.GetConsumeAPCost(consumable));
+            if (remainingAP == 0)
+            {
+                Consume(consumable);
+                characterManager.actionQueued = false;
+
+                if (characterManager.characterStats.currentAP <= 0)
+                    gm.turnManager.FinishTurn(characterManager);
+            }
+            else
+            {
+                characterManager.remainingAPToBeUsed = remainingAP;
+                gm.turnManager.FinishTurn(characterManager);
+                StartCoroutine(UseAPAndConsume(consumable));
+            }
+        }
+    }
+
+    public override int TakeDamage(int damage)
     {
         damage -= defense.GetValue();
-        base.TakeDamage(damage);
+        return base.TakeDamage(damage);
     }
 
     public override void Die()
     {
-        base.Die();
-        Debug.Log(name + " died.");
+        isDeadOrDestroyed = true;
+
+        gm.flavorText.WriteLine(gm.flavorText.GetPronoun(characterManager, true) + " died.");
+
         if (characterManager.isNPC) // If an NPC dies
         {
             if (characterManager.equipmentManager != null)

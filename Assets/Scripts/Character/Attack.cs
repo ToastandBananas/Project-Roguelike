@@ -72,18 +72,27 @@ public class Attack : MonoBehaviour
     {
         StartCoroutine(characterManager.movement.BlockedMovement(targetsStats.transform.position));
         targetsStats.TakeDamage(1);
+
+        CharacterStats targetCharStats = (CharacterStats)targetsStats;
+        gm.flavorText.WriteAttackLine(AttackType.Unarmed, characterManager, targetCharStats.characterManager, 1);
     }
 
     public void PrimaryWeaponAttack(Stats targetsStats)
     {
         StartCoroutine(characterManager.movement.BlockedMovement(targetsStats.transform.position));
-        targetsStats.TakeDamage(characterManager.equipmentManager.GetPrimaryWeaponAttackDamage());
+        int damage = targetsStats.TakeDamage(characterManager.equipmentManager.GetPrimaryWeaponAttackDamage());
+
+        CharacterStats targetCharStats = (CharacterStats)targetsStats;
+        gm.flavorText.WriteAttackLine(AttackType.PrimaryWeapon, characterManager, targetCharStats.characterManager, damage);
     }
 
     public void SecondaryWeaponAttack(Stats targetsStats)
     {
         StartCoroutine(characterManager.movement.BlockedMovement(targetsStats.transform.position));
-        targetsStats.TakeDamage(characterManager.equipmentManager.GetSecondaryWeaponAttackDamage());
+        int damage = targetsStats.TakeDamage(characterManager.equipmentManager.GetSecondaryWeaponAttackDamage());
+
+        CharacterStats targetCharStats = (CharacterStats)targetsStats;
+        gm.flavorText.WriteAttackLine(AttackType.SecondaryWeapon, characterManager, targetCharStats.characterManager, damage);
     }
 
     public void DualWieldAttack(Stats targetsStats)
