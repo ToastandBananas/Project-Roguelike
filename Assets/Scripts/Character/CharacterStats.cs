@@ -159,19 +159,14 @@ public class CharacterStats : Stats
         }
     }
 
-    public override int TakeDamage(int damage)
-    {
-        return TakeLocationalDamage(damage, GetBodyPartToHit());
-    }
-
-    int TakeLocationalDamage(int damage, BodyPart bodyPart)
+    public int TakeLocationalDamage(int damage, BodyPart bodyPart)
     {
         damage -= GetDefense(bodyPart);
 
         if (canTakeDamage)
         {
-            if (damage <= 0)
-                damage = 1;
+            if (damage < 0)
+                damage = 0;
 
             TextPopup.CreateDamagePopup(transform.position, damage, false);
 
@@ -218,7 +213,7 @@ public class CharacterStats : Stats
         return damage;
     }
 
-    BodyPart GetBodyPartToHit()
+    public BodyPart GetBodyPartToHit()
     {
         int random = Random.Range(0, 100);
         if (random < 40)
@@ -332,7 +327,7 @@ public class CharacterStats : Stats
 
         characterManager.characterSpriteManager.SetToDeathSprite(characterManager);
 
-        gm.flavorText.StartCoroutine(gm.flavorText.DelayWriteLine(gm.flavorText.GetPronoun(characterManager, true) + " died."));
+        gm.flavorText.StartCoroutine(gm.flavorText.DelayWriteLine(gm.flavorText.GetPronoun(characterManager, true, false) + "died."));
     }
 
     public virtual void OnWearableChanged(ItemData newItemData, ItemData oldItemData)

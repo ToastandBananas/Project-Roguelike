@@ -28,7 +28,6 @@ public class Vision : MonoBehaviour
 
     public void CheckEnemyVisibility()
     {
-        Debug.Log("Checking enemy visibility");
         foreach (CharacterManager enemy in enemiesInRange)
         {
             Vector2 direction = (enemy.transform.position - transform.position).normalized;

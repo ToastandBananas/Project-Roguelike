@@ -71,28 +71,49 @@ public class Attack : MonoBehaviour
     public void UnarmedAttack(Stats targetsStats)
     {
         StartCoroutine(characterManager.movement.BlockedMovement(targetsStats.transform.position));
-        targetsStats.TakeDamage(1);
 
-        CharacterStats targetCharStats = (CharacterStats)targetsStats;
-        gm.flavorText.WriteAttackLine(AttackType.Unarmed, characterManager, targetCharStats.characterManager, 1);
+        if (targetsStats.locomotionType != LocomotionType.Inanimate)
+        {
+            CharacterStats targetCharStats = (CharacterStats)targetsStats;
+
+            BodyPart bodyPartToHit = targetCharStats.GetBodyPartToHit();
+            int damage = targetCharStats.TakeLocationalDamage(1, bodyPartToHit);
+
+            if (damage > 0)
+                gm.flavorText.WriteAttackLine(AttackType.Unarmed, bodyPartToHit, characterManager, targetCharStats.characterManager, damage);
+        }
     }
 
     public void PrimaryWeaponAttack(Stats targetsStats)
     {
         StartCoroutine(characterManager.movement.BlockedMovement(targetsStats.transform.position));
-        int damage = targetsStats.TakeDamage(characterManager.equipmentManager.GetPrimaryWeaponAttackDamage());
 
-        CharacterStats targetCharStats = (CharacterStats)targetsStats;
-        gm.flavorText.WriteAttackLine(AttackType.PrimaryWeapon, characterManager, targetCharStats.characterManager, damage);
+        if (targetsStats.locomotionType != LocomotionType.Inanimate)
+        {
+            CharacterStats targetCharStats = (CharacterStats)targetsStats;
+
+            BodyPart bodyPartToHit = targetCharStats.GetBodyPartToHit();
+            int damage = targetCharStats.TakeLocationalDamage(characterManager.equipmentManager.GetPrimaryWeaponAttackDamage(), bodyPartToHit);
+
+            if (damage > 0)
+                gm.flavorText.WriteAttackLine(AttackType.PrimaryWeapon, bodyPartToHit, characterManager, targetCharStats.characterManager, damage);
+        }
     }
 
     public void SecondaryWeaponAttack(Stats targetsStats)
     {
         StartCoroutine(characterManager.movement.BlockedMovement(targetsStats.transform.position));
-        int damage = targetsStats.TakeDamage(characterManager.equipmentManager.GetSecondaryWeaponAttackDamage());
 
-        CharacterStats targetCharStats = (CharacterStats)targetsStats;
-        gm.flavorText.WriteAttackLine(AttackType.SecondaryWeapon, characterManager, targetCharStats.characterManager, damage);
+        if (targetsStats.locomotionType != LocomotionType.Inanimate)
+        {
+            CharacterStats targetCharStats = (CharacterStats)targetsStats;
+
+            BodyPart bodyPartToHit = targetCharStats.GetBodyPartToHit();
+            int damage = targetsStats.TakeDamage(characterManager.equipmentManager.GetSecondaryWeaponAttackDamage());
+
+            if (damage > 0)
+                gm.flavorText.WriteAttackLine(AttackType.SecondaryWeapon, bodyPartToHit, characterManager, targetCharStats.characterManager, damage);
+        }
     }
 
     public void DualWieldAttack(Stats targetsStats)

@@ -1,7 +1,11 @@
 using UnityEngine;
 
+public enum LocomotionType { Inanimate, Humanoid, Biped, Quadruped, Hexapod, Octoped }
+
 public class Stats : MonoBehaviour
 {
+    public LocomotionType locomotionType = LocomotionType.Humanoid;
+
     [Header("Health")]
     public Stat maxHealth;
     [HideInInspector] public int currentHealth;
@@ -56,7 +60,6 @@ public class Stats : MonoBehaviour
     public virtual void Die()
     {
         isDeadOrDestroyed = true;
-
         gm.flavorText.WriteLine(name + " was destroyed.");
     }
 }
