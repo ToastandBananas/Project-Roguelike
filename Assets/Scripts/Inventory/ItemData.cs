@@ -32,6 +32,7 @@ public class ItemData : MonoBehaviour
 
     [Header("Shield Data")]
     public int shieldBashDamage;
+    public float blockChanceMultiplier;
 
     [Header("Consumable Data")]
     public int freshness = 100;
@@ -89,6 +90,7 @@ public class ItemData : MonoBehaviour
 
         // Shield Data
         dataReceiver.shieldBashDamage = dataGiver.shieldBashDamage;
+        dataReceiver.blockChanceMultiplier = dataGiver.blockChanceMultiplier;
     }
 
     public IEnumerator TransferDataWithDelay(ItemData dataGiver, ItemData dataReceiver)
@@ -128,6 +130,7 @@ public class ItemData : MonoBehaviour
                 Weapon weapon = (Weapon)equipment;
                 damage = Random.Range(weapon.minBaseDamage, weapon.maxBaseDamage + 1);
                 treeDamage = Random.Range(weapon.minBaseTreeDamage, weapon.maxBaseTreeDamage + 1);
+                blockChanceMultiplier = Mathf.RoundToInt(Random.Range(weapon.minBlockChanceMultiplier, weapon.maxBlockChanceMultiplier) * 100f) / 100f;
             }
             else if (item.IsWearable())
             {
@@ -143,6 +146,7 @@ public class ItemData : MonoBehaviour
             {
                 Shield shield = (Shield)equipment;
                 shieldBashDamage = Random.Range(shield.minShieldBashDamage, shield.maxShieldBashDamage + 1);
+                blockChanceMultiplier = Mathf.RoundToInt(Random.Range(shield.minBlockChanceMultiplier, shield.maxBlockChanceMultiplier) * 100f) / 100f;
             }
         }
         // Consumable class data
@@ -224,6 +228,7 @@ public class ItemData : MonoBehaviour
         damage = 0;
         treeDamage = 0;
         shieldBashDamage = 0;
+        blockChanceMultiplier = 0;
 
         torsoDefense = 0;
         headDefense = 0;
@@ -263,6 +268,8 @@ public class ItemData : MonoBehaviour
             {
                 Weapon weapon = (Weapon)equipment;
                 totalPointsPossible += (weapon.maxBaseDamage - weapon.minBaseDamage) * 2;
+                totalPointsPossible += (weapon.maxBaseTreeDamage - weapon.minBaseTreeDamage);
+                totalPointsPossible += (weapon.maxBlockChanceMultiplier - weapon.minBlockChanceMultiplier);
             }
             else if (item.IsWearable())
             {
@@ -278,6 +285,7 @@ public class ItemData : MonoBehaviour
             {
                 Shield shield = (Shield)equipment;
                 totalPointsPossible += (shield.maxShieldBashDamage - shield.minShieldBashDamage);
+                totalPointsPossible += (shield.maxBlockChanceMultiplier - shield.minBlockChanceMultiplier) * 2;
             }
         }
         else if (item.IsConsumable())
@@ -312,6 +320,7 @@ public class ItemData : MonoBehaviour
                 Weapon weapon = (Weapon)equipment;
                 pointIncrease += (damage - weapon.minBaseDamage) * 2; // Damage contributes to value twice as much
                 pointIncrease += (treeDamage - weapon.minBaseTreeDamage);
+                pointIncrease += (blockChanceMultiplier - weapon.minBlockChanceMultiplier);
             }
             else if (item.IsWearable())
             {
@@ -326,7 +335,8 @@ public class ItemData : MonoBehaviour
             else if (item.IsShield())
             {
                 Shield shield = (Shield)equipment;
-                pointIncrease += (shieldBashDamage = shield.minShieldBashDamage);
+                pointIncrease += (shieldBashDamage - shield.minShieldBashDamage);
+                pointIncrease += (blockChanceMultiplier - shield.minBlockChanceMultiplier) * 2;
             }
         }
         else if (item.IsConsumable())
@@ -368,6 +378,16 @@ public class ItemData : MonoBehaviour
                     damage = weapon.maxBaseDamage;
                 else if (damage < weapon.minBaseDamage)
                     damage = weapon.minBaseDamage;
+
+                if (treeDamage > weapon.maxBaseTreeDamage)
+                    treeDamage = weapon.maxBaseTreeDamage;
+                else if (treeDamage < weapon.minBaseTreeDamage)
+                    treeDamage = weapon.minBaseTreeDamage;
+
+                if (blockChanceMultiplier > weapon.maxBlockChanceMultiplier)
+                    blockChanceMultiplier = weapon.maxBlockChanceMultiplier;
+                else if (blockChanceMultiplier < weapon.minBlockChanceMultiplier)
+                    blockChanceMultiplier = weapon.minBlockChanceMultiplier;
             }
             else if (item.IsWearable())
             {
@@ -409,6 +429,11 @@ public class ItemData : MonoBehaviour
                     shieldBashDamage = shield.maxShieldBashDamage;
                 else if (shieldBashDamage < shield.minShieldBashDamage)
                     shieldBashDamage = shield.minShieldBashDamage;
+
+                if (blockChanceMultiplier > shield.maxBlockChanceMultiplier)
+                    blockChanceMultiplier = shield.maxBlockChanceMultiplier;
+                else if (blockChanceMultiplier < shield.minBlockChanceMultiplier)
+                    blockChanceMultiplier = shield.minBlockChanceMultiplier;
             }
         }
         else if (item.IsConsumable())
@@ -427,6 +452,12 @@ public class ItemData : MonoBehaviour
                     uses = 0;
             }
         }
+    }
+
+    public void DamageDurability(int damageAmount)
+    {
+        durability -= damageAmount / 4f;
+        durability = Mathf.RoundToInt(durability * 100f) / 100f;
     }
 
     /// <summary> 

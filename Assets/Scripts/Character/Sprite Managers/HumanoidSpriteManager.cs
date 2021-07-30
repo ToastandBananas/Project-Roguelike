@@ -167,7 +167,7 @@ public class HumanoidSpriteManager : CharacterSpriteManager
                 helmet.sprite = equipment.primaryEquippedSprite;
                 break;
             case EquipmentSlot.Shirt:
-                if (equipmentManager.TwoHandedWeaponEquipped())
+                if (equipmentManager.TwoHandedWeaponEquipped() || equipmentManager.isTwoHanding)
                     shirt.sprite = equipment.secondaryEquippedSprite;
                 else
                     shirt.sprite = equipment.primaryEquippedSprite;
@@ -179,13 +179,13 @@ public class HumanoidSpriteManager : CharacterSpriteManager
                 boots.sprite = equipment.primaryEquippedSprite;
                 break;
             case EquipmentSlot.Gloves:
-                if (equipmentManager.TwoHandedWeaponEquipped())
+                if (equipmentManager.TwoHandedWeaponEquipped() || equipmentManager.isTwoHanding)
                     gloves.sprite = equipment.secondaryEquippedSprite;
                 else
                     gloves.sprite = equipment.primaryEquippedSprite;
                 break;
             case EquipmentSlot.BodyArmor:
-                if (equipmentManager.TwoHandedWeaponEquipped())
+                if (equipmentManager.TwoHandedWeaponEquipped() || equipmentManager.isTwoHanding)
                     bodyArmor.sprite = equipment.secondaryEquippedSprite;
                 else
                     bodyArmor.sprite = equipment.primaryEquippedSprite;

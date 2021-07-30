@@ -12,6 +12,8 @@ public class Weapon : Equipment
     public int minBaseDamage = 1;
     public int maxBaseDamage = 5;
     public int minBaseTreeDamage, maxBaseTreeDamage;
+    [Range(0f, 1.8f)] public float minBlockChanceMultiplier = 0.2f;
+    [Range(0f, 1.8f)] public float maxBlockChanceMultiplier = 0.3f;
 
     public override bool IsWeapon()
     {

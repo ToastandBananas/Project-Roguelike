@@ -32,6 +32,13 @@ public class CharacterStats : Stats
     public Stat legDefense;
     public Stat footDefense;
 
+    [Header("Main Stats")]
+    public Stat agility;
+    public Stat constitution;
+    public Stat endurance;
+    public Stat speed;
+    public Stat strength;
+
     [Header("AP")]
     public Stat maxAP;
     public int currentAP { get; private set; }
@@ -40,8 +47,12 @@ public class CharacterStats : Stats
     public Stat maxPersonalInvWeight;
     public Stat maxPersonalInvVolume;
 
-    [Header("Damage")]
+    [Header("Combat")]
     public Stat unarmedDamage;
+    public Stat accuracy;
+    public Stat evasion;
+    public Stat shieldBlock;
+    public Stat weaponBlock;
 
     [HideInInspector] public CharacterManager characterManager;
 
@@ -345,11 +356,11 @@ public class CharacterStats : Stats
         if (oldItemData != null)
         {
             torsoDefense.RemoveModifier(oldItemData.torsoDefense);
-            headDefense.RemoveModifier(newItemData.headDefense);
-            armDefense.RemoveModifier(newItemData.armDefense);
-            handDefense.RemoveModifier(newItemData.handDefense);
-            legDefense.RemoveModifier(newItemData.legDefense);
-            footDefense.RemoveModifier(newItemData.footDefense);
+            headDefense.RemoveModifier(oldItemData.headDefense);
+            armDefense.RemoveModifier(oldItemData.armDefense);
+            handDefense.RemoveModifier(oldItemData.handDefense);
+            legDefense.RemoveModifier(oldItemData.legDefense);
+            footDefense.RemoveModifier(oldItemData.footDefense);
         }
     }
 

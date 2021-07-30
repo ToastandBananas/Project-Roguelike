@@ -28,9 +28,12 @@ MonoBehaviour:
   maxBaseDurability: 120
   primaryEquippedSprite: {fileID: 1560336491388677395, guid: f20a51d4e8c99fb4b989b0d8c061c05f, type: 3}
   secondaryEquippedSprite: {fileID: -8058364674454502543, guid: 8577904861824ce49815bed093713a61, type: 3}
+  weaponType: 0
   isTwoHanded: 0
   attackRange: 1
   minBaseDamage: 4
   maxBaseDamage: 7
   minBaseTreeDamage: 1
   maxBaseTreeDamage: 2
+  minBlockChanceMultiplier: 0.7
+  maxBlockChanceMultiplier: 0.8

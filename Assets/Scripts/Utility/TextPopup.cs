@@ -121,7 +121,7 @@ public class TextPopup : MonoBehaviour
 
         textMesh.SetText(stringText);
         textMesh.color = Color.white;
-        textMesh.fontSize = 4.5f;
+        textMesh.fontSize = 2.5f;
 
         sortingOrder++;
         textMesh.sortingOrder = sortingOrder;

@@ -35,3 +35,5 @@ MonoBehaviour:
   maxBaseDamage: 17
   minBaseTreeDamage: 3
   maxBaseTreeDamage: 5
+  minBlockChanceMultiplier: 1.3
+  maxBlockChanceMultiplier: 1.5

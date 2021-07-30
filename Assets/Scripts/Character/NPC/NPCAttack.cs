@@ -106,7 +106,7 @@ public class NPCAttack : Attack
 
     public override void DetermineAttack(Stats targetsStats)
     {
-        DoMeleeAttack(targetsStats);
+        StartMeleeAttack(targetsStats);
     }
 
     void SetMoveToTargetPos(bool moveToTargetPos)

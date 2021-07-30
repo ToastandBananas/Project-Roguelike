@@ -67,11 +67,11 @@ public class FlavorText : MonoBehaviour
                 WriteLine(GetPronoun(attacker, true, false) + "punched " + GetPronoun(victim, false, true) + GetHumanoidBodyPartName(bodyPartHit) + " for <b><color=red>" + damage + "</color></b> damage.");
                 break;
             case AttackType.PrimaryWeapon:
-                WriteLine(GetPronoun(attacker, true, false) + GetWeaponAttackVerb(attacker.equipmentManager.GetPrimaryWeapon()) + GetPronoun(victim, false, true) + GetHumanoidBodyPartName(bodyPartHit) + " with "
+                WriteLine(GetPronoun(attacker, true, false) + GetWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon()) + GetPronoun(victim, false, true) + GetHumanoidBodyPartName(bodyPartHit) + " with "
                     + GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName) + " for <b><color=red>" + damage + "</color></b> damage.");
                 break;
             case AttackType.SecondaryWeapon:
-                WriteLine(GetPronoun(attacker, true, false) + GetWeaponAttackVerb(attacker.equipmentManager.GetSecondaryWeapon()) + GetPronoun(victim, false, true) + GetHumanoidBodyPartName(bodyPartHit) + " with "
+                WriteLine(GetPronoun(attacker, true, false) + GetWeaponAttackVerb(attacker.equipmentManager.GetLeftWeapon()) + GetPronoun(victim, false, true) + GetHumanoidBodyPartName(bodyPartHit) + " with "
                     + GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon].itemName) + " for <b><color=red>" + damage + "</color></b> damage.");
                 break;
             case AttackType.Ranged:
@@ -87,6 +87,21 @@ public class FlavorText : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    public void WriteMissedAttackLine(CharacterManager attacker, CharacterManager target)
+    {
+        WriteLine(GetPronoun(attacker, true, false) + "attacked " + GetPronoun(target, false, false) + "and missed!");
+    }
+
+    public void WriteEvadedAttackLine(CharacterManager attacker, CharacterManager target)
+    {
+        WriteLine(GetPronoun(target, true, false) + "evaded " + GetPronoun(attacker, false, true) + "attack!");
+    }
+
+    public void WriteBlockedAttackLine(CharacterManager attacker, CharacterManager target, ItemData weaponOrShieldItemData)
+    {
+        WriteLine(GetPronoun(target, true, false) + "blocked " + GetPronoun(attacker, false, true) + "attack with " + GetPossessivePronoun(target) + "<b>" + weaponOrShieldItemData.itemName + "</b>!");
     }
 
     public void WriteConsumeLine(Consumable consumable, CharacterManager characterManager)
@@ -206,6 +221,14 @@ public class FlavorText : MonoBehaviour
             return "an <b>" + noun + "</b>";
         else
             return "a <b>" + noun + "</b>";
+    }
+
+    string GetPossessivePronoun(CharacterManager characterManager)
+    {
+        if (characterManager.isNPC)
+            return "their ";
+        else
+            return "your ";
     }
 
     string GetWeaponAttackVerb(Weapon weapon)

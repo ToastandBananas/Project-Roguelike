@@ -4145,6 +4145,80 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 468830051}
   m_CullTransparentMesh: 1
+--- !u!1001 &470905429
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 4d4ed83e918e564459f7aae3ef7c5e3a, type: 2}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1007687392324394931, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Round Wooden Shield
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_TagString
+      value: Item Pickup
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &470905430 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 470905429}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &482372236
 GameObject:
   m_ObjectHideFlags: 0
@@ -5332,6 +5406,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d736b902204c96945a223b177122d373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  locomotionType: 1
   maxHealth:
     baseValue: 100
     modifiers: 
@@ -5384,6 +5459,21 @@ MonoBehaviour:
   footDefense:
     baseValue: 0
     modifiers: 
+  agility:
+    baseValue: 0
+    modifiers: 
+  constitution:
+    baseValue: 0
+    modifiers: 
+  endurance:
+    baseValue: 0
+    modifiers: 
+  speed:
+    baseValue: 0
+    modifiers: 
+  strength:
+    baseValue: 0
+    modifiers: 
   maxAP:
     baseValue: 100
     modifiers: 
@@ -5394,7 +5484,19 @@ MonoBehaviour:
     baseValue: 25
     modifiers: 
   unarmedDamage:
-    baseValue: 0
+    baseValue: 1
+    modifiers: 
+  accuracy:
+    baseValue: 60
+    modifiers: 
+  evasion:
+    baseValue: 20
+    modifiers: 
+  shieldBlock:
+    baseValue: 50
+    modifiers: 
+  weaponBlock:
+    baseValue: 60
     modifiers: 
   characterManager: {fileID: 0}
   treeDamage:
@@ -7987,6 +8089,7 @@ Transform:
   - {fileID: 1392199866}
   - {fileID: 1460930410}
   - {fileID: 1005194242}
+  - {fileID: 470905430}
   m_Father: {fileID: 1417868993}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -15451,6 +15554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6433cf7fa4649649bc7bcf1e6911f0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  locomotionType: 1
   maxHealth:
     baseValue: 80
     modifiers: 
@@ -15503,6 +15607,21 @@ MonoBehaviour:
   footDefense:
     baseValue: 0
     modifiers: 
+  agility:
+    baseValue: 0
+    modifiers: 
+  constitution:
+    baseValue: 0
+    modifiers: 
+  endurance:
+    baseValue: 0
+    modifiers: 
+  speed:
+    baseValue: 0
+    modifiers: 
+  strength:
+    baseValue: 0
+    modifiers: 
   maxAP:
     baseValue: 100
     modifiers: 
@@ -15513,7 +15632,19 @@ MonoBehaviour:
     baseValue: 10
     modifiers: 
   unarmedDamage:
-    baseValue: 0
+    baseValue: 2
+    modifiers: 
+  accuracy:
+    baseValue: 60
+    modifiers: 
+  evasion:
+    baseValue: 10
+    modifiers: 
+  shieldBlock:
+    baseValue: 30
+    modifiers: 
+  weaponBlock:
+    baseValue: 40
     modifiers: 
   characterManager: {fileID: 0}
 --- !u!1 &1360725344

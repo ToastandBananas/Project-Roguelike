@@ -38,10 +38,16 @@ public class InventoryTooltip : Tooltip
             
             // Tree damage
             if (itemData.treeDamage > 0)
-                stringBuilder.Append("Tree Damage : " + itemData.treeDamage + "\n\n");
+                stringBuilder.Append("Tree Damage : " + itemData.treeDamage + "\n");
+
+            // Block chance multiplier
+            stringBuilder.Append("Block Chance Multiplier: " + itemData.blockChanceMultiplier + "\n\n");
         }
         else if (itemData.item.IsShield())
         {
+            // Block chance multiplier
+            stringBuilder.Append("Block Chance Multiplier: " + itemData.blockChanceMultiplier + "\n");
+
             // Shield bash damage
             stringBuilder.Append("Shield Bash Damage: " + itemData.shieldBashDamage + "\n\n");
         }
@@ -100,10 +106,10 @@ public class InventoryTooltip : Tooltip
             Bag bag = (Bag)itemData.item;
 
             // Weight
-            stringBuilder.Append("Inventory Weight: " + itemData.bagInventory.currentWeight.ToString("#0.00") + " / " + bag.maxWeight + "\n");
+            stringBuilder.Append("Inventory Weight: " + itemData.bagInventory.currentWeight + " / " + bag.maxWeight + "\n");
 
             // Volume
-            stringBuilder.Append("Inventory Volume: " + itemData.bagInventory.currentVolume.ToString("#0.00") + " / " + bag.maxVolume + "\n\n");
+            stringBuilder.Append("Inventory Volume: " + itemData.bagInventory.currentVolume + " / " + bag.maxVolume + "\n\n");
 
             // Single item volume limit
             if (bag.singleItemVolumeLimit > 0)
@@ -116,10 +122,10 @@ public class InventoryTooltip : Tooltip
             PortableContainer portableContainer = (PortableContainer)itemData.item;
 
             // Weight
-            stringBuilder.Append("Inventory Weight: " + itemData.bagInventory.currentWeight.ToString("#0.00") + " / " + portableContainer.maxWeight + "\n");
+            stringBuilder.Append("Inventory Weight: " + itemData.bagInventory.currentWeight + " / " + portableContainer.maxWeight + "\n");
 
             // Volume
-            stringBuilder.Append("Inventory Volume: " + itemData.bagInventory.currentVolume.ToString("#0.00") + " / " + portableContainer.maxVolume + "\n\n");
+            stringBuilder.Append("Inventory Volume: " + itemData.bagInventory.currentVolume + " / " + portableContainer.maxVolume + "\n\n");
 
             // Single item volume limit
             if (portableContainer.singleItemVolumeLimit > 0)
