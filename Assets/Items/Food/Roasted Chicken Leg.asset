@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Roasted Chicken Leg
   itemType: 5
+  mainMaterial: 2
   description: How delectable.
   maxStackSize: 10
   weight: 0.25

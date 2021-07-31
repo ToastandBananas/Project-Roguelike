@@ -7,24 +7,29 @@ public class InventoryTooltip : Tooltip
         // Item name
         stringBuilder.Append("<b><size=26>" + itemData.itemName + "</size></b>\n");
 
+        // Item material
+        stringBuilder.Append("<i>" + Utilities.FormatEnumStringWithSpaces(itemData.item.mainMaterial.ToString()) + "</i>");
+
         if (itemData.item.IsWeapon())
         {
             Weapon weapon = (Weapon)itemData.item;
             
             // One/two handed
             if (weapon.isTwoHanded)
-                stringBuilder.Append("<i>Two-Handed -  ");
+                stringBuilder.Append(" <i>Two-Handed ");
             else
-                stringBuilder.Append("<i>One-Handed -  ");
+                stringBuilder.Append(" <i>One-Handed ");
 
-            stringBuilder.Append(weapon.weaponType + "</i>\n");
+            stringBuilder.Append(Utilities.FormatEnumStringWithSpaces(weapon.weaponType.ToString()) + "</i>\n");
         }
+        else
+            stringBuilder.Append("\n");
 
         stringBuilder.Append("\n");
 
         // Description
         if (itemData.item.description != "")
-            stringBuilder.Append(Utilities.FormatStringIntoParagraphs(itemData.item.description, 30) + "\n\n");
+            stringBuilder.Append(Utilities.FormatStringIntoParagraph(itemData.item.description, 30) + "\n\n");
         
         if (itemData.item.IsWeapon()) 
         {

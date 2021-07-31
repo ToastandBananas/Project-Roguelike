@@ -1,12 +1,17 @@
 using UnityEngine;
 
-public enum WeaponType { Sword, Dagger, Axe, Club, Mace, Hammer, Flail, Staff, Spear, Polearm, Sling, Bow, Crossbow, Throwing }
+public enum WeaponType { Sword, Dagger, Axe, SpikedAxe, Club, SpikedClub, Mace, SpikedMace, Hammer, SpikedHammer, Flail, SpikedFlail, Staff, Spear, Polearm, BluntPolearm,
+                            Sling, Bow, Crossbow, ThrowingKnife, ThrowingAxe, ThrowingStar, ThrowingClub }
+
+public enum MeleeAttackType { Swipe, Thrust, Overhead }
+public enum PhysicalDamageType { Slash, Blunt, Pierce, Cleave }
 
 [CreateAssetMenu(fileName = "New Weapon", menuName = "Inventory/Weapon")]
 public class Weapon : Equipment
 {
     [Header("Weapon Stats")]
     public WeaponType weaponType;
+    public MeleeAttackType defaultMeleeAttackType;
     public bool isTwoHanded;
     public int attackRange = 1;
     public int minBaseDamage = 1;

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Stone Arrow
   itemType: 2
+  mainMaterial: 9
   description: A simple wooden arrow with an arrowhead made of stone.
   maxStackSize: 50
   weight: 0.08

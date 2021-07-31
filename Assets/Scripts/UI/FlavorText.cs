@@ -43,9 +43,7 @@ public class FlavorText : MonoBehaviour
     {
         int numLines = Convert.ToString(stringBuilder).Split('\n').Length;
         if (numLines > maxLines)
-        {
             stringBuilder.Remove(0, Convert.ToString(stringBuilder).Split('\n').FirstOrDefault().Length + 1);
-        }
 
         stringBuilder.Append(input + "\n");
         flavorText.text = Convert.ToString(stringBuilder);
@@ -59,30 +57,30 @@ public class FlavorText : MonoBehaviour
         WriteLine(input);
     }
 
-    public void WriteAttackLine(AttackType attackType, BodyPart bodyPartHit, CharacterManager attacker, CharacterManager victim, int damage)
+    public void WriteAttackCharacterLine(GeneralAttackType attackType, BodyPart bodyPartHit, CharacterManager attacker, CharacterManager victim, int damage)
     {
         switch (attackType)
         {
-            case AttackType.Unarmed:
+            case GeneralAttackType.Unarmed:
                 WriteLine(GetPronoun(attacker, true, false) + "punched " + GetPronoun(victim, false, true) + GetHumanoidBodyPartName(bodyPartHit) + " for <b><color=red>" + damage + "</color></b> damage.");
                 break;
-            case AttackType.PrimaryWeapon:
+            case GeneralAttackType.PrimaryWeapon:
                 WriteLine(GetPronoun(attacker, true, false) + GetWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon()) + GetPronoun(victim, false, true) + GetHumanoidBodyPartName(bodyPartHit) + " with "
                     + GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName) + " for <b><color=red>" + damage + "</color></b> damage.");
                 break;
-            case AttackType.SecondaryWeapon:
+            case GeneralAttackType.SecondaryWeapon:
                 WriteLine(GetPronoun(attacker, true, false) + GetWeaponAttackVerb(attacker.equipmentManager.GetLeftWeapon()) + GetPronoun(victim, false, true) + GetHumanoidBodyPartName(bodyPartHit) + " with "
                     + GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon].itemName) + " for <b><color=red>" + damage + "</color></b> damage.");
                 break;
-            case AttackType.Ranged:
+            case GeneralAttackType.Ranged:
                 WriteLine(GetPronoun(attacker, true, false) + GetWeaponAttackVerb(attacker.equipmentManager.GetRangedWeapon()) + GetPronoun(victim, false, true) + GetHumanoidBodyPartName(bodyPartHit) + " with "
                     + GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.Ranged].itemName) + " for <b><color=red>" + damage + "</color></b> damage.");
                 break;
-            case AttackType.Throwing:
+            case GeneralAttackType.Throwing:
                 WriteLine(GetPronoun(attacker, true, false) + GetWeaponAttackVerb(attacker.equipmentManager.GetRangedWeapon()) + GetPronoun(victim, false, true) + GetHumanoidBodyPartName(bodyPartHit) + " with "
                     + GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.Ranged].itemName) + " for <b><color=red>" + damage + "</color></b> damage.");
                 break;
-            case AttackType.Magic:
+            case GeneralAttackType.Magic:
                 break;
             default:
                 break;
@@ -253,7 +251,7 @@ public class FlavorText : MonoBehaviour
                 return "hit ";
             case WeaponType.Spear:
                 return "stabbed ";
-            case WeaponType.Polearm:
+            case WeaponType.BluntPolearm:
                 return "cleaved ";
             case WeaponType.Sling:
                 return "shot ";
@@ -261,10 +259,10 @@ public class FlavorText : MonoBehaviour
                 return "shot ";
             case WeaponType.Crossbow:
                 return "shot ";
-            case WeaponType.Throwing:
+            case WeaponType.ThrowingKnife:
                 return "threw and stuck ";
             default:
-                return "";
+                return "hit ";
         }
     }
 

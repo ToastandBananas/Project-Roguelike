@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Claymore
   itemType: 1
+  mainMaterial: 37
   description: At four and a half feet long, this sword delivers death at a distance.
   maxStackSize: 1
-  weight: 5.8
+  weight: 5.55
   volume: 22.68
   isUsable: 1
   minBaseValue: 84
@@ -29,6 +30,7 @@ MonoBehaviour:
   primaryEquippedSprite: {fileID: 8453804762826023649, guid: f20a51d4e8c99fb4b989b0d8c061c05f, type: 3}
   secondaryEquippedSprite: {fileID: -1978866322423140336, guid: 8577904861824ce49815bed093713a61, type: 3}
   weaponType: 0
+  defaultMeleeAttackType: 0
   isTwoHanded: 1
   attackRange: 1
   minBaseDamage: 10

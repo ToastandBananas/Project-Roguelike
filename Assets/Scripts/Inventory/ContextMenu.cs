@@ -118,7 +118,13 @@ public class ContextMenu : MonoBehaviour
                 contextButton.textMesh.text = "Drink";
         }
         else if (gm.uiManager.activeInvItem.itemData.item.IsWeapon())
-            contextButton.textMesh.text = "Equip Right";
+        {
+            Weapon weapon = (Weapon)gm.uiManager.activeInvItem.itemData.item;
+            if (weapon.isTwoHanded == false)
+                contextButton.textMesh.text = "Equip Right";
+            else
+                contextButton.textMesh.text = "Equip";
+        }
         else
             contextButton.textMesh.text = "Equip";
 

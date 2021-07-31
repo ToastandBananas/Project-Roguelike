@@ -49,7 +49,8 @@ public class CharacterStats : Stats
 
     [Header("Combat")]
     public Stat unarmedDamage;
-    public Stat accuracy;
+    public Stat meleeAccuracy;
+    public Stat rangedAccuracy;
     public Stat evasion;
     public Stat shieldBlock;
     public Stat weaponBlock;
@@ -170,16 +171,20 @@ public class CharacterStats : Stats
         }
     }
 
-    public int TakeLocationalDamage(int damage, BodyPart bodyPart)
+    public int TakeLocationalDamage(int damage, BodyPart bodyPart, bool armorPenetrated)
     {
-        damage -= GetDefense(bodyPart);
+        if (armorPenetrated == false)
+            damage -= GetLocationalDefense(bodyPart);
 
         if (canTakeDamage)
         {
             if (damage < 0)
                 damage = 0;
 
-            TextPopup.CreateDamagePopup(transform.position, damage, false);
+            if (damage > 0)
+                TextPopup.CreateDamagePopup(transform.position, damage, false);
+            else
+                TextPopup.CreateTextStringPopup(transform.position, "Absorbed");
 
             switch (bodyPart)
             {
@@ -249,7 +254,7 @@ public class CharacterStats : Stats
             return BodyPart.RightFoot;
     }
 
-    int GetDefense(BodyPart bodyPart)
+    int GetLocationalDefense(BodyPart bodyPart)
     {
         switch (bodyPart)
         {

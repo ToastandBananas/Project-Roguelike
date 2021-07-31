@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Small Sack
   itemType: 13
+  mainMaterial: 23
   description: A small sack to store small items.
   maxStackSize: 1
   weight: 0.03

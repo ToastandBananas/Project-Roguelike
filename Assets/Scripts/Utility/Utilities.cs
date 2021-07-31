@@ -1,3 +1,4 @@
+using System.Text;
 using UnityEngine;
 
 public class Utilities : MonoBehaviour
@@ -31,7 +32,7 @@ public class Utilities : MonoBehaviour
         return new Color32(r, g, b, a);
     }
 
-    public static string FormatStringIntoParagraphs(string text, int maxCharactersPerLine)
+    public static string FormatStringIntoParagraph(string text, int maxCharactersPerLine)
     {
         string[] words = text.Split(" "[0]); // Split the string into seperate words
         string result = "";
@@ -59,5 +60,21 @@ public class Utilities : MonoBehaviour
         }
 
         return result;
+    }
+
+    public static string FormatEnumStringWithSpaces(string enumString)
+    {
+        if (string.IsNullOrWhiteSpace(enumString))
+            return "";
+
+        StringBuilder newText = new StringBuilder(enumString.Length * 2);
+        newText.Append(enumString[0]);
+        for (int i = 1; i < enumString.Length; i++)
+        {
+            if (char.IsUpper(enumString[i]) && enumString[i - 1] != ' ')
+                newText.Append(' ');
+            newText.Append(enumString[i]);
+        }
+        return newText.ToString();
     }
 }

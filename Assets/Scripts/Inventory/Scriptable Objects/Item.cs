@@ -1,6 +1,8 @@
 using UnityEngine;
 
 public enum ItemType { Item, Weapon, Ammo, Clothing, Armor, Food, Drink, Ingredient, Seed, Readable, Key, QuestItem, Bag, Container, Shield }
+public enum ItemMaterial { Liquid, ViscousLiquid, Meat, Bone, Food, Fat, Bug, Leaf, Charcoal, Wood, Bark, Paper, Hair, Linen, QuiltedLinen, Cotton, Wool, QuiltedWool, Silk, Hemp, Fur,
+                            UncuredHide, Rawhide, SoftLeather, HardLeather, Keratin, Chitin, Glass, Obsidian, Stone, Gemstone, Silver, Gold, Copper, Bronze, Iron, Brass, Steel, Mithril, Dragonscale }
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Inventory/Item")]
 public class Item : ScriptableObject
@@ -8,6 +10,7 @@ public class Item : ScriptableObject
     [Header("General Item Info")]
     new public string name = "New Item";
     public ItemType itemType;
+    public ItemMaterial mainMaterial;
     public string description;
     public int maxStackSize = 1;
     public float weight = 0.1f;

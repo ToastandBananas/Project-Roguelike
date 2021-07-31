@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Deer Hide Cape
   itemType: 3
+  mainMaterial: 20
   description: A simple cape made of deer hide. Helps keep your upper body warm.
   maxStackSize: 1
   weight: 3.55

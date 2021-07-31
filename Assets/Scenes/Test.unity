@@ -5486,8 +5486,11 @@ MonoBehaviour:
   unarmedDamage:
     baseValue: 1
     modifiers: 
-  accuracy:
-    baseValue: 60
+  meleeAccuracy:
+    baseValue: 50
+    modifiers: 
+  rangedAccuracy:
+    baseValue: 50
     modifiers: 
   evasion:
     baseValue: 20
@@ -15634,8 +15637,11 @@ MonoBehaviour:
   unarmedDamage:
     baseValue: 2
     modifiers: 
-  accuracy:
-    baseValue: 60
+  meleeAccuracy:
+    baseValue: 50
+    modifiers: 
+  rangedAccuracy:
+    baseValue: 50
     modifiers: 
   evasion:
     baseValue: 10

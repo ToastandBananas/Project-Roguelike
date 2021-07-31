@@ -29,26 +29,26 @@ public class APManager : MonoBehaviour
         return baseMovementCost;
     }
 
-    public int GetAttackAPCost(CharacterManager characterManager, Weapon weapon, AttackType attackType)
+    public int GetAttackAPCost(CharacterManager characterManager, Weapon weapon, GeneralAttackType attackType)
     {
         switch (attackType)
         {
-            case AttackType.Unarmed:
+            case GeneralAttackType.Unarmed:
                 return 50;
-            case AttackType.PrimaryWeapon:
+            case GeneralAttackType.PrimaryWeapon:
                 return CalculateMeleeAttackAPCost(characterManager, weapon);
-            case AttackType.SecondaryWeapon:
+            case GeneralAttackType.SecondaryWeapon:
                 return CalculateMeleeAttackAPCost(characterManager, weapon);
-            case AttackType.DualWield:
+            case GeneralAttackType.DualWield:
                 if (characterManager.attack.dualWieldAttackCount == 0)
                     return CalculateMeleeAttackAPCost(characterManager, weapon);
                 else
                     return CalculateDualWieldSecondAttackAPCost(characterManager, weapon);
-            case AttackType.Ranged:
+            case GeneralAttackType.Ranged:
                 return CalculateMeleeAttackAPCost(characterManager, weapon);
-            case AttackType.Throwing:
+            case GeneralAttackType.Throwing:
                 return CalculateThrowAPCost(characterManager, weapon);
-            case AttackType.Magic:
+            case GeneralAttackType.Magic:
                 return 100;
             default:
                 return 100;

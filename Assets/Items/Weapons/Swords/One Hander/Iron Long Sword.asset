@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b4eae846fbbeceb419f5ea2276f0c65b, type: 3}
-  m_Name: Long Sword
+  m_Name: Iron Long Sword
   m_EditorClassIdentifier: 
-  name: Long Sword
+  name: Iron Long Sword
   itemType: 1
+  mainMaterial: 35
   description: The sword...it's long.
   maxStackSize: 1
   weight: 3.15
@@ -29,6 +30,7 @@ MonoBehaviour:
   primaryEquippedSprite: {fileID: 1560336491388677395, guid: f20a51d4e8c99fb4b989b0d8c061c05f, type: 3}
   secondaryEquippedSprite: {fileID: -8058364674454502543, guid: 8577904861824ce49815bed093713a61, type: 3}
   weaponType: 0
+  defaultMeleeAttackType: 0
   isTwoHanded: 0
   attackRange: 1
   minBaseDamage: 4

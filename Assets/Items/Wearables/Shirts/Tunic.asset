@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Tunic
   itemType: 3
+  mainMaterial: 13
   description: A simple loose-fitting shirt made of linen.
   maxStackSize: 1
   weight: 0.32
