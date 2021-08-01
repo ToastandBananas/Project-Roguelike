@@ -30,23 +30,23 @@ public class Attack : MonoBehaviour
         // This is just meant to be overridden
     } 
 
-    public virtual void DoAttack(Stats targetsStats, GeneralAttackType attackType)
+    public virtual void DoAttack(Stats targetsStats, GeneralAttackType attackType, MeleeAttackType meleeAttackType)
     {
         characterManager.movement.FaceForward(targetsStats.transform.position);
 
         switch (attackType)
         {
             case GeneralAttackType.Unarmed:
-                MeleeAttack(targetsStats, attackType);
+                MeleeAttack(targetsStats, attackType, meleeAttackType);
                 break;
             case GeneralAttackType.PrimaryWeapon:
-                MeleeAttack(targetsStats, attackType);
+                MeleeAttack(targetsStats, attackType, meleeAttackType);
                 break;
             case GeneralAttackType.SecondaryWeapon:
-                MeleeAttack(targetsStats, attackType);
+                MeleeAttack(targetsStats, attackType, meleeAttackType);
                 break;
             case GeneralAttackType.DualWield:
-                DualWieldAttack(targetsStats);
+                DualWieldAttack(targetsStats, meleeAttackType);
                 break;
             case GeneralAttackType.Ranged:
                 break;
@@ -61,39 +61,52 @@ public class Attack : MonoBehaviour
         StartCoroutine(AttackCooldown());
     }
 
-    public void StartMeleeAttack(Stats targetsStats)
+    public void StartMeleeAttack(Stats targetsStats, MeleeAttackType meleeAttackType)
     {
         if (characterManager.equipmentManager.IsDualWielding())
-            StartCoroutine(UseAPAndAttack(targetsStats, characterManager.equipmentManager.GetRightWeapon(), GeneralAttackType.DualWield));
+            StartCoroutine(UseAPAndAttack(targetsStats, characterManager.equipmentManager.GetRightWeapon(), GeneralAttackType.DualWield, meleeAttackType));
         else if (characterManager.equipmentManager.RightWeaponEquipped())
-            StartCoroutine(UseAPAndAttack(targetsStats, characterManager.equipmentManager.GetRightWeapon(), GeneralAttackType.PrimaryWeapon));
+            StartCoroutine(UseAPAndAttack(targetsStats, characterManager.equipmentManager.GetRightWeapon(), GeneralAttackType.PrimaryWeapon, meleeAttackType));
         else if (characterManager.equipmentManager.LeftWeaponEquipped())
-            StartCoroutine(UseAPAndAttack(targetsStats, characterManager.equipmentManager.GetLeftWeapon(), GeneralAttackType.SecondaryWeapon));
+            StartCoroutine(UseAPAndAttack(targetsStats, characterManager.equipmentManager.GetLeftWeapon(), GeneralAttackType.SecondaryWeapon, meleeAttackType));
         else // Punch, if no weapons equipped
-            StartCoroutine(UseAPAndAttack(targetsStats, null, GeneralAttackType.Unarmed));
+            StartCoroutine(UseAPAndAttack(targetsStats, null, GeneralAttackType.Unarmed, MeleeAttackType.Unarmed));
     }
 
-    public void DualWieldAttack(Stats targetsStats)
+    public void StartRandomMeleeAttack(Stats targetsStats)
+    {
+        if (characterManager.equipmentManager.IsDualWielding())
+            StartMeleeAttack(targetsStats, GetRandomMeleeAttackType(characterManager.equipmentManager.GetRightWeapon().defaultMeleeAttackType));
+        else if (characterManager.equipmentManager.RightWeaponEquipped())
+            StartMeleeAttack(targetsStats, GetRandomMeleeAttackType(characterManager.equipmentManager.GetRightWeapon().defaultMeleeAttackType));
+        else if (characterManager.equipmentManager.LeftWeaponEquipped())
+            StartMeleeAttack(targetsStats, GetRandomMeleeAttackType(characterManager.equipmentManager.GetLeftWeapon().defaultMeleeAttackType));
+        else // Punch, if no weapons equipped
+            StartMeleeAttack(targetsStats, MeleeAttackType.Unarmed);
+    }
+
+    public void DualWieldAttack(Stats targetsStats, MeleeAttackType meleeAttackType)
     {
         if (dualWieldAttackCount == 0)
         {
-            MeleeAttack(targetsStats, GeneralAttackType.PrimaryWeapon);
+            MeleeAttack(targetsStats, GeneralAttackType.PrimaryWeapon, meleeAttackType);
             dualWieldAttackCount++;
-            StartCoroutine(UseAPAndAttack(targetsStats, characterManager.equipmentManager.GetLeftWeapon(), GeneralAttackType.DualWield));
+            StartCoroutine(UseAPAndAttack(targetsStats, characterManager.equipmentManager.GetLeftWeapon(), GeneralAttackType.DualWield, meleeAttackType));
         }
         else
         {
-            MeleeAttack(targetsStats, GeneralAttackType.SecondaryWeapon);
+            MeleeAttack(targetsStats, GeneralAttackType.SecondaryWeapon, meleeAttackType);
             dualWieldAttackCount = 0;
         }
     }
 
-    public void MeleeAttack(Stats targetsStats, GeneralAttackType generalAttackType)
+    public void MeleeAttack(Stats targetsStats, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType)
     {
         StartCoroutine(characterManager.movement.BlockedMovement(targetsStats.transform.position));
 
-        Weapon weaponUsed = GetWeaponUsed(generalAttackType);
-        PhysicalDamageType physicalDamageType = GetMeleeAttacksPhysicalDamageType(weaponUsed.weaponType, weaponUsed.defaultMeleeAttackType);
+        ItemData weaponUsedItemData = GetWeaponUsed(generalAttackType);
+        Weapon weaponUsed = (Weapon)weaponUsedItemData.item;
+        PhysicalDamageType physicalDamageType = GetMeleeAttacksPhysicalDamageType(weaponUsed.weaponType, meleeAttackType);
         int damage = GetDamage(generalAttackType);
 
         if (targetsStats.locomotionType != LocomotionType.Inanimate)
@@ -106,35 +119,56 @@ public class Attack : MonoBehaviour
                 {
                     BodyPart bodyPartToHit = targetCharStats.GetBodyPartToHit();
                     bool armorPenetrated = false;
+                    bool clothingPenetrated = false;
 
                     // If a weapon was used (unarmed attacks don't ever crush armor)
                     // Check if the target's armor was penetrated, meaning defense values will be ignored (crushed, pierced or cut)
-                    if (weaponUsed != null)
-                        armorPenetrated = TryPenetrateArmor(targetCharStats.characterManager, characterManager, bodyPartToHit, physicalDamageType);
+                    Wearable armor = null;
+                    Wearable clothing = null;
+                    if (weaponUsed != null && targetCharStats.characterManager.equipmentManager != null)
+                    {
+                        armor = GetLocationalArmor(targetCharStats.characterManager, bodyPartToHit);
+                        armorPenetrated = TryPenetrateWearable(targetCharStats.characterManager, characterManager, armor, bodyPartToHit, physicalDamageType);
+                        if (armor == null || armorPenetrated)
+                        {
+                            clothing = GetLocationalClothing(targetCharStats.characterManager, bodyPartToHit);
+                            clothingPenetrated = TryPenetrateWearable(targetCharStats.characterManager, characterManager, clothing, bodyPartToHit, physicalDamageType);
+                        }
+                    }
 
                     // Damage the target character
-                    targetCharStats.TakeLocationalDamage(damage, bodyPartToHit, armorPenetrated);
+                    int finalDamage = targetCharStats.TakeLocationalDamage(damage, bodyPartToHit, targetCharStats.characterManager.equipmentManager, armorPenetrated, clothingPenetrated);
 
                     // If the character is wearing armor, damage the appropriate piece(s) of armor (moreso if the armor was penetrated)
                     if (targetCharStats.characterManager.equipmentManager != null)
-                        DamageLocationalArmor(targetCharStats.characterManager, bodyPartToHit, damage, armorPenetrated);
+                        DamageLocationalArmorAndClothing(targetCharStats.characterManager, bodyPartToHit, damage, armorPenetrated, clothingPenetrated);
 
-                    if (damage > 0)
+                    // Damage the durability of the weapon used to attack
+                    if (weaponUsed != null)
+                        weaponUsedItemData.DamageDurability(0.5f);
+
+                    // Show some flavor text
+                    if (finalDamage > 0)
                     {
-                        if (armorPenetrated == false)
-                            gm.flavorText.WriteAttackCharacterLine(generalAttackType, bodyPartToHit, characterManager, targetCharStats.characterManager, damage);
+                        if (armorPenetrated == false && clothingPenetrated == false)
+                            gm.flavorText.WriteMeleeAttackCharacterLine(characterManager, targetCharStats.characterManager, generalAttackType, meleeAttackType, bodyPartToHit, finalDamage);
+                        else if (armorPenetrated && clothingPenetrated)
+                            gm.flavorText.WritePenetrateArmorAndClothingLine_Melee(characterManager, targetCharStats.characterManager, armor, clothing, generalAttackType, meleeAttackType, physicalDamageType, bodyPartToHit, finalDamage);
+                        else if (armorPenetrated)
+                            gm.flavorText.WritePenetrateWearableLine_Melee(characterManager, targetCharStats.characterManager, armor, generalAttackType, meleeAttackType, physicalDamageType, bodyPartToHit, finalDamage);
+                        else if (clothingPenetrated)
+                            gm.flavorText.WritePenetrateWearableLine_Melee(characterManager, targetCharStats.characterManager, clothing, generalAttackType, meleeAttackType, physicalDamageType, bodyPartToHit, finalDamage);
                     }
                     else
-                    {
-                        // TODO: Damage fully absorbed by armor text
-                    }
+                        gm.flavorText.WriteAbsorbedMeleeAttackLine(characterManager, targetCharStats.characterManager, meleeAttackType, bodyPartToHit);
                 }
             }
         }
         else
         {
+            // Damage the object and show flavor text
             targetsStats.TakeDamage(damage);
-            // TODO: gm.flavorText.WriteAttackObjectLine(physicalDamageType, characterManager, targetsStats, damage);
+            gm.flavorText.WriteMeleeAttackObjectLine(characterManager, targetsStats, meleeAttackType, damage);
         }
     }
 
@@ -223,12 +257,12 @@ public class Attack : MonoBehaviour
                 if (leftBlockChance == 0 || random > leftBlockChance)
                 {
                     gm.flavorText.WriteBlockedAttackLine(characterManager, targetsCharStats.characterManager, targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.RightWeapon));
-                    targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.RightWeapon).DamageDurability(damage);
+                    targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.RightWeapon).DamageDurability(damage, false);
                 }
                 else
                 {
                     gm.flavorText.WriteBlockedAttackLine(characterManager, targetsCharStats.characterManager, targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.LeftWeapon));
-                    targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.LeftWeapon).DamageDurability(damage);
+                    targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.LeftWeapon).DamageDurability(damage, false);
                 }
 
                 TextPopup.CreateTextStringPopup(targetsCharStats.transform.position, "Blocked");
@@ -239,9 +273,8 @@ public class Attack : MonoBehaviour
         return false;
     }
 
-    bool TryPenetrateArmor(CharacterManager target, CharacterManager attacker, BodyPart bodyPartToHit, PhysicalDamageType physicalDamageType)
+    bool TryPenetrateWearable(CharacterManager target, CharacterManager attacker, Wearable wearable, BodyPart bodyPartToHit, PhysicalDamageType physicalDamageType)
     {
-        Wearable wearable = GetLocationalArmor(target, bodyPartToHit);
         if (wearable == null)
             return false;
 
@@ -377,7 +410,7 @@ public class Attack : MonoBehaviour
         }
     }
 
-    void DamageLocationalArmor(CharacterManager target, BodyPart bodyPartHit, int damage, bool armorPenetrated)
+    void DamageLocationalArmorAndClothing(CharacterManager target, BodyPart bodyPartHit, int damage, bool armorPenetrated, bool clothingPenetrated)
     {
         switch (bodyPartHit)
         {
@@ -395,11 +428,11 @@ public class Attack : MonoBehaviour
                     if (armorPenetrated)
                     {
                         if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt] != null)
-                            target.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].DamageDurability(damage, armorPenetrated);
+                            target.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].DamageDurability(damage, clothingPenetrated);
                     }
                 }
                 else if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt] != null)
-                    target.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].DamageDurability(damage, armorPenetrated);
+                    target.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].DamageDurability(damage, clothingPenetrated);
                 break;
             case BodyPart.Head:
                 if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Helmet] != null)
@@ -419,11 +452,11 @@ public class Attack : MonoBehaviour
                     if (armorPenetrated)
                     {
                         if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt] != null)
-                            target.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].DamageDurability(damage, armorPenetrated);
+                            target.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].DamageDurability(damage, clothingPenetrated);
                     }
                 }
                 else if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt] != null)
-                    target.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].DamageDurability(damage, armorPenetrated);
+                    target.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].DamageDurability(damage, clothingPenetrated);
                 break;
             case BodyPart.RightArm:
                 if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Cape] != null)
@@ -439,11 +472,11 @@ public class Attack : MonoBehaviour
                     if (armorPenetrated)
                     {
                         if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt] != null)
-                            target.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].DamageDurability(damage, armorPenetrated);
+                            target.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].DamageDurability(damage, clothingPenetrated);
                     }
                 }
                 else if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt] != null)
-                    target.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].DamageDurability(damage, armorPenetrated);
+                    target.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].DamageDurability(damage, clothingPenetrated);
                 break;
             case BodyPart.LeftLeg:
                 if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.LegArmor] != null)
@@ -452,11 +485,11 @@ public class Attack : MonoBehaviour
                     if (armorPenetrated)
                     {
                         if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Pants] != null)
-                            target.equipmentManager.currentEquipment[(int)EquipmentSlot.Pants].DamageDurability(damage, armorPenetrated);
+                            target.equipmentManager.currentEquipment[(int)EquipmentSlot.Pants].DamageDurability(damage, clothingPenetrated);
                     }
                 }
                 else if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Pants] != null)
-                    target.equipmentManager.currentEquipment[(int)EquipmentSlot.Pants].DamageDurability(damage, armorPenetrated);
+                    target.equipmentManager.currentEquipment[(int)EquipmentSlot.Pants].DamageDurability(damage, clothingPenetrated);
                 break;
             case BodyPart.RightLeg:
                 if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.LegArmor] != null)
@@ -465,11 +498,11 @@ public class Attack : MonoBehaviour
                     if (armorPenetrated)
                     {
                         if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Pants] != null)
-                            target.equipmentManager.currentEquipment[(int)EquipmentSlot.Pants].DamageDurability(damage, armorPenetrated);
+                            target.equipmentManager.currentEquipment[(int)EquipmentSlot.Pants].DamageDurability(damage, clothingPenetrated);
                     }
                 }
                 else if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Pants] != null)
-                    target.equipmentManager.currentEquipment[(int)EquipmentSlot.Pants].DamageDurability(damage, armorPenetrated);
+                    target.equipmentManager.currentEquipment[(int)EquipmentSlot.Pants].DamageDurability(damage, clothingPenetrated);
                 break;
             case BodyPart.LeftHand:
                 if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Gloves] != null)
@@ -492,18 +525,18 @@ public class Attack : MonoBehaviour
         }
     }
 
-    Weapon GetWeaponUsed(GeneralAttackType generalAttackType)
+    ItemData GetWeaponUsed(GeneralAttackType generalAttackType)
     {
         switch (generalAttackType)
         {
             case GeneralAttackType.PrimaryWeapon:
-                return characterManager.equipmentManager.GetRightWeapon();
+                return characterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon];
             case GeneralAttackType.SecondaryWeapon:
-                return characterManager.equipmentManager.GetLeftWeapon();
+                return characterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon];
             case GeneralAttackType.Ranged:
-                return characterManager.equipmentManager.GetRangedWeapon();
+                return characterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Ranged];
             case GeneralAttackType.Throwing:
-                return characterManager.equipmentManager.GetRangedWeapon();
+                return characterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Ranged];
             default:
                 return null;
         }
@@ -519,8 +552,6 @@ public class Attack : MonoBehaviour
             case BodyPart.Torso:
                 if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.BodyArmor] != null)
                     return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.BodyArmor].item;
-                else if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt] != null)
-                    return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].item;
                 break;
             case BodyPart.Head:
                 if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Helmet] != null)
@@ -529,26 +560,18 @@ public class Attack : MonoBehaviour
             case BodyPart.LeftArm:
                 if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.BodyArmor] != null)
                     return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.BodyArmor].item;
-                else if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt] != null)
-                    return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].item;
                 break;
             case BodyPart.RightArm:
                 if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.BodyArmor] != null)
                     return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.BodyArmor].item;
-                else if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt] != null)
-                    return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].item;
                 break;
             case BodyPart.LeftLeg:
                 if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.LegArmor] != null)
                     return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.LegArmor].item;
-                else if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Pants] != null)
-                    return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Pants].item;
                 break;
             case BodyPart.RightLeg:
                 if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.LegArmor] != null)
                     return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.LegArmor].item;
-                else if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Pants] != null)
-                    return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Pants].item;
                 break;
             case BodyPart.LeftHand:
                 if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Gloves] != null)
@@ -573,7 +596,37 @@ public class Attack : MonoBehaviour
         return null;
     }
 
-    public IEnumerator UseAPAndAttack(Stats targetsStats, Weapon weapon, GeneralAttackType attackType)
+    Wearable GetLocationalClothing(CharacterManager targetsCharacterManager, BodyPart bodyPartToHit)
+    {
+        if (targetsCharacterManager.equipmentManager == null)
+            return null;
+
+        switch (bodyPartToHit)
+        {
+            case BodyPart.Torso:
+                if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt] != null)
+                    return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].item;
+                break;
+            case BodyPart.LeftArm:
+                if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt] != null)
+                    return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].item;
+                break;
+            case BodyPart.RightArm:
+                if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt] != null)
+                    return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].item;
+                break;
+            case BodyPart.LeftLeg:
+                if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Pants] != null)
+                    return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Pants].item;
+                break;
+            default:
+                return null;
+        }
+
+        return null;
+    }
+
+    public IEnumerator UseAPAndAttack(Stats targetsStats, Weapon weapon, GeneralAttackType attackType, MeleeAttackType meleeAttackType)
     {
         characterManager.actionQueued = true;
 
@@ -594,13 +647,13 @@ public class Attack : MonoBehaviour
             {
                 characterManager.actionQueued = false;
                 characterManager.characterStats.UseAP(characterManager.remainingAPToBeUsed);
-                DoAttack(targetsStats, attackType);
+                DoAttack(targetsStats, attackType, meleeAttackType);
             }
             else
             {
                 characterManager.characterStats.UseAP(characterManager.characterStats.currentAP);
                 gm.turnManager.FinishTurn(characterManager);
-                StartCoroutine(UseAPAndAttack(targetsStats, weapon, attackType));
+                StartCoroutine(UseAPAndAttack(targetsStats, weapon, attackType, meleeAttackType));
             }
         }
         else
@@ -609,13 +662,13 @@ public class Attack : MonoBehaviour
             if (remainingAP == 0)
             {
                 characterManager.actionQueued = false;
-                DoAttack(targetsStats, attackType);
+                DoAttack(targetsStats, attackType, meleeAttackType);
             }
             else
             {
                 characterManager.remainingAPToBeUsed = remainingAP;
                 gm.turnManager.FinishTurn(characterManager);
-                StartCoroutine(UseAPAndAttack(targetsStats, weapon, attackType));
+                StartCoroutine(UseAPAndAttack(targetsStats, weapon, attackType, meleeAttackType));
             }
         }
     }
@@ -814,6 +867,27 @@ public class Attack : MonoBehaviour
                     return PhysicalDamageType.Blunt;
             default:
                 return PhysicalDamageType.Blunt;
+        }
+    }
+
+    public MeleeAttackType GetRandomMeleeAttackType(MeleeAttackType defaultMeleeAttackType)
+    {
+        int random = Random.Range(0, 100);
+        if (random < 50)
+            return defaultMeleeAttackType;
+        else if (random < 75)
+        {
+            if (MeleeAttackType.Swipe != defaultMeleeAttackType)
+                return MeleeAttackType.Swipe;
+            else
+                return MeleeAttackType.Thrust;
+        }
+        else
+        {
+            if (MeleeAttackType.Overhead != defaultMeleeAttackType)
+                return MeleeAttackType.Overhead;
+            else
+                return MeleeAttackType.Thrust;
         }
     }
 

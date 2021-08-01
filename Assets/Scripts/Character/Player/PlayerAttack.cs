@@ -10,6 +10,6 @@ public class PlayerAttack : Attack
 
     public override void DetermineAttack(Stats targetsStats)
     {
-        StartMeleeAttack(targetsStats);
+        StartRandomMeleeAttack(targetsStats);
     }
 }

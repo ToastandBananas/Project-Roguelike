@@ -3,7 +3,7 @@ using UnityEngine;
 public enum WeaponType { Sword, Dagger, Axe, SpikedAxe, Club, SpikedClub, Mace, SpikedMace, Hammer, SpikedHammer, Flail, SpikedFlail, Staff, Spear, Polearm, BluntPolearm,
                             Sling, Bow, Crossbow, ThrowingKnife, ThrowingAxe, ThrowingStar, ThrowingClub }
 
-public enum MeleeAttackType { Swipe, Thrust, Overhead }
+public enum MeleeAttackType { Swipe, Thrust, Overhead, Unarmed }
 public enum PhysicalDamageType { Slash, Blunt, Pierce, Cleave }
 
 [CreateAssetMenu(fileName = "New Weapon", menuName = "Inventory/Weapon")]

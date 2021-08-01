@@ -171,10 +171,13 @@ public class CharacterStats : Stats
         }
     }
 
-    public int TakeLocationalDamage(int damage, BodyPart bodyPart, bool armorPenetrated)
+    public int TakeLocationalDamage(int damage, BodyPart bodyPart, EquipmentManager equipmentManager, bool armorPenetrated, bool clothingPenetrated)
     {
-        if (armorPenetrated == false)
-            damage -= GetLocationalDefense(bodyPart);
+        if (armorPenetrated == false && equipmentManager != null)
+            damage -= GetLocationalArmorDefense(equipmentManager, bodyPart);
+
+        if (clothingPenetrated == false && equipmentManager != null)
+            damage -= GetLocationalClothingDefense(equipmentManager, bodyPart);
 
         if (canTakeDamage)
         {
@@ -254,32 +257,81 @@ public class CharacterStats : Stats
             return BodyPart.RightFoot;
     }
 
-    int GetLocationalDefense(BodyPart bodyPart)
+    int GetLocationalArmorDefense(EquipmentManager equipmentManager, BodyPart bodyPart)
     {
         switch (bodyPart)
         {
             case BodyPart.Torso:
-                return torsoDefense.GetValue();
+                if (equipmentManager.currentEquipment[(int)EquipmentSlot.BodyArmor] != null)
+                    return equipmentManager.currentEquipment[(int)EquipmentSlot.BodyArmor].torsoDefense;
+                return 0;
             case BodyPart.Head:
-                return headDefense.GetValue();
+                if (equipmentManager.currentEquipment[(int)EquipmentSlot.Helmet] != null)
+                    return equipmentManager.currentEquipment[(int)EquipmentSlot.Helmet].headDefense;
+                return 0;
             case BodyPart.LeftArm:
-                return armDefense.GetValue();
+                if (equipmentManager.currentEquipment[(int)EquipmentSlot.BodyArmor] != null)
+                    return equipmentManager.currentEquipment[(int)EquipmentSlot.BodyArmor].armDefense;
+                return 0;
             case BodyPart.RightArm:
-                return armDefense.GetValue();
+                if (equipmentManager.currentEquipment[(int)EquipmentSlot.BodyArmor] != null)
+                    return equipmentManager.currentEquipment[(int)EquipmentSlot.BodyArmor].armDefense;
+                return 0;
             case BodyPart.LeftLeg:
-                return legDefense.GetValue();
+                if (equipmentManager.currentEquipment[(int)EquipmentSlot.LegArmor] != null)
+                    return equipmentManager.currentEquipment[(int)EquipmentSlot.LegArmor].legDefense;
+                return 0;
             case BodyPart.RightLeg:
-                return legDefense.GetValue();
+                if (equipmentManager.currentEquipment[(int)EquipmentSlot.LegArmor] != null)
+                    return equipmentManager.currentEquipment[(int)EquipmentSlot.LegArmor].legDefense;
+                return 0;
             case BodyPart.LeftHand:
-                return handDefense.GetValue();
+                if (equipmentManager.currentEquipment[(int)EquipmentSlot.Gloves] != null)
+                    return equipmentManager.currentEquipment[(int)EquipmentSlot.Gloves].handDefense;
+                return 0;
             case BodyPart.RightHand:
-                return handDefense.GetValue();
+                if (equipmentManager.currentEquipment[(int)EquipmentSlot.Gloves] != null)
+                    return equipmentManager.currentEquipment[(int)EquipmentSlot.Gloves].handDefense;
+                return 0;
             case BodyPart.LeftFoot:
-                return footDefense.GetValue();
+                if (equipmentManager.currentEquipment[(int)EquipmentSlot.Boots] != null)
+                    return equipmentManager.currentEquipment[(int)EquipmentSlot.Boots].footDefense;
+                return 0;
             case BodyPart.RightFoot:
-                return footDefense.GetValue();
+                if (equipmentManager.currentEquipment[(int)EquipmentSlot.Boots] != null)
+                    return equipmentManager.currentEquipment[(int)EquipmentSlot.Boots].footDefense;
+                return 0;
             default:
-                return torsoDefense.GetValue();
+                return 0;
+        }
+    }
+
+    public int GetLocationalClothingDefense(EquipmentManager equipmentManager, BodyPart bodyPart)
+    {
+        switch (bodyPart)
+        {
+            case BodyPart.Torso:
+                if (equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt] != null)
+                    return equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].torsoDefense;
+                return 0;
+            case BodyPart.LeftArm:
+                if (equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt] != null)
+                    return equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].armDefense;
+                return 0;
+            case BodyPart.RightArm:
+                if (equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt] != null)
+                    return equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].armDefense;
+                return 0;
+            case BodyPart.LeftLeg:
+                if (equipmentManager.currentEquipment[(int)EquipmentSlot.Pants] != null)
+                    return equipmentManager.currentEquipment[(int)EquipmentSlot.Pants].legDefense;
+                return 0;
+            case BodyPart.RightLeg:
+                if (equipmentManager.currentEquipment[(int)EquipmentSlot.Pants] != null)
+                    return equipmentManager.currentEquipment[(int)EquipmentSlot.Pants].legDefense;
+                return 0;
+            default:
+                return 0;
         }
     }
 

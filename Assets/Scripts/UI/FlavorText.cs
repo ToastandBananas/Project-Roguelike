@@ -57,34 +57,50 @@ public class FlavorText : MonoBehaviour
         WriteLine(input);
     }
 
-    public void WriteAttackCharacterLine(GeneralAttackType attackType, BodyPart bodyPartHit, CharacterManager attacker, CharacterManager victim, int damage)
+    public void WriteMeleeAttackCharacterLine(CharacterManager attacker, CharacterManager target, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, BodyPart bodyPartHit, int damage)
     {
-        switch (attackType)
+        switch (generalAttackType)
         {
             case GeneralAttackType.Unarmed:
-                WriteLine(GetPronoun(attacker, true, false) + "punched " + GetPronoun(victim, false, true) + GetHumanoidBodyPartName(bodyPartHit) + " for <b><color=red>" + damage + "</color></b> damage.");
+                WriteLine(GetPronoun(attacker, true, false) + "punched " + GetPronoun(target, false, true) + GetHumanoidBodyPartName(bodyPartHit) + " for <b><color=red>" + damage + "</color></b> damage.");
                 break;
             case GeneralAttackType.PrimaryWeapon:
-                WriteLine(GetPronoun(attacker, true, false) + GetWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon()) + GetPronoun(victim, false, true) + GetHumanoidBodyPartName(bodyPartHit) + " with "
+                WriteLine(GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon(), meleeAttackType) + GetPronoun(target, false, true) + GetHumanoidBodyPartName(bodyPartHit) + " with "
                     + GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName) + " for <b><color=red>" + damage + "</color></b> damage.");
                 break;
             case GeneralAttackType.SecondaryWeapon:
-                WriteLine(GetPronoun(attacker, true, false) + GetWeaponAttackVerb(attacker.equipmentManager.GetLeftWeapon()) + GetPronoun(victim, false, true) + GetHumanoidBodyPartName(bodyPartHit) + " with "
+                WriteLine(GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetLeftWeapon(), meleeAttackType) + GetPronoun(target, false, true) + GetHumanoidBodyPartName(bodyPartHit) + " with "
                     + GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon].itemName) + " for <b><color=red>" + damage + "</color></b> damage.");
-                break;
-            case GeneralAttackType.Ranged:
-                WriteLine(GetPronoun(attacker, true, false) + GetWeaponAttackVerb(attacker.equipmentManager.GetRangedWeapon()) + GetPronoun(victim, false, true) + GetHumanoidBodyPartName(bodyPartHit) + " with "
-                    + GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.Ranged].itemName) + " for <b><color=red>" + damage + "</color></b> damage.");
-                break;
-            case GeneralAttackType.Throwing:
-                WriteLine(GetPronoun(attacker, true, false) + GetWeaponAttackVerb(attacker.equipmentManager.GetRangedWeapon()) + GetPronoun(victim, false, true) + GetHumanoidBodyPartName(bodyPartHit) + " with "
-                    + GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.Ranged].itemName) + " for <b><color=red>" + damage + "</color></b> damage.");
-                break;
-            case GeneralAttackType.Magic:
                 break;
             default:
                 break;
         }
+    }
+
+    public void WritePenetrateArmorAndClothingLine_Melee(CharacterManager attacker, CharacterManager target, Wearable armor, Wearable clothing, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, PhysicalDamageType physicalDamageType, BodyPart bodyPartHit, int damage)
+    {
+        WriteLine(GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon(), meleeAttackType) + GetPronoun(target, false, true) + GetHumanoidBodyPartName(bodyPartHit) 
+            + " with " + GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName) + " and " + GetPenetrateArmorVerb(physicalDamageType, armor) 
+            + GetPronoun(target, false, true) + "<b>" + armor.name + "</b> and <b>" + clothing.name + "</b> ignoring defenses and causing <b><color=red>" + damage + "</color></b> damage.");
+    }
+
+    public void WritePenetrateWearableLine_Melee(CharacterManager attacker, CharacterManager target, Wearable wearable, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, PhysicalDamageType physicalDamageType, BodyPart bodyPartHit, int damage)
+    {
+        WriteLine(GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon(), meleeAttackType) + GetPronoun(target, false, true) + GetHumanoidBodyPartName(bodyPartHit)
+            + " with " + GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName) + " and " + GetPenetrateArmorVerb(physicalDamageType, wearable)
+            + GetPronoun(target, false, true) + "<b>" + wearable.name + "</b> ignoring its defenses and causing <b><color=red>" + damage + "</color></b> damage.");
+    }
+
+    public void WriteMeleeAttackObjectLine(CharacterManager attacker, Stats targetsStats, MeleeAttackType meleeAttackType, int damage)
+    {
+        WriteLine(GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon(), meleeAttackType) + "the " + targetsStats.name
+            + " with " + GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName) + " for <b><color=red>" + damage + "</color></b> damage.");
+    }
+
+    public void WriteAbsorbedMeleeAttackLine(CharacterManager attacker, CharacterManager target, MeleeAttackType meleeAttackType, BodyPart bodyPartHit)
+    {
+        WriteLine(GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon(), meleeAttackType) + GetPronoun(target, false, true) + GetHumanoidBodyPartName(bodyPartHit) 
+            + " with " + GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName) + " but it was absorbed by " + GetPronoun(target, false, true) + "armor.");
     }
 
     public void WriteMissedAttackLine(CharacterManager attacker, CharacterManager target)
@@ -228,39 +244,198 @@ public class FlavorText : MonoBehaviour
         else
             return "your ";
     }
+    
+    string GetPenetrateArmorVerb(PhysicalDamageType physicalDamageType, Wearable wearable)
+    {
+        if (physicalDamageType == PhysicalDamageType.Blunt)
+            return "crushed ";
+        else if (physicalDamageType == PhysicalDamageType.Pierce)
+            return "pierced ";
+        else if (physicalDamageType == PhysicalDamageType.Cleave)
+        {
+            if (wearable.IsWooden())
+                return "split ";
+            else if (wearable.IsMetallic())
+                return "crushed ";
+            else
+                return "cut through ";
+        }
+        else if (physicalDamageType == PhysicalDamageType.Slash)
+        {
+            if (wearable.IsMetallic())
+                return "crushed ";
+            else
+                return "sliced ";
+        }
 
-    string GetWeaponAttackVerb(Weapon weapon)
+        return "crushed ";
+    }
+
+    string GetMeleeWeaponAttackVerb(Weapon weapon, MeleeAttackType meleeAttackType)
     {
         switch (weapon.weaponType)
         {
             case WeaponType.Sword:
-                return "slashed ";
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    return "slashed ";
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    return "stabbed ";
+                else // if (meleeAttackType == MeleeAttackType.Overhead)
+                    return "chopped ";
             case WeaponType.Dagger:
-                return "stabbed ";
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    return "slashed ";
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    return "stabbed ";
+                else // if (meleeAttackType == MeleeAttackType.Overhead)
+                    return "overhand stabbed ";
             case WeaponType.Axe:
-                return "cleaved ";
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    return "cleaved ";
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    return "jabbed ";
+                else // if (meleeAttackType == MeleeAttackType.Overhead)
+                    return "overhead cleaved ";
+            case WeaponType.SpikedAxe:
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    return "cleaved ";
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    return "stabbed ";
+                else // if (meleeAttackType == MeleeAttackType.Overhead)
+                    return "overhead cleaved ";
             case WeaponType.Club:
-                return "clubbed ";
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    return "clubbed ";
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    return "jabbed ";
+                else // if (meleeAttackType == MeleeAttackType.Overhead)
+                    return "overhead smashed ";
+            case WeaponType.SpikedClub:
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    return "clubbed ";
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    return "stabbed ";
+                else // if (meleeAttackType == MeleeAttackType.Overhead)
+                    return "overhead smashed ";
             case WeaponType.Mace:
-                return "clobbered ";
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    return "clobbered ";
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    return "jabbed ";
+                else // if (meleeAttackType == MeleeAttackType.Overhead)
+                    return "overhead smashed ";
+            case WeaponType.SpikedMace:
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    return "clobbered ";
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    return "stabbed ";
+                else // if (meleeAttackType == MeleeAttackType.Overhead)
+                    return "overhead smashed ";
             case WeaponType.Hammer:
-                return "hammered ";
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    return "hammered ";
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    return "jabbed ";
+                else // if (meleeAttackType == MeleeAttackType.Overhead)
+                    return "overhead smashed ";
+            case WeaponType.SpikedHammer:
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    return "hammered ";
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    return "stabbed ";
+                else // if (meleeAttackType == MeleeAttackType.Overhead)
+                    return "overhead smashed ";
             case WeaponType.Flail:
-                return "hit ";
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    return "struck ";
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    return "jabbed ";
+                else // if (meleeAttackType == MeleeAttackType.Overhead)
+                    return "overhead smashed ";
+            case WeaponType.SpikedFlail:
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    return "struck ";
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    return "jabbed ";
+                else // if (meleeAttackType == MeleeAttackType.Overhead)
+                    return "overhead smashed ";
             case WeaponType.Staff:
-                return "hit ";
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    return "hit ";
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    return "jabbed ";
+                else // if (meleeAttackType == MeleeAttackType.Overhead)
+                    return "overhead smashed ";
             case WeaponType.Spear:
-                return "stabbed ";
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    return "sliced ";
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    return "stabbed ";
+                else // if (meleeAttackType == MeleeAttackType.Overhead)
+                    return "overhead sliced ";
+            case WeaponType.Polearm:
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    return "cleaved ";
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    return "stabbed ";
+                else // if (meleeAttackType == MeleeAttackType.Overhead)
+                    return "overhead cleaved ";
             case WeaponType.BluntPolearm:
-                return "cleaved ";
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    return "smashed ";
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    return "jabbed ";
+                else // if (meleeAttackType == MeleeAttackType.Overhead)
+                    return "overhead smashed ";
             case WeaponType.Sling:
-                return "shot ";
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    return "smacked ";
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    return "uppercut ";
+                else // if (meleeAttackType == MeleeAttackType.Overhead)
+                    return "overhead struck ";
             case WeaponType.Bow:
-                return "shot ";
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    return "smacked ";
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    return "jabbed ";
+                else // if (meleeAttackType == MeleeAttackType.Overhead)
+                    return "overhead struck ";
             case WeaponType.Crossbow:
-                return "shot ";
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    return "whacked ";
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    return "jabbed ";
+                else // if (meleeAttackType == MeleeAttackType.Overhead)
+                    return "overhead struck ";
             case WeaponType.ThrowingKnife:
-                return "threw and stuck ";
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    return "slashed ";
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    return "stabbed ";
+                else // if (meleeAttackType == MeleeAttackType.Overhead)
+                    return "overhand stabbed ";
+            case WeaponType.ThrowingAxe:
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    return "cleaved ";
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    return "jabbed ";
+                else // if (meleeAttackType == MeleeAttackType.Overhead)
+                    return "overhead cleaved ";
+            case WeaponType.ThrowingStar:
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    return "slashed ";
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    return "stabbed ";
+                else // if (meleeAttackType == MeleeAttackType.Overhead)
+                    return "overhand stabbed ";
+            case WeaponType.ThrowingClub:
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    return "clubbed ";
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    return "jabbed ";
+                else // if (meleeAttackType == MeleeAttackType.Overhead)
+                    return "overhead smashed ";
             default:
                 return "hit ";
         }
