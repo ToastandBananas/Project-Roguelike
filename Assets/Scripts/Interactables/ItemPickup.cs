@@ -10,6 +10,8 @@ public class ItemPickup : Interactable
     [HideInInspector] public Rigidbody2D rigidBody;
     [HideInInspector] public SpriteRenderer spriteRenderer;
 
+    GameManager gm;
+
     void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
@@ -21,17 +23,18 @@ public class ItemPickup : Interactable
     {
         base.Start();
 
+        gm = GameManager.instance;
+
         if (shouldUseItemCount)
             itemData.currentStackSize = itemCount;
 
         spriteRenderer.sprite = itemData.item.pickupSprite;
 
         // Make sure the item pickup is properly positioned
-        if (transform.position.x % 1f != 0)
-            transform.position = new Vector2(Mathf.RoundToInt(transform.position.x), transform.position.y);
-
-        if (transform.position.y % 1f != 0)
-            transform.position = new Vector2(transform.position.x, Mathf.RoundToInt(transform.position.y));
+        transform.position = Utilities.ClampedPosition(transform.position);
+        
+        if (itemData != null)
+            gm.gameTiles.AddItemData(itemData, transform.position);
 
         if (itemData.bagInventory != null)
         {
@@ -61,12 +64,13 @@ public class ItemPickup : Interactable
         PickUp(inventory);
     }
 
-    void PickUp( Inventory inventory)
+    void PickUp(Inventory inventory)
     {
         bool wasPickedUp = inventory.AddItem(null, itemData, itemCount, null, true);
 
         if (wasPickedUp)
         {
+            gm.gameTiles.RemoveItemData(itemData, transform.position);
             inventory.UpdateCurrentWeightAndVolume();
             UpdateItemPickupFocus();
             Deactivate();

@@ -19,17 +19,17 @@ public class Movement : MonoBehaviour
 
     public virtual void Awake()
     {
+        diaganolMoveTime = moveTime / 1.414214f; // 1.414214 is the length of a diagonal movement
+
         characterManager = GetComponent<CharacterManager>();
+
+        // Make sure the character is properly positioned
+        transform.position = Utilities.ClampedPosition(transform.position);
     }
 
     public virtual void Start()
     {
-        diaganolMoveTime = moveTime / 1.414214f; // 1.414214 is the length of a diagonal movement
-
         gm = GameManager.instance;
-
-        // Make sure the character is properly positioned
-        ClampPosition();
     }
 
     public void FaceForward(Vector2 targetPos)
@@ -43,7 +43,7 @@ public class Movement : MonoBehaviour
     public IEnumerator ArcMovement(Vector2 endPos, int possibleMoveCount = 1)
     {
         isMoving = true;
-        ClampPosition();
+        transform.position = Utilities.ClampedPosition(transform.position);
         FaceForward(endPos);
 
         // Set pathfinding grid graph tags for current and end position nodes
@@ -70,7 +70,7 @@ public class Movement : MonoBehaviour
         {
             if (dist == 0 || (-0.25f * dist * dist) == 0)
             {
-                ClampPosition();
+                transform.position = Utilities.ClampedPosition(transform.position);
                 break;
             }
             //if (isNPC) Debug.Log("Arc movement: " + endPos);
@@ -94,7 +94,7 @@ public class Movement : MonoBehaviour
     public virtual IEnumerator SmoothMovement(Vector2 endPos, int possibleMoveCount = 1)
     {
         isMoving = true;
-        ClampPosition();
+        transform.position = Utilities.ClampedPosition(transform.position);
         FaceForward(endPos);
 
         // Set pathfinding grid graph tags for current and end position nodes
@@ -140,15 +140,6 @@ public class Movement : MonoBehaviour
         }
         else
             gm.containerInvUI.OnPlayerMoved();
-    }
-
-    void ClampPosition()
-    {
-        if (transform.position.x % 1 != 0)
-            transform.position = new Vector2(Mathf.RoundToInt(transform.position.x), transform.position.y);
-
-        if (transform.position.y % 1 != 0)
-            transform.position = new Vector2(transform.position.x, Mathf.RoundToInt(transform.position.y));
     }
 
     bool IsDiagonal(Vector2 endPos)

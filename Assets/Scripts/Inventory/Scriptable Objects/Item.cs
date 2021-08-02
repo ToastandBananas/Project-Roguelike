@@ -9,6 +9,7 @@ public class Item : ScriptableObject
 {
     [Header("General Item Info")]
     new public string name = "New Item";
+    public string pluralName;
     public ItemType itemType;
     public ItemMaterial mainMaterial;
     public string description;

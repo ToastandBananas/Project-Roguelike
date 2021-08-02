@@ -52,18 +52,21 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
+        if (invItemsDragging.Count == 0)
+        {
+            // Toggle the Player's Inventory
+            if (GameControls.gamePlayActions.playerInventory.WasPressed)
+            {
+                ClearSelectedItems(false);
+                ToggleInventory();
+            }
+        }
+
         if (gm.playerManager.playerMovement.isMoving == false && gm.playerManager.actionQueued == false)
         {
             // Skip these button presses if we're currently dragging items
             if (invItemsDragging.Count == 0)
             {
-                // Toggle the Player's Inventory
-                if (GameControls.gamePlayActions.playerInventory.WasPressed)
-                {
-                    ClearSelectedItems(false);
-                    ToggleInventory();
-                }
-
                 // Take everything from an open container or the ground
                 if (GameControls.gamePlayActions.menuContainerTakeAll.WasPressed && gm.containerInvUI.inventoryParent.activeSelf)
                 {

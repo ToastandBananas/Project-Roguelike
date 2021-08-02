@@ -207,15 +207,18 @@ public class DropItemController : MonoBehaviour
             invItemComingFrom.UpdateInventoryWeightAndVolume();
 
         gm.flavorText.WriteDropItemLine(itemData, amountToDrop);
+
     }
 
     public void SetupItemPickup(ItemPickup newItemPickup, ItemData itemData, int amountToDrop, Vector3 dropPosition)
     {
         newItemPickup.gameObject.SetActive(true);
         newItemPickup.transform.position = dropPosition;
-        newItemPickup.spriteRenderer.sprite = itemData.item.pickupSprite;
-
+        newItemPickup.transform.position = Utilities.ClampedPosition(newItemPickup.transform.position);
+        gm.gameTiles.AddItemData(newItemPickup.itemData, newItemPickup.transform.position);
+        
         itemData.TransferData(itemData, newItemPickup.itemData);
+        newItemPickup.spriteRenderer.sprite = itemData.item.pickupSprite;
         newItemPickup.itemCount = amountToDrop;
         newItemPickup.interactionTransform = newItemPickup.transform;
 

@@ -857,7 +857,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 1080}
+  m_SizeDelta: {x: 0, y: 780}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &134291594
 MonoBehaviour:
@@ -5331,6 +5331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eef99f1668f62f4b8120f6afd85b208, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isNamed: 0
   alliances: {fileID: 0}
   characterSpriteManager: {fileID: 0}
   humanoidSpriteManager: {fileID: 0}
@@ -7432,7 +7433,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -8204,7 +8205,7 @@ MonoBehaviour:
   dropItemController: {fileID: 0}
   objectPoolManager: {fileID: 0}
   stackSizeSelector: {fileID: 0}
-  tileInfo: {fileID: 0}
+  tileInfoDisplay: {fileID: 0}
   tooltipManager: {fileID: 0}
   turnManager: {fileID: 0}
   uiManager: {fileID: 0}
@@ -11230,7 +11231,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 737486873}
   m_HandleRect: {fileID: 737486872}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -14033,10 +14034,10 @@ RectTransform:
   m_Father: {fileID: 1915421637}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 270, y: 0}
-  m_SizeDelta: {x: 540, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1236654203
 MonoBehaviour:
@@ -15528,6 +15529,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4004fc607cc2be74ca2a9381dda4ecaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isNamed: 0
   alliances: {fileID: 0}
   characterSpriteManager: {fileID: 0}
   humanoidSpriteManager: {fileID: 0}
@@ -90101,7 +90103,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2133154655
 RectTransform:
   m_ObjectHideFlags: 0
@@ -90134,6 +90136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cb0ddaadd7111b4bbd763dc95b6da09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  displayText: {fileID: 1236654203}
 --- !u!114 &2133154657
 MonoBehaviour:
   m_ObjectHideFlags: 0

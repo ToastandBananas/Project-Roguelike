@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Roasted Chicken Leg
   m_EditorClassIdentifier: 
   name: Roasted Chicken Leg
+  pluralName: Roasted Chicken Legs
   itemType: 5
   mainMaterial: 2
   description: How delectable.

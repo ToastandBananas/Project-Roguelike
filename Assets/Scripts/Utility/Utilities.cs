@@ -77,4 +77,31 @@ public class Utilities : MonoBehaviour
         }
         return newText.ToString();
     }
+
+    public static Vector2 ClampedPosition(Vector2 position)
+    {
+        if (position.x % 1f != 0)
+            position = new Vector2(Mathf.RoundToInt(position.x), position.y);
+
+        if (position.y % 1f != 0)
+            position = new Vector2(position.x, Mathf.RoundToInt(position.y));
+
+        return position;
+    }
+
+    public static string GetIndefiniteArticle(string noun, bool uppercase)
+    {
+        if ("aeiouAEIOU".IndexOf(noun.Substring(0, 1)) >= 0)
+        {
+            if (uppercase)
+                return "An <b>" + noun + "</b>";
+            return "an <b>" + noun + "</b>";
+        }
+        else
+        {
+            if (uppercase)
+                return "A <b>" + noun + "</b>";
+            return "a <b>" + noun + "</b>";
+        }
+    }
 }

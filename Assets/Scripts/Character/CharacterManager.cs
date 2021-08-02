@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
 {
+    public bool isNamed;
+
     [HideInInspector] public Alliances alliances;
     [HideInInspector] public CharacterSpriteManager characterSpriteManager;
     [HideInInspector] public HumanoidSpriteManager humanoidSpriteManager;
@@ -22,7 +24,7 @@ public class CharacterManager : MonoBehaviour
     [HideInInspector] public bool isNPC;
     [HideInInspector] public bool actionQueued;
     [HideInInspector] public bool isMyTurn = false;
-    public int remainingAPToBeUsed;
+    [HideInInspector] public int remainingAPToBeUsed;
 
     GameManager gm;
 
@@ -59,6 +61,9 @@ public class CharacterManager : MonoBehaviour
     public virtual void Start()
     {
         gm = GameManager.instance;
+
+        if (isNPC)
+            gm.gameTiles.AddNPC(this, transform.position);
     }
 
     public void TakeTurn()

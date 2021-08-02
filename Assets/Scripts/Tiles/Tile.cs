@@ -9,7 +9,7 @@ public class Tile
 
     public TileBase TileBase { get; set; }
 
-    public Tilemap TilemapMember { get; set; }
+    public Tilemap MyTilemap { get; set; }
 
     public string Name { get; set; }
 }

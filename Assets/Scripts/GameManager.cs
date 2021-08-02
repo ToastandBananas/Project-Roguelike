@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public DropItemController dropItemController;
     [HideInInspector] public ObjectPoolManager objectPoolManager;
     [HideInInspector] public StackSizeSelector stackSizeSelector;
-    [HideInInspector] public TileInfo tileInfo;
+    [HideInInspector] public TileInfoDisplay tileInfoDisplay;
     [HideInInspector] public TooltipManager tooltipManager;
     [HideInInspector] public TurnManager turnManager;
     [HideInInspector] public UIManager uiManager;
@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
         playerManager = PlayerManager.instance;
         dropItemController = DropItemController.instance;
         stackSizeSelector = StackSizeSelector.instance;
-        tileInfo = TileInfo.instance;
+        tileInfoDisplay = TileInfoDisplay.instance;
         tooltipManager = TooltipManager.instance;
         turnManager = TurnManager.instance;
         uiManager = UIManager.instance;

@@ -14,12 +14,15 @@ public class GameTiles : MonoBehaviour
     //public Tilemap roadTilemap;
     //public Tilemap closedDoorsTilemap;
 
-    public Dictionary<Vector3, Tile> groundTiles       = new Dictionary<Vector3, Tile>();
-    public Dictionary<Vector3, Tile> shallowWaterTiles = new Dictionary<Vector3, Tile>();
-    //public Dictionary<Vector3, Tile> wallTiles       = new Dictionary<Vector3, Tile>();
-    //public Dictionary<Vector3, Tile> obstacleTiles   = new Dictionary<Vector3, Tile>();
-    //public Dictionary<Vector3, Tile> roadTiles       = new Dictionary<Vector3, Tile>();
-    //public Dictionary<Vector3, Tile> closedDoorTiles = new Dictionary<Vector3, Tile>();
+    public Dictionary<Vector2, Tile> groundTiles       = new Dictionary<Vector2, Tile>();
+    public Dictionary<Vector2, Tile> shallowWaterTiles = new Dictionary<Vector2, Tile>();
+    //public Dictionary<Vector2, Tile> wallTiles       = new Dictionary<Vector2, Tile>();
+    //public Dictionary<Vector2, Tile> obstacleTiles   = new Dictionary<Vector2, Tile>();
+    //public Dictionary<Vector2, Tile> roadTiles       = new Dictionary<Vector2, Tile>();
+    //public Dictionary<Vector2, Tile> closedDoorTiles = new Dictionary<Vector2, Tile>();
+
+    public Dictionary<Vector2, CharacterManager> npcs = new Dictionary<Vector2, CharacterManager>();
+    public Dictionary<Vector2, List<ItemData>> itemDatas = new Dictionary<Vector2, List<ItemData>>();
 
     [HideInInspector] public GridGraph gridGraph;
 
@@ -87,7 +90,7 @@ public class GameTiles : MonoBehaviour
         //GetTilesFromTilemap(closedDoorsTilemap, closedDoorTiles);
     }
 
-    public static Tile GetTileFromWorldPosition(Vector3 worldPos, Dictionary<Vector3, Tile> tileDictionary)
+    public static Tile GetTileFromWorldPosition(Vector3 worldPos, Dictionary<Vector2, Tile> tileDictionary)
     {
         foreach (Tile tile in tileDictionary.Values)
         {
@@ -98,7 +101,7 @@ public class GameTiles : MonoBehaviour
         return null;
     }
 
-    private void GetTilesFromTilemap(Tilemap tilemap, Dictionary<Vector3, Tile> tileDictionary)
+    private void GetTilesFromTilemap(Tilemap tilemap, Dictionary<Vector2, Tile> tileDictionary)
     {
         foreach (Vector3Int pos in tilemap.cellBounds.allPositionsWithin)
         {
@@ -114,7 +117,7 @@ public class GameTiles : MonoBehaviour
                 LocalPlace = localPlace,
                 WorldLocation = tilemap.CellToWorld(localPlace),
                 TileBase = tilemap.GetTile(localPlace),
-                TilemapMember = tilemap,
+                MyTilemap = tilemap,
                 Name = localPlace.x + "," + localPlace.y
             };
 
@@ -131,5 +134,43 @@ public class GameTiles : MonoBehaviour
     public bool HasTile(Tilemap tilemap, Vector2 cellWorldPos)
     {
         return tilemap.HasTile(tilemap.WorldToCell(cellWorldPos));
+    }
+
+    public void AddNPC(CharacterManager characterManager, Vector2 position)
+    {
+        position = Utilities.ClampedPosition(position);
+        npcs.Add(position, characterManager);
+    }
+
+    public void RemoveNPC(Vector2 position)
+    {
+        position = Utilities.ClampedPosition(position);
+        npcs.Remove(position);
+    }
+
+    public void AddItemData(ItemData itemData, Vector2 position)
+    {
+        position = Utilities.ClampedPosition(position);
+        if (itemDatas.ContainsKey(position) == false)
+        {
+            itemDatas.Add(position, new List<ItemData>());
+            itemDatas.TryGetValue(position, out List<ItemData> list);
+            list.Add(itemData);
+        }
+        else
+        {
+            itemDatas.TryGetValue(position, out List<ItemData> list);
+            list.Add(itemData);
+        }
+    }
+
+    public void RemoveItemData(ItemData itemData, Vector2 position)
+    {
+        position = Utilities.ClampedPosition(position);
+        if (itemDatas.ContainsKey(position))
+        {
+            itemDatas.TryGetValue(position, out List<ItemData> list);
+            list.Remove(itemData);
+        }
     }
 }
