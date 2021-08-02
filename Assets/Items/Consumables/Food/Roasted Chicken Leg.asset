@@ -31,6 +31,6 @@ MonoBehaviour:
   nourishment: 20
   thirstQuench: 0
   energyRestoration: 20
-  healAmount: 10
+  healPercent: 7.5
   staminaRecoveryAmount: 10
   manaRecoveryAmount: 0

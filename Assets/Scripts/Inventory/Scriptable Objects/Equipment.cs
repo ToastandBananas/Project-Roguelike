@@ -16,6 +16,12 @@ public class Equipment : Item
 
     public override void Use(CharacterManager characterManager, EquipmentSlot equipSlot, Inventory inventory, InventoryItem invItem, int itemCount)
     {
+        if (invItem.itemData.durability <= 0)
+        {
+            GameManager.instance.flavorText.WriteTryEquipBrokenItemLine(invItem.itemData, characterManager);
+            return;
+        }
+
         bool itemUsed = false;
         bool itemEquipped = false;
         Equipment newEquipment = (Equipment)invItem.itemData.item;

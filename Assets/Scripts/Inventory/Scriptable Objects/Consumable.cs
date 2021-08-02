@@ -14,7 +14,7 @@ public class Consumable : Item
     public int nourishment;
     public int thirstQuench;
     public int energyRestoration;
-    public int healAmount;
+    public float healPercent;
     public int staminaRecoveryAmount;
     public int manaRecoveryAmount;
 

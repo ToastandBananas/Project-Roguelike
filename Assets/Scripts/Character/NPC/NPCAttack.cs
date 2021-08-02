@@ -90,6 +90,8 @@ public class NPCAttack : Attack
             characterManager.stateController.SetCurrentState(State.MoveToTarget);
         else
             characterManager.stateController.SetCurrentState(State.Fight);
+
+        characterManager.TakeTurn();
     }
 
     public void MoveInToAttack()

@@ -454,10 +454,23 @@ public class ItemData : MonoBehaviour
         }
     }
 
+    public void DamageDurability()
+    {
+        DamageDurability(0.5f);
+    }
+
     public void DamageDurability(float damageAmount)
     {
         durability -= damageAmount;
         durability = Mathf.RoundToInt(durability * 100f) / 100f;
+
+        if (durability <= 0)
+        {
+            durability = 0;
+            BreakItem();
+        }
+        else
+            durability = Mathf.RoundToInt(durability * 100f) / 100f;
     }
 
     public void DamageDurability(int damageAmount, bool wearablePenetrated)
@@ -466,7 +479,19 @@ public class ItemData : MonoBehaviour
             durability -= damageAmount / 4f;
         else
             durability -= damageAmount / 10f;
-        durability = Mathf.RoundToInt(durability * 100f) / 100f;
+
+        if (durability <= 0)
+        {
+            durability = 0;
+            BreakItem();
+        }
+        else
+            durability = Mathf.RoundToInt(durability * 100f) / 100f;
+    }
+
+    public void BreakItem()
+    {
+        itemName = "Broken " + itemName;
     }
 
     /// <summary> 

@@ -97,10 +97,25 @@ public class FlavorText : MonoBehaviour
             + " with " + GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName) + " for <b><color=red>" + damage + "</color></b> damage.");
     }
 
-    public void WriteAbsorbedMeleeAttackLine(CharacterManager attacker, CharacterManager target, MeleeAttackType meleeAttackType, BodyPart bodyPartHit)
+    public void WriteAbsorbedMeleeAttackLine(CharacterManager attacker, CharacterManager target, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, BodyPart bodyPartHit)
     {
-        WriteLine(GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon(), meleeAttackType) + GetPronoun(target, false, true) + GetHumanoidBodyPartName(bodyPartHit) 
-            + " with " + GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName) + " but it was absorbed by " + GetPronoun(target, false, true) + "armor.");
+        switch (generalAttackType)
+        {
+            case GeneralAttackType.Unarmed:
+                WriteLine(GetPronoun(attacker, true, false) + "punched " + GetPronoun(target, false, true) + GetHumanoidBodyPartName(bodyPartHit) + " but the hit was absorbed by " 
+                    + GetPronoun(target, false, true) + "armor.");
+                break;
+            case GeneralAttackType.PrimaryWeapon:
+                WriteLine(GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon(), meleeAttackType) + GetPronoun(target, false, true) + GetHumanoidBodyPartName(bodyPartHit)
+                    + " with " + GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName) + " but the attack was absorbed by " + GetPronoun(target, false, true) + "armor.");
+                break;
+            case GeneralAttackType.SecondaryWeapon:
+                WriteLine(GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetLeftWeapon(), meleeAttackType) + GetPronoun(target, false, true) + GetHumanoidBodyPartName(bodyPartHit)
+                    + " with " + GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon].itemName) + " but the attack was absorbed by " + GetPronoun(target, false, true) + "armor.");
+                break;
+            default:
+                break;
+        }
     }
 
     public void WriteMissedAttackLine(CharacterManager attacker, CharacterManager target)
@@ -194,7 +209,12 @@ public class FlavorText : MonoBehaviour
         WriteLine(GetPronoun(characterManager, true, false) + "unequipped the <b>" + itemUnequipping.itemName + "</b>.");
     }
 
-    IEnumerator SetupScrollbar()
+    public void WriteTryEquipBrokenItemLine(ItemData itemTryingToEquip, CharacterManager characterManager)
+    {
+        WriteLine(GetPronoun(characterManager, true, false) + "tried to equip the <b>" + itemTryingToEquip.itemName + "</b>, but then " + GetPronoun(characterManager, false, false) +  "realize it's broken.");
+    }
+
+   IEnumerator SetupScrollbar()
     {
         yield return null;
         yield return null;
@@ -273,6 +293,9 @@ public class FlavorText : MonoBehaviour
 
     string GetMeleeWeaponAttackVerb(Weapon weapon, MeleeAttackType meleeAttackType)
     {
+        if (weapon == null)
+            return "hit ";
+
         switch (weapon.weaponType)
         {
             case WeaponType.Sword:

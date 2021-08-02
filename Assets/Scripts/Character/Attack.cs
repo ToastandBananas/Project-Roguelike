@@ -105,8 +105,14 @@ public class Attack : MonoBehaviour
         StartCoroutine(characterManager.movement.BlockedMovement(targetsStats.transform.position));
 
         ItemData weaponUsedItemData = GetWeaponUsed(generalAttackType);
-        Weapon weaponUsed = (Weapon)weaponUsedItemData.item;
-        PhysicalDamageType physicalDamageType = GetMeleeAttacksPhysicalDamageType(weaponUsed.weaponType, meleeAttackType);
+        Weapon weaponUsed = null;
+        PhysicalDamageType physicalDamageType = PhysicalDamageType.Blunt;
+        if (weaponUsedItemData != null)
+        {
+            weaponUsed = (Weapon)weaponUsedItemData.item;
+            physicalDamageType = GetMeleeAttacksPhysicalDamageType(weaponUsed.weaponType, meleeAttackType);
+        }
+
         int damage = GetDamage(generalAttackType);
 
         if (targetsStats.locomotionType != LocomotionType.Inanimate)
@@ -115,7 +121,7 @@ public class Attack : MonoBehaviour
 
             if (TryEvade(targetCharStats) == false) // Check if the target evaded the attack (or the attacker missed)
             {
-                if (TryBlock(targetCharStats, damage) == false) // Check if the target blocked the attack with a shield or a weapon
+                if (TryBlock(targetCharStats, weaponUsedItemData, damage) == false) // Check if the target blocked the attack with a shield or a weapon
                 {
                     BodyPart bodyPartToHit = targetCharStats.GetBodyPartToHit();
                     bool armorPenetrated = false;
@@ -144,8 +150,8 @@ public class Attack : MonoBehaviour
                         DamageLocationalArmorAndClothing(targetCharStats.characterManager, bodyPartToHit, damage, armorPenetrated, clothingPenetrated);
 
                     // Damage the durability of the weapon used to attack
-                    if (weaponUsed != null)
-                        weaponUsedItemData.DamageDurability(0.5f);
+                    if (weaponUsedItemData != null)
+                        weaponUsedItemData.DamageDurability();
 
                     // Show some flavor text
                     if (finalDamage > 0)
@@ -160,7 +166,7 @@ public class Attack : MonoBehaviour
                             gm.flavorText.WritePenetrateWearableLine_Melee(characterManager, targetCharStats.characterManager, clothing, generalAttackType, meleeAttackType, physicalDamageType, bodyPartToHit, finalDamage);
                     }
                     else
-                        gm.flavorText.WriteAbsorbedMeleeAttackLine(characterManager, targetCharStats.characterManager, meleeAttackType, bodyPartToHit);
+                        gm.flavorText.WriteAbsorbedMeleeAttackLine(characterManager, targetCharStats.characterManager, generalAttackType, meleeAttackType, bodyPartToHit);
                 }
             }
         }
@@ -208,7 +214,7 @@ public class Attack : MonoBehaviour
         return false;
     }
 
-    bool TryBlock(CharacterStats targetsCharStats, int damage)
+    bool TryBlock(CharacterStats targetsCharStats, ItemData weaponUsedItemData, int damage)
     {
         // A character can only block if they have a weapon and/or shield equipped
         if (targetsCharStats.characterManager.equipmentManager != null && (targetsCharStats.characterManager.equipmentManager.ShieldEquipped() || targetsCharStats.characterManager.equipmentManager.MeleeWeaponEquipped()))
@@ -264,6 +270,9 @@ public class Attack : MonoBehaviour
                     gm.flavorText.WriteBlockedAttackLine(characterManager, targetsCharStats.characterManager, targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.LeftWeapon));
                     targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.LeftWeapon).DamageDurability(damage, false);
                 }
+
+                if (weaponUsedItemData != null)
+                    weaponUsedItemData.DamageDurability();
 
                 TextPopup.CreateTextStringPopup(targetsCharStats.transform.position, "Blocked");
                 return true;
