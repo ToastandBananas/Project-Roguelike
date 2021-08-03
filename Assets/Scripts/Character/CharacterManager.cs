@@ -5,7 +5,7 @@ public class CharacterManager : MonoBehaviour
     public bool isNamed;
 
     [HideInInspector] public Alliances alliances;
-    [HideInInspector] public CharacterSpriteManager characterSpriteManager;
+    [HideInInspector] public SpriteManager characterSpriteManager;
     [HideInInspector] public HumanoidSpriteManager humanoidSpriteManager;
     [HideInInspector] public EquipmentManager equipmentManager;
     [HideInInspector] public Inventory inventory;
@@ -40,7 +40,7 @@ public class CharacterManager : MonoBehaviour
         alliances = GetComponent<Alliances>();
         attack = GetComponent<Attack>();
         characterStats = GetComponent<CharacterStats>();
-        characterSpriteManager = transform.GetComponentInChildren<CharacterSpriteManager>();
+        characterSpriteManager = transform.GetComponentInChildren<SpriteManager>();
         humanoidSpriteManager = (HumanoidSpriteManager)characterSpriteManager;
         movement = GetComponent<Movement>();
         vision = GetComponentInChildren<Vision>();
@@ -63,7 +63,7 @@ public class CharacterManager : MonoBehaviour
         gm = GameManager.instance;
 
         if (isNPC)
-            gm.gameTiles.AddNPC(this, transform.position);
+            GameTiles.AddNPC(this, transform.position);
     }
 
     public void TakeTurn()

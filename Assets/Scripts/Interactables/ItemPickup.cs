@@ -34,7 +34,7 @@ public class ItemPickup : Interactable
         transform.position = Utilities.ClampedPosition(transform.position);
         
         if (itemData != null)
-            gm.gameTiles.AddItemData(itemData, transform.position);
+            GameTiles.AddItemData(itemData, transform.position);
 
         if (itemData.bagInventory != null)
         {
@@ -70,7 +70,7 @@ public class ItemPickup : Interactable
 
         if (wasPickedUp)
         {
-            gm.gameTiles.RemoveItemData(itemData, transform.position);
+            GameTiles.RemoveItemData(itemData, transform.position);
             inventory.UpdateCurrentWeightAndVolume();
             UpdateItemPickupFocus();
             Deactivate();

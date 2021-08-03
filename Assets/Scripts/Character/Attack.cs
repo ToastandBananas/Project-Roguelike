@@ -174,7 +174,7 @@ public class Attack : MonoBehaviour
         {
             // Damage the object and show flavor text
             targetsStats.TakeDamage(damage);
-            gm.flavorText.WriteMeleeAttackObjectLine(characterManager, targetsStats, meleeAttackType, damage);
+            gm.flavorText.WriteMeleeAttackObjectLine(characterManager, targetsStats, generalAttackType, meleeAttackType, damage);
         }
     }
 

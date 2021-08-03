@@ -86,6 +86,9 @@ public class Movement : MonoBehaviour
             yield return null;
         }
 
+        if (characterManager.isNPC)
+            GameTiles.AddNPC(characterManager, transform.position);
+
         isMoving = false;
         OnFinishedMoving();
     }
@@ -116,6 +119,9 @@ public class Movement : MonoBehaviour
             yield return null;
         }
 
+        if (characterManager.isNPC)
+            GameTiles.AddNPC(characterManager, transform.position);
+
         isMoving = false;
         OnFinishedMoving();
     }
@@ -123,6 +129,9 @@ public class Movement : MonoBehaviour
     public void TeleportToPosition(Vector2 endPos)
     {
         transform.position = endPos;
+        if (characterManager.isNPC)
+            GameTiles.AddNPC(characterManager, transform.position);
+
         OnFinishedMoving();
     }
 
@@ -151,21 +160,22 @@ public class Movement : MonoBehaviour
     }
 
     // Blocked Animation
-    public IEnumerator BlockedMovement(Vector3 end)
+    public IEnumerator BlockedMovement(Vector3 endPos)
     {
         isMoving = true;
+        FaceForward(endPos);
 
         Vector3 originalPos = transform.position;
 
-        end = transform.position + ((end - transform.position) / 3);
-        float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
+        endPos = transform.position + ((endPos - transform.position) / 3);
+        float sqrRemainingDistance = (transform.position - endPos).sqrMagnitude;
         float inverseMoveTime = 1 / (moveTime);
 
         while (sqrRemainingDistance > float.Epsilon)
         {
-            Vector3 newPosition = Vector3.MoveTowards(transform.position, end, inverseMoveTime * Time.deltaTime);
+            Vector3 newPosition = Vector3.MoveTowards(transform.position, endPos, inverseMoveTime * Time.deltaTime);
             transform.position = newPosition;
-            sqrRemainingDistance = (transform.position - end).sqrMagnitude;
+            sqrRemainingDistance = (transform.position - endPos).sqrMagnitude;
             yield return null;
         }
 

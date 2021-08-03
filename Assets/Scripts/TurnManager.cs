@@ -52,6 +52,7 @@ public class TurnManager : MonoBehaviour
     public void ReadyPlayersTurn()
     {
         gm.playerManager.isMyTurn = true;
+        gm.tileInfoDisplay.DisplayTileInfo();
     }
 
     void FinishNPCsTurn(CharacterManager npcsCharManager)

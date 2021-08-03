@@ -78,6 +78,8 @@ public class NPCMovement : Movement
             yield return null;
         }
 
+        GameTiles.RemoveNPC(transform.position);
+
         int possibleMoveCount = Mathf.FloorToInt(characterManager.characterStats.maxAP.GetValue() / gm.apManager.GetMovementAPCost());
 
         if (characterManager.spriteRenderer.isVisible == false)

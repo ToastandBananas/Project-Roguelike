@@ -15,6 +15,8 @@ public class Stats : MonoBehaviour
 
     [HideInInspector] public GameManager gm;
 
+    SpriteManager spriteManager;
+
     public virtual void Awake()
     {
         currentHealth = maxHealth.GetValue();
@@ -23,6 +25,7 @@ public class Stats : MonoBehaviour
     public virtual void Start()
     {
         gm = GameManager.instance;
+        spriteManager = GetComponent<SpriteManager>();
     }
 
     public virtual int TakeDamage(int damage)
@@ -60,6 +63,26 @@ public class Stats : MonoBehaviour
     public virtual void Die()
     {
         isDeadOrDestroyed = true;
-        gm.flavorText.WriteLine(name + " was destroyed.");
+        GameTiles.RemoveObject(transform.position);
+
+        if (TryGetComponent(out Inventory inv))
+        {
+            if (inv.items.Count > 0)
+                gm.flavorText.StartCoroutine(gm.flavorText.DelayWriteLine("The " + name + " was destroyed and its contents spill out on the ground."));
+            else
+                gm.flavorText.StartCoroutine(gm.flavorText.DelayWriteLine("The " + name + " was destroyed."));
+
+            for (int i = 0; i < inv.items.Count; i++)
+            {
+                gm.dropItemController.DropItem(transform.position, inv.items[i], inv.items[i].currentStackSize, inv, null);
+                inv.items[i].ReturnToObjectPool();
+            }
+
+            inv.items.Clear();
+        }
+        else
+            gm.flavorText.StartCoroutine(gm.flavorText.DelayWriteLine("The " + name + " was destroyed."));
+
+        gameObject.SetActive(false);
     }
 }

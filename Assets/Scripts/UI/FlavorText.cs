@@ -66,12 +66,12 @@ public class FlavorText : MonoBehaviour
                 break;
             case GeneralAttackType.PrimaryWeapon:
                 WriteLine(GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon(), meleeAttackType) + GetPronoun(target, false, true) 
-                    + GetHumanoidBodyPartName(bodyPartHit) + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName, false) 
+                    + GetHumanoidBodyPartName(bodyPartHit) + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName, false, true) 
                     + " for <b><color=red>" + damage + "</color></b> damage.");
                 break;
             case GeneralAttackType.SecondaryWeapon:
                 WriteLine(GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetLeftWeapon(), meleeAttackType) + GetPronoun(target, false, true) 
-                    + GetHumanoidBodyPartName(bodyPartHit) + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon].itemName, false) 
+                    + GetHumanoidBodyPartName(bodyPartHit) + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon].itemName, false, true) 
                     + " for <b><color=red>" + damage + "</color></b> damage.");
                 break;
             default:
@@ -81,22 +81,60 @@ public class FlavorText : MonoBehaviour
 
     public void WritePenetrateArmorAndClothingLine_Melee(CharacterManager attacker, CharacterManager target, Wearable armor, Wearable clothing, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, PhysicalDamageType physicalDamageType, BodyPart bodyPartHit, int damage)
     {
-        WriteLine(GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon(), meleeAttackType) + GetPronoun(target, false, true) + GetHumanoidBodyPartName(bodyPartHit) 
-            + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName, false) + " and " + GetPenetrateArmorVerb(physicalDamageType, armor) 
-            + GetPronoun(target, false, true) + "<b>" + armor.name + "</b> and <b>" + clothing.name + "</b> ignoring defenses and causing <b><color=red>" + damage + "</color></b> damage.");
+        switch (generalAttackType)
+        {
+            case GeneralAttackType.PrimaryWeapon:
+                WriteLine(GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon(), meleeAttackType) + GetPronoun(target, false, true) + GetHumanoidBodyPartName(bodyPartHit)
+                    + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName, false, true) + " and " + GetPenetrateArmorVerb(physicalDamageType, armor)
+                    + GetPronoun(target, false, true) + "<b>" + armor.name + "</b> and <b>" + clothing.name + "</b> ignoring defenses and causing <b><color=red>" + damage + "</color></b> damage.");
+                break;
+            case GeneralAttackType.SecondaryWeapon:
+                WriteLine(GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetLeftWeapon(), meleeAttackType) + GetPronoun(target, false, true) + GetHumanoidBodyPartName(bodyPartHit)
+                    + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon].itemName, false, true) + " and " + GetPenetrateArmorVerb(physicalDamageType, armor)
+                    + GetPronoun(target, false, true) + "<b>" + armor.name + "</b> and <b>" + clothing.name + "</b> ignoring defenses and causing <b><color=red>" + damage + "</color></b> damage.");
+                break;
+            default:
+                break;
+        }
     }
 
     public void WritePenetrateWearableLine_Melee(CharacterManager attacker, CharacterManager target, Wearable wearable, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, PhysicalDamageType physicalDamageType, BodyPart bodyPartHit, int damage)
     {
-        WriteLine(GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon(), meleeAttackType) + GetPronoun(target, false, true) + GetHumanoidBodyPartName(bodyPartHit)
-            + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName, false) + " and " + GetPenetrateArmorVerb(physicalDamageType, wearable)
-            + GetPronoun(target, false, true) + "<b>" + wearable.name + "</b> ignoring its defenses and causing <b><color=red>" + damage + "</color></b> damage.");
+        switch (generalAttackType)
+        {
+            case GeneralAttackType.PrimaryWeapon:
+                WriteLine(GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon(), meleeAttackType) + GetPronoun(target, false, true) + GetHumanoidBodyPartName(bodyPartHit)
+                    + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName, false, true) + " and " + GetPenetrateArmorVerb(physicalDamageType, wearable)
+                    + GetPronoun(target, false, true) + "<b>" + wearable.name + "</b> ignoring its defenses and causing <b><color=red>" + damage + "</color></b> damage.");
+                break;
+            case GeneralAttackType.SecondaryWeapon:
+                WriteLine(GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetLeftWeapon(), meleeAttackType) + GetPronoun(target, false, true) + GetHumanoidBodyPartName(bodyPartHit)
+                    + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon].itemName, false, true) + " and " + GetPenetrateArmorVerb(physicalDamageType, wearable)
+                    + GetPronoun(target, false, true) + "<b>" + wearable.name + "</b> ignoring its defenses and causing <b><color=red>" + damage + "</color></b> damage.");
+                break;
+            default:
+                break;
+        }
     }
 
-    public void WriteMeleeAttackObjectLine(CharacterManager attacker, Stats targetsStats, MeleeAttackType meleeAttackType, int damage)
+    public void WriteMeleeAttackObjectLine(CharacterManager attacker, Stats targetsStats, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, int damage)
     {
-        WriteLine(GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon(), meleeAttackType) + "the " + targetsStats.name
-            + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName, false) + " for <b><color=red>" + damage + "</color></b> damage.");
+        switch (generalAttackType)
+        {
+            case GeneralAttackType.Unarmed:
+                WriteLine(GetPronoun(attacker, true, false) + "punched the " + targetsStats.name + " for <b><color=red>" + damage + "</color></b> damage.");
+                break;
+            case GeneralAttackType.PrimaryWeapon:
+                WriteLine(GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon(), meleeAttackType) + "the " + targetsStats.name
+                    + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName, false, true) + " for <b><color=red>" + damage + "</color></b> damage.");
+                break;
+            case GeneralAttackType.SecondaryWeapon:
+                WriteLine(GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetLeftWeapon(), meleeAttackType) + "the " + targetsStats.name
+                    + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon].itemName, false, true) + " for <b><color=red>" + damage + "</color></b> damage.");
+                break;
+            default:
+                break;
+        }
     }
 
     public void WriteAbsorbedMeleeAttackLine(CharacterManager attacker, CharacterManager target, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, BodyPart bodyPartHit)
@@ -109,12 +147,12 @@ public class FlavorText : MonoBehaviour
                 break;
             case GeneralAttackType.PrimaryWeapon:
                 WriteLine(GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon(), meleeAttackType) + GetPronoun(target, false, true) 
-                    + GetHumanoidBodyPartName(bodyPartHit) + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName, false) 
+                    + GetHumanoidBodyPartName(bodyPartHit) + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName, false, true) 
                     + " but the attack was absorbed by " + GetPronoun(target, false, true) + "armor.");
                 break;
             case GeneralAttackType.SecondaryWeapon:
                 WriteLine(GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetLeftWeapon(), meleeAttackType) + GetPronoun(target, false, true) 
-                    + GetHumanoidBodyPartName(bodyPartHit) + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon].itemName, false) 
+                    + GetHumanoidBodyPartName(bodyPartHit) + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon].itemName, false, true) 
                     + " but the attack was absorbed by " + GetPronoun(target, false, true) + "armor.");
                 break;
             default:
@@ -142,10 +180,10 @@ public class FlavorText : MonoBehaviour
         switch (consumable.consumableType)
         {
             case ConsumableType.Food:
-                WriteLine(GetPronoun(characterManager, true, false) + "ate " + Utilities.GetIndefiniteArticle(consumable.name, false) + ".");
+                WriteLine(GetPronoun(characterManager, true, false) + "ate " + Utilities.GetIndefiniteArticle(consumable.name, false, true) + ".");
                 break;
             case ConsumableType.Drink:
-                WriteLine(GetPronoun(characterManager, true, false) + "drank " + Utilities.GetIndefiniteArticle(consumable.name, false) + ".");
+                WriteLine(GetPronoun(characterManager, true, false) + "drank " + Utilities.GetIndefiniteArticle(consumable.name, false, true) + ".");
                 break;
             default:
                 break;
@@ -155,7 +193,7 @@ public class FlavorText : MonoBehaviour
     public void WriteDropItemLine(ItemData itemDropping, int amountDropping)
     {
         if (amountDropping == 1)
-            WriteLine(GetPronoun(null, true, false) + "dropped " + Utilities.GetIndefiniteArticle(itemDropping.itemName, false) + ".");
+            WriteLine(GetPronoun(null, true, false) + "dropped " + Utilities.GetIndefiniteArticle(itemDropping.itemName, false, true) + ".");
         else
             WriteLine(GetPronoun(null, true, false) + "dropped " + amountDropping + " <b>" + itemDropping.itemName + "s</b>.");
     }
@@ -165,16 +203,16 @@ public class FlavorText : MonoBehaviour
         if (inventoryPuttingIn.name == "Keys")
         {
             if (inventoryTakingFrom != null)
-                WriteLine(GetPronoun(null, true, false) + "took " + Utilities.GetIndefiniteArticle(itemTaking.itemName, false) + " from the <b>" + inventoryTakingFrom.name + "</b> and put it on your <b>key ring</b>.");
+                WriteLine(GetPronoun(null, true, false) + "took " + Utilities.GetIndefiniteArticle(itemTaking.itemName, false, true) + " from the <b>" + inventoryTakingFrom.name + "</b> and put it on your <b>key ring</b>.");
             else
-                WriteLine(GetPronoun(null, true, false) + "picked up " + Utilities.GetIndefiniteArticle(itemTaking.itemName, false) + " and put it on your <b>key ring</b>.");
+                WriteLine(GetPronoun(null, true, false) + "picked up " + Utilities.GetIndefiniteArticle(itemTaking.itemName, false, true) + " and put it on your <b>key ring</b>.");
         }
         else if (amountTaking == 1)
         {
             if (inventoryTakingFrom != null)
-                WriteLine(GetPronoun(null, true, false) + "took " + Utilities.GetIndefiniteArticle(itemTaking.itemName, false) + " from the <b>" + inventoryTakingFrom.name + "</b> and put it in your <b>" + inventoryPuttingIn.name + "</b>.");
+                WriteLine(GetPronoun(null, true, false) + "took " + Utilities.GetIndefiniteArticle(itemTaking.itemName, false, true) + " from the <b>" + inventoryTakingFrom.name + "</b> and put it in your <b>" + inventoryPuttingIn.name + "</b>.");
             else
-                WriteLine(GetPronoun(null, true, false) + "picked up " + Utilities.GetIndefiniteArticle(itemTaking.itemName, false) + " and put it in your <b>" + inventoryPuttingIn.name + "</b>.");
+                WriteLine(GetPronoun(null, true, false) + "picked up " + Utilities.GetIndefiniteArticle(itemTaking.itemName, false, true) + " and put it in your <b>" + inventoryPuttingIn.name + "</b>.");
         }
         else
         {
@@ -190,10 +228,10 @@ public class FlavorText : MonoBehaviour
         if (amountTaking == 1)
         {
             if (equipmentManagerTakingFrom != null)
-                WriteLine(GetPronoun(null, true, false) + "took " + Utilities.GetIndefiniteArticle(itemTaking.itemName, false) + " from your <b>" + equipmentManagerTakingFrom.name 
+                WriteLine(GetPronoun(null, true, false) + "took " + Utilities.GetIndefiniteArticle(itemTaking.itemName, false, true) + " from your <b>" + equipmentManagerTakingFrom.name 
                     + "</b> and put it in the <b>" + inventoryPuttingIn.name + "</b>.");
             else
-                WriteLine(GetPronoun(null, true, false) + "took " + Utilities.GetIndefiniteArticle(itemTaking.itemName, false) + " from your <b>" + inventoryTakingFrom.name 
+                WriteLine(GetPronoun(null, true, false) + "took " + Utilities.GetIndefiniteArticle(itemTaking.itemName, false, true) + " from your <b>" + inventoryTakingFrom.name 
                     + "</b> and put it in the <b>" + inventoryPuttingIn.name + "</b>.");
         }
         else

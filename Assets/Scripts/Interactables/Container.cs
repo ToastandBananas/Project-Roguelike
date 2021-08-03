@@ -9,9 +9,7 @@ public class Container : Interactable
     [HideInInspector] public Inventory containerInventory;
     [HideInInspector] public SpriteRenderer spriteRenderer;
 
-    ContainerInventoryUI containerInvUI;
-    PlayerInventoryUI playerInvUI;
-    UIManager uiManager;
+    GameManager gm;
 
     public override void Start()
     {
@@ -20,11 +18,12 @@ public class Container : Interactable
         containerInventory = GetComponent<Inventory>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        containerInvUI = ContainerInventoryUI.instance;
-        playerInvUI = PlayerInventoryUI.instance;
-        uiManager = UIManager.instance;
+        gm = GameManager.instance;
 
-        containerInventory.myInvUI = containerInvUI;
+        containerInventory.myInvUI = gm.containerInvUI;
+
+        if (CompareTag("Object"))
+            GameTiles.AddObject(gameObject, transform.position);
     }
 
     public override void Interact(Inventory inventory, Transform whoIsInteracting)
@@ -32,10 +31,10 @@ public class Container : Interactable
         base.Interact(inventory, whoIsInteracting);
 
         // Open the Inventory UIs
-        if (containerInvUI.inventoryParent.activeSelf == false)
-            containerInvUI.ToggleInventoryMenu();
+        if (gm.containerInvUI.inventoryParent.activeSelf == false)
+            gm.containerInvUI.ToggleInventoryMenu();
 
-        if (playerInvUI.inventoryParent.activeSelf == false)
-            playerInvUI.ToggleInventoryMenu();
+        if (gm.playerInvUI.inventoryParent.activeSelf == false)
+            gm.playerInvUI.ToggleInventoryMenu();
     }
 }

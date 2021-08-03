@@ -473,6 +473,7 @@ public class CharacterStats : Stats
 
         if (characterManager.isNPC) // If an NPC dies
         {
+            GameTiles.RemoveNPC(transform.position);
             if (characterManager.equipmentManager != null)
             {
                 for (int i = 0; i < characterManager.equipmentManager.currentEquipment.Length; i++)
@@ -525,7 +526,7 @@ public class CharacterStats : Stats
             }
         }
 
-        characterManager.characterSpriteManager.SetToDeathSprite(characterManager);
+        characterManager.characterSpriteManager.SetToDeathSprite(characterManager.spriteRenderer);
 
         gm.flavorText.StartCoroutine(gm.flavorText.DelayWriteLine(gm.flavorText.GetPronoun(characterManager, true, false) + "died."));
     }

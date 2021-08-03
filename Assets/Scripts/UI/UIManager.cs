@@ -497,6 +497,7 @@ public class UIManager : MonoBehaviour
                 // Try adding the item to the corresponding inventory
                 if (inv.AddItem(draggedInvItem, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, true))
                 {
+
                     // If the item was added to the inventory:
                     // Update weight/volume
                     draggedInvItem.UpdateInventoryWeightAndVolume();
@@ -513,10 +514,24 @@ public class UIManager : MonoBehaviour
                     if (draggedInvItem.myEquipmentManager != null)
                         StartCoroutine(draggedInvItem.myEquipmentManager.UseAPAndSetupEquipment((Equipment)equippedItemData.item, draggedInvItemsEquipSlot, null, equippedItemData, false));
                     else
-                        StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
+                    {
+                        if (gm.containerInvUI.activeInventory == null || (draggedInvItem.itemData.item.IsBag() && gm.containerInvUI.activeInventory == draggedInvItem.itemData.bagInventory))
+                        {
+                            // Remove the item from the ItemDatas dictionary if it was on the ground
+                            if (draggedInvItem.myInventory == null || draggedInvItem.myInventory == draggedInvItem.itemData.bagInventory)
+                                GameTiles.RemoveItemData(draggedInvItem.itemData, draggedInvItem.itemData.transform.position);
+
+                            StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+                        }
+                        else
+                            StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
+                    }
 
                     // Write some flavor text
-                    gm.flavorText.WriteTransferItemLine(draggedInvItem.itemData, startingItemCount, draggedInvItem.myEquipmentManager, draggedInvItem.myInventory, inv);
+                    if (draggedInvItem.myInventory == draggedInvItem.itemData.bagInventory)
+                        gm.flavorText.WriteTakeItemLine(draggedInvItem.itemData, startingItemCount, null, inv);
+                    else
+                        gm.flavorText.WriteTakeItemLine(draggedInvItem.itemData, startingItemCount, draggedInvItem.myInventory, inv);
 
                     // If we took the item from an inventory, remove the item
                     RemoveDraggedItem(draggedInvItem, startingItemCount);
@@ -543,7 +558,18 @@ public class UIManager : MonoBehaviour
                     if (draggedInvItem.myEquipmentManager != null)
                         StartCoroutine(draggedInvItem.myEquipmentManager.UseAPAndSetupEquipment((Equipment)equippedItemData.item, draggedInvItemsEquipSlot, null, equippedItemData, true));
                     else
-                        StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+                    {
+                        if (gm.containerInvUI.activeInventory == null || (draggedInvItem.itemData.item.IsBag() && gm.containerInvUI.activeInventory == draggedInvItem.itemData.bagInventory))
+                        {
+                            // Remove the item from the ItemDatas dictionary if it was on the ground
+                            if (draggedInvItem.myInventory == null || draggedInvItem.myInventory == draggedInvItem.itemData.bagInventory)
+                                GameTiles.RemoveItemData(draggedInvItem.itemData, draggedInvItem.itemData.transform.position);
+
+                            StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+                        }
+                        else
+                            StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
+                    }
 
                     // Remove, unequip or clear the item we were dragging, depending where it's coming from
                     RemoveDraggedItem(draggedInvItem, startingItemCount);
@@ -578,13 +604,22 @@ public class UIManager : MonoBehaviour
                 else
                 {
                     if (gm.containerInvUI.activeInventory == null || (draggedInvItem.itemData.item.IsBag() && gm.containerInvUI.activeInventory == draggedInvItem.itemData.bagInventory))
+                    {
+                        // Remove the item from the ItemDatas dictionary if it was on the ground
+                        if (draggedInvItem.myInventory == null || draggedInvItem.myInventory == draggedInvItem.itemData.bagInventory)
+                            GameTiles.RemoveItemData(draggedInvItem.itemData, draggedInvItem.itemData.transform.position);
+
                         StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+                    }
                     else
                         StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
                 }
 
                 // Write some flavor text
-                gm.flavorText.WriteTakeItemLine(draggedInvItem.itemData, startingItemCount, draggedInvItem.myInventory, inv);
+                if (draggedInvItem.myInventory == draggedInvItem.itemData.bagInventory)
+                    gm.flavorText.WriteTakeItemLine(draggedInvItem.itemData, startingItemCount, null, inv);
+                else
+                    gm.flavorText.WriteTakeItemLine(draggedInvItem.itemData, startingItemCount, draggedInvItem.myInventory, inv);
 
                 // Remove, unequip or clear the item we were dragging, depending where it's coming from
                 RemoveDraggedItem(draggedInvItem, startingItemCount);
@@ -631,7 +666,13 @@ public class UIManager : MonoBehaviour
                     if (draggedInvItem.myEquipmentManager != null)
                         StartCoroutine(draggedInvItem.myEquipmentManager.UseAPAndSetupEquipment((Equipment)equippedItemData.item, draggedInvItemsEquipSlot, null, equippedItemData, true));
                     else
+                    {
+                        // Remove the item from the ItemDatas dictionary if it was on the ground
+                        if (draggedInvItem.myInventory == null || draggedInvItem.myInventory == draggedInvItem.itemData.bagInventory)
+                            GameTiles.RemoveItemData(draggedInvItem.itemData, draggedInvItem.itemData.transform.position);
+
                         StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+                    }
 
                     // Remove, unequip or clear the item we were dragging, depending where it's coming from
                     RemoveDraggedItem(draggedInvItem, startingItemCount);
@@ -658,7 +699,13 @@ public class UIManager : MonoBehaviour
                     if (activeInvUI == gm.containerInvUI || gm.containerInvUI.activeInventory != null)
                         StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
                     else
+                    {
+                        // Remove the item from the ItemDatas dictionary if it was on the ground
+                        if (draggedInvItem.myInventory == null || draggedInvItem.myInventory == draggedInvItem.itemData.bagInventory)
+                            GameTiles.RemoveItemData(draggedInvItem.itemData, draggedInvItem.itemData.transform.position);
+
                         StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+                    }
                 }
 
                 // Write some flavor text
@@ -706,6 +753,10 @@ public class UIManager : MonoBehaviour
 
                     if (hasRoom)
                     {
+                        // Remove the item from the ItemDatas dictionary if it was on the ground
+                        if (draggedInvItem.myInventory == null || draggedInvItem.myInventory == draggedInvItem.itemData.bagInventory)
+                            GameTiles.RemoveItemData(draggedInvItem.itemData, draggedInvItem.itemData.transform.position);
+
                         activeInvItem.itemData.bagInventory.AddItem(draggedInvItem, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, false);
 
                         if (activeInvItem.disclosureWidget.isExpanded)
@@ -767,6 +818,10 @@ public class UIManager : MonoBehaviour
 
                     if (hasRoom)
                     {
+                        // Remove the item from the ItemDatas dictionary if it was on the ground
+                        if (draggedInvItem.myInventory == null || draggedInvItem.myInventory == draggedInvItem.itemData.bagInventory)
+                            GameTiles.RemoveItemData(draggedInvItem.itemData, draggedInvItem.itemData.transform.position);
+
                         activeInvItem.itemData.bagInventory.AddItem(draggedInvItem, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, false);
 
                         if (activeInvItem.disclosureWidget.isExpanded)
@@ -822,7 +877,13 @@ public class UIManager : MonoBehaviour
                 activeInvItem.itemData.AddToItemsStack(draggedInvItem);
 
                 if (draggedInvItem.itemData.currentStackSize == 0)
+                {
+                    // Remove the item from the ItemDatas dictionary if it was on the ground
+                    if (draggedInvItem.myInventory == null || draggedInvItem.myInventory == draggedInvItem.itemData.bagInventory)
+                        GameTiles.RemoveItemData(draggedInvItem.itemData, draggedInvItem.itemData.transform.position);
+
                     RemoveDraggedItem(draggedInvItem, startingItemCount);
+                }
 
                 gm.flavorText.WriteLine("You combined two stacks of " + activeInvItem.itemData.itemName + "s.");
 

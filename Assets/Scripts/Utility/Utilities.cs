@@ -89,19 +89,33 @@ public class Utilities : MonoBehaviour
         return position;
     }
 
-    public static string GetIndefiniteArticle(string noun, bool uppercase)
+    public static string GetIndefiniteArticle(string noun, bool uppercase, bool returnNoun, string textColor = "#FFFFFF")
     {
         if ("aeiouAEIOU".IndexOf(noun.Substring(0, 1)) >= 0)
         {
             if (uppercase)
-                return "An <b>" + noun + "</b>";
-            return "an <b>" + noun + "</b>";
+            {
+                if (returnNoun)
+                    return "An <b><color=" + textColor + ">" + noun + "</color></b>";
+                return "An ";
+            }
+
+            if (returnNoun)
+                return "an <b><color=" + textColor + ">" + noun + "</color></b>";
+            return "an ";
         }
         else
         {
             if (uppercase)
-                return "A <b>" + noun + "</b>";
-            return "a <b>" + noun + "</b>";
+            {
+                if (returnNoun)
+                    return "A <b><color=" + textColor + ">" + noun + "</color></b>";
+                return "A ";
+            }
+
+            if (returnNoun)
+                return "a <b><color=" + textColor + ">" + noun + "</color></b>";
+            return "a ";
         }
     }
 }

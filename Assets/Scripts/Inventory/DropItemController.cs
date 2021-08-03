@@ -215,8 +215,7 @@ public class DropItemController : MonoBehaviour
         newItemPickup.gameObject.SetActive(true);
         newItemPickup.transform.position = dropPosition;
         newItemPickup.transform.position = Utilities.ClampedPosition(newItemPickup.transform.position);
-        gm.gameTiles.AddItemData(newItemPickup.itemData, newItemPickup.transform.position);
-        
+
         itemData.TransferData(itemData, newItemPickup.itemData);
         newItemPickup.spriteRenderer.sprite = itemData.item.pickupSprite;
         newItemPickup.itemCount = amountToDrop;
@@ -237,6 +236,8 @@ public class DropItemController : MonoBehaviour
         #if UNITY_EDITOR
             newItemPickup.name = itemData.name;
         #endif
+
+        GameTiles.AddItemData(newItemPickup.itemData, newItemPickup.transform.position);
     }
 
     public Vector3 GetDropPositionFromActiveDirection()

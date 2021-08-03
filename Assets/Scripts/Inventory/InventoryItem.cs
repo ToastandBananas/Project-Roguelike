@@ -242,7 +242,10 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                     if (myInventory != null && (itemData.item.IsBag() == false || itemData.bagInventory != gm.containerInvUI.activeInventory))
                         gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
                     else
+                    {
+                        GameTiles.RemoveItemData(itemData, itemData.transform.position);
                         gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+                    }
 
                     // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
                     if (itemData.item.IsBag() && gm.containerInvUI.activeInventory == itemData.bagInventory)
@@ -267,10 +270,13 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 if (myInventory != null)
                     gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
                 else
+                {
+                    GameTiles.RemoveItemData(itemData, itemData.transform.position);
                     gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+                }
 
                 // Write some flavor text
-                gm.flavorText.WriteTakeItemLine(itemData, startingItemCount, myInventory, gm.playerInvUI.activeInventory);
+                gm.flavorText.WriteTakeItemLine(itemData, startingItemCount, myInventory, gm.playerInvUI.keysInventory);
 
                 ClearItem();
             }
@@ -290,10 +296,13 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                         if (myInventory != null)
                             gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
                         else
+                        {
+                            GameTiles.RemoveItemData(itemData, itemData.transform.position);
                             gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+                        }
 
                         // Write some flavor text
-                        gm.flavorText.WriteTakeItemLine(itemData, startingItemCount, myInventory, gm.playerInvUI.activeInventory);
+                        gm.flavorText.WriteTakeItemLine(itemData, startingItemCount, myInventory, gm.playerInvUI.quiverInventory);
 
                         ClearItem();
                     }
@@ -580,7 +589,10 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                     if (invComingFrom != null)
                         gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, stackSize, bagInvWeight, bagInvVolume, true));
                     else
+                    {
+                        GameTiles.RemoveItemData(itemData, itemData.transform.position);
                         gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, stackSize, bagInvWeight, bagInvVolume, false));
+                    }
 
                     // Write some flavor text
                     gm.flavorText.WriteTakeItemLine(itemData, stackSize, invComingFrom, invAddingTo);

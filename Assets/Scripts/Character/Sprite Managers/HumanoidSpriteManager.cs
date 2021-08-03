@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class HumanoidSpriteManager : CharacterSpriteManager
+public class HumanoidSpriteManager : SpriteManager
 {
     [Header("Hair")]
     public Sprite hairSprite;
@@ -24,9 +24,9 @@ public class HumanoidSpriteManager : CharacterSpriteManager
             beard.color = hairColor;
     }
 
-    public override void SetToDeathSprite(CharacterManager characterManager)
+    public override void SetToDeathSprite(SpriteRenderer spriteRenderer)
     {
-        base.SetToDeathSprite(characterManager);
+        base.SetToDeathSprite(spriteRenderer);
 
         if (hair != null)
             hair.sprite = null;
@@ -62,7 +62,7 @@ public class HumanoidSpriteManager : CharacterSpriteManager
 
     public void SetupOneHandedWeaponStance(EquipmentManager equipmentManager, CharacterManager characterManager)
     {
-        SetToDefaultCharacterSprite(characterManager);
+        SetToDefaultSprite(characterManager.spriteRenderer);
 
         if (equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt] != null)
         {
@@ -87,7 +87,7 @@ public class HumanoidSpriteManager : CharacterSpriteManager
 
     public void SetupTwoHandedWeaponStance(EquipmentManager equipmentManager, CharacterManager characterManager)
     {
-        SetToSecondaryCharacterSprite(characterManager);
+        SetToSecondarySprite(characterManager.spriteRenderer);
 
         if (equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt] != null)
         {

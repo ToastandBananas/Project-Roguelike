@@ -37,6 +37,10 @@ public class Item : ScriptableObject
                 // If there's none left, remove the item
                 if (invItem.itemData.currentStackSize <= 0)
                 {
+                    // Remove the item from the ItemDatas dictionary if it was on the ground
+                    if (invItem.myInventory == null)
+                        GameTiles.RemoveItemData(invItem.itemData, invItem.itemData.transform.position);
+
                     if (inventory != null) // If using an item that's inside and inventory
                     {
                         // Remove it from the inventory

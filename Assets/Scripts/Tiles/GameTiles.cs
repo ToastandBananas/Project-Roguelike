@@ -14,15 +14,16 @@ public class GameTiles : MonoBehaviour
     //public Tilemap roadTilemap;
     //public Tilemap closedDoorsTilemap;
 
-    public Dictionary<Vector2, Tile> groundTiles       = new Dictionary<Vector2, Tile>();
-    public Dictionary<Vector2, Tile> shallowWaterTiles = new Dictionary<Vector2, Tile>();
+    public static Dictionary<Vector2, Tile> groundTiles       = new Dictionary<Vector2, Tile>();
+    public static Dictionary<Vector2, Tile> shallowWaterTiles = new Dictionary<Vector2, Tile>();
     //public Dictionary<Vector2, Tile> wallTiles       = new Dictionary<Vector2, Tile>();
     //public Dictionary<Vector2, Tile> obstacleTiles   = new Dictionary<Vector2, Tile>();
     //public Dictionary<Vector2, Tile> roadTiles       = new Dictionary<Vector2, Tile>();
     //public Dictionary<Vector2, Tile> closedDoorTiles = new Dictionary<Vector2, Tile>();
 
-    public Dictionary<Vector2, CharacterManager> npcs = new Dictionary<Vector2, CharacterManager>();
-    public Dictionary<Vector2, List<ItemData>> itemDatas = new Dictionary<Vector2, List<ItemData>>();
+    public static Dictionary<Vector2, CharacterManager> npcs = new Dictionary<Vector2, CharacterManager>();
+    public static Dictionary<Vector2, List<ItemData>> itemDatas = new Dictionary<Vector2, List<ItemData>>();
+    public static Dictionary<Vector2, GameObject> objects = new Dictionary<Vector2, GameObject>();
 
     [HideInInspector] public GridGraph gridGraph;
 
@@ -90,37 +91,38 @@ public class GameTiles : MonoBehaviour
         //GetTilesFromTilemap(closedDoorsTilemap, closedDoorTiles);
     }
 
-    public static Tile GetTileFromWorldPosition(Vector3 worldPos, Dictionary<Vector2, Tile> tileDictionary)
+    public static Tile GetTileFromWorldPosition(Vector2 worldPos, Dictionary<Vector2, Tile> tileDictionary)
     {
-        foreach (Tile tile in tileDictionary.Values)
-        {
-            if (tile.WorldLocation == worldPos)
-                return tile;
-        }
+        tileDictionary.TryGetValue(worldPos, out Tile tile);
+        //foreach (Tile tile in tileDictionary.Values)
+        //{
+            //if (tile.WorldLocation == worldPos)
+                //return tile;
+        //}
 
-        return null;
+        return tile;
     }
 
-    private void GetTilesFromTilemap(Tilemap tilemap, Dictionary<Vector2, Tile> tileDictionary)
+    void GetTilesFromTilemap(Tilemap tilemap, Dictionary<Vector2, Tile> tileDictionary)
     {
-        foreach (Vector3Int pos in tilemap.cellBounds.allPositionsWithin)
+        foreach (Vector2Int pos in tilemap.cellBounds.allPositionsWithin)
         {
             // The current world position we are at in our loop
-            Vector3Int localPlace = new Vector3Int(pos.x, pos.y, pos.z);
+            Vector2Int localPlace = new Vector2Int(pos.x, pos.y);
 
             // Check if our current position has a tile
-            if (tilemap.HasTile(localPlace) == false) continue;
+            if (tilemap.HasTile((Vector3Int)localPlace) == false) continue;
 
             // If there is a tile, set the tile data
             Tile tile = new Tile
             {
                 LocalPlace = localPlace,
-                WorldLocation = tilemap.CellToWorld(localPlace),
-                TileBase = tilemap.GetTile(localPlace),
+                WorldLocation = Utilities.ClampedPosition(tilemap.CellToWorld((Vector3Int)localPlace) + new Vector3(0.5f, 0.5f)),
+                TileBase = tilemap.GetTile((Vector3Int)localPlace),
                 MyTilemap = tilemap,
                 Name = localPlace.x + "," + localPlace.y
             };
-
+            
             // Then store the tile in our tiles dictionary
             tileDictionary.Add(tile.WorldLocation, tile);
         }
@@ -136,35 +138,49 @@ public class GameTiles : MonoBehaviour
         return tilemap.HasTile(tilemap.WorldToCell(cellWorldPos));
     }
 
-    public void AddNPC(CharacterManager characterManager, Vector2 position)
+    public static void AddNPC(CharacterManager characterManager, Vector2 position)
     {
         position = Utilities.ClampedPosition(position);
         npcs.Add(position, characterManager);
     }
 
-    public void RemoveNPC(Vector2 position)
+    public static void RemoveNPC(Vector2 position)
     {
         position = Utilities.ClampedPosition(position);
         npcs.Remove(position);
     }
 
-    public void AddItemData(ItemData itemData, Vector2 position)
+    public static void AddObject(GameObject gameObject, Vector2 position)
+    {
+        position = Utilities.ClampedPosition(position);
+        objects.Add(position, gameObject);
+    }
+
+    public static void RemoveObject(Vector2 position)
+    {
+        position = Utilities.ClampedPosition(position);
+        objects.Remove(position);
+    }
+
+    public static void AddItemData(ItemData itemData, Vector2 position)
     {
         position = Utilities.ClampedPosition(position);
         if (itemDatas.ContainsKey(position) == false)
         {
             itemDatas.Add(position, new List<ItemData>());
             itemDatas.TryGetValue(position, out List<ItemData> list);
-            list.Add(itemData);
+            if (list.Contains(itemData) == false)
+                list.Add(itemData);
         }
         else
         {
             itemDatas.TryGetValue(position, out List<ItemData> list);
-            list.Add(itemData);
+            if (list.Contains(itemData) == false)
+                list.Add(itemData);
         }
     }
 
-    public void RemoveItemData(ItemData itemData, Vector2 position)
+    public static void RemoveItemData(ItemData itemData, Vector2 position)
     {
         position = Utilities.ClampedPosition(position);
         if (itemDatas.ContainsKey(position))

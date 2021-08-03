@@ -3,9 +3,9 @@ using UnityEngine.Tilemaps;
 
 public class Tile
 {
-    public Vector3Int LocalPlace { get; set; }
+    public Vector2Int LocalPlace { get; set; }
 
-    public Vector3 WorldLocation { get; set; }
+    public Vector2 WorldLocation { get; set; }
 
     public TileBase TileBase { get; set; }
 
