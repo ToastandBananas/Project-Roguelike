@@ -15,6 +15,7 @@ public class CharacterManager : MonoBehaviour
     [HideInInspector] public NPCMovement npcMovement;
     [HideInInspector] public StateController stateController;
     [HideInInspector] public CharacterStats characterStats;
+    [HideInInspector] public Status status;
     [HideInInspector] public Vision vision;
 
     [HideInInspector] public CircleCollider2D circleCollider;
@@ -43,6 +44,7 @@ public class CharacterManager : MonoBehaviour
         characterSpriteManager = transform.GetComponentInChildren<SpriteManager>();
         humanoidSpriteManager = (HumanoidSpriteManager)characterSpriteManager;
         movement = GetComponent<Movement>();
+        status = GetComponent<Status>();
         vision = GetComponentInChildren<Vision>();
 
         if (isNPC)

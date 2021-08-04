@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class InventoryTooltip : Tooltip
 {
     public override void BuildTooltip(ItemData itemData)
@@ -147,7 +149,7 @@ public class InventoryTooltip : Tooltip
         {
             // Durability
             if (itemData.maxDurability > 0)
-                stringBuilder.Append("Durability: " + itemData.durability + " / " + itemData.maxDurability + "\n\n");
+                stringBuilder.Append("Condition: " + GetDurabilityText(itemData) + "\n\n");
         }
 
         // Weight/volume
@@ -156,5 +158,100 @@ public class InventoryTooltip : Tooltip
 
         // Value
         stringBuilder.Append("Estimated Value: " + itemData.value + " gold");
+    }
+
+    string GetDurabilityText(ItemData itemData)
+    {
+        if (itemData.durability > itemData.maxDurability)
+            return "Reinforced";
+        else if (itemData.durability == itemData.maxDurability)
+            return "Pristine";
+        else
+        {
+            ItemMaterial mat = itemData.item.mainMaterial;
+            if (mat == ItemMaterial.Linen || mat == ItemMaterial.QuiltedLinen || mat == ItemMaterial.Cotton || mat == ItemMaterial.Wool || mat == ItemMaterial.QuiltedWool || mat == ItemMaterial.Silk
+                || mat == ItemMaterial.Hemp || mat == ItemMaterial.Fur)
+            {
+                if ((itemData.durability / itemData.maxDurability) >= 0.9f)
+                    return "Lightly Worn";
+                else if ((itemData.durability / itemData.maxDurability) >= 0.675f)
+                    return "Ripped";
+                else if ((itemData.durability / itemData.maxDurability) >= 0.45f)
+                    return "Torn";
+                else if ((itemData.durability / itemData.maxDurability) >= 0.225f)
+                    return "Ragged";
+                else if ((itemData.durability / itemData.maxDurability) > 0f)
+                    return "Threadbare";
+                else
+                    return "Shredded";
+            }
+            else if (mat == ItemMaterial.Bone || mat == ItemMaterial.Chitin || mat == ItemMaterial.Keratin || mat == ItemMaterial.Wood || mat == ItemMaterial.Bark)
+            {
+                if ((itemData.durability / itemData.maxDurability) >= 0.9f)
+                    return "Lightly Scratched";
+                else if ((itemData.durability / itemData.maxDurability) >= 0.675f)
+                    return "Scratched";
+                else if ((itemData.durability / itemData.maxDurability) >= 0.45f)
+                    return "Chipped";
+                else if ((itemData.durability / itemData.maxDurability) >= 0.225f)
+                    return "Cracked";
+                else if ((itemData.durability / itemData.maxDurability) > 0f)
+                    return "Fragmented";
+                else
+                    return "Shattered";
+            }
+            else if (mat == ItemMaterial.Rawhide || mat == ItemMaterial.SoftLeather || mat == ItemMaterial.HardLeather)
+            {
+                if ((itemData.durability / itemData.maxDurability) >= 0.9f)
+                    return "Lightly Scratched";
+                else if ((itemData.durability / itemData.maxDurability) >= 0.675f)
+                    return "Scratched";
+                else if ((itemData.durability / itemData.maxDurability) >= 0.45f)
+                    return "Cut";
+                else if ((itemData.durability / itemData.maxDurability) >= 0.225f)
+                    return "Tattered";
+                else if ((itemData.durability / itemData.maxDurability) > 0f)
+                    return "Decaying";
+                else
+                    return "Dilapidated";
+            }
+            else if (mat == ItemMaterial.Copper || mat == ItemMaterial.Bronze || mat == ItemMaterial.Iron || mat == ItemMaterial.Brass || mat == ItemMaterial.Steel 
+                || mat == ItemMaterial.Mithril || mat == ItemMaterial.Dragonscale)
+            {
+                if (itemData.item.IsWearable() || itemData.item.IsShield())
+                {
+                    if ((itemData.durability / itemData.maxDurability) >= 0.9f)
+                        return "Lightly Dented";
+                    else if ((itemData.durability / itemData.maxDurability) >= 0.675f)
+                        return "Dented";
+                    else if ((itemData.durability / itemData.maxDurability) >= 0.45f)
+                        return "Cracked";
+                    else if ((itemData.durability / itemData.maxDurability) >= 0.225f)
+                        return "Crushed";
+                    else if ((itemData.durability / itemData.maxDurability) > 0f)
+                        return "Pulverized";
+                    else
+                        return "Destroyed";
+                }
+                else if (itemData.item.IsWeapon())
+                {
+                    if ((itemData.durability / itemData.maxDurability) >= 0.9f)
+                        return "Lightly Scratched";
+                    else if ((itemData.durability / itemData.maxDurability) >= 0.675f)
+                        return "Scratched";
+                    else if ((itemData.durability / itemData.maxDurability) >= 0.45f)
+                        return "Notched";
+                    else if ((itemData.durability / itemData.maxDurability) >= 0.225f)
+                        return "Bent";
+                    else if ((itemData.durability / itemData.maxDurability) > 0f)
+                        return "Warped";
+                    else
+                        return "Broken";
+                }
+            }
+        }
+
+        Debug.LogWarning(itemData.item.mainMaterial + " material not accounted for. Fix me!");
+        return "";
     }
 }

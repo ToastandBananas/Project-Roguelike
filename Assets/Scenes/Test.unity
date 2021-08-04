@@ -5131,12 +5131,13 @@ GameObject:
   - component: {fileID: 549636863}
   - component: {fileID: 549636869}
   - component: {fileID: 549636868}
+  - component: {fileID: 549636865}
   - component: {fileID: 549636870}
   - component: {fileID: 549636873}
-  - component: {fileID: 549636865}
   - component: {fileID: 549636866}
   - component: {fileID: 549636867}
   - component: {fileID: 549636872}
+  - component: {fileID: 549636874}
   - component: {fileID: 549636871}
   m_Layer: 6
   m_Name: Player
@@ -5326,6 +5327,7 @@ MonoBehaviour:
   npcMovement: {fileID: 0}
   stateController: {fileID: 0}
   characterStats: {fileID: 0}
+  status: {fileID: 0}
   vision: {fileID: 0}
   circleCollider: {fileID: 0}
   rigidBody: {fileID: 0}
@@ -5480,10 +5482,10 @@ MonoBehaviour:
     baseValue: 20
     modifiers: 
   shieldBlock:
-    baseValue: 50
+    baseValue: 20
     modifiers: 
   weaponBlock:
-    baseValue: 60
+    baseValue: 20
     modifiers: 
   characterManager: {fileID: 0}
   treeDamage:
@@ -5509,6 +5511,19 @@ MonoBehaviour:
     m_Bits: 12544
   focusInteractable: {fileID: 0}
   canInteract: 1
+--- !u!114 &549636874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549636862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dee27d701694e7040bed070669729f18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  personalInjuries: []
 --- !u!1 &554865803
 GameObject:
   m_ObjectHideFlags: 0
@@ -8062,6 +8077,7 @@ GameObject:
   - component: {fileID: 840856817}
   - component: {fileID: 840856820}
   - component: {fileID: 840856821}
+  - component: {fileID: 840856823}
   m_Layer: 0
   m_Name: GM
   m_TagString: Untagged
@@ -8121,6 +8137,7 @@ MonoBehaviour:
   stackSizeSelector: {fileID: 0}
   tileInfoDisplay: {fileID: 0}
   tooltipManager: {fileID: 0}
+  traumaSystem: {fileID: 0}
   turnManager: {fileID: 0}
   uiManager: {fileID: 0}
 --- !u!114 &840856819
@@ -8189,6 +8206,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae474c3031262ff46a8c1596f38b6baa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &840856823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 840856815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1069ad91be7cd4cbbdf988649ca1a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abrasions: []
+  cuts:
+  - {fileID: 11400000, guid: 43e88d1273142554f8d620c0055b0198, type: 2}
+  bruises: []
 --- !u!1 &848710992
 GameObject:
   m_ObjectHideFlags: 0
@@ -15155,9 +15188,10 @@ GameObject:
   - component: {fileID: 1347319891}
   - component: {fileID: 1347319896}
   - component: {fileID: 1347319895}
+  - component: {fileID: 1347319893}
   - component: {fileID: 1347319899}
   - component: {fileID: 1347319903}
-  - component: {fileID: 1347319893}
+  - component: {fileID: 1347319904}
   - component: {fileID: 1347319890}
   - component: {fileID: 1347319889}
   - component: {fileID: 1347319900}
@@ -15461,6 +15495,7 @@ MonoBehaviour:
   npcMovement: {fileID: 0}
   stateController: {fileID: 0}
   characterStats: {fileID: 0}
+  status: {fileID: 0}
   vision: {fileID: 0}
   circleCollider: {fileID: 0}
   rigidBody: {fileID: 0}
@@ -15650,6 +15685,19 @@ MonoBehaviour:
     baseValue: 40
     modifiers: 
   characterManager: {fileID: 0}
+--- !u!114 &1347319904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1347319888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dee27d701694e7040bed070669729f18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  personalInjuries: []
 --- !u!4 &1392199866 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}

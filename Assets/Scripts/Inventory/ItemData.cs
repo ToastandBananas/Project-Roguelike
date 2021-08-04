@@ -123,7 +123,17 @@ public class ItemData : MonoBehaviour
             if (equipment.maxBaseDurability > 0)
                 maxDurability = Random.Range(equipment.minBaseDurability, equipment.maxBaseDurability + 1);
 
-            durability = maxDurability;
+            int random = Random.Range(0, 10);
+            if (random < 2)
+                durability = maxDurability;
+            else if (random < 4)
+                durability = Mathf.RoundToInt(Random.Range(maxDurability * 0.8f, maxDurability * 0.99f) * 100f) / 100f;
+            else if (random < 7)
+                durability = Mathf.RoundToInt(Random.Range(maxDurability * 0.5f, maxDurability * 0.79f) * 100f) / 100f;
+            else if (random < 9)
+                durability = Mathf.RoundToInt(Random.Range(maxDurability * 0.3f, maxDurability * 0.49f) * 100f) / 100f;
+            else
+                durability = Mathf.RoundToInt(Random.Range(maxDurability * 0.15f, maxDurability * 0.29f) * 100f) / 100f;
 
             if (item.IsWeapon())
             {
@@ -456,7 +466,7 @@ public class ItemData : MonoBehaviour
 
     public void DamageDurability()
     {
-        DamageDurability(0.5f);
+        DamageDurability(Random.Range(0.2f, 1f));
     }
 
     public void DamageDurability(float damageAmount)
@@ -469,24 +479,22 @@ public class ItemData : MonoBehaviour
             durability = 0;
             BreakItem();
         }
-        else
-            durability = Mathf.RoundToInt(durability * 100f) / 100f;
     }
 
     public void DamageDurability(int damageAmount, bool wearablePenetrated)
     {
         if (wearablePenetrated)
-            durability -= damageAmount / 4f;
+            durability -= damageAmount / Random.Range(3f, 5f);
         else
-            durability -= damageAmount / 10f;
+            durability -= damageAmount / Random.Range(9f, 11f);
+
+        durability = Mathf.RoundToInt(durability * 100f) / 100f;
 
         if (durability <= 0)
         {
             durability = 0;
             BreakItem();
         }
-        else
-            durability = Mathf.RoundToInt(durability * 100f) / 100f;
     }
 
     public void BreakItem()

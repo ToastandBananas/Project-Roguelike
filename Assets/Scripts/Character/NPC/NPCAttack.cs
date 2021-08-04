@@ -75,6 +75,7 @@ public class NPCAttack : Attack
     public void SwitchTarget(CharacterManager newTarget)
     {
         Debug.Log("Switching target...");
+        Debug.Log(newTarget);
         if (newTarget == null)
         {
             characterManager.stateController.SetToDefaultState(characterManager.npcMovement.shouldFollowLeader);

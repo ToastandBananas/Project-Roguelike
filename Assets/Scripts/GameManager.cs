@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public StackSizeSelector stackSizeSelector;
     [HideInInspector] public TileInfoDisplay tileInfoDisplay;
     [HideInInspector] public TooltipManager tooltipManager;
+    [HideInInspector] public TraumaSystem traumaSystem;
     [HideInInspector] public TurnManager turnManager;
     [HideInInspector] public UIManager uiManager;
 
@@ -37,6 +38,12 @@ public class GameManager : MonoBehaviour
         objectPoolManager = GetComponent<ObjectPoolManager>();
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.I))
+            TraumaSystem.ApplyInjury(playerManager, traumaSystem.GetCut(playerManager, 10), BodyPart.Torso);
+    }
+
     void Start()
     {
         apManager = APManager.instance;
@@ -50,6 +57,7 @@ public class GameManager : MonoBehaviour
         stackSizeSelector = StackSizeSelector.instance;
         tileInfoDisplay = TileInfoDisplay.instance;
         tooltipManager = TooltipManager.instance;
+        traumaSystem = TraumaSystem.instance;
         turnManager = TurnManager.instance;
         uiManager = UIManager.instance;
     }

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 494931b850fa3e04aac1395fb38cc72b, type: 3}
+  m_Name: Deep Cut
+  m_EditorClassIdentifier: 
+  name: Deep Cut
+  description: This cut is causing you to bleed like a stuck pig.
+  injuryType: 0
+  minInjuryHealTime: {x: 1, y: 12, z: 0}
+  maxInjuryHealTime: {x: 2, y: 12, z: 0}
+  damagePerTurn: 0.25
+  minBleedTime: 180
+  maxBleedTime: 240

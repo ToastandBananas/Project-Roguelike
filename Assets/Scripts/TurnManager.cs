@@ -53,6 +53,8 @@ public class TurnManager : MonoBehaviour
     {
         gm.playerManager.isMyTurn = true;
         gm.tileInfoDisplay.DisplayTileInfo();
+        gm.playerManager.status.UpdateInjuries();
+        TimeSystem.IncreaseTime();
     }
 
     void FinishNPCsTurn(CharacterManager npcsCharManager)
