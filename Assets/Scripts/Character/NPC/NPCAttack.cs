@@ -74,12 +74,11 @@ public class NPCAttack : Attack
 
     public void SwitchTarget(CharacterManager newTarget)
     {
-        Debug.Log("Switching target...");
-        Debug.Log(newTarget);
+        Debug.Log("Switching target..." + newTarget);
         if (newTarget == null)
         {
             characterManager.stateController.SetToDefaultState(characterManager.npcMovement.shouldFollowLeader);
-            characterManager.TakeTurn();
+            gm.turnManager.FinishTurn(characterManager);
             return;
         }
 
@@ -92,7 +91,7 @@ public class NPCAttack : Attack
         else
             characterManager.stateController.SetCurrentState(State.Fight);
 
-        characterManager.TakeTurn();
+        gm.turnManager.FinishTurn(characterManager);
     }
 
     public void MoveInToAttack()

@@ -24,10 +24,6 @@ public class CharacterStats : Stats
     public Stat maxRightFootHealth;
     public int currentRightFootHealth { get; private set; }
 
-    [Header("Blood")]
-    public Stat maxBloodAmount;
-    public int currentBloodAmount;
-
     [Header("Defense")]
     public Stat torsoDefense;
     public Stat headDefense;
@@ -35,6 +31,14 @@ public class CharacterStats : Stats
     public Stat handDefense;
     public Stat legDefense;
     public Stat footDefense;
+
+    [Header("Healthiness")]
+    public Stat maxBloodAmount;
+    public int currentBloodAmount;
+    public Stat maxFullness;
+    public float currentFullness;
+    public Stat maxWater;
+    public float currentWater;
 
     [Header("Main Stats")]
     public Stat agility;
@@ -60,8 +64,6 @@ public class CharacterStats : Stats
     public Stat weaponBlock;
 
     [HideInInspector] public CharacterManager characterManager;
-
-    float healingBuildup;
 
     public override void Awake()
     {
@@ -131,11 +133,19 @@ public class CharacterStats : Stats
 
     public void Consume(Consumable consumable)
     {
-        if (consumable.instantHealPercent > 0)
-            HealAllBodyParts(consumable.instantHealPercent, true);
-        if (consumable.healPercent > 0)
-            HealAllBodyParts(consumable.healPercent, false);
+        // Adjust overall bodily healthiness
+        if (consumable.healthinessAdjustment != 0)
+            characterManager.status.AdjustHealthiness(consumable.healthinessAdjustment);
 
+        // Instantly heal entire body
+        if (consumable.instantHealPercent > 0)
+            HealAllBodyParts(consumable.instantHealPercent);
+
+        // Apply heal over time buff
+        if (consumable.gradualHealPercent > 0)
+            TraumaSystem.ApplyBuff(characterManager, consumable);
+
+        // Show some flavor text
         gm.flavorText.WriteConsumeLine(consumable, characterManager);
     }
 
@@ -186,59 +196,21 @@ public class CharacterStats : Stats
         }
     }
 
-    public void HealAllBodyParts(float healPercent, bool healInstantly)
+    public void HealAllBodyParts(float healPercent)
     {
-        if (healInstantly)
-        {
-            HealBodyPart(healPercent, BodyPart.Torso, true);
-            HealBodyPart(healPercent, BodyPart.Head, true);
-            HealBodyPart(healPercent, BodyPart.LeftArm, true);
-            HealBodyPart(healPercent, BodyPart.RightArm, true);
-            HealBodyPart(healPercent, BodyPart.LeftHand, true);
-            HealBodyPart(healPercent, BodyPart.RightHand, true);
-            HealBodyPart(healPercent, BodyPart.LeftLeg, true);
-            HealBodyPart(healPercent, BodyPart.RightLeg, true);
-            HealBodyPart(healPercent, BodyPart.LeftFoot, true);
-            HealBodyPart(healPercent, BodyPart.RightFoot, true);
-        }
-        else
-        {
-            HealBodyPart(healPercent, BodyPart.Torso, false);
-            HealBodyPart(healPercent, BodyPart.Head, false);
-            HealBodyPart(healPercent, BodyPart.LeftArm, false);
-            HealBodyPart(healPercent, BodyPart.RightArm, false);
-            HealBodyPart(healPercent, BodyPart.LeftHand, false);
-            HealBodyPart(healPercent, BodyPart.RightHand, false);
-            HealBodyPart(healPercent, BodyPart.LeftLeg, false);
-            HealBodyPart(healPercent, BodyPart.RightLeg, false);
-            HealBodyPart(healPercent, BodyPart.LeftFoot, false);
-            HealBodyPart(healPercent, BodyPart.RightFoot, false);
-        }
+        HealBodyPart_Instant(healPercent, BodyPart.Torso);
+        HealBodyPart_Instant(healPercent, BodyPart.Head);
+        HealBodyPart_Instant(healPercent, BodyPart.LeftArm);
+        HealBodyPart_Instant(healPercent, BodyPart.RightArm);
+        HealBodyPart_Instant(healPercent, BodyPart.LeftHand);
+        HealBodyPart_Instant(healPercent, BodyPart.RightHand);
+        HealBodyPart_Instant(healPercent, BodyPart.LeftLeg);
+        HealBodyPart_Instant(healPercent, BodyPart.RightLeg);
+        HealBodyPart_Instant(healPercent, BodyPart.LeftFoot);
+        HealBodyPart_Instant(healPercent, BodyPart.RightFoot);
     }
 
-    public int HealBodyPart(float healPercent, BodyPart bodyPartToHeal, bool healInstantly)
-    {
-        int healAmount = 0;
-        if (healInstantly)
-            healAmount = HealBodyPart_Instant(healPercent, bodyPartToHeal);
-        else
-            healingBuildup += healPercent;
-
-        if (healInstantly)
-            TextPopup.CreateHealPopup(transform.position, healAmount);
-
-        return healAmount;
-    }
-
-    void ApplyHealingBuildup()
-    {
-        if (healingBuildup > 0)
-        {
-            // TODO: Heal over time
-        }
-    }
-
-    int HealBodyPart_Instant(float healPercent, BodyPart bodyPartToHeal)
+    public int HealBodyPart_Instant(float healPercent, BodyPart bodyPartToHeal)
     {
         Stat maxHealth = GetBodyPartsMaxHealth(bodyPartToHeal);
         int healAmount = Mathf.RoundToInt(maxHealth.GetValue() * healPercent);
@@ -250,33 +222,65 @@ public class CharacterStats : Stats
         else
             AddToCurrentHealth_Instant(bodyPartToHeal, healAmount);
 
+        TextPopup.CreateHealPopup(transform.position, healAmount);
+
         return healAmount;
     }
 
-    int AddToCurrentHealth_Instant(BodyPart bodyPart, int healAmount)
+    public int AddToCurrentHealth_Instant(BodyPart bodyPart, int healAmount)
     {
         switch (bodyPart)
         {
             case BodyPart.Torso:
-                return currentHealth += healAmount;
+                currentHealth += healAmount;
+                if (currentHealth > maxHealth.GetValue())
+                    currentHealth = maxHealth.GetValue();
+                return currentHealth;
             case BodyPart.Head:
-                return currentHeadHealth += healAmount;
+                currentHeadHealth += healAmount;
+                if (currentHeadHealth > maxHeadHealth.GetValue())
+                    currentHeadHealth = maxHeadHealth.GetValue();
+                return currentHeadHealth;
             case BodyPart.LeftArm:
-                return currentLeftArmHealth += healAmount;
+                currentLeftArmHealth += healAmount;
+                if (currentLeftArmHealth > maxLeftArmHealth.GetValue())
+                    currentLeftArmHealth = maxLeftArmHealth.GetValue();
+                return currentLeftArmHealth;
             case BodyPart.RightArm:
-                return currentRightArmHealth += healAmount;
+                currentRightArmHealth += healAmount;
+                if (currentRightArmHealth > maxRightArmHealth.GetValue())
+                    currentRightArmHealth = maxRightArmHealth.GetValue();
+                return currentRightArmHealth;
             case BodyPart.LeftLeg:
-                return currentLeftLegHealth += healAmount;
+                currentLeftLegHealth += healAmount;
+                if (currentLeftLegHealth > maxLeftLegHealth.GetValue())
+                    currentLeftLegHealth = maxLeftLegHealth.GetValue();
+                return currentLeftLegHealth;
             case BodyPart.RightLeg:
-                return currentRightLegHealth += healAmount;
+                currentRightLegHealth += healAmount;
+                if (currentRightLegHealth > maxRightLegHealth.GetValue())
+                    currentRightLegHealth = maxRightLegHealth.GetValue();
+                return currentRightLegHealth;
             case BodyPart.LeftHand:
-                return currentLeftHandHealth += healAmount;
+                currentLeftHandHealth += healAmount;
+                if (currentLeftHandHealth > maxLeftHandHealth.GetValue())
+                    currentLeftHandHealth = maxLeftHandHealth.GetValue();
+                return currentLeftHandHealth;
             case BodyPart.RightHand:
-                return currentRightHandHealth += healAmount;
+                currentRightHandHealth += healAmount;
+                if (currentRightHandHealth > maxRightHandHealth.GetValue())
+                    currentRightHandHealth = maxRightHandHealth.GetValue();
+                return currentRightHandHealth;
             case BodyPart.LeftFoot:
-                return currentLeftFootHealth += healAmount;
+                currentLeftFootHealth += healAmount;
+                if (currentLeftFootHealth > maxLeftFootHealth.GetValue())
+                    currentLeftFootHealth = maxLeftFootHealth.GetValue();
+                return currentLeftFootHealth;
             case BodyPart.RightFoot:
-                return currentRightFootHealth += healAmount;
+                currentRightFootHealth += healAmount;
+                if (currentRightFootHealth > maxRightFootHealth.GetValue())
+                    currentRightFootHealth = maxRightFootHealth.GetValue();
+                return currentRightFootHealth;
             default:
                 return 0;
         }

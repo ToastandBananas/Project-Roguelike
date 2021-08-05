@@ -25,7 +25,7 @@ public class Stats : MonoBehaviour
     public virtual void Start()
     {
         gm = GameManager.instance;
-        spriteManager = GetComponent<SpriteManager>();
+        spriteManager = GetComponentInChildren<SpriteManager>();
     }
 
     public virtual int TakeDamage(int damage)

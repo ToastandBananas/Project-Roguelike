@@ -67,7 +67,7 @@ public class Equipment : Item
         if (itemUsed)
         {
             // Remove the item from the ItemDatas dictionary if it was on the ground
-            if (invItem.myInventory == null || invItem.myInventory == invItem.itemData.bagInventory)
+            if (invItem.myEquipmentManager == null && (invItem.myInventory == null || invItem.myInventory == invItem.itemData.bagInventory))
                 GameTiles.RemoveItemData(invItem.itemData, invItem.itemData.transform.position);
 
             if (itemEquipped)

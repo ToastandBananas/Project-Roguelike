@@ -11,11 +11,14 @@ public class Consumable : Item
     [Header("Consumable Stats")]
     public ConsumableType consumableType;
     public int maxUses = 1;
+    public float healthinessAdjustment;
     public int nourishment;
     public int thirstQuench;
     public int energyRestoration;
-    [Range(0f, 1f)] public float healPercent;
     [Range(0f, 1f)] public float instantHealPercent;
+    [Range(0f, 1f)] public float gradualHealPercent;
+    public Vector3Int minHealTime;
+    public Vector3Int maxHealTime;
     public int staminaRecoveryAmount;
     public int manaRecoveryAmount;
 

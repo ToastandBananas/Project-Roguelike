@@ -16,8 +16,8 @@ MonoBehaviour:
   pluralName: Roasted Chicken Legs
   itemType: 5
   mainMaterial: 2
-  description: How delectable.
-  maxStackSize: 10
+  description: The roasted flesh of a chicken's leg. How delectable.
+  maxStackSize: 5
   weight: 0.25
   volume: 0.15
   isUsable: 1
@@ -29,9 +29,13 @@ MonoBehaviour:
   maxBaseFreshness: 100
   consumableType: 0
   maxUses: 1
+  healthinessAdjustment: 0.75
   nourishment: 20
   thirstQuench: 0
   energyRestoration: 20
-  healPercent: 7.5
+  instantHealPercent: 0
+  gradualHealPercent: 0.02
+  minHealTime: {x: 0, y: 45, z: 0}
+  maxHealTime: {x: 1, y: 0, z: 0}
   staminaRecoveryAmount: 10
   manaRecoveryAmount: 0

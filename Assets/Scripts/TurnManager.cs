@@ -53,6 +53,7 @@ public class TurnManager : MonoBehaviour
     {
         gm.playerManager.isMyTurn = true;
         gm.tileInfoDisplay.DisplayTileInfo();
+        gm.playerManager.status.UpdateBuffs();
         gm.playerManager.status.UpdateInjuries();
         TimeSystem.IncreaseTime();
     }
@@ -72,6 +73,8 @@ public class TurnManager : MonoBehaviour
         if (gm.playerManager.playerStats.isDeadOrDestroyed == false)
         {
             charManager.isMyTurn = true;
+            charManager.status.UpdateBuffs();
+            charManager.status.UpdateInjuries();
             charManager.TakeTurn();
         }
     }

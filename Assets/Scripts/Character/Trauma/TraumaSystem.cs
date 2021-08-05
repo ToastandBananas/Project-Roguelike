@@ -40,6 +40,16 @@ public class TraumaSystem : MonoBehaviour
         character.status.locationalInjuries.Remove(personalInjury);
     }
 
+    public static void ApplyBuff(CharacterManager character, Consumable consumable)
+    {
+        character.status.buffs.Add(new Buff(consumable));
+    }
+
+    public static void RemoveBuff(CharacterManager character, Buff buff)
+    {
+        character.status.buffs.Remove(buff);
+    }
+
     public Injury GetCut(CharacterManager characterManager, BodyPart bodyPart, int damage)
     {
         // Get the max health for the body part being cut

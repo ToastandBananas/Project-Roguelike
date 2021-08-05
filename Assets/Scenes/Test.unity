@@ -5427,10 +5427,6 @@ MonoBehaviour:
   maxRightFootHealth:
     baseValue: 35
     modifiers: 
-  maxBloodAmount:
-    baseValue: 5000
-    modifiers: 
-  currentBloodAmount: 0
   torsoDefense:
     baseValue: 0
     modifiers: 
@@ -5449,6 +5445,18 @@ MonoBehaviour:
   footDefense:
     baseValue: 0
     modifiers: 
+  maxBloodAmount:
+    baseValue: 5000
+    modifiers: 
+  currentBloodAmount: 0
+  maxFullness:
+    baseValue: 20
+    modifiers: 
+  currentFullness: 0
+  maxWater:
+    baseValue: 20
+    modifiers: 
+  currentWater: 0
   agility:
     baseValue: 0
     modifiers: 
@@ -5527,7 +5535,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dee27d701694e7040bed070669729f18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  personalInjuries: []
+  characterManager: {fileID: 549636870}
+  locationalInjuries: []
+  buffs: []
 --- !u!1 &554865803
 GameObject:
   m_ObjectHideFlags: 0
@@ -8225,6 +8235,8 @@ MonoBehaviour:
   abrasions: []
   cuts:
   - {fileID: 11400000, guid: 43e88d1273142554f8d620c0055b0198, type: 2}
+  gashes: []
+  stabWounds: []
   bruises: []
 --- !u!1 &848710992
 GameObject:
@@ -15628,10 +15640,6 @@ MonoBehaviour:
   maxRightFootHealth:
     baseValue: 25
     modifiers: 
-  maxBloodAmount:
-    baseValue: 3500
-    modifiers: 
-  currentBloodAmount: 0
   torsoDefense:
     baseValue: 0
     modifiers: 
@@ -15650,6 +15658,18 @@ MonoBehaviour:
   footDefense:
     baseValue: 0
     modifiers: 
+  maxBloodAmount:
+    baseValue: 3500
+    modifiers: 
+  currentBloodAmount: 0
+  maxFullness:
+    baseValue: 20
+    modifiers: 
+  currentFullness: 0
+  maxWater:
+    baseValue: 20
+    modifiers: 
+  currentWater: 0
   agility:
     baseValue: 0
     modifiers: 
@@ -15705,7 +15725,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dee27d701694e7040bed070669729f18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  personalInjuries: []
+  characterManager: {fileID: 1347319899}
+  locationalInjuries: []
+  buffs: []
 --- !u!4 &1392199866 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
@@ -87912,7 +87934,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1067181842}
   m_HandleRect: {fileID: 1067181841}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
