@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Status : MonoBehaviour
 {
-    public List<PersonalInjury> personalInjuries = new List<PersonalInjury>();
+    public List<LocationalInjury> locationalInjuries = new List<LocationalInjury>();
 
     CharacterManager characterManager;
 
@@ -15,67 +15,75 @@ public class Status : MonoBehaviour
         characterManager = GetComponent<CharacterManager>();
     }
 
+    public void UpdateAids(int timePassed = TimeSystem.defaultTimeTickInSeconds)
+    {
+
+    }
+
     public void UpdateInjuries(int timePassed = TimeSystem.defaultTimeTickInSeconds)
     {
-        Bleed(timePassed);
-
-        int injuryCount = personalInjuries.Count;
-        for (int i = injuryCount - 1; i >= 0; i--)
+        if (locationalInjuries.Count > 0)
         {
-            personalInjuries[i].injuryTimeRemaining -= Mathf.RoundToInt(timePassed * personalInjuries[i].injuryHealMultiplier);
-            if (personalInjuries[i].injuryTimeRemaining <= 0)
-                personalInjuries.Remove(personalInjuries[i]);
+            Bleed(timePassed);
+
+            int injuryCount = locationalInjuries.Count;
+            for (int i = injuryCount - 1; i >= 0; i--)
+            {
+                locationalInjuries[i].injuryTimeRemaining -= Mathf.RoundToInt(timePassed * locationalInjuries[i].injuryHealMultiplier);
+                if (locationalInjuries[i].injuryTimeRemaining <= 0)
+                    locationalInjuries.Remove(locationalInjuries[i]);
+            }
         }
     }
 
     void Bleed(int timePassed)
     {
-        int injuryCount = personalInjuries.Count;
+        int injuryCount = locationalInjuries.Count;
         for (int i = injuryCount - 1; i >= 0; i--)
         {
-            if (personalInjuries[i].bleedTimeRemaining > 0)
+            if (locationalInjuries[i].bleedTimeRemaining > 0)
             {
-                switch (personalInjuries[i].injuryLocation) // Body location of the injury
+                switch (locationalInjuries[i].injuryLocation) // Body location of the injury
                 {
                     case BodyPart.Torso:
-                        torsoDamageBuildup += personalInjuries[i].damagePerTurn;
+                        torsoDamageBuildup += locationalInjuries[i].damagePerTurn;
                         break;
                     case BodyPart.Head:
-                        headDamageBuildup += personalInjuries[i].damagePerTurn;
+                        headDamageBuildup += locationalInjuries[i].damagePerTurn;
                         break;
                     case BodyPart.LeftArm:
-                        leftArmDamageBuildup += personalInjuries[i].damagePerTurn;
+                        leftArmDamageBuildup += locationalInjuries[i].damagePerTurn;
                         break;
                     case BodyPart.RightArm:
-                        rightArmDamageBuildup += personalInjuries[i].damagePerTurn;
+                        rightArmDamageBuildup += locationalInjuries[i].damagePerTurn;
                         break;
                     case BodyPart.LeftLeg:
-                        leftLegDamageBuildup += personalInjuries[i].damagePerTurn;
+                        leftLegDamageBuildup += locationalInjuries[i].damagePerTurn;
                         break;
                     case BodyPart.RightLeg:
-                        rightLegDamageBuildup += personalInjuries[i].damagePerTurn;
+                        rightLegDamageBuildup += locationalInjuries[i].damagePerTurn;
                         break;
                     case BodyPart.LeftHand:
-                        leftHandDamageBuildup += personalInjuries[i].damagePerTurn;
+                        leftHandDamageBuildup += locationalInjuries[i].damagePerTurn;
                         break;
                     case BodyPart.RightHand:
-                        rightHandDamageBuildup += personalInjuries[i].damagePerTurn;
+                        rightHandDamageBuildup += locationalInjuries[i].damagePerTurn;
                         break;
                     case BodyPart.LeftFoot:
-                        leftFootDamageBuildup += personalInjuries[i].damagePerTurn;
+                        leftFootDamageBuildup += locationalInjuries[i].damagePerTurn;
                         break;
                     case BodyPart.RightFoot:
-                        rightFootDamageBuildup += personalInjuries[i].damagePerTurn;
+                        rightFootDamageBuildup += locationalInjuries[i].damagePerTurn;
                         break;
                     default:
                         break;
                 }
 
-                LoseBlood(personalInjuries[i].bloodLossPerTurn);
+                LoseBlood(locationalInjuries[i].bloodLossPerTurn);
 
-                personalInjuries[i].bleedTimeRemaining -= Mathf.RoundToInt(timePassed * personalInjuries[i].injuryHealMultiplier);
-                if (personalInjuries[i].bleedTimeRemaining < 0)
-                    personalInjuries[i].bleedTimeRemaining = 0;
+                locationalInjuries[i].bleedTimeRemaining -= Mathf.RoundToInt(timePassed * locationalInjuries[i].injuryHealMultiplier);
+                if (locationalInjuries[i].bleedTimeRemaining < 0)
+                    locationalInjuries[i].bleedTimeRemaining = 0;
             }
         }
 
@@ -154,7 +162,7 @@ public class Status : MonoBehaviour
 }
 
 [System.Serializable]
-public class PersonalInjury
+public class LocationalInjury
 {
     public Injury injury;
     public BodyPart injuryLocation;
@@ -164,7 +172,7 @@ public class PersonalInjury
     public int bloodLossPerTurn;
     public float injuryHealMultiplier = 1f;
 
-    public PersonalInjury(Injury injury, BodyPart injuryLocation)
+    public LocationalInjury(Injury injury, BodyPart injuryLocation)
     {
         this.injury = injury;
         this.injuryLocation = injuryLocation;
@@ -186,3 +194,12 @@ public class PersonalInjury
             bloodLossPerTurn = Random.Range(bloodLossValues.x, bloodLossValues.y + 1);
     }
 }
+
+/*[System.Serializable]
+public class LocationalAid
+{
+    public Aid aid;
+    public BodyPart aidLocation;
+    public float healPerTurn;
+    public int aidTimeRemaining;
+}*/

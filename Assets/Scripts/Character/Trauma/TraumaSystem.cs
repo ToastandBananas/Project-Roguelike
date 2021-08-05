@@ -32,12 +32,12 @@ public class TraumaSystem : MonoBehaviour
 
     public static void ApplyInjury(CharacterManager character, Injury injury, BodyPart injuryLocation)
     {
-        character.status.personalInjuries.Add(new PersonalInjury(injury, injuryLocation));
+        character.status.locationalInjuries.Add(new LocationalInjury(injury, injuryLocation));
     }
 
-    public static void RemoveInjury(CharacterManager character, PersonalInjury personalInjury)
+    public static void RemoveInjury(CharacterManager character, LocationalInjury personalInjury)
     {
-        character.status.personalInjuries.Remove(personalInjury);
+        character.status.locationalInjuries.Remove(personalInjury);
     }
 
     public Injury GetCut(CharacterManager characterManager, BodyPart bodyPart, int damage)

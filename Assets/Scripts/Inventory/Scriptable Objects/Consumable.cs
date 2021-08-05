@@ -14,7 +14,8 @@ public class Consumable : Item
     public int nourishment;
     public int thirstQuench;
     public int energyRestoration;
-    public float healPercent;
+    [Range(0f, 1f)] public float healPercent;
+    [Range(0f, 1f)] public float instantHealPercent;
     public int staminaRecoveryAmount;
     public int manaRecoveryAmount;
 
