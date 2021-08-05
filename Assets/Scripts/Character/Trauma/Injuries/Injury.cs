@@ -9,15 +9,16 @@ public class Injury : ScriptableObject
     public InjuryType injuryType;
     public Vector3Int minInjuryHealTime;
     public Vector3Int maxInjuryHealTime;
-    public float damagePerTurn = 1f;
+    public float minDamagePerTurn = 0.5f;
+    public float maxDamagePerTurn = 1f;
 
-    public virtual int GetMinBleedTime()
+    public virtual Vector2Int GetBleedTime()
     {
-        return 0;
+        return Vector2Int.zero;
     }
 
-    public virtual int GetMaxBleedTime()
+    public virtual Vector2Int GetBloodLossPerTurn()
     {
-        return 0;
+        return Vector2Int.zero;
     }
 }

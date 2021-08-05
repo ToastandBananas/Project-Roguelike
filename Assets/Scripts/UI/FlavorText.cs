@@ -45,7 +45,7 @@ public class FlavorText : MonoBehaviour
         if (numLines > maxLines)
             stringBuilder.Remove(0, Convert.ToString(stringBuilder).Split('\n').FirstOrDefault().Length + 1);
 
-        stringBuilder.Append(input + "\n");
+        stringBuilder.Append("- " + input + "\n");
         flavorText.text = Convert.ToString(stringBuilder);
 
         StartCoroutine(SetupScrollbar());
@@ -288,19 +288,39 @@ public class FlavorText : MonoBehaviour
         }
         else
         {
-            if (possessive)
+            if (uppercase)
             {
-                if (characterManager.isNamed)
-                    return "<b><i>" + characterManager.name + "'s</i></b> ";
+                if (possessive)
+                {
+                    if (characterManager.isNamed)
+                        return "<b><i>" + characterManager.name + "'s</i></b> ";
+                    else
+                        return "The <b><i>" + characterManager.name + "'s</i></b> ";
+                }
                 else
-                    return "the <b><i>" + characterManager.name + "'s</i></b> ";
+                {
+                    if (characterManager.isNamed)
+                        return "<b><i>" + characterManager.name + "</i></b> ";
+                    else
+                        return "The <b><i>" + characterManager.name + "</i></b> ";
+                }
             }
             else
             {
-                if (characterManager.isNamed)
-                    return "<b><i>" + characterManager.name + "</i></b> ";
+                if (possessive)
+                {
+                    if (characterManager.isNamed)
+                        return "<b><i>" + characterManager.name + "'s</i></b> ";
+                    else
+                        return "the <b><i>" + characterManager.name + "'s</i></b> ";
+                }
                 else
-                    return "the <b><i>" + characterManager.name + "</i></b> ";
+                {
+                    if (characterManager.isNamed)
+                        return "<b><i>" + characterManager.name + "</i></b> ";
+                    else
+                        return "the <b><i>" + characterManager.name + "</i></b> ";
+                }
             }
         }
     }

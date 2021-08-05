@@ -5427,6 +5427,10 @@ MonoBehaviour:
   maxRightFootHealth:
     baseValue: 35
     modifiers: 
+  maxBloodAmount:
+    baseValue: 5000
+    modifiers: 
+  currentBloodAmount: 0
   torsoDefense:
     baseValue: 0
     modifiers: 
@@ -15624,6 +15628,10 @@ MonoBehaviour:
   maxRightFootHealth:
     baseValue: 25
     modifiers: 
+  maxBloodAmount:
+    baseValue: 3500
+    modifiers: 
+  currentBloodAmount: 0
   torsoDefense:
     baseValue: 0
     modifiers: 

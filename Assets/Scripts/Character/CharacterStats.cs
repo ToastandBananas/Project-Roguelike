@@ -24,6 +24,10 @@ public class CharacterStats : Stats
     public Stat maxRightFootHealth;
     public int currentRightFootHealth { get; private set; }
 
+    [Header("Blood")]
+    public Stat maxBloodAmount;
+    public int currentBloodAmount;
+
     [Header("Defense")]
     public Stat torsoDefense;
     public Stat headDefense;
@@ -70,6 +74,7 @@ public class CharacterStats : Stats
         currentRightLegHealth = maxRightLegHealth.GetValue();
         currentLeftFootHealth = maxLeftFootHealth.GetValue();
         currentRightFootHealth = maxRightFootHealth.GetValue();
+        currentBloodAmount = maxBloodAmount.GetValue();
         currentAP = maxAP.GetValue();
     }
 
@@ -303,14 +308,8 @@ public class CharacterStats : Stats
         return healAmount;
     }
 
-    public int TakeLocationalDamage(int damage, BodyPart bodyPart, EquipmentManager equipmentManager, bool armorPenetrated, bool clothingPenetrated)
+    public int TakeStaticLocationalDamage(int damage, BodyPart bodyPart)
     {
-        if (armorPenetrated == false && equipmentManager != null)
-            damage -= GetLocationalArmorDefense(equipmentManager, bodyPart);
-
-        if (clothingPenetrated == false && equipmentManager != null)
-            damage -= GetLocationalClothingDefense(equipmentManager, bodyPart);
-
         if (canTakeDamage)
         {
             if (damage < 0)
@@ -356,12 +355,97 @@ public class CharacterStats : Stats
                 default:
                     break;
             }
-            
+
             if (currentHealth <= 0 || currentHeadHealth <= 0)
                 Die();
         }
 
         return damage;
+    }
+
+    public int TakeLocationalDamage(int bluntDamage, int pierceDamage, int slashDamage, int cleaveDamage, BodyPart bodyPart, EquipmentManager equipmentManager, Wearable armor, Wearable clothing, bool armorPenetrated, bool clothingPenetrated)
+    {
+        int totalDamage = bluntDamage + pierceDamage + slashDamage + cleaveDamage;
+
+        if (armorPenetrated == false && equipmentManager != null)
+            totalDamage -= GetLocationalArmorDefense(equipmentManager, bodyPart);
+
+        if (clothingPenetrated == false && equipmentManager != null)
+            totalDamage -= GetLocationalClothingDefense(equipmentManager, bodyPart);
+
+        if (canTakeDamage)
+        {
+            if (totalDamage <= 0)
+                totalDamage = 0;
+            else if ((armor == null || armorPenetrated) && (clothing == null || clothingPenetrated))
+            {
+                // If armor & clothing was penetrated or the character isn't wearing either, 
+                // cause an injury based off of damage types and amounts relative to the character's max health for the body part attacked
+                Debug.Log(name + " was injured.");
+                if (bluntDamage > 0)
+                {
+
+                }
+                else if (pierceDamage > 0)
+                {
+
+                }
+                else if (slashDamage > 0)
+                {
+                    TraumaSystem.ApplyInjury(characterManager, gm.traumaSystem.GetCut(characterManager, bodyPart, slashDamage), bodyPart);
+                }
+                else if (cleaveDamage > 0)
+                {
+
+                }
+            }
+
+            if (totalDamage > 0)
+                TextPopup.CreateDamagePopup(transform.position, totalDamage, false);
+            else
+                TextPopup.CreateTextStringPopup(transform.position, "Absorbed");
+
+            switch (bodyPart)
+            {
+                case BodyPart.Torso:
+                    currentHealth -= totalDamage;
+                    break;
+                case BodyPart.Head:
+                    currentHeadHealth -= totalDamage;
+                    break;
+                case BodyPart.LeftArm:
+                    currentLeftArmHealth -= totalDamage;
+                    break;
+                case BodyPart.RightArm:
+                    currentRightArmHealth -= totalDamage;
+                    break;
+                case BodyPart.LeftLeg:
+                    currentLeftLegHealth -= totalDamage;
+                    break;
+                case BodyPart.RightLeg:
+                    currentRightLegHealth -= totalDamage;
+                    break;
+                case BodyPart.LeftHand:
+                    currentLeftHandHealth -= totalDamage;
+                    break;
+                case BodyPart.RightHand:
+                    currentRightHandHealth -= totalDamage;
+                    break;
+                case BodyPart.LeftFoot:
+                    currentLeftFootHealth -= totalDamage;
+                    break;
+                case BodyPart.RightFoot:
+                    currentRightFootHealth -= totalDamage;
+                    break;
+                default:
+                    break;
+            }
+            
+            if (currentHealth <= 0 || currentHeadHealth <= 0)
+                Die();
+        }
+
+        return totalDamage;
     }
 
     public BodyPart GetBodyPartToHit()
@@ -387,6 +471,35 @@ public class CharacterStats : Stats
             return BodyPart.LeftFoot;
         else
             return BodyPart.RightFoot;
+    }
+
+    public Stat GetBodyPartsMaxHealth(BodyPart bodyPart)
+    {
+        switch (bodyPart)
+        {
+            case BodyPart.Torso:
+                return maxHealth;
+            case BodyPart.Head:
+                return maxHeadHealth;
+            case BodyPart.LeftArm:
+                return maxLeftArmHealth;
+            case BodyPart.RightArm:
+                return maxRightArmHealth;
+            case BodyPart.LeftLeg:
+                return maxLeftLegHealth;
+            case BodyPart.RightLeg:
+                return maxRightLegHealth;
+            case BodyPart.LeftHand:
+                return maxLeftHandHealth;
+            case BodyPart.RightHand:
+                return maxRightHandHealth;
+            case BodyPart.LeftFoot:
+                return maxLeftFootHealth;
+            case BodyPart.RightFoot:
+                return maxRightFootHealth;
+            default:
+                return null;
+        }
     }
 
     int GetLocationalArmorDefense(EquipmentManager equipmentManager, BodyPart bodyPart)

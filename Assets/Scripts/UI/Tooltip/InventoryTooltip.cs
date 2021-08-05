@@ -41,11 +41,7 @@ public class InventoryTooltip : Tooltip
             stringBuilder.Append("Attack Range: " + weapon.attackRange + "\n\n");
 
             // Damage
-            stringBuilder.Append("Damage: " + itemData.damage + "\n");
-            
-            // Tree damage
-            if (itemData.treeDamage > 0)
-                stringBuilder.Append("Tree Damage : " + itemData.treeDamage + "\n");
+            stringBuilder.Append("Attack Power: " + GetAttackPower(itemData, weapon) + "\n");
 
             // Block chance multiplier
             stringBuilder.Append("Block Chance Multiplier: " + itemData.blockChanceMultiplier + "\n\n");
@@ -158,6 +154,17 @@ public class InventoryTooltip : Tooltip
 
         // Value
         stringBuilder.Append("Estimated Value: " + itemData.value + " gold");
+    }
+
+    int GetAttackPower(ItemData itemData, Weapon weapon)
+    {
+        if (weapon.defaultMeleeAttackType == MeleeAttackType.Swipe)
+            return itemData.bluntDamage_Swipe + itemData.pierceDamage_Swipe + itemData.slashDamage_Swipe + itemData.cleaveDamage_Swipe;
+        else if (weapon.defaultMeleeAttackType == MeleeAttackType.Thrust)
+            return itemData.bluntDamage_Thrust + itemData.pierceDamage_Thrust + itemData.slashDamage_Thrust + itemData.cleaveDamage_Thrust;
+        else if (weapon.defaultMeleeAttackType == MeleeAttackType.Overhead)
+            return itemData.bluntDamage_Overhead + itemData.pierceDamage_Overhead + itemData.slashDamage_Overhead + itemData.cleaveDamage_Overhead;
+        return 0;
     }
 
     string GetDurabilityText(ItemData itemData)

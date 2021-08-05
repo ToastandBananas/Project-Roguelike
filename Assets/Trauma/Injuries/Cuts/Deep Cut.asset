@@ -17,6 +17,9 @@ MonoBehaviour:
   injuryType: 0
   minInjuryHealTime: {x: 1, y: 12, z: 0}
   maxInjuryHealTime: {x: 2, y: 12, z: 0}
-  damagePerTurn: 0.25
+  minDamagePerTurn: 0.5
+  maxDamagePerTurn: 1
   minBleedTime: 180
   maxBleedTime: 240
+  minBloodLossPerTurn: 8
+  maxBloodLossPerTurn: 12

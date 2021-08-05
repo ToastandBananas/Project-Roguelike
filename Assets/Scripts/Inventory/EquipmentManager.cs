@@ -555,9 +555,82 @@ public class EquipmentManager : MonoBehaviour
         return false;
     }
 
-    public int GetRightWeaponAttackDamage()
+    /// <summary> Returns a melee weapon's slash, blunt, pierce or cleave damage based on the melee attack type. </summary>
+    public int GetPhysicalMeleeDamage(ItemData weaponsItemData, MeleeAttackType meleeAttackType, PhysicalDamageType physicalDamageType)
     {
-        int damage = currentEquipment[(int)EquipmentSlot.RightWeapon].damage;
+        float damage = 0;
+        switch (physicalDamageType)
+        {
+            case PhysicalDamageType.Slash:
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    damage = weaponsItemData.slashDamage_Swipe;
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    damage = weaponsItemData.slashDamage_Thrust;
+                else if (meleeAttackType == MeleeAttackType.Overhead)
+                    damage = weaponsItemData.slashDamage_Overhead;
+                break;
+            case PhysicalDamageType.Blunt:
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    damage = weaponsItemData.bluntDamage_Swipe;
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    damage = weaponsItemData.bluntDamage_Thrust;
+                else if (meleeAttackType == MeleeAttackType.Overhead)
+                    damage = weaponsItemData.bluntDamage_Overhead;
+                break;
+            case PhysicalDamageType.Pierce:
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    damage = weaponsItemData.pierceDamage_Swipe;
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    damage = weaponsItemData.pierceDamage_Thrust;
+                else if (meleeAttackType == MeleeAttackType.Overhead)
+                    damage = weaponsItemData.pierceDamage_Overhead;
+                break;
+            case PhysicalDamageType.Cleave:
+                if (meleeAttackType == MeleeAttackType.Swipe)
+                    damage = weaponsItemData.cleaveDamage_Swipe;
+                else if (meleeAttackType == MeleeAttackType.Thrust)
+                    damage = weaponsItemData.cleaveDamage_Thrust;
+                else if (meleeAttackType == MeleeAttackType.Overhead)
+                    damage = weaponsItemData.cleaveDamage_Overhead;
+                break;
+            default:
+                break;
+        }
+
+        if (damage <= 0)
+            return 0;
+
+        // Add a little randomization to the damage amount
+        damage += Mathf.RoundToInt(Random.Range(damage * -0.2f, damage * 0.2f));
+
+        // If two-handing a one-handed weapon, increase the damage
+        if (TwoHandedWeaponEquipped() == false && isTwoHanding)
+            damage = Mathf.RoundToInt(damage * twoHandedDamageMultiplier);
+
+        return Mathf.RoundToInt(damage);
+    }
+
+    /*public int GetRightWeaponAttackDamage(MeleeAttackType meleeAttackType)
+    {
+        int damage = 0;
+        if (meleeAttackType == MeleeAttackType.Swipe)
+        {
+            damage = currentEquipment[(int)EquipmentSlot.RightWeapon].bluntDamage_Swipe + currentEquipment[(int)EquipmentSlot.RightWeapon].pierceDamage_Swipe
+                + currentEquipment[(int)EquipmentSlot.RightWeapon].slashDamage_Swipe + currentEquipment[(int)EquipmentSlot.RightWeapon].cleaveDamage_Swipe;
+        }
+        else if (meleeAttackType == MeleeAttackType.Thrust)
+        {
+            damage = currentEquipment[(int)EquipmentSlot.RightWeapon].bluntDamage_Thrust + currentEquipment[(int)EquipmentSlot.RightWeapon].pierceDamage_Thrust
+                + currentEquipment[(int)EquipmentSlot.RightWeapon].slashDamage_Thrust + currentEquipment[(int)EquipmentSlot.RightWeapon].cleaveDamage_Thrust;
+        }
+        else if (meleeAttackType == MeleeAttackType.Overhead)
+        {
+            damage = currentEquipment[(int)EquipmentSlot.RightWeapon].bluntDamage_Overhead + currentEquipment[(int)EquipmentSlot.RightWeapon].pierceDamage_Overhead
+                + currentEquipment[(int)EquipmentSlot.RightWeapon].slashDamage_Overhead + currentEquipment[(int)EquipmentSlot.RightWeapon].cleaveDamage_Overhead;
+        }
+        else if (meleeAttackType == MeleeAttackType.Unarmed)
+            Debug.LogWarning("Melee attack type is Unarmed. Fix me!");
+
         damage += Mathf.RoundToInt(Random.Range(damage * -0.2f, damage * 0.2f));
 
         if (characterManager.equipmentManager.TwoHandedWeaponEquipped() == false && characterManager.equipmentManager.isTwoHanding)
@@ -569,9 +642,27 @@ public class EquipmentManager : MonoBehaviour
         return damage;
     }
 
-    public int GetLeftWeaponAttackDamage()
+    public int GetLeftWeaponAttackDamage(MeleeAttackType meleeAttackType)
     {
-        int damage = currentEquipment[(int)EquipmentSlot.LeftWeapon].damage;
+        int damage = 0;
+        if (meleeAttackType == MeleeAttackType.Swipe)
+        {
+            damage = currentEquipment[(int)EquipmentSlot.LeftWeapon].bluntDamage_Swipe + currentEquipment[(int)EquipmentSlot.LeftWeapon].pierceDamage_Swipe
+                + currentEquipment[(int)EquipmentSlot.LeftWeapon].slashDamage_Swipe + currentEquipment[(int)EquipmentSlot.LeftWeapon].cleaveDamage_Swipe;
+        }
+        else if (meleeAttackType == MeleeAttackType.Thrust)
+        {
+            damage = currentEquipment[(int)EquipmentSlot.LeftWeapon].bluntDamage_Thrust + currentEquipment[(int)EquipmentSlot.LeftWeapon].pierceDamage_Thrust
+                + currentEquipment[(int)EquipmentSlot.LeftWeapon].slashDamage_Thrust + currentEquipment[(int)EquipmentSlot.LeftWeapon].cleaveDamage_Thrust;
+        }
+        else if (meleeAttackType == MeleeAttackType.Overhead)
+        {
+            damage = currentEquipment[(int)EquipmentSlot.LeftWeapon].bluntDamage_Overhead + currentEquipment[(int)EquipmentSlot.LeftWeapon].pierceDamage_Overhead
+                + currentEquipment[(int)EquipmentSlot.LeftWeapon].slashDamage_Overhead + currentEquipment[(int)EquipmentSlot.LeftWeapon].cleaveDamage_Overhead;
+        }
+        else if (meleeAttackType == MeleeAttackType.Unarmed)
+            Debug.LogWarning("Melee attack type is Unarmed. Fix me!");
+
         damage += Mathf.RoundToInt(Random.Range(damage * -0.2f, damage * 0.2f));
 
         if (characterManager.equipmentManager.TwoHandedWeaponEquipped() == false && characterManager.equipmentManager.isTwoHanding)
@@ -581,7 +672,7 @@ public class EquipmentManager : MonoBehaviour
             damage = 1;
 
         return damage;
-    }
+    }*/
 
     public Weapon GetRightWeapon()
     {

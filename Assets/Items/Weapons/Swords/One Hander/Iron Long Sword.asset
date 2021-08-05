@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Iron Long Sword
   m_EditorClassIdentifier: 
   name: Iron Long Sword
+  pluralName: 
   itemType: 1
   mainMaterial: 35
   description: The sword...it's long.
@@ -33,9 +34,29 @@ MonoBehaviour:
   defaultMeleeAttackType: 0
   isTwoHanded: 0
   attackRange: 1
-  minBaseDamage: 4
-  maxBaseDamage: 7
-  minBaseTreeDamage: 1
-  maxBaseTreeDamage: 2
+  minBaseBluntDamage_Swipe: 0
+  maxBaseBluntDamage_Swipe: 0
+  minBasePierceDamage_Swipe: 0
+  maxBasePierceDamage_Swipe: 0
+  minBaseSlashDamage_Swipe: 5
+  maxBaseSlashDamage_Swipe: 8
+  minBaseCleaveDamage_Swipe: 0
+  maxBaseCleaveDamage_Swipe: 0
+  minBaseBluntDamage_Thrust: 0
+  maxBaseBluntDamage_Thrust: 0
+  minBasePierceDamage_Thrust: 6
+  maxBasePierceDamage_Thrust: 9
+  minBaseSlashDamage_Thrust: 0
+  maxBaseSlashDamage_Thrust: 0
+  minBaseCleaveDamage_Thrust: 0
+  maxBaseCleaveDamage_Thrust: 0
+  minBaseBluntDamage_Overhead: 5
+  maxBaseBluntDamage_Overhead: 8
+  minBasePierceDamage_Overhead: 0
+  maxBasePierceDamage_Overhead: 0
+  minBaseSlashDamage_Overhead: 0
+  maxBaseSlashDamage_Overhead: 0
+  minBaseCleaveDamage_Overhead: 0
+  maxBaseCleaveDamage_Overhead: 0
   minBlockChanceMultiplier: 0.7
   maxBlockChanceMultiplier: 0.8

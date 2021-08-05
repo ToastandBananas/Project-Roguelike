@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum GeneralAttackType { Unarmed, PrimaryWeapon, SecondaryWeapon, DualWield, Ranged, Throwing, Magic }
@@ -106,14 +105,18 @@ public class Attack : MonoBehaviour
 
         ItemData weaponUsedItemData = GetWeaponUsed(generalAttackType);
         Weapon weaponUsed = null;
-        PhysicalDamageType physicalDamageType = PhysicalDamageType.Blunt;
+        PhysicalDamageType mainPhysicalDamageType = PhysicalDamageType.Blunt;
         if (weaponUsedItemData != null)
         {
             weaponUsed = (Weapon)weaponUsedItemData.item;
-            physicalDamageType = GetMeleeAttacksPhysicalDamageType(weaponUsed.weaponType, meleeAttackType);
+            mainPhysicalDamageType = weaponUsedItemData.GetMeleeAttacksPhysicalDamageType(meleeAttackType);
         }
 
-        int damage = GetDamage(generalAttackType);
+        int bluntDamage = characterManager.equipmentManager.GetPhysicalMeleeDamage(weaponUsedItemData, meleeAttackType, PhysicalDamageType.Blunt);
+        int pierceDamage = characterManager.equipmentManager.GetPhysicalMeleeDamage(weaponUsedItemData, meleeAttackType, PhysicalDamageType.Pierce);
+        int slashDamage = characterManager.equipmentManager.GetPhysicalMeleeDamage(weaponUsedItemData, meleeAttackType, PhysicalDamageType.Slash);
+        int cleaveDamage = characterManager.equipmentManager.GetPhysicalMeleeDamage(weaponUsedItemData, meleeAttackType, PhysicalDamageType.Cleave);
+        int totalDamage = bluntDamage + pierceDamage + slashDamage + cleaveDamage;
 
         if (targetsStats.locomotionType != LocomotionType.Inanimate)
         {
@@ -121,7 +124,7 @@ public class Attack : MonoBehaviour
 
             if (TryEvade(targetCharStats) == false) // Check if the target evaded the attack (or the attacker missed)
             {
-                if (TryBlock(targetCharStats, weaponUsedItemData, damage) == false) // Check if the target blocked the attack with a shield or a weapon
+                if (TryBlock(targetCharStats, weaponUsedItemData, totalDamage) == false) // Check if the target blocked the attack with a shield or a weapon
                 {
                     BodyPart bodyPartToHit = targetCharStats.GetBodyPartToHit();
                     bool armorPenetrated = false;
@@ -133,21 +136,25 @@ public class Attack : MonoBehaviour
                     Wearable clothing = null;
                     if (weaponUsed != null && targetCharStats.characterManager.equipmentManager != null)
                     {
+                        // See if the attack penetrates the character's armor
                         armor = GetLocationalArmor(targetCharStats.characterManager, bodyPartToHit);
-                        armorPenetrated = TryPenetrateWearable(targetCharStats.characterManager, characterManager, armor, bodyPartToHit, physicalDamageType);
+                        armorPenetrated = TryPenetrateWearable(targetCharStats.characterManager, characterManager, armor, bodyPartToHit, mainPhysicalDamageType);
+
+                        // If the character isn't wearing armor or their armor was penetrated
                         if (armor == null || armorPenetrated)
                         {
+                            // See if the attack penetrates the character's clothing
                             clothing = GetLocationalClothing(targetCharStats.characterManager, bodyPartToHit);
-                            clothingPenetrated = TryPenetrateWearable(targetCharStats.characterManager, characterManager, clothing, bodyPartToHit, physicalDamageType);
+                            clothingPenetrated = TryPenetrateWearable(targetCharStats.characterManager, characterManager, clothing, bodyPartToHit, mainPhysicalDamageType);
                         }
                     }
 
                     // Damage the target character
-                    int finalDamage = targetCharStats.TakeLocationalDamage(damage, bodyPartToHit, targetCharStats.characterManager.equipmentManager, armorPenetrated, clothingPenetrated);
+                    int finalDamage = targetCharStats.TakeLocationalDamage(bluntDamage, pierceDamage, slashDamage, cleaveDamage, bodyPartToHit, targetCharStats.characterManager.equipmentManager, armor, clothing, armorPenetrated, clothingPenetrated);
 
                     // If the character is wearing armor, damage the appropriate piece(s) of armor (moreso if the armor was penetrated)
                     if (targetCharStats.characterManager.equipmentManager != null)
-                        DamageLocationalArmorAndClothing(targetCharStats.characterManager, bodyPartToHit, damage, armorPenetrated, clothingPenetrated);
+                        DamageLocationalArmorAndClothing(targetCharStats.characterManager, bodyPartToHit, totalDamage, armorPenetrated, clothingPenetrated);
 
                     // Damage the durability of the weapon used to attack
                     if (weaponUsedItemData != null)
@@ -159,11 +166,11 @@ public class Attack : MonoBehaviour
                         if (armorPenetrated == false && clothingPenetrated == false)
                             gm.flavorText.WriteMeleeAttackCharacterLine(characterManager, targetCharStats.characterManager, generalAttackType, meleeAttackType, bodyPartToHit, finalDamage);
                         else if (armorPenetrated && clothingPenetrated)
-                            gm.flavorText.WritePenetrateArmorAndClothingLine_Melee(characterManager, targetCharStats.characterManager, armor, clothing, generalAttackType, meleeAttackType, physicalDamageType, bodyPartToHit, finalDamage);
+                            gm.flavorText.WritePenetrateArmorAndClothingLine_Melee(characterManager, targetCharStats.characterManager, armor, clothing, generalAttackType, meleeAttackType, mainPhysicalDamageType, bodyPartToHit, finalDamage);
                         else if (armorPenetrated)
-                            gm.flavorText.WritePenetrateWearableLine_Melee(characterManager, targetCharStats.characterManager, armor, generalAttackType, meleeAttackType, physicalDamageType, bodyPartToHit, finalDamage);
+                            gm.flavorText.WritePenetrateWearableLine_Melee(characterManager, targetCharStats.characterManager, armor, generalAttackType, meleeAttackType, mainPhysicalDamageType, bodyPartToHit, finalDamage);
                         else if (clothingPenetrated)
-                            gm.flavorText.WritePenetrateWearableLine_Melee(characterManager, targetCharStats.characterManager, clothing, generalAttackType, meleeAttackType, physicalDamageType, bodyPartToHit, finalDamage);
+                            gm.flavorText.WritePenetrateWearableLine_Melee(characterManager, targetCharStats.characterManager, clothing, generalAttackType, meleeAttackType, mainPhysicalDamageType, bodyPartToHit, finalDamage);
                     }
                     else
                         gm.flavorText.WriteAbsorbedMeleeAttackLine(characterManager, targetCharStats.characterManager, generalAttackType, meleeAttackType, bodyPartToHit);
@@ -173,8 +180,8 @@ public class Attack : MonoBehaviour
         else
         {
             // Damage the object and show flavor text
-            targetsStats.TakeDamage(damage);
-            gm.flavorText.WriteMeleeAttackObjectLine(characterManager, targetsStats, generalAttackType, meleeAttackType, damage);
+            targetsStats.TakeDamage(totalDamage);
+            gm.flavorText.WriteMeleeAttackObjectLine(characterManager, targetsStats, generalAttackType, meleeAttackType, totalDamage);
         }
     }
 
@@ -292,96 +299,52 @@ public class Attack : MonoBehaviour
         switch (wearable.mainMaterial)
         {
             case ItemMaterial.Bone:
-                if (random <= GetPenetrateArmorChance(5f, 4f, 1.5f, 2f, attacker, physicalDamageType))
-                    return true;
-                break;
+                return random <= GetPenetrateArmorChance(5f, 4f, 1.5f, 2f, attacker, physicalDamageType);
             case ItemMaterial.Wood:
-                if (random <= GetPenetrateArmorChance(3.75f, 6.5f, 2.5f, 2.5f, attacker, physicalDamageType))
-                    return true;
-                break;
+                return random <= GetPenetrateArmorChance(3.75f, 6.5f, 2.5f, 2.5f, attacker, physicalDamageType);
             case ItemMaterial.Bark:
-                if (random <= GetPenetrateArmorChance(3.25f, 6f, 2f, 2.25f, attacker, physicalDamageType))
-                    return true;
-                break;
+                return random <= GetPenetrateArmorChance(3.25f, 6f, 2f, 2.25f, attacker, physicalDamageType);
             case ItemMaterial.Linen:
-                if (random <= GetPenetrateArmorChance(7f, 9.5f, 9.5f, 8f, attacker, physicalDamageType))
-                    return true;
-                break;
+                return random <= GetPenetrateArmorChance(7f, 9.5f, 9.5f, 9.5f, attacker, physicalDamageType);
             case ItemMaterial.QuiltedLinen:
-                if (random <= GetPenetrateArmorChance(3.5f, 3.5f, 2.8f, 2.25f, attacker, physicalDamageType))
-                    return true;
-                break;
+                return random <= GetPenetrateArmorChance(3.5f, 3.5f, 2.8f, 2.25f, attacker, physicalDamageType);
             case ItemMaterial.Cotton:
-                if (random <= GetPenetrateArmorChance(7f, 9.5f, 9.5f, 8f, attacker, physicalDamageType))
-                    return true;
-                break;
+                return random <= GetPenetrateArmorChance(7f, 9.5f, 9.5f, 9.5f, attacker, physicalDamageType);
             case ItemMaterial.Wool:
-                if (random <= GetPenetrateArmorChance(8.5f, 10f, 10f, 8.5f, attacker, physicalDamageType))
-                    return true;
-                break;
+                return random <= GetPenetrateArmorChance(8.5f, 10f, 10f, 8.5f, attacker, physicalDamageType);
             case ItemMaterial.QuiltedWool:
-                if (random <= GetPenetrateArmorChance(3.8f, 3.8f, 4f, 2.25f, attacker, physicalDamageType))
-                    return true;
-                break;
+                return random <= GetPenetrateArmorChance(3.8f, 3.8f, 4f, 2.25f, attacker, physicalDamageType);
             case ItemMaterial.Silk:
-                return true;
+                return true; // Silk provides no penetration protection
             case ItemMaterial.Hemp:
-                if (random <= GetPenetrateArmorChance(6f, 8.5f, 8.5f, 7f, attacker, physicalDamageType))
-                    return true;
-                break;
+                return random <= GetPenetrateArmorChance(6f, 8.5f, 8.5f, 7f, attacker, physicalDamageType);
             case ItemMaterial.Fur:
-                if (random <= GetPenetrateArmorChance(5.5f, 8f, 8f, 6.5f, attacker, physicalDamageType))
-                    return true;
-                break;
+                return random <= GetPenetrateArmorChance(5.5f, 8f, 8f, 7f, attacker, physicalDamageType);
             case ItemMaterial.Rawhide:
-                if (random <= GetPenetrateArmorChance(3.2f, 3.1f, 2.9f, 2.3f, attacker, physicalDamageType))
-                    return true;
-                break;
+                return random <= GetPenetrateArmorChance(3.2f, 3.1f, 2.9f, 2.3f, attacker, physicalDamageType);
             case ItemMaterial.SoftLeather:
-                if (random <= GetPenetrateArmorChance(3.5f, 3.25f, 3f, 2.8f, attacker, physicalDamageType))
-                    return true;
-                break;
+                return random <= GetPenetrateArmorChance(3.5f, 3.25f, 3f, 2.8f, attacker, physicalDamageType);
             case ItemMaterial.HardLeather:
-                if (random <= GetPenetrateArmorChance(2.5f, 2.4f, 2.3f, 2.2f, attacker, physicalDamageType))
-                    return true;
-                break;
+                return random <= GetPenetrateArmorChance(2.5f, 2.4f, 2.3f, 2.2f, attacker, physicalDamageType);
             case ItemMaterial.Chitin:
-                if (random <= GetPenetrateArmorChance(3.5f, 3f, 2f, 1.5f, attacker, physicalDamageType))
-                    return true;
-                break;
+                return random <= GetPenetrateArmorChance(3.5f, 3f, 2f, 1.5f, attacker, physicalDamageType);
             case ItemMaterial.Copper:
-                if (random <= GetPenetrateArmorChance(3f, 3f, 2f, 2f, attacker, physicalDamageType))
-                    return true;
-                break;
+                return random <= GetPenetrateArmorChance(3f, 3f, 2f, 2f, attacker, physicalDamageType);
             case ItemMaterial.Bronze:
-                if (random <= GetPenetrateArmorChance(2.8f, 2.8f, 1.8f, 1.8f, attacker, physicalDamageType))
-                    return true;
-                break;
+                return random <= GetPenetrateArmorChance(2.8f, 2.8f, 1.8f, 1.8f, attacker, physicalDamageType);
             case ItemMaterial.Iron:
-                if (random <= GetPenetrateArmorChance(2.4f, 2.4f, 1.4f, 1.4f, attacker, physicalDamageType))
-                    return true;
-                break;
+                return random <= GetPenetrateArmorChance(2.4f, 2.4f, 1.4f, 1.4f, attacker, physicalDamageType);
             case ItemMaterial.Brass:
-                if (random <= GetPenetrateArmorChance(1.8f, 1.8f, 0.8f, 0.8f, attacker, physicalDamageType))
-                    return true;
-                break;
+                return random <= GetPenetrateArmorChance(1.8f, 1.8f, 0.8f, 0.8f, attacker, physicalDamageType);
             case ItemMaterial.Steel:
-                if (random <= GetPenetrateArmorChance(1.5f, 1.5f, 0.5f, 0.5f, attacker, physicalDamageType))
-                    return true;
-                break;
+                return random <= GetPenetrateArmorChance(1.5f, 1.5f, 0.5f, 0.5f, attacker, physicalDamageType);
             case ItemMaterial.Mithril:
-                if (random <= GetPenetrateArmorChance(1.2f, 1.2f, 0.4f, 0.4f, attacker, physicalDamageType))
-                    return true;
-                break;
+                return random <= GetPenetrateArmorChance(1.2f, 1.2f, 0.4f, 0.4f, attacker, physicalDamageType);
             case ItemMaterial.Dragonscale:
-                if (random <= GetPenetrateArmorChance(0.8f, 0.8f, 0.2f, 0.2f, attacker, physicalDamageType))
-                    return true;
-                break;
+                return random <= GetPenetrateArmorChance(0.8f, 0.8f, 0.2f, 0.2f, attacker, physicalDamageType);
             default:
                 return false;
         }
-
-        return false;
     }
 
     float GetPenetrateArmorChance(float bluntFactor, float cleaveFactor, float pierceFactor, float slashFactor, CharacterManager attacker, PhysicalDamageType physicalDamageType)
@@ -396,27 +359,6 @@ public class Attack : MonoBehaviour
             return slashFactor * (attacker.characterStats.strength.GetValue() / 4);
 
         return 0;
-    }
-
-    int GetDamage(GeneralAttackType generalAttackType)
-    {
-        switch (generalAttackType)
-        {
-            case GeneralAttackType.Unarmed:
-                return characterManager.characterStats.unarmedDamage.GetValue();
-            case GeneralAttackType.PrimaryWeapon:
-                return characterManager.equipmentManager.GetRightWeaponAttackDamage();
-            case GeneralAttackType.SecondaryWeapon:
-                return characterManager.equipmentManager.GetLeftWeaponAttackDamage();
-            case GeneralAttackType.Ranged:
-                return 0;
-            case GeneralAttackType.Throwing:
-                return 0;
-            case GeneralAttackType.Magic:
-                return 0;
-            default:
-                return 0;
-        }
     }
 
     void DamageLocationalArmorAndClothing(CharacterManager target, BodyPart bodyPartHit, int damage, bool armorPenetrated, bool clothingPenetrated)
@@ -707,176 +649,6 @@ public class Attack : MonoBehaviour
         canAttack = false;
         yield return new WaitForSeconds(0.4f);
         canAttack = true;
-    }
-
-    public PhysicalDamageType GetMeleeAttacksPhysicalDamageType(WeaponType weaponType, MeleeAttackType meleeAttackType)
-    {
-        switch (weaponType)
-        {
-            case WeaponType.Sword:
-                if (meleeAttackType == MeleeAttackType.Swipe)
-                    return PhysicalDamageType.Slash;
-                else if (meleeAttackType == MeleeAttackType.Thrust)
-                    return PhysicalDamageType.Pierce;
-                else // if (meleeAttackType == MeleeAttackType.Overhead)
-                    return PhysicalDamageType.Cleave;
-            case WeaponType.Dagger:
-                if (meleeAttackType == MeleeAttackType.Swipe)
-                    return PhysicalDamageType.Slash;
-                else if (meleeAttackType == MeleeAttackType.Thrust)
-                    return PhysicalDamageType.Pierce;
-                else // if (meleeAttackType == MeleeAttackType.Overhead)
-                    return PhysicalDamageType.Pierce;
-            case WeaponType.Axe:
-                if (meleeAttackType == MeleeAttackType.Swipe)
-                    return PhysicalDamageType.Cleave;
-                else if (meleeAttackType == MeleeAttackType.Thrust)
-                    return PhysicalDamageType.Blunt;
-                else // if (meleeAttackType == MeleeAttackType.Overhead)
-                    return PhysicalDamageType.Cleave;
-            case WeaponType.SpikedAxe:
-                if (meleeAttackType == MeleeAttackType.Swipe)
-                    return PhysicalDamageType.Cleave;
-                else if (meleeAttackType == MeleeAttackType.Thrust)
-                    return PhysicalDamageType.Pierce;
-                else // if (meleeAttackType == MeleeAttackType.Overhead)
-                    return PhysicalDamageType.Cleave;
-            case WeaponType.Club:
-                if (meleeAttackType == MeleeAttackType.Swipe)
-                    return PhysicalDamageType.Blunt;
-                else if (meleeAttackType == MeleeAttackType.Thrust)
-                    return PhysicalDamageType.Blunt;
-                else // if (meleeAttackType == MeleeAttackType.Overhead)
-                    return PhysicalDamageType.Blunt;
-            case WeaponType.SpikedClub:
-                if (meleeAttackType == MeleeAttackType.Swipe)
-                    return PhysicalDamageType.Blunt;
-                else if (meleeAttackType == MeleeAttackType.Thrust)
-                    return PhysicalDamageType.Pierce;
-                else // if (meleeAttackType == MeleeAttackType.Overhead)
-                    return PhysicalDamageType.Blunt;
-            case WeaponType.Mace:
-                if (meleeAttackType == MeleeAttackType.Swipe)
-                    return PhysicalDamageType.Blunt;
-                else if (meleeAttackType == MeleeAttackType.Thrust)
-                    return PhysicalDamageType.Blunt;
-                else // if (meleeAttackType == MeleeAttackType.Overhead)
-                    return PhysicalDamageType.Blunt;
-            case WeaponType.SpikedMace:
-                if (meleeAttackType == MeleeAttackType.Swipe)
-                    return PhysicalDamageType.Blunt;
-                else if (meleeAttackType == MeleeAttackType.Thrust)
-                    return PhysicalDamageType.Pierce;
-                else // if (meleeAttackType == MeleeAttackType.Overhead)
-                    return PhysicalDamageType.Blunt;
-            case WeaponType.Hammer:
-                if (meleeAttackType == MeleeAttackType.Swipe)
-                    return PhysicalDamageType.Blunt;
-                else if (meleeAttackType == MeleeAttackType.Thrust)
-                    return PhysicalDamageType.Blunt;
-                else // if (meleeAttackType == MeleeAttackType.Overhead)
-                    return PhysicalDamageType.Blunt;
-            case WeaponType.SpikedHammer:
-                if (meleeAttackType == MeleeAttackType.Swipe)
-                    return PhysicalDamageType.Blunt;
-                else if (meleeAttackType == MeleeAttackType.Thrust)
-                    return PhysicalDamageType.Pierce;
-                else // if (meleeAttackType == MeleeAttackType.Overhead)
-                    return PhysicalDamageType.Blunt;
-            case WeaponType.Flail:
-                if (meleeAttackType == MeleeAttackType.Swipe)
-                    return PhysicalDamageType.Blunt;
-                else if (meleeAttackType == MeleeAttackType.Thrust)
-                    return PhysicalDamageType.Blunt;
-                else // if (meleeAttackType == MeleeAttackType.Overhead)
-                    return PhysicalDamageType.Blunt;
-            case WeaponType.SpikedFlail:
-                if (meleeAttackType == MeleeAttackType.Swipe)
-                    return PhysicalDamageType.Pierce;
-                else if (meleeAttackType == MeleeAttackType.Thrust)
-                    return PhysicalDamageType.Pierce;
-                else // if (meleeAttackType == MeleeAttackType.Overhead)
-                    return PhysicalDamageType.Pierce;
-            case WeaponType.Staff:
-                if (meleeAttackType == MeleeAttackType.Swipe)
-                    return PhysicalDamageType.Blunt;
-                else if (meleeAttackType == MeleeAttackType.Thrust)
-                    return PhysicalDamageType.Blunt;
-                else // if (meleeAttackType == MeleeAttackType.Overhead)
-                    return PhysicalDamageType.Blunt;
-            case WeaponType.Spear:
-                if (meleeAttackType == MeleeAttackType.Swipe)
-                    return PhysicalDamageType.Slash;
-                else if (meleeAttackType == MeleeAttackType.Thrust)
-                    return PhysicalDamageType.Pierce;
-                else // if (meleeAttackType == MeleeAttackType.Overhead)
-                    return PhysicalDamageType.Slash;
-            case WeaponType.Polearm:
-                if (meleeAttackType == MeleeAttackType.Swipe)
-                    return PhysicalDamageType.Cleave;
-                else if (meleeAttackType == MeleeAttackType.Thrust)
-                    return PhysicalDamageType.Pierce;
-                else // if (meleeAttackType == MeleeAttackType.Overhead)
-                    return PhysicalDamageType.Cleave;
-            case WeaponType.BluntPolearm:
-                if (meleeAttackType == MeleeAttackType.Swipe)
-                    return PhysicalDamageType.Blunt;
-                else if (meleeAttackType == MeleeAttackType.Thrust)
-                    return PhysicalDamageType.Pierce;
-                else // if (meleeAttackType == MeleeAttackType.Overhead)
-                    return PhysicalDamageType.Blunt;
-            case WeaponType.Sling:
-                if (meleeAttackType == MeleeAttackType.Swipe)
-                    return PhysicalDamageType.Blunt;
-                else if (meleeAttackType == MeleeAttackType.Thrust)
-                    return PhysicalDamageType.Blunt;
-                else // if (meleeAttackType == MeleeAttackType.Overhead)
-                    return PhysicalDamageType.Blunt;
-            case WeaponType.Bow:
-                if (meleeAttackType == MeleeAttackType.Swipe)
-                    return PhysicalDamageType.Blunt;
-                else if (meleeAttackType == MeleeAttackType.Thrust)
-                    return PhysicalDamageType.Blunt;
-                else // if (meleeAttackType == MeleeAttackType.Overhead)
-                    return PhysicalDamageType.Blunt;
-            case WeaponType.Crossbow:
-                if (meleeAttackType == MeleeAttackType.Swipe)
-                    return PhysicalDamageType.Blunt;
-                else if (meleeAttackType == MeleeAttackType.Thrust)
-                    return PhysicalDamageType.Blunt;
-                else // if (meleeAttackType == MeleeAttackType.Overhead)
-                    return PhysicalDamageType.Blunt;
-            case WeaponType.ThrowingKnife:
-                if (meleeAttackType == MeleeAttackType.Swipe)
-                    return PhysicalDamageType.Slash;
-                else if (meleeAttackType == MeleeAttackType.Thrust)
-                    return PhysicalDamageType.Pierce;
-                else // if (meleeAttackType == MeleeAttackType.Overhead)
-                    return PhysicalDamageType.Pierce;
-            case WeaponType.ThrowingAxe:
-                if (meleeAttackType == MeleeAttackType.Swipe)
-                    return PhysicalDamageType.Cleave;
-                else if (meleeAttackType == MeleeAttackType.Thrust)
-                    return PhysicalDamageType.Blunt;
-                else // if (meleeAttackType == MeleeAttackType.Overhead)
-                    return PhysicalDamageType.Cleave;
-            case WeaponType.ThrowingStar:
-                if (meleeAttackType == MeleeAttackType.Swipe)
-                    return PhysicalDamageType.Slash;
-                else if (meleeAttackType == MeleeAttackType.Thrust)
-                    return PhysicalDamageType.Pierce;
-                else // if (meleeAttackType == MeleeAttackType.Overhead)
-                    return PhysicalDamageType.Slash;
-            case WeaponType.ThrowingClub:
-                if (meleeAttackType == MeleeAttackType.Swipe)
-                    return PhysicalDamageType.Blunt;
-                else if (meleeAttackType == MeleeAttackType.Thrust)
-                    return PhysicalDamageType.Blunt;
-                else // if (meleeAttackType == MeleeAttackType.Overhead)
-                    return PhysicalDamageType.Blunt;
-            default:
-                return PhysicalDamageType.Blunt;
-        }
     }
 
     public MeleeAttackType GetRandomMeleeAttackType(MeleeAttackType defaultMeleeAttackType)

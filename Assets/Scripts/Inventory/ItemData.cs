@@ -19,16 +19,15 @@ public class ItemData : MonoBehaviour
     public float durability;
 
     [Header("Weapon Data")]
-    public int damage;
-    public int treeDamage;
+    PhysicalDamageType swipeMainPhysicalDamageType;
+    PhysicalDamageType thrustMainPhysicalDamageType, overheadMainPhysicalDamageType;
+    public int bluntDamage_Swipe, pierceDamage_Swipe, slashDamage_Swipe, cleaveDamage_Swipe;             // Swipe
+    public int bluntDamage_Thrust, pierceDamage_Thrust, slashDamage_Thrust, cleaveDamage_Thrust;         // Thrust
+    public int bluntDamage_Overhead, pierceDamage_Overhead, slashDamage_Overhead, cleaveDamage_Overhead; // Overhead
 
     [Header("Armor Data")]
     public int torsoDefense;
-    public int headDefense;
-    public int armDefense;
-    public int handDefense;
-    public int legDefense;
-    public int footDefense;
+    public int headDefense, armDefense, handDefense, legDefense, footDefense;
 
     [Header("Shield Data")]
     public int shieldBashDamage;
@@ -77,8 +76,18 @@ public class ItemData : MonoBehaviour
         dataReceiver.uses = dataGiver.uses;
 
         // Weapon Data
-        dataReceiver.damage = dataGiver.damage;
-        dataReceiver.treeDamage = dataGiver.treeDamage;
+        dataReceiver.bluntDamage_Swipe = dataGiver.bluntDamage_Swipe;
+        dataReceiver.pierceDamage_Swipe = dataGiver.pierceDamage_Swipe;
+        dataReceiver.slashDamage_Swipe = dataGiver.slashDamage_Swipe;
+        dataReceiver.cleaveDamage_Swipe = dataGiver.cleaveDamage_Swipe;
+        dataReceiver.bluntDamage_Thrust = dataGiver.bluntDamage_Thrust;
+        dataReceiver.pierceDamage_Thrust = dataGiver.pierceDamage_Thrust;
+        dataReceiver.slashDamage_Thrust = dataGiver.slashDamage_Thrust;
+        dataReceiver.cleaveDamage_Thrust = dataGiver.cleaveDamage_Thrust;
+        dataReceiver.bluntDamage_Overhead = dataGiver.bluntDamage_Overhead;
+        dataReceiver.pierceDamage_Overhead = dataGiver.pierceDamage_Overhead;
+        dataReceiver.slashDamage_Overhead = dataGiver.slashDamage_Overhead;
+        dataReceiver.cleaveDamage_Overhead = dataGiver.cleaveDamage_Overhead;
 
         // Armor Data
         dataReceiver.torsoDefense = dataGiver.torsoDefense;
@@ -138,9 +147,22 @@ public class ItemData : MonoBehaviour
             if (item.IsWeapon())
             {
                 Weapon weapon = (Weapon)equipment;
-                damage = Random.Range(weapon.minBaseDamage, weapon.maxBaseDamage + 1);
-                treeDamage = Random.Range(weapon.minBaseTreeDamage, weapon.maxBaseTreeDamage + 1);
+                bluntDamage_Swipe = Random.Range(weapon.minBaseBluntDamage_Swipe, weapon.maxBaseBluntDamage_Swipe + 1);
+                pierceDamage_Swipe = Random.Range(weapon.minBasePierceDamage_Swipe, weapon.maxBasePierceDamage_Swipe + 1);
+                slashDamage_Swipe = Random.Range(weapon.minBaseSlashDamage_Swipe, weapon.maxBaseSlashDamage_Swipe + 1);
+                cleaveDamage_Swipe = Random.Range(weapon.minBaseCleaveDamage_Swipe, weapon.maxBaseCleaveDamage_Swipe + 1);
+                bluntDamage_Thrust = Random.Range(weapon.minBaseBluntDamage_Thrust, weapon.maxBaseBluntDamage_Thrust + 1);
+                pierceDamage_Thrust = Random.Range(weapon.minBasePierceDamage_Thrust, weapon.maxBasePierceDamage_Thrust + 1);
+                slashDamage_Thrust = Random.Range(weapon.minBaseSlashDamage_Thrust, weapon.maxBaseSlashDamage_Thrust + 1);
+                cleaveDamage_Thrust = Random.Range(weapon.minBaseCleaveDamage_Thrust, weapon.maxBaseCleaveDamage_Thrust + 1);
+                bluntDamage_Overhead = Random.Range(weapon.minBaseBluntDamage_Overhead, weapon.maxBaseBluntDamage_Overhead + 1);
+                pierceDamage_Overhead = Random.Range(weapon.minBasePierceDamage_Overhead, weapon.maxBasePierceDamage_Overhead + 1);
+                slashDamage_Overhead = Random.Range(weapon.minBaseSlashDamage_Overhead, weapon.maxBaseSlashDamage_Overhead + 1);
+                cleaveDamage_Overhead = Random.Range(weapon.minBaseCleaveDamage_Overhead, weapon.maxBaseCleaveDamage_Overhead + 1);
+
                 blockChanceMultiplier = Mathf.RoundToInt(Random.Range(weapon.minBlockChanceMultiplier, weapon.maxBlockChanceMultiplier) * 100f) / 100f;
+
+                SetMeleeAttackPhysicalDamageTypes();
             }
             else if (item.IsWearable())
             {
@@ -235,8 +257,19 @@ public class ItemData : MonoBehaviour
         maxDurability = 0;
         durability = 0;
         
-        damage = 0;
-        treeDamage = 0;
+        bluntDamage_Swipe = 0;
+        pierceDamage_Swipe = 0;
+        slashDamage_Swipe = 0;
+        cleaveDamage_Swipe = 0;
+        bluntDamage_Thrust = 0;
+        pierceDamage_Thrust = 0;
+        slashDamage_Thrust = 0;
+        cleaveDamage_Thrust = 0;
+        bluntDamage_Overhead = 0;
+        pierceDamage_Overhead = 0;
+        slashDamage_Overhead = 0;
+        cleaveDamage_Overhead = 0;
+
         shieldBashDamage = 0;
         blockChanceMultiplier = 0;
 
@@ -277,9 +310,13 @@ public class ItemData : MonoBehaviour
             if (item.IsWeapon())
             {
                 Weapon weapon = (Weapon)equipment;
-                totalPointsPossible += (weapon.maxBaseDamage - weapon.minBaseDamage) * 2;
-                totalPointsPossible += (weapon.maxBaseTreeDamage - weapon.minBaseTreeDamage);
-                totalPointsPossible += (weapon.maxBlockChanceMultiplier - weapon.minBlockChanceMultiplier);
+                totalPointsPossible += ((weapon.maxBaseBluntDamage_Swipe + weapon.maxBasePierceDamage_Swipe + weapon.maxBaseSlashDamage_Swipe + weapon.maxBaseCleaveDamage_Swipe 
+                    + weapon.maxBaseBluntDamage_Thrust + weapon.maxBasePierceDamage_Thrust + weapon.maxBaseSlashDamage_Thrust + weapon.maxBaseCleaveDamage_Thrust 
+                    + weapon.maxBaseBluntDamage_Overhead + weapon.maxBasePierceDamage_Overhead + weapon.maxBaseSlashDamage_Overhead + weapon.maxBaseCleaveDamage_Overhead) 
+                    - (weapon.minBaseBluntDamage_Swipe + weapon.minBasePierceDamage_Swipe + weapon.minBaseSlashDamage_Swipe + weapon.minBaseCleaveDamage_Swipe 
+                    + weapon.minBaseBluntDamage_Thrust + weapon.minBasePierceDamage_Thrust + weapon.minBaseSlashDamage_Thrust + weapon.minBaseCleaveDamage_Thrust 
+                    + weapon.minBaseBluntDamage_Overhead + weapon.minBasePierceDamage_Overhead + weapon.minBaseSlashDamage_Overhead + weapon.minBaseCleaveDamage_Overhead)) * 2;
+                totalPointsPossible += (weapon.maxBlockChanceMultiplier - weapon.minBlockChanceMultiplier) * 10;
             }
             else if (item.IsWearable())
             {
@@ -295,7 +332,7 @@ public class ItemData : MonoBehaviour
             {
                 Shield shield = (Shield)equipment;
                 totalPointsPossible += (shield.maxShieldBashDamage - shield.minShieldBashDamage);
-                totalPointsPossible += (shield.maxBlockChanceMultiplier - shield.minBlockChanceMultiplier) * 2;
+                totalPointsPossible += (shield.maxBlockChanceMultiplier - shield.minBlockChanceMultiplier) * 10;
             }
         }
         else if (item.IsConsumable())
@@ -328,9 +365,10 @@ public class ItemData : MonoBehaviour
             if (item.IsWeapon())
             {
                 Weapon weapon = (Weapon)equipment;
-                pointIncrease += (damage - weapon.minBaseDamage) * 2; // Damage contributes to value twice as much
-                pointIncrease += (treeDamage - weapon.minBaseTreeDamage);
-                pointIncrease += (blockChanceMultiplier - weapon.minBlockChanceMultiplier);
+                pointIncrease += ((bluntDamage_Swipe - weapon.minBaseBluntDamage_Swipe) + (pierceDamage_Swipe - weapon.minBasePierceDamage_Swipe) + (slashDamage_Swipe - weapon.minBaseSlashDamage_Swipe) + (cleaveDamage_Swipe - weapon.minBaseCleaveDamage_Swipe)
+                    + (bluntDamage_Thrust - weapon.minBaseBluntDamage_Thrust) + (pierceDamage_Thrust - weapon.minBasePierceDamage_Thrust) + (slashDamage_Thrust - weapon.minBaseSlashDamage_Thrust) + (cleaveDamage_Thrust - weapon.minBaseCleaveDamage_Thrust)
+                    + (bluntDamage_Overhead - weapon.minBaseBluntDamage_Overhead) + (pierceDamage_Overhead - weapon.minBasePierceDamage_Overhead) + (slashDamage_Overhead - weapon.minBaseSlashDamage_Overhead) + (cleaveDamage_Overhead - weapon.minBaseCleaveDamage_Overhead)) * 2; // Damage contributes to value twice as much
+                pointIncrease += (blockChanceMultiplier - weapon.minBlockChanceMultiplier) * 10;
             }
             else if (item.IsWearable())
             {
@@ -346,7 +384,7 @@ public class ItemData : MonoBehaviour
             {
                 Shield shield = (Shield)equipment;
                 pointIncrease += (shieldBashDamage - shield.minShieldBashDamage);
-                pointIncrease += (blockChanceMultiplier - shield.minBlockChanceMultiplier) * 2;
+                pointIncrease += (blockChanceMultiplier - shield.minBlockChanceMultiplier) * 10;
             }
         }
         else if (item.IsConsumable())
@@ -384,15 +422,65 @@ public class ItemData : MonoBehaviour
             if (item.IsWeapon())
             {
                 Weapon weapon = (Weapon)equipment;
-                if (damage > weapon.maxBaseDamage)
-                    damage = weapon.maxBaseDamage;
-                else if (damage < weapon.minBaseDamage)
-                    damage = weapon.minBaseDamage;
+                if (bluntDamage_Swipe > weapon.maxBaseBluntDamage_Swipe)
+                    bluntDamage_Swipe = weapon.maxBaseBluntDamage_Swipe;
+                else if (bluntDamage_Swipe < weapon.minBaseBluntDamage_Swipe)
+                    bluntDamage_Swipe = weapon.minBaseBluntDamage_Swipe;
 
-                if (treeDamage > weapon.maxBaseTreeDamage)
-                    treeDamage = weapon.maxBaseTreeDamage;
-                else if (treeDamage < weapon.minBaseTreeDamage)
-                    treeDamage = weapon.minBaseTreeDamage;
+                if (pierceDamage_Swipe > weapon.maxBasePierceDamage_Swipe)
+                    pierceDamage_Swipe = weapon.maxBasePierceDamage_Swipe;
+                else if (pierceDamage_Swipe < weapon.minBasePierceDamage_Swipe)
+                    pierceDamage_Swipe = weapon.minBasePierceDamage_Swipe;
+
+                if (slashDamage_Swipe > weapon.maxBaseSlashDamage_Swipe)
+                    slashDamage_Swipe = weapon.maxBaseSlashDamage_Swipe;
+                else if (slashDamage_Swipe < weapon.minBaseSlashDamage_Swipe)
+                    slashDamage_Swipe = weapon.minBaseSlashDamage_Swipe;
+
+                if (cleaveDamage_Swipe > weapon.maxBaseCleaveDamage_Swipe)
+                    cleaveDamage_Swipe = weapon.maxBaseCleaveDamage_Swipe;
+                else if (cleaveDamage_Swipe < weapon.minBaseCleaveDamage_Swipe)
+                    cleaveDamage_Swipe = weapon.minBaseCleaveDamage_Swipe;
+
+                if (bluntDamage_Thrust > weapon.maxBaseBluntDamage_Thrust)
+                    bluntDamage_Thrust = weapon.maxBaseBluntDamage_Thrust;
+                else if (bluntDamage_Thrust < weapon.minBaseBluntDamage_Thrust)
+                    bluntDamage_Thrust = weapon.minBaseBluntDamage_Thrust;
+
+                if (pierceDamage_Thrust > weapon.maxBasePierceDamage_Thrust)
+                    pierceDamage_Thrust = weapon.maxBasePierceDamage_Thrust;
+                else if (pierceDamage_Thrust < weapon.minBasePierceDamage_Thrust)
+                    pierceDamage_Thrust = weapon.minBasePierceDamage_Thrust;
+
+                if (slashDamage_Thrust > weapon.maxBaseSlashDamage_Thrust)
+                    slashDamage_Thrust = weapon.maxBaseSlashDamage_Thrust;
+                else if (slashDamage_Thrust < weapon.minBaseSlashDamage_Thrust)
+                    slashDamage_Thrust = weapon.minBaseSlashDamage_Thrust;
+
+                if (cleaveDamage_Thrust > weapon.maxBaseCleaveDamage_Thrust)
+                    cleaveDamage_Thrust = weapon.maxBaseCleaveDamage_Thrust;
+                else if (cleaveDamage_Thrust < weapon.minBaseCleaveDamage_Thrust)
+                    cleaveDamage_Thrust = weapon.minBaseCleaveDamage_Thrust;
+
+                if (bluntDamage_Overhead > weapon.maxBaseBluntDamage_Overhead)
+                    bluntDamage_Overhead = weapon.maxBaseBluntDamage_Overhead;
+                else if (bluntDamage_Overhead < weapon.minBaseBluntDamage_Overhead)
+                    bluntDamage_Overhead = weapon.minBaseBluntDamage_Overhead;
+
+                if (pierceDamage_Overhead > weapon.maxBasePierceDamage_Overhead)
+                    pierceDamage_Overhead = weapon.maxBasePierceDamage_Overhead;
+                else if (pierceDamage_Overhead < weapon.minBasePierceDamage_Overhead)
+                    pierceDamage_Overhead = weapon.minBasePierceDamage_Overhead;
+
+                if (slashDamage_Overhead > weapon.maxBaseSlashDamage_Overhead)
+                    slashDamage_Overhead = weapon.maxBaseSlashDamage_Overhead;
+                else if (slashDamage_Overhead < weapon.minBaseSlashDamage_Overhead)
+                    slashDamage_Overhead = weapon.minBaseSlashDamage_Overhead;
+
+                if (cleaveDamage_Overhead > weapon.maxBaseCleaveDamage_Overhead)
+                    cleaveDamage_Overhead = weapon.maxBaseCleaveDamage_Overhead;
+                else if (cleaveDamage_Overhead < weapon.minBaseCleaveDamage_Overhead)
+                    cleaveDamage_Overhead = weapon.minBaseCleaveDamage_Overhead;
 
                 if (blockChanceMultiplier > weapon.maxBlockChanceMultiplier)
                     blockChanceMultiplier = weapon.maxBlockChanceMultiplier;
@@ -500,6 +588,54 @@ public class ItemData : MonoBehaviour
     public void BreakItem()
     {
         itemName = "Broken " + itemName;
+    }
+
+    void SetMeleeAttackPhysicalDamageTypes()
+    {
+        // Swipe
+        if (pierceDamage_Swipe > bluntDamage_Swipe && pierceDamage_Swipe > slashDamage_Swipe && pierceDamage_Swipe > cleaveDamage_Swipe)
+            swipeMainPhysicalDamageType = PhysicalDamageType.Pierce;
+        else if (slashDamage_Swipe > bluntDamage_Swipe && slashDamage_Swipe > pierceDamage_Swipe && slashDamage_Swipe > cleaveDamage_Swipe)
+            swipeMainPhysicalDamageType = PhysicalDamageType.Slash;
+        else if (cleaveDamage_Swipe > bluntDamage_Swipe && cleaveDamage_Swipe > pierceDamage_Swipe && cleaveDamage_Swipe > slashDamage_Swipe)
+            swipeMainPhysicalDamageType = PhysicalDamageType.Cleave;
+        else
+            swipeMainPhysicalDamageType = PhysicalDamageType.Blunt;
+
+        // Thrust
+        if (pierceDamage_Thrust > bluntDamage_Thrust && pierceDamage_Thrust > slashDamage_Thrust && pierceDamage_Thrust > cleaveDamage_Thrust)
+            thrustMainPhysicalDamageType = PhysicalDamageType.Pierce;
+        else if (slashDamage_Thrust > bluntDamage_Thrust && slashDamage_Thrust > pierceDamage_Thrust && slashDamage_Thrust > cleaveDamage_Thrust)
+            thrustMainPhysicalDamageType = PhysicalDamageType.Slash;
+        else if (cleaveDamage_Thrust > bluntDamage_Thrust && cleaveDamage_Thrust > pierceDamage_Thrust && cleaveDamage_Thrust > slashDamage_Thrust)
+            thrustMainPhysicalDamageType = PhysicalDamageType.Cleave;
+        else
+            thrustMainPhysicalDamageType = PhysicalDamageType.Blunt;
+
+        // Overhead
+        if (pierceDamage_Overhead > bluntDamage_Overhead && pierceDamage_Overhead > slashDamage_Overhead && pierceDamage_Overhead > cleaveDamage_Overhead)
+            overheadMainPhysicalDamageType = PhysicalDamageType.Pierce;
+        else if (slashDamage_Overhead > bluntDamage_Overhead && slashDamage_Overhead > pierceDamage_Overhead && slashDamage_Overhead > cleaveDamage_Overhead)
+            overheadMainPhysicalDamageType = PhysicalDamageType.Slash;
+        else if (cleaveDamage_Overhead > bluntDamage_Overhead && cleaveDamage_Overhead > pierceDamage_Overhead && cleaveDamage_Overhead > slashDamage_Overhead)
+            overheadMainPhysicalDamageType = PhysicalDamageType.Cleave;
+        else
+            overheadMainPhysicalDamageType = PhysicalDamageType.Blunt;
+    }
+
+    public PhysicalDamageType GetMeleeAttacksPhysicalDamageType(MeleeAttackType meleeAttackType)
+    {
+        switch (meleeAttackType)
+        {
+            case MeleeAttackType.Swipe:
+                return swipeMainPhysicalDamageType;
+            case MeleeAttackType.Thrust:
+                return thrustMainPhysicalDamageType;
+            case MeleeAttackType.Overhead:
+                return overheadMainPhysicalDamageType;
+            default:
+                return swipeMainPhysicalDamageType;
+        }
     }
 
     /// <summary> 

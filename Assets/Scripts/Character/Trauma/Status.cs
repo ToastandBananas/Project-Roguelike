@@ -35,41 +35,43 @@ public class Status : MonoBehaviour
         {
             if (personalInjuries[i].bleedTimeRemaining > 0)
             {
-                switch (personalInjuries[i].injuryLocation)
+                switch (personalInjuries[i].injuryLocation) // Body location of the injury
                 {
                     case BodyPart.Torso:
-                        torsoDamageBuildup += personalInjuries[i].injury.damagePerTurn;
+                        torsoDamageBuildup += personalInjuries[i].damagePerTurn;
                         break;
                     case BodyPart.Head:
-                        headDamageBuildup += personalInjuries[i].injury.damagePerTurn;
+                        headDamageBuildup += personalInjuries[i].damagePerTurn;
                         break;
                     case BodyPart.LeftArm:
-                        leftArmDamageBuildup += personalInjuries[i].injury.damagePerTurn;
+                        leftArmDamageBuildup += personalInjuries[i].damagePerTurn;
                         break;
                     case BodyPart.RightArm:
-                        rightArmDamageBuildup += personalInjuries[i].injury.damagePerTurn;
+                        rightArmDamageBuildup += personalInjuries[i].damagePerTurn;
                         break;
                     case BodyPart.LeftLeg:
-                        leftLegDamageBuildup += personalInjuries[i].injury.damagePerTurn;
+                        leftLegDamageBuildup += personalInjuries[i].damagePerTurn;
                         break;
                     case BodyPart.RightLeg:
-                        rightLegDamageBuildup += personalInjuries[i].injury.damagePerTurn;
+                        rightLegDamageBuildup += personalInjuries[i].damagePerTurn;
                         break;
                     case BodyPart.LeftHand:
-                        leftHandDamageBuildup += personalInjuries[i].injury.damagePerTurn;
+                        leftHandDamageBuildup += personalInjuries[i].damagePerTurn;
                         break;
                     case BodyPart.RightHand:
-                        rightHandDamageBuildup += personalInjuries[i].injury.damagePerTurn;
+                        rightHandDamageBuildup += personalInjuries[i].damagePerTurn;
                         break;
                     case BodyPart.LeftFoot:
-                        leftFootDamageBuildup += personalInjuries[i].injury.damagePerTurn;
+                        leftFootDamageBuildup += personalInjuries[i].damagePerTurn;
                         break;
                     case BodyPart.RightFoot:
-                        rightFootDamageBuildup += personalInjuries[i].injury.damagePerTurn;
+                        rightFootDamageBuildup += personalInjuries[i].damagePerTurn;
                         break;
                     default:
                         break;
                 }
+
+                LoseBlood(personalInjuries[i].bloodLossPerTurn);
 
                 personalInjuries[i].bleedTimeRemaining -= Mathf.RoundToInt(timePassed * personalInjuries[i].injuryHealMultiplier);
                 if (personalInjuries[i].bleedTimeRemaining < 0)
@@ -77,55 +79,76 @@ public class Status : MonoBehaviour
             }
         }
 
+        ApplyDamageBuildup();
+    }
+
+    void LoseBlood(int amount)
+    {
+        characterManager.characterStats.currentBloodAmount -= amount;
+    }
+
+    void ApplyDamageBuildup()
+    {
+        int roundedDamageAmount = 0;
         if (torsoDamageBuildup >= 1f)
         {
-            characterManager.characterStats.TakeLocationalDamage(Mathf.RoundToInt(torsoDamageBuildup), BodyPart.Torso, null, false, false);
-            torsoDamageBuildup = 0;
+            roundedDamageAmount = Mathf.RoundToInt(torsoDamageBuildup);
+            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(torsoDamageBuildup), BodyPart.Torso);
+            torsoDamageBuildup -= roundedDamageAmount;
         }
         if (headDamageBuildup >= 1f)
         {
-            characterManager.characterStats.TakeLocationalDamage(Mathf.RoundToInt(headDamageBuildup), BodyPart.Head, null, false, false);
-            headDamageBuildup = 0;
+            roundedDamageAmount = Mathf.RoundToInt(headDamageBuildup);
+            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(headDamageBuildup), BodyPart.Head);
+            headDamageBuildup -= roundedDamageAmount;
         }
         if (leftArmDamageBuildup >= 1f)
         {
-            characterManager.characterStats.TakeLocationalDamage(Mathf.RoundToInt(leftArmDamageBuildup), BodyPart.LeftArm, null, false, false);
-            leftArmDamageBuildup = 0;
+            roundedDamageAmount = Mathf.RoundToInt(leftArmDamageBuildup);
+            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(leftArmDamageBuildup), BodyPart.LeftArm);
+            leftArmDamageBuildup -= roundedDamageAmount;
         }
         if (rightArmDamageBuildup >= 1f)
         {
-            characterManager.characterStats.TakeLocationalDamage(Mathf.RoundToInt(rightArmDamageBuildup), BodyPart.RightArm, null, false, false);
-            rightArmDamageBuildup = 0;
+            roundedDamageAmount = Mathf.RoundToInt(rightArmDamageBuildup);
+            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(rightArmDamageBuildup), BodyPart.RightArm);
+            rightArmDamageBuildup -= roundedDamageAmount;
         }
         if (leftHandDamageBuildup >= 1f)
         {
-            characterManager.characterStats.TakeLocationalDamage(Mathf.RoundToInt(leftHandDamageBuildup), BodyPart.LeftHand, null, false, false);
-            leftHandDamageBuildup = 0;
+            roundedDamageAmount = Mathf.RoundToInt(leftHandDamageBuildup);
+            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(leftHandDamageBuildup), BodyPart.LeftHand);
+            leftHandDamageBuildup -= roundedDamageAmount;
         }
         if (rightHandDamageBuildup >= 1f)
         {
-            characterManager.characterStats.TakeLocationalDamage(Mathf.RoundToInt(rightHandDamageBuildup), BodyPart.RightHand, null, false, false);
-            rightHandDamageBuildup = 0;
+            roundedDamageAmount = Mathf.RoundToInt(rightHandDamageBuildup);
+            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(rightHandDamageBuildup), BodyPart.RightHand);
+            rightHandDamageBuildup -= roundedDamageAmount;
         }
         if (leftLegDamageBuildup >= 1f)
         {
-            characterManager.characterStats.TakeLocationalDamage(Mathf.RoundToInt(leftLegDamageBuildup), BodyPart.LeftLeg, null, false, false);
-            leftLegDamageBuildup = 0;
+            roundedDamageAmount = Mathf.RoundToInt(leftLegDamageBuildup);
+            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(leftLegDamageBuildup), BodyPart.LeftLeg);
+            leftLegDamageBuildup -= roundedDamageAmount;
         }
         if (rightLegDamageBuildup >= 1f)
         {
-            characterManager.characterStats.TakeLocationalDamage(Mathf.RoundToInt(rightLegDamageBuildup), BodyPart.RightLeg, null, false, false);
-            rightLegDamageBuildup = 0;
+            roundedDamageAmount = Mathf.RoundToInt(rightLegDamageBuildup);
+            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(rightLegDamageBuildup), BodyPart.RightLeg);
+            rightLegDamageBuildup -= roundedDamageAmount;
         }
         if (leftFootDamageBuildup >= 1f)
         {
-            characterManager.characterStats.TakeLocationalDamage(Mathf.RoundToInt(leftFootDamageBuildup), BodyPart.LeftFoot, null, false, false);
-            leftFootDamageBuildup = 0;
+            roundedDamageAmount = Mathf.RoundToInt(leftFootDamageBuildup);
+            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(leftFootDamageBuildup), BodyPart.LeftFoot);
+            leftFootDamageBuildup -= roundedDamageAmount;
         }
         if (rightFootDamageBuildup >= 1f)
         {
-            characterManager.characterStats.TakeLocationalDamage(Mathf.RoundToInt(rightFootDamageBuildup), BodyPart.RightFoot, null, false, false);
-            rightFootDamageBuildup = 0;
+            roundedDamageAmount = Mathf.RoundToInt(rightFootDamageBuildup);
+            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(rightFootDamageBuildup), BodyPart.RightFoot);
+            rightFootDamageBuildup -= roundedDamageAmount;
         }
     }
 }
@@ -135,22 +158,31 @@ public class PersonalInjury
 {
     public Injury injury;
     public BodyPart injuryLocation;
+    public float damagePerTurn;
     public int injuryTimeRemaining;
     public int bleedTimeRemaining;
+    public int bloodLossPerTurn;
     public float injuryHealMultiplier = 1f;
 
     public PersonalInjury(Injury injury, BodyPart injuryLocation)
     {
         this.injury = injury;
         this.injuryLocation = injuryLocation;
-        RandomizeInjuryTimes();
+        RandomizeInjuryVariables();
     }
 
-    void RandomizeInjuryTimes()
+    void RandomizeInjuryVariables()
     {
+        damagePerTurn = Mathf.RoundToInt(Random.Range(injury.minDamagePerTurn, injury.maxDamagePerTurn) * 100f) / 100f;
+
         injuryTimeRemaining = Random.Range(TimeSystem.GetTotalSeconds(injury.minInjuryHealTime), TimeSystem.GetTotalSeconds(injury.maxInjuryHealTime) + 1);
 
-        if (injury.GetMaxBleedTime() > 0)
-            bleedTimeRemaining = Random.Range(injury.GetMinBleedTime(), injury.GetMaxBleedTime() + 1);
+        Vector2Int bleedTimes = injury.GetBleedTime();
+        if (bleedTimes.y > 0)
+            bleedTimeRemaining = Random.Range(bleedTimes.x, bleedTimes.y + 1);
+
+        Vector2Int bloodLossValues = injury.GetBloodLossPerTurn();
+        if (bloodLossValues.y > 0)
+            bloodLossPerTurn = Random.Range(bloodLossValues.x, bloodLossValues.y + 1);
     }
 }

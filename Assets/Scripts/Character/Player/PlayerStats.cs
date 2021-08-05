@@ -28,14 +28,14 @@ public class PlayerStats : CharacterStats
     {
         base.OnWeaponChanged(newItemData, oldItemData);
 
-        if (newItemData != null)
+        /*if (newItemData != null)
         {
-            treeDamage.AddModifier(newItemData.treeDamage);
+            
         }
 
         if (oldItemData != null)
         {
-            treeDamage.RemoveModifier(oldItemData.treeDamage);
-        }
+            
+        }*/
     }
 }
