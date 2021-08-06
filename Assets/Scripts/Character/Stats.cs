@@ -1,17 +1,12 @@
 using UnityEngine;
 
-public enum LocomotionType { Inanimate, Humanoid, Biped, Quadruped, Hexapod, Octoped }
-
 public class Stats : MonoBehaviour
 {
-    public LocomotionType locomotionType = LocomotionType.Humanoid;
-
-    [Header("Health")]
     public Stat maxHealth;
     [HideInInspector] public int currentHealth;
 
     [HideInInspector] public bool canTakeDamage = true;
-    [HideInInspector] public bool isDeadOrDestroyed;
+    [HideInInspector] public bool isDestroyed;
 
     [HideInInspector] public GameManager gm;
 
@@ -39,7 +34,7 @@ public class Stats : MonoBehaviour
 
             currentHealth -= damage;
             if (currentHealth <= 0)
-                Die();
+                Destroy();
         }
 
         return damage;
@@ -60,9 +55,9 @@ public class Stats : MonoBehaviour
         return healAmount;
     }
 
-    public virtual void Die()
+    public virtual void Destroy()
     {
-        isDeadOrDestroyed = true;
+        isDestroyed = true;
         GameTiles.RemoveObject(transform.position);
 
         if (TryGetComponent(out Inventory inv))

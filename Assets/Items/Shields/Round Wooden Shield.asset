@@ -25,7 +25,7 @@ MonoBehaviour:
   staticValue: 1
   pickupSprite: {fileID: 1007687392324394931, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
   equipmentSlot: 7
-  baseDurability: {x: 0, y: 0}
+  baseDurability: {x: 75, y: 125}
   primaryEquippedSprite: {fileID: 2025878411903601715, guid: c0728ec74ed7f9b4c9a37754b5624963, type: 3}
   secondaryEquippedSprite: {fileID: 2025878411903601715, guid: c0728ec74ed7f9b4c9a37754b5624963, type: 3}
   shieldBashDamage: {x: 7, y: 12}

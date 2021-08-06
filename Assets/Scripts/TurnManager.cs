@@ -70,7 +70,7 @@ public class TurnManager : MonoBehaviour
 
     public void TakeNPCTurn(CharacterManager charManager)
     {
-        if (gm.playerManager.playerStats.isDeadOrDestroyed == false)
+        if (gm.playerManager.playerStats.isDestroyed == false)
         {
             charManager.isMyTurn = true;
             charManager.status.UpdateBuffs();

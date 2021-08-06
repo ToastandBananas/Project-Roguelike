@@ -36,5 +36,5 @@ MonoBehaviour:
   healthinessAdjustment: 0.75
   instantHealPercent: 0
   gradualHealPercent: 0.05
-  minHealTime: {x: 0, y: 45, z: 0}
-  maxHealTime: {x: 1, y: 0, z: 0}
+  minGradualHealTime: {x: 0, y: 45, z: 0}
+  maxGradualHealTime: {x: 1, y: 0, z: 0}

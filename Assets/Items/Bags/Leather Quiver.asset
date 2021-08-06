@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Leather Quiver
   m_EditorClassIdentifier: 
   name: Leather Quiver
+  pluralName: 
   itemType: 12
   mainMaterial: 23
   description: Holds your arrows.
@@ -20,13 +21,11 @@ MonoBehaviour:
   weight: 0.3
   volume: 0.75
   isUsable: 1
-  minBaseValue: 0
-  maxBaseValue: 0
+  value: {x: 0, y: 0}
   staticValue: 15
   pickupSprite: {fileID: 8092910920630753460, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
   equipmentSlot: 10
-  minBaseDurability: 75
-  maxBaseDurability: 100
+  baseDurability: {x: 120, y: 150}
   primaryEquippedSprite: {fileID: 0}
   secondaryEquippedSprite: {fileID: 0}
   sidebarSprite: {fileID: 8092910920630753460, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}

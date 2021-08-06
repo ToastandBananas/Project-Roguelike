@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Travel Bag
   m_EditorClassIdentifier: 
   name: Travel Bag
+  pluralName: 
   itemType: 12
   mainMaterial: 23
   description: A lightweight leather bag, generally used for short term travel.
@@ -20,13 +21,11 @@ MonoBehaviour:
   weight: 1
   volume: 0.8
   isUsable: 1
-  minBaseValue: 0
-  maxBaseValue: 0
+  value: {x: 0, y: 0}
   staticValue: 50
   pickupSprite: {fileID: -462824376789195924, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
   equipmentSlot: 11
-  minBaseDurability: 100
-  maxBaseDurability: 100
+  baseDurability: {x: 150, y: 200}
   primaryEquippedSprite: {fileID: 0}
   secondaryEquippedSprite: {fileID: 0}
   sidebarSprite: {fileID: -462824376789195924, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}

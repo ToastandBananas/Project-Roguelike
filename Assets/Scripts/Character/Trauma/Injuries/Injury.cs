@@ -11,7 +11,7 @@ public class Injury : ScriptableObject
     [Header("Bleed Variables")]
     public Vector3Int minInjuryHealTime;
     public Vector3Int maxInjuryHealTime;
-    public Vector2Int damagePerTurn;
+    public Vector2 damagePerTurn;
 
     public virtual Vector2Int GetBleedTime()
     {

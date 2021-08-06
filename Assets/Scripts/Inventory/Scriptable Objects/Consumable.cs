@@ -21,8 +21,8 @@ public class Consumable : Item
     public float healthinessAdjustment;
     [Range(0f, 1f)] public float instantHealPercent;
     [Range(0f, 1f)] public float gradualHealPercent;
-    public Vector3Int minHealTime;
-    public Vector3Int maxHealTime;
+    public Vector3Int minGradualHealTime;
+    public Vector3Int maxGradualHealTime;
 
     public override void Use(CharacterManager characterManager, EquipmentSlot equipSlot, Inventory inventory, InventoryItem invItem, int itemCount)
     {

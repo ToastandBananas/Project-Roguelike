@@ -4,12 +4,11 @@ using UnityEngine;
 public class Wearable : Equipment
 {
     [Header("Defense")]
-    public Vector2Int torsoDefense;
-    public Vector2Int headDefense;
-    public Vector2Int armDefense;
-    public Vector2Int handDefense;
-    public Vector2Int legDefense;
-    public Vector2Int footDefense;
+    public bool isClothing;
+    public BodyPartType[] primaryBodyPartsCovered, secondaryBodyPartsCovered, tertiaryBodyPartsCovered;
+    public Vector2Int primaryDefense;
+    public Vector2Int secondaryDefense;
+    public Vector2Int tertiaryDefense;
 
     [Header("Weather Resistance")]
     public int coldResistance;

@@ -28,11 +28,12 @@ MonoBehaviour:
   baseDurability: {x: 65, y: 90}
   primaryEquippedSprite: {fileID: 3268185844855087177, guid: e44b0bda5fde2104399981aac835ec96, type: 3}
   secondaryEquippedSprite: {fileID: 8294215588540098489, guid: 12cf7ee60d0d0da498539b9bfa6b5eb8, type: 3}
-  torsoDefense: {x: 1, y: 2}
-  headDefense: {x: 0, y: 0}
-  armDefense: {x: 1, y: 2}
-  handDefense: {x: 0, y: 0}
-  legDefense: {x: 0, y: 0}
-  footDefense: {x: 0, y: 0}
+  isClothing: 1
+  primaryBodyPartsCovered: 00000000
+  secondaryBodyPartsCovered: 0200000003000000
+  tertiaryBodyPartsCovered: 
+  primaryDefense: {x: 1, y: 2}
+  secondaryDefense: {x: 1, y: 2}
+  tertiaryDefense: {x: 0, y: 0}
   coldResistance: 0
   heatResistance: 0

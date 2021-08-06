@@ -99,7 +99,7 @@ public class NPCAttack : Attack
         // If close enough, do attack animation
         if (targetInAttackRange)
         {
-            DetermineAttack(characterManager.npcMovement.target.characterStats);
+            DetermineAttack(characterManager.npcMovement.target, characterManager.npcMovement.target.characterStats);
         }
         else if (targetInAttackRange == false)
         {
@@ -108,9 +108,9 @@ public class NPCAttack : Attack
         }
     }
 
-    public override void DetermineAttack(Stats targetsStats)
+    public override void DetermineAttack(CharacterManager targetsCharacterManager, Stats targetsStats)
     {
-        StartRandomMeleeAttack(targetsStats);
+        StartRandomMeleeAttack(targetsCharacterManager, targetsStats);
     }
 
     void SetMoveToTargetPos(bool moveToTargetPos)

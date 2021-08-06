@@ -24,28 +24,28 @@ public class Attack : MonoBehaviour
     }
 
     /// <summary>This function determines what type of attack the character should do.</summary>
-    public virtual void DetermineAttack(Stats targetsStats)
+    public virtual void DetermineAttack(CharacterManager targetsCharacterManager, Stats targetsStats)
     {
         // This is just meant to be overridden
     } 
 
-    public virtual void DoAttack(Stats targetsStats, GeneralAttackType attackType, MeleeAttackType meleeAttackType)
+    public virtual void DoAttack(CharacterManager targetsCharacterManager, Stats targetsStats, GeneralAttackType attackType, MeleeAttackType meleeAttackType)
     {
         characterManager.movement.FaceForward(targetsStats.transform.position);
 
         switch (attackType)
         {
             case GeneralAttackType.Unarmed:
-                MeleeAttack(targetsStats, attackType, meleeAttackType);
+                MeleeAttack(targetsCharacterManager, targetsStats, attackType, meleeAttackType);
                 break;
             case GeneralAttackType.PrimaryWeapon:
-                MeleeAttack(targetsStats, attackType, meleeAttackType);
+                MeleeAttack(targetsCharacterManager, targetsStats, attackType, meleeAttackType);
                 break;
             case GeneralAttackType.SecondaryWeapon:
-                MeleeAttack(targetsStats, attackType, meleeAttackType);
+                MeleeAttack(targetsCharacterManager, targetsStats, attackType, meleeAttackType);
                 break;
             case GeneralAttackType.DualWield:
-                DualWieldAttack(targetsStats, meleeAttackType);
+                DualWieldAttack(targetsCharacterManager, targetsStats, meleeAttackType);
                 break;
             case GeneralAttackType.Ranged:
                 break;
@@ -60,46 +60,46 @@ public class Attack : MonoBehaviour
         StartCoroutine(AttackCooldown());
     }
 
-    public void StartMeleeAttack(Stats targetsStats, MeleeAttackType meleeAttackType)
+    public void StartMeleeAttack(CharacterManager targetsCharacterManager, Stats targetsStats, MeleeAttackType meleeAttackType)
     {
         if (characterManager.equipmentManager.IsDualWielding())
-            StartCoroutine(UseAPAndAttack(targetsStats, characterManager.equipmentManager.GetRightWeapon(), GeneralAttackType.DualWield, meleeAttackType));
+            StartCoroutine(UseAPAndAttack(targetsCharacterManager, targetsStats, characterManager.equipmentManager.GetRightWeapon(), GeneralAttackType.DualWield, meleeAttackType));
         else if (characterManager.equipmentManager.RightWeaponEquipped())
-            StartCoroutine(UseAPAndAttack(targetsStats, characterManager.equipmentManager.GetRightWeapon(), GeneralAttackType.PrimaryWeapon, meleeAttackType));
+            StartCoroutine(UseAPAndAttack(targetsCharacterManager, targetsStats, characterManager.equipmentManager.GetRightWeapon(), GeneralAttackType.PrimaryWeapon, meleeAttackType));
         else if (characterManager.equipmentManager.LeftWeaponEquipped())
-            StartCoroutine(UseAPAndAttack(targetsStats, characterManager.equipmentManager.GetLeftWeapon(), GeneralAttackType.SecondaryWeapon, meleeAttackType));
+            StartCoroutine(UseAPAndAttack(targetsCharacterManager, targetsStats, characterManager.equipmentManager.GetLeftWeapon(), GeneralAttackType.SecondaryWeapon, meleeAttackType));
         else // Punch, if no weapons equipped
-            StartCoroutine(UseAPAndAttack(targetsStats, null, GeneralAttackType.Unarmed, MeleeAttackType.Unarmed));
+            StartCoroutine(UseAPAndAttack(targetsCharacterManager, targetsStats, null, GeneralAttackType.Unarmed, MeleeAttackType.Unarmed));
     }
 
-    public void StartRandomMeleeAttack(Stats targetsStats)
+    public void StartRandomMeleeAttack(CharacterManager targetsCharacterManager, Stats targetsStats)
     {
         if (characterManager.equipmentManager.IsDualWielding())
-            StartMeleeAttack(targetsStats, GetRandomMeleeAttackType(characterManager.equipmentManager.GetRightWeapon().defaultMeleeAttackType));
+            StartMeleeAttack(targetsCharacterManager, targetsStats, GetRandomMeleeAttackType(characterManager.equipmentManager.GetRightWeapon().defaultMeleeAttackType));
         else if (characterManager.equipmentManager.RightWeaponEquipped())
-            StartMeleeAttack(targetsStats, GetRandomMeleeAttackType(characterManager.equipmentManager.GetRightWeapon().defaultMeleeAttackType));
+            StartMeleeAttack(targetsCharacterManager, targetsStats, GetRandomMeleeAttackType(characterManager.equipmentManager.GetRightWeapon().defaultMeleeAttackType));
         else if (characterManager.equipmentManager.LeftWeaponEquipped())
-            StartMeleeAttack(targetsStats, GetRandomMeleeAttackType(characterManager.equipmentManager.GetLeftWeapon().defaultMeleeAttackType));
+            StartMeleeAttack(targetsCharacterManager, targetsStats, GetRandomMeleeAttackType(characterManager.equipmentManager.GetLeftWeapon().defaultMeleeAttackType));
         else // Punch, if no weapons equipped
-            StartMeleeAttack(targetsStats, MeleeAttackType.Unarmed);
+            StartMeleeAttack(targetsCharacterManager, targetsStats, MeleeAttackType.Unarmed);
     }
 
-    public void DualWieldAttack(Stats targetsStats, MeleeAttackType meleeAttackType)
+    public void DualWieldAttack(CharacterManager targetsCharacterManager, Stats targetsStats, MeleeAttackType meleeAttackType)
     {
         if (dualWieldAttackCount == 0)
         {
-            MeleeAttack(targetsStats, GeneralAttackType.PrimaryWeapon, meleeAttackType);
+            MeleeAttack(targetsCharacterManager, targetsStats, GeneralAttackType.PrimaryWeapon, meleeAttackType);
             dualWieldAttackCount++;
-            StartCoroutine(UseAPAndAttack(targetsStats, characterManager.equipmentManager.GetLeftWeapon(), GeneralAttackType.DualWield, meleeAttackType));
+            StartCoroutine(UseAPAndAttack(targetsCharacterManager, targetsStats, characterManager.equipmentManager.GetLeftWeapon(), GeneralAttackType.DualWield, meleeAttackType));
         }
         else
         {
-            MeleeAttack(targetsStats, GeneralAttackType.SecondaryWeapon, meleeAttackType);
+            MeleeAttack(targetsCharacterManager, targetsStats, GeneralAttackType.SecondaryWeapon, meleeAttackType);
             dualWieldAttackCount = 0;
         }
     }
 
-    public void MeleeAttack(Stats targetsStats, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType)
+    public void MeleeAttack(CharacterManager targetsCharacterManager, Stats targetsStats, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType)
     {
         StartCoroutine(characterManager.movement.BlockedMovement(targetsStats.transform.position));
 
@@ -118,7 +118,7 @@ public class Attack : MonoBehaviour
         int cleaveDamage = characterManager.equipmentManager.GetPhysicalMeleeDamage(weaponUsedItemData, meleeAttackType, PhysicalDamageType.Cleave);
         int totalDamage = bluntDamage + pierceDamage + slashDamage + cleaveDamage;
 
-        if (targetsStats.locomotionType != LocomotionType.Inanimate)
+        if (targetsCharacterManager != null) // If the character is attacking another character
         {
             CharacterStats targetCharStats = (CharacterStats)targetsStats;
 
@@ -126,7 +126,7 @@ public class Attack : MonoBehaviour
             {
                 if (TryBlock(targetCharStats, weaponUsedItemData, totalDamage) == false) // Check if the target blocked the attack with a shield or a weapon
                 {
-                    BodyPartType bodyPartToHit = targetCharStats.GetBodyPartToHit();
+                    BodyPartType bodyPartToHit = targetsCharacterManager.status.GetBodyPartToHit();
                     bool armorPenetrated = false;
                     bool clothingPenetrated = false;
 
@@ -150,7 +150,7 @@ public class Attack : MonoBehaviour
                     }
 
                     // Damage the target character
-                    int finalDamage = targetCharStats.TakeLocationalDamage(bluntDamage, pierceDamage, slashDamage, cleaveDamage, bodyPartToHit, targetCharStats.characterManager.equipmentManager, armor, clothing, armorPenetrated, clothingPenetrated);
+                    int finalDamage = targetsCharacterManager.status.TakeLocationalDamage(bluntDamage, pierceDamage, slashDamage, cleaveDamage, bodyPartToHit, targetCharStats.characterManager.equipmentManager, armor, clothing, armorPenetrated, clothingPenetrated);
 
                     // If the character is wearing armor, damage the appropriate piece(s) of armor (moreso if the armor was penetrated)
                     if (targetCharStats.characterManager.equipmentManager != null)
@@ -177,7 +177,7 @@ public class Attack : MonoBehaviour
                 }
             }
         }
-        else
+        else // If the character is attacking an object
         {
             // Damage the object and show flavor text
             targetsStats.TakeDamage(totalDamage);
@@ -577,7 +577,7 @@ public class Attack : MonoBehaviour
         return null;
     }
 
-    public IEnumerator UseAPAndAttack(Stats targetsStats, Weapon weapon, GeneralAttackType attackType, MeleeAttackType meleeAttackType)
+    public IEnumerator UseAPAndAttack(CharacterManager targetsCharacterManager, Stats targetsStats, Weapon weapon, GeneralAttackType attackType, MeleeAttackType meleeAttackType)
     {
         characterManager.actionQueued = true;
 
@@ -586,7 +586,7 @@ public class Attack : MonoBehaviour
             yield return null;
         }
 
-        if (TargetInAttackRange(targetsStats.transform) == false || targetsStats.isDeadOrDestroyed)
+        if (TargetInAttackRange(targetsStats.transform) == false || targetsStats.isDestroyed)
         {
             CancelAttack();
             yield break;
@@ -598,13 +598,13 @@ public class Attack : MonoBehaviour
             {
                 characterManager.actionQueued = false;
                 characterManager.characterStats.UseAP(characterManager.remainingAPToBeUsed);
-                DoAttack(targetsStats, attackType, meleeAttackType);
+                DoAttack(targetsCharacterManager, targetsStats, attackType, meleeAttackType);
             }
             else
             {
                 characterManager.characterStats.UseAP(characterManager.characterStats.currentAP);
                 gm.turnManager.FinishTurn(characterManager);
-                StartCoroutine(UseAPAndAttack(targetsStats, weapon, attackType, meleeAttackType));
+                StartCoroutine(UseAPAndAttack(targetsCharacterManager, targetsStats, weapon, attackType, meleeAttackType));
             }
         }
         else
@@ -613,13 +613,13 @@ public class Attack : MonoBehaviour
             if (remainingAP == 0)
             {
                 characterManager.actionQueued = false;
-                DoAttack(targetsStats, attackType, meleeAttackType);
+                DoAttack(targetsCharacterManager, targetsStats, attackType, meleeAttackType);
             }
             else
             {
                 characterManager.remainingAPToBeUsed = remainingAP;
                 gm.turnManager.FinishTurn(characterManager);
-                StartCoroutine(UseAPAndAttack(targetsStats, weapon, attackType, meleeAttackType));
+                StartCoroutine(UseAPAndAttack(targetsCharacterManager, targetsStats, weapon, attackType, meleeAttackType));
             }
         }
     }
@@ -640,7 +640,7 @@ public class Attack : MonoBehaviour
         dualWieldAttackCount = 0;
         characterManager.remainingAPToBeUsed = 0;
         characterManager.actionQueued = false;
-        if (characterManager.isNPC && characterManager.characterStats.isDeadOrDestroyed == false)
+        if (characterManager.isNPC && characterManager.characterStats.isDestroyed == false)
             characterManager.TakeTurn();
     }
 

@@ -8,8 +8,8 @@ public class PlayerAttack : Attack
         }
     }
 
-    public override void DetermineAttack(Stats targetsStats)
+    public override void DetermineAttack(CharacterManager targetsCharacterManager, Stats targetsStats)
     {
-        StartRandomMeleeAttack(targetsStats);
+        StartRandomMeleeAttack(targetsCharacterManager, targetsStats);
     }
 }

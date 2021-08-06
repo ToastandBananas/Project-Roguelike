@@ -30,12 +30,12 @@ public class TraumaSystem : MonoBehaviour
 
     public static void ApplyInjury(CharacterManager character, Injury injury, BodyPartType injuryLocation)
     {
-        character.status.locationalInjuries.Add(new LocationalInjury(injury, injuryLocation));
+        character.status.GetBodyPart(injuryLocation).injuries.Add(new LocationalInjury(injury, injuryLocation));
     }
 
     public static void RemoveInjury(CharacterManager character, LocationalInjury personalInjury)
     {
-        character.status.locationalInjuries.Remove(personalInjury);
+        character.status.GetBodyPart(personalInjury.injuryLocation).injuries.Remove(personalInjury);
     }
 
     public static void ApplyBuff(CharacterManager character, Consumable consumable)
@@ -48,10 +48,10 @@ public class TraumaSystem : MonoBehaviour
         character.status.buffs.Remove(buff);
     }
 
-    public Injury GetCut(CharacterManager characterManager, BodyPartType bodyPart, int damage)
+    public Injury GetCut(CharacterManager characterManager, BodyPartType bodyPartType, int damage)
     {
         // Get the max health for the body part being cut
-        int maxBodyPartHealth = characterManager.characterStats.GetBodyPartsMaxHealth(bodyPart).GetValue();
+        int maxBodyPartHealth = characterManager.status.GetBodyPart(bodyPartType).maxHealth.GetValue();
 
         // Determine the severity of cut based off of the percent damage done in relation to the max health
         if (damage / maxBodyPartHealth <= 0.05f)

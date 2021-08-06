@@ -5392,104 +5392,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d736b902204c96945a223b177122d373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  locomotionType: 1
   maxHealth:
     baseValue: 100
     modifiers: 
   currentHealth: 0
   canTakeDamage: 1
-  isDeadOrDestroyed: 0
+  isDestroyed: 0
   gm: {fileID: 0}
-  torso:
-    bodyPartType: 0
-    maxHealth:
-      baseValue: 100
-      modifiers: 
-    currentHealth: 0
-  head:
-    bodyPartType: 1
-    maxHealth:
-      baseValue: 50
-      modifiers: 
-    currentHealth: 0
-  leftArm:
-    bodyPartType: 2
-    maxHealth:
-      baseValue: 75
-      modifiers: 
-    currentHealth: 0
-  rightArm:
-    bodyPartType: 3
-    maxHealth:
-      baseValue: 75
-      modifiers: 
-    currentHealth: 0
-  leftHand:
-    bodyPartType: 6
-    maxHealth:
-      baseValue: 40
-      modifiers: 
-    currentHealth: 0
-  rightHand:
-    bodyPartType: 7
-    maxHealth:
-      baseValue: 40
-      modifiers: 
-    currentHealth: 0
-  leftLeg:
-    bodyPartType: 4
-    maxHealth:
-      baseValue: 80
-      modifiers: 
-    currentHealth: 0
-  rightLeg:
-    bodyPartType: 5
-    maxHealth:
-      baseValue: 80
-      modifiers: 
-    currentHealth: 0
-  leftFoot:
-    bodyPartType: 8
-    maxHealth:
-      baseValue: 40
-      modifiers: 
-    currentHealth: 0
-  rightFoot:
-    bodyPartType: 9
-    maxHealth:
-      baseValue: 40
-      modifiers: 
-    currentHealth: 0
-  torsoDefense:
-    baseValue: 0
-    modifiers: 
-  headDefense:
-    baseValue: 0
-    modifiers: 
-  armDefense:
-    baseValue: 0
-    modifiers: 
-  handDefense:
-    baseValue: 0
-    modifiers: 
-  legDefense:
-    baseValue: 0
-    modifiers: 
-  footDefense:
-    baseValue: 0
-    modifiers: 
-  maxBloodAmount:
-    baseValue: 5000
-    modifiers: 
-  currentBloodAmount: 0
-  maxFullness:
-    baseValue: 20
-    modifiers: 
-  currentFullness: 0
-  maxWater:
-    baseValue: 20
-    modifiers: 
-  currentWater: 0
   agility:
     baseValue: 0
     modifiers: 
@@ -5569,8 +5478,192 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterManager: {fileID: 549636870}
-  locationalInjuries: []
+  locomotionType: 1
+  bodyParts:
+  - bodyPartType: 0
+    maxHealth:
+      baseValue: 100
+      modifiers: 
+    currentHealth: 0
+    injuries: []
+    damageBuildup: 0
+    healingBuildup: 0
+    naturalDefense:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Armor:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Clothing:
+      baseValue: 0
+      modifiers: 
+  - bodyPartType: 1
+    maxHealth:
+      baseValue: 50
+      modifiers: 
+    currentHealth: 0
+    injuries: []
+    damageBuildup: 0
+    healingBuildup: 0
+    naturalDefense:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Armor:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Clothing:
+      baseValue: 0
+      modifiers: 
+  - bodyPartType: 2
+    maxHealth:
+      baseValue: 75
+      modifiers: 
+    currentHealth: 0
+    injuries: []
+    damageBuildup: 0
+    healingBuildup: 0
+    naturalDefense:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Armor:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Clothing:
+      baseValue: 0
+      modifiers: 
+  - bodyPartType: 3
+    maxHealth:
+      baseValue: 75
+      modifiers: 
+    currentHealth: 0
+    injuries: []
+    damageBuildup: 0
+    healingBuildup: 0
+    naturalDefense:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Armor:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Clothing:
+      baseValue: 0
+      modifiers: 
+  - bodyPartType: 6
+    maxHealth:
+      baseValue: 40
+      modifiers: 
+    currentHealth: 0
+    injuries: []
+    damageBuildup: 0
+    healingBuildup: 0
+    naturalDefense:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Armor:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Clothing:
+      baseValue: 0
+      modifiers: 
+  - bodyPartType: 7
+    maxHealth:
+      baseValue: 40
+      modifiers: 
+    currentHealth: 0
+    injuries: []
+    damageBuildup: 0
+    healingBuildup: 0
+    naturalDefense:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Armor:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Clothing:
+      baseValue: 0
+      modifiers: 
+  - bodyPartType: 4
+    maxHealth:
+      baseValue: 75
+      modifiers: 
+    currentHealth: 0
+    injuries: []
+    damageBuildup: 0
+    healingBuildup: 0
+    naturalDefense:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Armor:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Clothing:
+      baseValue: 0
+      modifiers: 
+  - bodyPartType: 5
+    maxHealth:
+      baseValue: 75
+      modifiers: 
+    currentHealth: 0
+    injuries: []
+    damageBuildup: 0
+    healingBuildup: 0
+    naturalDefense:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Armor:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Clothing:
+      baseValue: 0
+      modifiers: 
+  - bodyPartType: 8
+    maxHealth:
+      baseValue: 40
+      modifiers: 
+    currentHealth: 0
+    injuries: []
+    damageBuildup: 0
+    healingBuildup: 0
+    naturalDefense:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Armor:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Clothing:
+      baseValue: 0
+      modifiers: 
+  - bodyPartType: 9
+    maxHealth:
+      baseValue: 40
+      modifiers: 
+    currentHealth: 0
+    injuries: []
+    damageBuildup: 0
+    healingBuildup: 0
+    naturalDefense:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Armor:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Clothing:
+      baseValue: 0
+      modifiers: 
   buffs: []
+  maxBloodAmount:
+    baseValue: 5000
+    modifiers: 
+  currentBloodAmount: 0
+  maxFullness:
+    baseValue: 20
+    modifiers: 
+  currentFullness: 0
+  maxWater:
+    baseValue: 20
+    modifiers: 
+  currentWater: 0
+  isDead: 0
 --- !u!1 &554865803
 GameObject:
   m_ObjectHideFlags: 0
@@ -8980,13 +9073,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59be7888ebfe1b8458c23ac1b0175524, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  locomotionType: 0
   maxHealth:
     baseValue: 25
     modifiers: 
   currentHealth: 0
   canTakeDamage: 1
-  isDeadOrDestroyed: 0
+  isDestroyed: 0
   gm: {fileID: 0}
 --- !u!1 &887206277
 GameObject:
@@ -15638,104 +15730,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6433cf7fa4649649bc7bcf1e6911f0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  locomotionType: 1
   maxHealth:
     baseValue: 70
     modifiers: 
   currentHealth: 0
   canTakeDamage: 1
-  isDeadOrDestroyed: 0
+  isDestroyed: 0
   gm: {fileID: 0}
-  torso:
-    bodyPartType: 0
-    maxHealth:
-      baseValue: 70
-      modifiers: 
-    currentHealth: 0
-  head:
-    bodyPartType: 1
-    maxHealth:
-      baseValue: 40
-      modifiers: 
-    currentHealth: 0
-  leftArm:
-    bodyPartType: 2
-    maxHealth:
-      baseValue: 60
-      modifiers: 
-    currentHealth: 0
-  rightArm:
-    bodyPartType: 3
-    maxHealth:
-      baseValue: 60
-      modifiers: 
-    currentHealth: 0
-  leftHand:
-    bodyPartType: 6
-    maxHealth:
-      baseValue: 30
-      modifiers: 
-    currentHealth: 0
-  rightHand:
-    bodyPartType: 7
-    maxHealth:
-      baseValue: 30
-      modifiers: 
-    currentHealth: 0
-  leftLeg:
-    bodyPartType: 4
-    maxHealth:
-      baseValue: 65
-      modifiers: 
-    currentHealth: 0
-  rightLeg:
-    bodyPartType: 5
-    maxHealth:
-      baseValue: 65
-      modifiers: 
-    currentHealth: 0
-  leftFoot:
-    bodyPartType: 8
-    maxHealth:
-      baseValue: 30
-      modifiers: 
-    currentHealth: 0
-  rightFoot:
-    bodyPartType: 9
-    maxHealth:
-      baseValue: 30
-      modifiers: 
-    currentHealth: 0
-  torsoDefense:
-    baseValue: 0
-    modifiers: 
-  headDefense:
-    baseValue: 0
-    modifiers: 
-  armDefense:
-    baseValue: 0
-    modifiers: 
-  handDefense:
-    baseValue: 0
-    modifiers: 
-  legDefense:
-    baseValue: 0
-    modifiers: 
-  footDefense:
-    baseValue: 0
-    modifiers: 
-  maxBloodAmount:
-    baseValue: 3500
-    modifiers: 
-  currentBloodAmount: 0
-  maxFullness:
-    baseValue: 20
-    modifiers: 
-  currentFullness: 0
-  maxWater:
-    baseValue: 20
-    modifiers: 
-  currentWater: 0
   agility:
     baseValue: 0
     modifiers: 
@@ -15792,8 +15793,192 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterManager: {fileID: 1347319899}
-  locationalInjuries: []
+  locomotionType: 1
+  bodyParts:
+  - bodyPartType: 0
+    maxHealth:
+      baseValue: 70
+      modifiers: 
+    currentHealth: 0
+    injuries: []
+    damageBuildup: 0
+    healingBuildup: 0
+    naturalDefense:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Armor:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Clothing:
+      baseValue: 0
+      modifiers: 
+  - bodyPartType: 1
+    maxHealth:
+      baseValue: 35
+      modifiers: 
+    currentHealth: 0
+    injuries: []
+    damageBuildup: 0
+    healingBuildup: 0
+    naturalDefense:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Armor:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Clothing:
+      baseValue: 0
+      modifiers: 
+  - bodyPartType: 2
+    maxHealth:
+      baseValue: 52
+      modifiers: 
+    currentHealth: 0
+    injuries: []
+    damageBuildup: 0
+    healingBuildup: 0
+    naturalDefense:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Armor:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Clothing:
+      baseValue: 0
+      modifiers: 
+  - bodyPartType: 3
+    maxHealth:
+      baseValue: 52
+      modifiers: 
+    currentHealth: 0
+    injuries: []
+    damageBuildup: 0
+    healingBuildup: 0
+    naturalDefense:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Armor:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Clothing:
+      baseValue: 0
+      modifiers: 
+  - bodyPartType: 6
+    maxHealth:
+      baseValue: 28
+      modifiers: 
+    currentHealth: 0
+    injuries: []
+    damageBuildup: 0
+    healingBuildup: 0
+    naturalDefense:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Armor:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Clothing:
+      baseValue: 0
+      modifiers: 
+  - bodyPartType: 7
+    maxHealth:
+      baseValue: 28
+      modifiers: 
+    currentHealth: 0
+    injuries: []
+    damageBuildup: 0
+    healingBuildup: 0
+    naturalDefense:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Armor:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Clothing:
+      baseValue: 0
+      modifiers: 
+  - bodyPartType: 4
+    maxHealth:
+      baseValue: 52
+      modifiers: 
+    currentHealth: 0
+    injuries: []
+    damageBuildup: 0
+    healingBuildup: 0
+    naturalDefense:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Armor:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Clothing:
+      baseValue: 0
+      modifiers: 
+  - bodyPartType: 5
+    maxHealth:
+      baseValue: 52
+      modifiers: 
+    currentHealth: 0
+    injuries: []
+    damageBuildup: 0
+    healingBuildup: 0
+    naturalDefense:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Armor:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Clothing:
+      baseValue: 0
+      modifiers: 
+  - bodyPartType: 8
+    maxHealth:
+      baseValue: 28
+      modifiers: 
+    currentHealth: 0
+    injuries: []
+    damageBuildup: 0
+    healingBuildup: 0
+    naturalDefense:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Armor:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Clothing:
+      baseValue: 0
+      modifiers: 
+  - bodyPartType: 9
+    maxHealth:
+      baseValue: 28
+      modifiers: 
+    currentHealth: 0
+    injuries: []
+    damageBuildup: 0
+    healingBuildup: 0
+    naturalDefense:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Armor:
+      baseValue: 0
+      modifiers: 
+    addedDefense_Clothing:
+      baseValue: 0
+      modifiers: 
   buffs: []
+  maxBloodAmount:
+    baseValue: 3500
+    modifiers: 
+  currentBloodAmount: 0
+  maxFullness:
+    baseValue: 20
+    modifiers: 
+  currentFullness: 0
+  maxWater:
+    baseValue: 20
+    modifiers: 
+  currentWater: 0
+  isDead: 0
 --- !u!4 &1392199866 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}

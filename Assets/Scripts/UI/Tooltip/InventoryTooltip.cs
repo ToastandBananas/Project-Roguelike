@@ -57,8 +57,12 @@ public class InventoryTooltip : Tooltip
         else if (itemData.item.IsWearable())
         {
             Wearable wearable = (Wearable)itemData.item;
-            
+
             // Defense
+            /*for (int i = 0; i < wearable.primaryBodyPartsCovered.Length; i++)
+            {
+                
+            }
             if (itemData.headDefense > 0)
                 stringBuilder.Append("Head Defense: " + itemData.headDefense + "\n");
 
@@ -75,7 +79,7 @@ public class InventoryTooltip : Tooltip
                 stringBuilder.Append("Legs Defense: " + itemData.legDefense + "\n");
 
             if (itemData.footDefense > 0)
-                stringBuilder.Append("Feet Defense: " + itemData.footDefense + "\n");
+                stringBuilder.Append("Feet Defense: " + itemData.footDefense + "\n");*/
 
             // Cold resistance
             if (wearable.coldResistance > 0)
