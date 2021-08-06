@@ -79,34 +79,34 @@ public class Status : MonoBehaviour
             {
                 switch (locationalInjuries[i].injuryLocation) // Body location of the injury
                 {
-                    case BodyPart.Torso:
+                    case BodyPartType.Torso:
                         torsoDamageBuildup += locationalInjuries[i].damagePerTurn;
                         break;
-                    case BodyPart.Head:
+                    case BodyPartType.Head:
                         headDamageBuildup += locationalInjuries[i].damagePerTurn;
                         break;
-                    case BodyPart.LeftArm:
+                    case BodyPartType.LeftArm:
                         leftArmDamageBuildup += locationalInjuries[i].damagePerTurn;
                         break;
-                    case BodyPart.RightArm:
+                    case BodyPartType.RightArm:
                         rightArmDamageBuildup += locationalInjuries[i].damagePerTurn;
                         break;
-                    case BodyPart.LeftLeg:
+                    case BodyPartType.LeftLeg:
                         leftLegDamageBuildup += locationalInjuries[i].damagePerTurn;
                         break;
-                    case BodyPart.RightLeg:
+                    case BodyPartType.RightLeg:
                         rightLegDamageBuildup += locationalInjuries[i].damagePerTurn;
                         break;
-                    case BodyPart.LeftHand:
+                    case BodyPartType.LeftHand:
                         leftHandDamageBuildup += locationalInjuries[i].damagePerTurn;
                         break;
-                    case BodyPart.RightHand:
+                    case BodyPartType.RightHand:
                         rightHandDamageBuildup += locationalInjuries[i].damagePerTurn;
                         break;
-                    case BodyPart.LeftFoot:
+                    case BodyPartType.LeftFoot:
                         leftFootDamageBuildup += locationalInjuries[i].damagePerTurn;
                         break;
-                    case BodyPart.RightFoot:
+                    case BodyPartType.RightFoot:
                         rightFootDamageBuildup += locationalInjuries[i].damagePerTurn;
                         break;
                     default:
@@ -127,7 +127,7 @@ public class Status : MonoBehaviour
         characterManager.characterStats.currentBloodAmount -= amount;
     }
 
-    public bool BodyPartIsBleeding(BodyPart bodyPart)
+    public bool BodyPartIsBleeding(BodyPartType bodyPart)
     {
         for (int i = 0; i < locationalInjuries.Count; i++)
         {
@@ -143,61 +143,61 @@ public class Status : MonoBehaviour
         if (torsoDamageBuildup >= 1f)
         {
             roundedDamageAmount = Mathf.FloorToInt(torsoDamageBuildup);
-            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(torsoDamageBuildup), BodyPart.Torso);
+            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(torsoDamageBuildup), BodyPartType.Torso);
             torsoDamageBuildup -= roundedDamageAmount;
         }
         if (headDamageBuildup >= 1f)
         {
             roundedDamageAmount = Mathf.FloorToInt(headDamageBuildup);
-            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(headDamageBuildup), BodyPart.Head);
+            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(headDamageBuildup), BodyPartType.Head);
             headDamageBuildup -= roundedDamageAmount;
         }
         if (leftArmDamageBuildup >= 1f)
         {
             roundedDamageAmount = Mathf.FloorToInt(leftArmDamageBuildup);
-            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(leftArmDamageBuildup), BodyPart.LeftArm);
+            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(leftArmDamageBuildup), BodyPartType.LeftArm);
             leftArmDamageBuildup -= roundedDamageAmount;
         }
         if (rightArmDamageBuildup >= 1f)
         {
             roundedDamageAmount = Mathf.FloorToInt(rightArmDamageBuildup);
-            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(rightArmDamageBuildup), BodyPart.RightArm);
+            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(rightArmDamageBuildup), BodyPartType.RightArm);
             rightArmDamageBuildup -= roundedDamageAmount;
         }
         if (leftHandDamageBuildup >= 1f)
         {
             roundedDamageAmount = Mathf.FloorToInt(leftHandDamageBuildup);
-            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(leftHandDamageBuildup), BodyPart.LeftHand);
+            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(leftHandDamageBuildup), BodyPartType.LeftHand);
             leftHandDamageBuildup -= roundedDamageAmount;
         }
         if (rightHandDamageBuildup >= 1f)
         {
             roundedDamageAmount = Mathf.FloorToInt(rightHandDamageBuildup);
-            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(rightHandDamageBuildup), BodyPart.RightHand);
+            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(rightHandDamageBuildup), BodyPartType.RightHand);
             rightHandDamageBuildup -= roundedDamageAmount;
         }
         if (leftLegDamageBuildup >= 1f)
         {
             roundedDamageAmount = Mathf.FloorToInt(leftLegDamageBuildup);
-            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(leftLegDamageBuildup), BodyPart.LeftLeg);
+            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(leftLegDamageBuildup), BodyPartType.LeftLeg);
             leftLegDamageBuildup -= roundedDamageAmount;
         }
         if (rightLegDamageBuildup >= 1f)
         {
             roundedDamageAmount = Mathf.FloorToInt(rightLegDamageBuildup);
-            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(rightLegDamageBuildup), BodyPart.RightLeg);
+            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(rightLegDamageBuildup), BodyPartType.RightLeg);
             rightLegDamageBuildup -= roundedDamageAmount;
         }
         if (leftFootDamageBuildup >= 1f)
         {
             roundedDamageAmount = Mathf.FloorToInt(leftFootDamageBuildup);
-            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(leftFootDamageBuildup), BodyPart.LeftFoot);
+            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(leftFootDamageBuildup), BodyPartType.LeftFoot);
             leftFootDamageBuildup -= roundedDamageAmount;
         }
         if (rightFootDamageBuildup >= 1f)
         {
             roundedDamageAmount = Mathf.FloorToInt(rightFootDamageBuildup);
-            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(rightFootDamageBuildup), BodyPart.RightFoot);
+            characterManager.characterStats.TakeStaticLocationalDamage(Mathf.RoundToInt(rightFootDamageBuildup), BodyPartType.RightFoot);
             rightFootDamageBuildup -= roundedDamageAmount;
         }
     }
@@ -207,42 +207,42 @@ public class Status : MonoBehaviour
         // Apply natural healing first, if the character is healthy enough
         if (healthiness > 0)
         {
-            if (BodyPartIsBleeding(BodyPart.Torso) == false)
-                torsoHealingBuildup += naturalHealingPercentPerTurn * (healthiness / 100f) * characterManager.characterStats.maxHealth.GetValue();
-            if (BodyPartIsBleeding(BodyPart.Head) == false)
-                headHealingBuildup += naturalHealingPercentPerTurn * (healthiness / 100f) * characterManager.characterStats.maxHeadHealth.GetValue();
-            if (BodyPartIsBleeding(BodyPart.LeftArm) == false)
-                leftArmHealingBuildup += naturalHealingPercentPerTurn * (healthiness / 100f) * characterManager.characterStats.maxLeftArmHealth.GetValue();
-            if (BodyPartIsBleeding(BodyPart.RightArm) == false)
-                rightArmHealingBuildup += naturalHealingPercentPerTurn * (healthiness / 100f) * characterManager.characterStats.maxRightArmHealth.GetValue();
-            if (BodyPartIsBleeding(BodyPart.LeftHand) == false)
-                leftHandHealingBuildup += naturalHealingPercentPerTurn * (healthiness / 100f) * characterManager.characterStats.maxLeftHandHealth.GetValue();
-            if (BodyPartIsBleeding(BodyPart.RightHand) == false)
-                rightHandHealingBuildup += naturalHealingPercentPerTurn * (healthiness / 100f) * characterManager.characterStats.maxRightHandHealth.GetValue();
-            if (BodyPartIsBleeding(BodyPart.LeftLeg) == false)
-                leftLegHealingBuildup += naturalHealingPercentPerTurn * (healthiness / 100f) * characterManager.characterStats.maxLeftLegHealth.GetValue();
-            if (BodyPartIsBleeding(BodyPart.RightLeg) == false)
-                rightLegHealingBuildup += naturalHealingPercentPerTurn * (healthiness / 100f) * characterManager.characterStats.maxRightLegHealth.GetValue();
-            if (BodyPartIsBleeding(BodyPart.LeftFoot) == false)
-                leftFootHealingBuildup += naturalHealingPercentPerTurn * (healthiness / 100f) * characterManager.characterStats.maxLeftFootHealth.GetValue();
-            if (BodyPartIsBleeding(BodyPart.RightFoot) == false)
-                rightFootHealingBuildup += naturalHealingPercentPerTurn * (healthiness / 100f) * characterManager.characterStats.maxRightFootHealth.GetValue();
+            if (BodyPartIsBleeding(BodyPartType.Torso) == false)
+                torsoHealingBuildup += naturalHealingPercentPerTurn * (healthiness / 100f) * characterManager.characterStats.torso.maxHealth.GetValue();
+            if (BodyPartIsBleeding(BodyPartType.Head) == false)
+                headHealingBuildup += naturalHealingPercentPerTurn * (healthiness / 100f) * characterManager.characterStats.head.maxHealth.GetValue();
+            if (BodyPartIsBleeding(BodyPartType.LeftArm) == false)
+                leftArmHealingBuildup += naturalHealingPercentPerTurn * (healthiness / 100f) * characterManager.characterStats.leftArm.maxHealth.GetValue();
+            if (BodyPartIsBleeding(BodyPartType.RightArm) == false)
+                rightArmHealingBuildup += naturalHealingPercentPerTurn * (healthiness / 100f) * characterManager.characterStats.rightArm.maxHealth.GetValue();
+            if (BodyPartIsBleeding(BodyPartType.LeftHand) == false)
+                leftHandHealingBuildup += naturalHealingPercentPerTurn * (healthiness / 100f) * characterManager.characterStats.leftHand.maxHealth.GetValue();
+            if (BodyPartIsBleeding(BodyPartType.RightHand) == false)
+                rightHandHealingBuildup += naturalHealingPercentPerTurn * (healthiness / 100f) * characterManager.characterStats.rightHand.maxHealth.GetValue();
+            if (BodyPartIsBleeding(BodyPartType.LeftLeg) == false)
+                leftLegHealingBuildup += naturalHealingPercentPerTurn * (healthiness / 100f) * characterManager.characterStats.leftLeg.maxHealth.GetValue();
+            if (BodyPartIsBleeding(BodyPartType.RightLeg) == false)
+                rightLegHealingBuildup += naturalHealingPercentPerTurn * (healthiness / 100f) * characterManager.characterStats.rightLeg.maxHealth.GetValue();
+            if (BodyPartIsBleeding(BodyPartType.LeftFoot) == false)
+                leftFootHealingBuildup += naturalHealingPercentPerTurn * (healthiness / 100f) * characterManager.characterStats.leftFoot.maxHealth.GetValue();
+            if (BodyPartIsBleeding(BodyPartType.RightFoot) == false)
+                rightFootHealingBuildup += naturalHealingPercentPerTurn * (healthiness / 100f) * characterManager.characterStats.rightFoot.maxHealth.GetValue();
         }
 
         for (int i = 0; i < buffs.Count; i++)
         {
             if (buffs[i].healPercentPerTurn > 0)
             {
-                torsoHealingBuildup += buffs[i].healPercentPerTurn * characterManager.characterStats.maxHealth.GetValue();
-                headHealingBuildup += buffs[i].healPercentPerTurn * characterManager.characterStats.maxHeadHealth.GetValue();
-                leftArmHealingBuildup += buffs[i].healPercentPerTurn * characterManager.characterStats.maxLeftArmHealth.GetValue();
-                rightArmHealingBuildup += buffs[i].healPercentPerTurn * characterManager.characterStats.maxRightArmHealth.GetValue();
-                leftHandHealingBuildup += buffs[i].healPercentPerTurn * characterManager.characterStats.maxLeftHandHealth.GetValue();
-                rightHandHealingBuildup += buffs[i].healPercentPerTurn * characterManager.characterStats.maxRightHandHealth.GetValue();
-                leftLegHealingBuildup += buffs[i].healPercentPerTurn * characterManager.characterStats.maxLeftLegHealth.GetValue();
-                rightLegHealingBuildup += buffs[i].healPercentPerTurn * characterManager.characterStats.maxRightLegHealth.GetValue();
-                leftFootHealingBuildup += buffs[i].healPercentPerTurn * characterManager.characterStats.maxLeftFootHealth.GetValue();
-                rightFootHealingBuildup += buffs[i].healPercentPerTurn * characterManager.characterStats.maxRightFootHealth.GetValue();
+                torsoHealingBuildup += buffs[i].healPercentPerTurn * characterManager.characterStats.torso.maxHealth.GetValue();
+                headHealingBuildup += buffs[i].healPercentPerTurn * characterManager.characterStats.head.maxHealth.GetValue();
+                leftArmHealingBuildup += buffs[i].healPercentPerTurn * characterManager.characterStats.leftArm.maxHealth.GetValue();
+                rightArmHealingBuildup += buffs[i].healPercentPerTurn * characterManager.characterStats.rightArm.maxHealth.GetValue();
+                leftHandHealingBuildup += buffs[i].healPercentPerTurn * characterManager.characterStats.leftHand.maxHealth.GetValue();
+                rightHandHealingBuildup += buffs[i].healPercentPerTurn * characterManager.characterStats.rightHand.maxHealth.GetValue();
+                leftLegHealingBuildup += buffs[i].healPercentPerTurn * characterManager.characterStats.leftLeg.maxHealth.GetValue();
+                rightLegHealingBuildup += buffs[i].healPercentPerTurn * characterManager.characterStats.rightLeg.maxHealth.GetValue();
+                leftFootHealingBuildup += buffs[i].healPercentPerTurn * characterManager.characterStats.leftFoot.maxHealth.GetValue();
+                rightFootHealingBuildup += buffs[i].healPercentPerTurn * characterManager.characterStats.rightFoot.maxHealth.GetValue();
             }
         }
     }
@@ -253,61 +253,61 @@ public class Status : MonoBehaviour
         if (torsoHealingBuildup >= 1f)
         {
             roundedHealingAmount = Mathf.FloorToInt(torsoHealingBuildup);
-            characterManager.characterStats.AddToCurrentHealth_Instant(BodyPart.Torso, roundedHealingAmount);
+            characterManager.characterStats.GetBodyPart(BodyPartType.Torso).HealInstant_StaticValue(roundedHealingAmount);
             torsoHealingBuildup -= roundedHealingAmount;
         }
         if (headHealingBuildup >= 1f)
         {
             roundedHealingAmount = Mathf.FloorToInt(headHealingBuildup);
-            characterManager.characterStats.AddToCurrentHealth_Instant(BodyPart.Head, roundedHealingAmount);
+            characterManager.characterStats.GetBodyPart(BodyPartType.Head).HealInstant_StaticValue(roundedHealingAmount);
             headHealingBuildup -= roundedHealingAmount;
         }
         if (leftArmHealingBuildup >= 1f)
         {
             roundedHealingAmount = Mathf.FloorToInt(leftArmHealingBuildup);
-            characterManager.characterStats.AddToCurrentHealth_Instant(BodyPart.LeftArm, roundedHealingAmount);
+            characterManager.characterStats.GetBodyPart(BodyPartType.LeftArm).HealInstant_StaticValue(roundedHealingAmount);
             leftArmHealingBuildup -= roundedHealingAmount;
         }
         if (rightArmHealingBuildup >= 1f)
         {
             roundedHealingAmount = Mathf.FloorToInt(rightArmHealingBuildup);
-            characterManager.characterStats.AddToCurrentHealth_Instant(BodyPart.RightArm, roundedHealingAmount);
+            characterManager.characterStats.GetBodyPart(BodyPartType.RightArm).HealInstant_StaticValue(roundedHealingAmount);
             rightArmHealingBuildup -= roundedHealingAmount;
         }
         if (leftHandHealingBuildup >= 1f)
         {
             roundedHealingAmount = Mathf.FloorToInt(leftHandHealingBuildup);
-            characterManager.characterStats.AddToCurrentHealth_Instant(BodyPart.LeftHand, roundedHealingAmount);
+            characterManager.characterStats.GetBodyPart(BodyPartType.LeftHand).HealInstant_StaticValue(roundedHealingAmount);
             leftHandHealingBuildup -= roundedHealingAmount;
         }
         if (rightHandHealingBuildup >= 1f)
         {
             roundedHealingAmount = Mathf.FloorToInt(rightHandHealingBuildup);
-            characterManager.characterStats.AddToCurrentHealth_Instant(BodyPart.RightHand, roundedHealingAmount);
+            characterManager.characterStats.GetBodyPart(BodyPartType.RightHand).HealInstant_StaticValue(roundedHealingAmount);
             rightHandHealingBuildup -= roundedHealingAmount;
         }
         if (leftLegHealingBuildup >= 1f)
         {
             roundedHealingAmount = Mathf.FloorToInt(leftLegHealingBuildup);
-            characterManager.characterStats.AddToCurrentHealth_Instant(BodyPart.LeftLeg, roundedHealingAmount);
+            characterManager.characterStats.GetBodyPart(BodyPartType.LeftLeg).HealInstant_StaticValue(roundedHealingAmount);
             leftLegHealingBuildup -= roundedHealingAmount;
         }
         if (rightLegHealingBuildup >= 1f)
         {
             roundedHealingAmount = Mathf.FloorToInt(rightLegHealingBuildup);
-            characterManager.characterStats.AddToCurrentHealth_Instant(BodyPart.RightLeg, roundedHealingAmount);
+            characterManager.characterStats.GetBodyPart(BodyPartType.RightLeg).HealInstant_StaticValue(roundedHealingAmount);
             rightLegHealingBuildup -= roundedHealingAmount;
         }
         if (leftFootHealingBuildup >= 1f)
         {
             roundedHealingAmount = Mathf.FloorToInt(leftFootHealingBuildup);
-            characterManager.characterStats.AddToCurrentHealth_Instant(BodyPart.LeftFoot, roundedHealingAmount);
+            characterManager.characterStats.GetBodyPart(BodyPartType.LeftFoot).HealInstant_StaticValue(roundedHealingAmount);
             leftFootHealingBuildup -= roundedHealingAmount;
         }
         if (rightFootHealingBuildup >= 1f)
         {
             roundedHealingAmount = Mathf.FloorToInt(rightFootHealingBuildup);
-            characterManager.characterStats.AddToCurrentHealth_Instant(BodyPart.RightFoot, roundedHealingAmount);
+            characterManager.characterStats.GetBodyPart(BodyPartType.RightFoot).HealInstant_StaticValue(roundedHealingAmount);
             rightFootHealingBuildup -= roundedHealingAmount;
         }
     }
@@ -317,14 +317,15 @@ public class Status : MonoBehaviour
 public class LocationalInjury
 {
     public Injury injury;
-    public BodyPart injuryLocation;
-    public float damagePerTurn;
+    public BodyPartType injuryLocation;
     public int injuryTimeRemaining;
+
+    public float damagePerTurn;
     public int bleedTimeRemaining;
     public int bloodLossPerTurn;
     public float injuryHealMultiplier = 1f;
 
-    public LocationalInjury(Injury injury, BodyPart injuryLocation)
+    public LocationalInjury(Injury injury, BodyPartType injuryLocation)
     {
         this.injury = injury;
         this.injuryLocation = injuryLocation;
@@ -333,7 +334,7 @@ public class LocationalInjury
 
     void SetupInjuryVariables()
     {
-        damagePerTurn = Mathf.RoundToInt(Random.Range(injury.minDamagePerTurn, injury.maxDamagePerTurn) * 100f) / 100f;
+        damagePerTurn = Mathf.RoundToInt(Random.Range(injury.damagePerTurn.x, injury.damagePerTurn.y) * 100f) / 100f;
 
         injuryTimeRemaining = Random.Range(TimeSystem.GetTotalSeconds(injury.minInjuryHealTime), TimeSystem.GetTotalSeconds(injury.maxInjuryHealTime) + 1);
 
@@ -350,17 +351,22 @@ public class LocationalInjury
 [System.Serializable]
 public class Buff
 {
-    public float healPercentPerTurn;
+    public Consumable consumable;
     public int buffTimeRemaining;
+
+    public float healPercentPerTurn;
+    public int healTimeRemaining;
 
     public Buff(Consumable consumable)
     {
+        this.consumable = consumable;
         SetupBuffVariables(consumable);
     }
 
     void SetupBuffVariables(Consumable consumable)
     {
-        buffTimeRemaining = Random.Range(TimeSystem.GetTotalSeconds(consumable.minHealTime), TimeSystem.GetTotalSeconds(consumable.maxHealTime) + 1);
+        healTimeRemaining = Random.Range(TimeSystem.GetTotalSeconds(consumable.minHealTime), TimeSystem.GetTotalSeconds(consumable.maxHealTime) + 1);
+        buffTimeRemaining = healTimeRemaining;
         healPercentPerTurn = consumable.gradualHealPercent / buffTimeRemaining;
     }
 }

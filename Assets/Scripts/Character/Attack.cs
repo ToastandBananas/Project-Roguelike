@@ -126,7 +126,7 @@ public class Attack : MonoBehaviour
             {
                 if (TryBlock(targetCharStats, weaponUsedItemData, totalDamage) == false) // Check if the target blocked the attack with a shield or a weapon
                 {
-                    BodyPart bodyPartToHit = targetCharStats.GetBodyPartToHit();
+                    BodyPartType bodyPartToHit = targetCharStats.GetBodyPartToHit();
                     bool armorPenetrated = false;
                     bool clothingPenetrated = false;
 
@@ -289,7 +289,7 @@ public class Attack : MonoBehaviour
         return false;
     }
 
-    bool TryPenetrateWearable(CharacterManager target, CharacterManager attacker, Wearable wearable, BodyPart bodyPartToHit, PhysicalDamageType physicalDamageType)
+    bool TryPenetrateWearable(CharacterManager target, CharacterManager attacker, Wearable wearable, BodyPartType bodyPartToHit, PhysicalDamageType physicalDamageType)
     {
         if (wearable == null)
             return false;
@@ -361,11 +361,11 @@ public class Attack : MonoBehaviour
         return 0;
     }
 
-    void DamageLocationalArmorAndClothing(CharacterManager target, BodyPart bodyPartHit, int damage, bool armorPenetrated, bool clothingPenetrated)
+    void DamageLocationalArmorAndClothing(CharacterManager target, BodyPartType bodyPartHit, int damage, bool armorPenetrated, bool clothingPenetrated)
     {
         switch (bodyPartHit)
         {
-            case BodyPart.Torso:
+            case BodyPartType.Torso:
                 if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Cape] != null)
                 {
                     int random = Random.Range(0, 100);
@@ -385,11 +385,11 @@ public class Attack : MonoBehaviour
                 else if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt] != null)
                     target.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].DamageDurability(damage, clothingPenetrated);
                 break;
-            case BodyPart.Head:
+            case BodyPartType.Head:
                 if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Helmet] != null)
                     target.equipmentManager.currentEquipment[(int)EquipmentSlot.Helmet].DamageDurability(damage, armorPenetrated);
                 break;
-            case BodyPart.LeftArm:
+            case BodyPartType.LeftArm:
                 if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Cape] != null)
                 {
                     int random = Random.Range(0, 100);
@@ -409,7 +409,7 @@ public class Attack : MonoBehaviour
                 else if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt] != null)
                     target.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].DamageDurability(damage, clothingPenetrated);
                 break;
-            case BodyPart.RightArm:
+            case BodyPartType.RightArm:
                 if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Cape] != null)
                 {
                     int random = Random.Range(0, 100);
@@ -429,7 +429,7 @@ public class Attack : MonoBehaviour
                 else if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt] != null)
                     target.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].DamageDurability(damage, clothingPenetrated);
                 break;
-            case BodyPart.LeftLeg:
+            case BodyPartType.LeftLeg:
                 if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.LegArmor] != null)
                 {
                     target.equipmentManager.currentEquipment[(int)EquipmentSlot.LegArmor].DamageDurability(damage, armorPenetrated);
@@ -442,7 +442,7 @@ public class Attack : MonoBehaviour
                 else if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Pants] != null)
                     target.equipmentManager.currentEquipment[(int)EquipmentSlot.Pants].DamageDurability(damage, clothingPenetrated);
                 break;
-            case BodyPart.RightLeg:
+            case BodyPartType.RightLeg:
                 if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.LegArmor] != null)
                 {
                     target.equipmentManager.currentEquipment[(int)EquipmentSlot.LegArmor].DamageDurability(damage, armorPenetrated);
@@ -455,19 +455,19 @@ public class Attack : MonoBehaviour
                 else if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Pants] != null)
                     target.equipmentManager.currentEquipment[(int)EquipmentSlot.Pants].DamageDurability(damage, clothingPenetrated);
                 break;
-            case BodyPart.LeftHand:
+            case BodyPartType.LeftHand:
                 if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Gloves] != null)
                     target.equipmentManager.currentEquipment[(int)EquipmentSlot.Gloves].DamageDurability(damage, armorPenetrated);
                 break;
-            case BodyPart.RightHand:
+            case BodyPartType.RightHand:
                 if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Gloves] != null)
                     target.equipmentManager.currentEquipment[(int)EquipmentSlot.Gloves].DamageDurability(damage, armorPenetrated);
                 break;
-            case BodyPart.LeftFoot:
+            case BodyPartType.LeftFoot:
                 if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Boots] != null)
                     target.equipmentManager.currentEquipment[(int)EquipmentSlot.Boots].DamageDurability(damage, armorPenetrated);
                 break;
-            case BodyPart.RightFoot:
+            case BodyPartType.RightFoot:
                 if (target.equipmentManager.currentEquipment[(int)EquipmentSlot.Boots] != null)
                     target.equipmentManager.currentEquipment[(int)EquipmentSlot.Boots].DamageDurability(damage, armorPenetrated);
                 break;
@@ -493,50 +493,50 @@ public class Attack : MonoBehaviour
         }
     }
 
-    Wearable GetLocationalArmor(CharacterManager targetsCharacterManager, BodyPart bodyPartToHit)
+    Wearable GetLocationalArmor(CharacterManager targetsCharacterManager, BodyPartType bodyPartToHit)
     {
         if (targetsCharacterManager.equipmentManager == null)
             return null;
 
         switch (bodyPartToHit)
         {
-            case BodyPart.Torso:
+            case BodyPartType.Torso:
                 if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.BodyArmor] != null)
                     return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.BodyArmor].item;
                 break;
-            case BodyPart.Head:
+            case BodyPartType.Head:
                 if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Helmet] != null)
                     return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Helmet].item;
                 break;
-            case BodyPart.LeftArm:
+            case BodyPartType.LeftArm:
                 if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.BodyArmor] != null)
                     return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.BodyArmor].item;
                 break;
-            case BodyPart.RightArm:
+            case BodyPartType.RightArm:
                 if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.BodyArmor] != null)
                     return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.BodyArmor].item;
                 break;
-            case BodyPart.LeftLeg:
+            case BodyPartType.LeftLeg:
                 if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.LegArmor] != null)
                     return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.LegArmor].item;
                 break;
-            case BodyPart.RightLeg:
+            case BodyPartType.RightLeg:
                 if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.LegArmor] != null)
                     return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.LegArmor].item;
                 break;
-            case BodyPart.LeftHand:
+            case BodyPartType.LeftHand:
                 if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Gloves] != null)
                     return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Gloves].item;
                 break;
-            case BodyPart.RightHand:
+            case BodyPartType.RightHand:
                 if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Gloves] != null)
                     return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Gloves].item;
                 break;
-            case BodyPart.LeftFoot:
+            case BodyPartType.LeftFoot:
                 if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Boots] != null)
                     return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Boots].item;
                 break;
-            case BodyPart.RightFoot:
+            case BodyPartType.RightFoot:
                 if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Boots] != null)
                     return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Boots].item;
                 break;
@@ -547,26 +547,26 @@ public class Attack : MonoBehaviour
         return null;
     }
 
-    Wearable GetLocationalClothing(CharacterManager targetsCharacterManager, BodyPart bodyPartToHit)
+    Wearable GetLocationalClothing(CharacterManager targetsCharacterManager, BodyPartType bodyPartToHit)
     {
         if (targetsCharacterManager.equipmentManager == null)
             return null;
 
         switch (bodyPartToHit)
         {
-            case BodyPart.Torso:
+            case BodyPartType.Torso:
                 if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt] != null)
                     return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].item;
                 break;
-            case BodyPart.LeftArm:
+            case BodyPartType.LeftArm:
                 if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt] != null)
                     return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].item;
                 break;
-            case BodyPart.RightArm:
+            case BodyPartType.RightArm:
                 if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt] != null)
                     return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Shirt].item;
                 break;
-            case BodyPart.LeftLeg:
+            case BodyPartType.LeftLeg:
                 if (targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Pants] != null)
                     return (Wearable)targetsCharacterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Pants].item;
                 break;

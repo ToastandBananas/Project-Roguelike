@@ -7,10 +7,11 @@ public class Injury : ScriptableObject
     new public string name = "New Injury";
     public string description;
     public InjuryType injuryType;
+
+    [Header("Bleed Variables")]
     public Vector3Int minInjuryHealTime;
     public Vector3Int maxInjuryHealTime;
-    public float minDamagePerTurn = 0.5f;
-    public float maxDamagePerTurn = 1f;
+    public Vector2Int damagePerTurn;
 
     public virtual Vector2Int GetBleedTime()
     {

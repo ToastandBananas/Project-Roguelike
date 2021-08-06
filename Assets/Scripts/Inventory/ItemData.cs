@@ -129,8 +129,8 @@ public class ItemData : MonoBehaviour
         if (item.IsEquipment())
         {
             Equipment equipment = (Equipment)item;
-            if (equipment.maxBaseDurability > 0)
-                maxDurability = Random.Range(equipment.minBaseDurability, equipment.maxBaseDurability + 1);
+            if (equipment.baseDurability.y > 0)
+                maxDurability = Random.Range(equipment.baseDurability.x, equipment.baseDurability.y + 1);
 
             int random = Random.Range(0, 10);
             if (random < 2)
@@ -147,18 +147,18 @@ public class ItemData : MonoBehaviour
             if (item.IsWeapon())
             {
                 Weapon weapon = (Weapon)equipment;
-                bluntDamage_Swipe = Random.Range(weapon.minBaseBluntDamage_Swipe, weapon.maxBaseBluntDamage_Swipe + 1);
-                pierceDamage_Swipe = Random.Range(weapon.minBasePierceDamage_Swipe, weapon.maxBasePierceDamage_Swipe + 1);
-                slashDamage_Swipe = Random.Range(weapon.minBaseSlashDamage_Swipe, weapon.maxBaseSlashDamage_Swipe + 1);
-                cleaveDamage_Swipe = Random.Range(weapon.minBaseCleaveDamage_Swipe, weapon.maxBaseCleaveDamage_Swipe + 1);
-                bluntDamage_Thrust = Random.Range(weapon.minBaseBluntDamage_Thrust, weapon.maxBaseBluntDamage_Thrust + 1);
-                pierceDamage_Thrust = Random.Range(weapon.minBasePierceDamage_Thrust, weapon.maxBasePierceDamage_Thrust + 1);
-                slashDamage_Thrust = Random.Range(weapon.minBaseSlashDamage_Thrust, weapon.maxBaseSlashDamage_Thrust + 1);
-                cleaveDamage_Thrust = Random.Range(weapon.minBaseCleaveDamage_Thrust, weapon.maxBaseCleaveDamage_Thrust + 1);
-                bluntDamage_Overhead = Random.Range(weapon.minBaseBluntDamage_Overhead, weapon.maxBaseBluntDamage_Overhead + 1);
-                pierceDamage_Overhead = Random.Range(weapon.minBasePierceDamage_Overhead, weapon.maxBasePierceDamage_Overhead + 1);
-                slashDamage_Overhead = Random.Range(weapon.minBaseSlashDamage_Overhead, weapon.maxBaseSlashDamage_Overhead + 1);
-                cleaveDamage_Overhead = Random.Range(weapon.minBaseCleaveDamage_Overhead, weapon.maxBaseCleaveDamage_Overhead + 1);
+                bluntDamage_Swipe = Random.Range(weapon.bluntDamage_Swipe.x, weapon.bluntDamage_Swipe.y + 1);
+                pierceDamage_Swipe = Random.Range(weapon.pierceDamage_Swipe.x, weapon.pierceDamage_Swipe.y + 1);
+                slashDamage_Swipe = Random.Range(weapon.slashDamage_Swipe.x, weapon.slashDamage_Swipe.y + 1);
+                cleaveDamage_Swipe = Random.Range(weapon.cleaveDamage_Swipe.x, weapon.cleaveDamage_Swipe.y + 1);
+                bluntDamage_Thrust = Random.Range(weapon.bluntDamage_Thrust.x, weapon.bluntDamage_Thrust.y + 1);
+                pierceDamage_Thrust = Random.Range(weapon.pierceDamage_Thrust.x, weapon.pierceDamage_Thrust.y + 1);
+                slashDamage_Thrust = Random.Range(weapon.slashDamage_Thrust.x, weapon.slashDamage_Thrust.y + 1);
+                cleaveDamage_Thrust = Random.Range(weapon.cleaveDamage_Thrust.x, weapon.cleaveDamage_Thrust.y + 1);
+                bluntDamage_Overhead = Random.Range(weapon.bluntDamage_Overhead.x, weapon.bluntDamage_Overhead.y + 1);
+                pierceDamage_Overhead = Random.Range(weapon.pierceDamage_Overhead.x, weapon.pierceDamage_Overhead.y + 1);
+                slashDamage_Overhead = Random.Range(weapon.slashDamage_Overhead.x, weapon.slashDamage_Overhead.y + 1);
+                cleaveDamage_Overhead = Random.Range(weapon.cleaveDamage_Overhead.x, weapon.cleaveDamage_Overhead.y + 1);
 
                 blockChanceMultiplier = Mathf.RoundToInt(Random.Range(weapon.minBlockChanceMultiplier, weapon.maxBlockChanceMultiplier) * 100f) / 100f;
 
@@ -167,17 +167,17 @@ public class ItemData : MonoBehaviour
             else if (item.IsWearable())
             {
                 Wearable wearable = (Wearable)equipment;
-                torsoDefense = Random.Range(wearable.minBaseTorsoDefense, wearable.maxBaseTorsoDefense + 1);
-                headDefense = Random.Range(wearable.minBaseHeadDefense, wearable.maxBaseHeadDefense + 1);
-                armDefense = Random.Range(wearable.minBaseArmDefense, wearable.maxBaseArmDefense + 1);
-                handDefense = Random.Range(wearable.minBaseHandDefense, wearable.maxBaseHandDefense + 1);
-                legDefense = Random.Range(wearable.minBaseLegDefense, wearable.maxBaseLegDefense + 1);
-                footDefense = Random.Range(wearable.minBaseFootDefense, wearable.maxBaseFootDefense + 1);
+                torsoDefense = Random.Range(wearable.torsoDefense.x, wearable.torsoDefense.y + 1);
+                headDefense = Random.Range(wearable.headDefense.x, wearable.headDefense.y + 1);
+                armDefense = Random.Range(wearable.armDefense.x, wearable.armDefense.y + 1);
+                handDefense = Random.Range(wearable.handDefense.x, wearable.handDefense.y + 1);
+                legDefense = Random.Range(wearable.legDefense.x, wearable.legDefense.y + 1);
+                footDefense = Random.Range(wearable.footDefense.x, wearable.footDefense.y + 1);
             }
             else if (item.IsShield())
             {
                 Shield shield = (Shield)equipment;
-                shieldBashDamage = Random.Range(shield.minShieldBashDamage, shield.maxShieldBashDamage + 1);
+                shieldBashDamage = Random.Range(shield.shieldBashDamage.x, shield.shieldBashDamage.y + 1);
                 blockChanceMultiplier = Mathf.RoundToInt(Random.Range(shield.minBlockChanceMultiplier, shield.maxBlockChanceMultiplier) * 100f) / 100f;
             }
         }
@@ -287,9 +287,8 @@ public class ItemData : MonoBehaviour
     int CalculateItemValue()
     {
         int itemValue = 0;
-
-        if ((item.IsEquipment() || item.IsConsumable()) && item.minBaseValue != 0 && item.maxBaseValue != 0)
-            itemValue = Mathf.RoundToInt(item.minBaseValue + ((item.maxBaseValue - item.minBaseValue) * CalculatePercentPointValue()));
+        if (item.value.x != 0 && item.value.y != 0)
+            itemValue = Mathf.RoundToInt(item.value.x + ((item.value.y - item.value.x) * CalculatePercentPointValue()));
         else
             itemValue = item.staticValue;
         
@@ -304,34 +303,35 @@ public class ItemData : MonoBehaviour
         if (item.IsEquipment())
         {
             Equipment equipment = (Equipment)item;
-            if (equipment.maxBaseDurability > 0)
-                totalPointsPossible += (equipment.maxBaseDurability - equipment.minBaseDurability);
+            if (equipment.baseDurability.y > 0)
+                totalPointsPossible += (equipment.baseDurability.y - equipment.baseDurability.x);
 
             if (item.IsWeapon())
             {
                 Weapon weapon = (Weapon)equipment;
-                totalPointsPossible += ((weapon.maxBaseBluntDamage_Swipe + weapon.maxBasePierceDamage_Swipe + weapon.maxBaseSlashDamage_Swipe + weapon.maxBaseCleaveDamage_Swipe 
-                    + weapon.maxBaseBluntDamage_Thrust + weapon.maxBasePierceDamage_Thrust + weapon.maxBaseSlashDamage_Thrust + weapon.maxBaseCleaveDamage_Thrust 
-                    + weapon.maxBaseBluntDamage_Overhead + weapon.maxBasePierceDamage_Overhead + weapon.maxBaseSlashDamage_Overhead + weapon.maxBaseCleaveDamage_Overhead) 
-                    - (weapon.minBaseBluntDamage_Swipe + weapon.minBasePierceDamage_Swipe + weapon.minBaseSlashDamage_Swipe + weapon.minBaseCleaveDamage_Swipe 
-                    + weapon.minBaseBluntDamage_Thrust + weapon.minBasePierceDamage_Thrust + weapon.minBaseSlashDamage_Thrust + weapon.minBaseCleaveDamage_Thrust 
-                    + weapon.minBaseBluntDamage_Overhead + weapon.minBasePierceDamage_Overhead + weapon.minBaseSlashDamage_Overhead + weapon.minBaseCleaveDamage_Overhead)) * 2;
+                totalPointsPossible += ((weapon.bluntDamage_Swipe.y + weapon.pierceDamage_Swipe.y + weapon.slashDamage_Swipe.y + weapon.cleaveDamage_Swipe.y 
+                    + weapon.bluntDamage_Thrust.y + weapon.pierceDamage_Thrust.y + weapon.slashDamage_Thrust.y + weapon.cleaveDamage_Thrust.y 
+                    + weapon.bluntDamage_Overhead.y + weapon.pierceDamage_Overhead.y + weapon.slashDamage_Overhead.y + weapon.cleaveDamage_Overhead.y) 
+                    - (weapon.bluntDamage_Swipe.x + weapon.pierceDamage_Swipe.x + weapon.slashDamage_Swipe.x + weapon.cleaveDamage_Swipe.x 
+                    + weapon.bluntDamage_Thrust.x + weapon.pierceDamage_Thrust.x + weapon.slashDamage_Thrust.x + weapon.cleaveDamage_Thrust.x 
+                    + weapon.bluntDamage_Overhead.x + weapon.pierceDamage_Overhead.x + weapon.slashDamage_Overhead.x + weapon.cleaveDamage_Overhead.x)) * 2;
+
                 totalPointsPossible += (weapon.maxBlockChanceMultiplier - weapon.minBlockChanceMultiplier) * 10;
             }
             else if (item.IsWearable())
             {
                 Wearable wearable = (Wearable)equipment;
-                totalPointsPossible += (wearable.maxBaseTorsoDefense - wearable.minBaseTorsoDefense) * 2;
-                totalPointsPossible += (wearable.maxBaseHeadDefense - wearable.minBaseHeadDefense) * 2;
-                totalPointsPossible += (wearable.maxBaseArmDefense - wearable.minBaseArmDefense) * 2;
-                totalPointsPossible += (wearable.maxBaseHandDefense - wearable.minBaseHandDefense) * 2;
-                totalPointsPossible += (wearable.maxBaseLegDefense - wearable.minBaseLegDefense) * 2;
-                totalPointsPossible += (wearable.maxBaseFootDefense - wearable.minBaseFootDefense) * 2;
+                totalPointsPossible += (wearable.torsoDefense.y - wearable.torsoDefense.x) * 2;
+                totalPointsPossible += (wearable.headDefense.y - wearable.headDefense.x) * 2;
+                totalPointsPossible += (wearable.armDefense.y - wearable.armDefense.x) * 2;
+                totalPointsPossible += (wearable.handDefense.y - wearable.handDefense.x) * 2;
+                totalPointsPossible += (wearable.legDefense.y - wearable.legDefense.x) * 2;
+                totalPointsPossible += (wearable.footDefense.y - wearable.footDefense.x) * 2;
             }
             else if (item.IsShield())
             {
                 Shield shield = (Shield)equipment;
-                totalPointsPossible += (shield.maxShieldBashDamage - shield.minShieldBashDamage);
+                totalPointsPossible += (shield.shieldBashDamage.y - shield.shieldBashDamage.x);
                 totalPointsPossible += (shield.maxBlockChanceMultiplier - shield.minBlockChanceMultiplier) * 10;
             }
         }
@@ -359,31 +359,31 @@ public class ItemData : MonoBehaviour
         if (item.IsEquipment())
         {
             Equipment equipment = (Equipment)item;
-            if (equipment.maxBaseDurability > 0)
-                pointIncrease += (maxDurability - equipment.minBaseDurability);
+            if (equipment.baseDurability.y > 0)
+                pointIncrease += (maxDurability - equipment.baseDurability.x);
 
             if (item.IsWeapon())
             {
                 Weapon weapon = (Weapon)equipment;
-                pointIncrease += ((bluntDamage_Swipe - weapon.minBaseBluntDamage_Swipe) + (pierceDamage_Swipe - weapon.minBasePierceDamage_Swipe) + (slashDamage_Swipe - weapon.minBaseSlashDamage_Swipe) + (cleaveDamage_Swipe - weapon.minBaseCleaveDamage_Swipe)
-                    + (bluntDamage_Thrust - weapon.minBaseBluntDamage_Thrust) + (pierceDamage_Thrust - weapon.minBasePierceDamage_Thrust) + (slashDamage_Thrust - weapon.minBaseSlashDamage_Thrust) + (cleaveDamage_Thrust - weapon.minBaseCleaveDamage_Thrust)
-                    + (bluntDamage_Overhead - weapon.minBaseBluntDamage_Overhead) + (pierceDamage_Overhead - weapon.minBasePierceDamage_Overhead) + (slashDamage_Overhead - weapon.minBaseSlashDamage_Overhead) + (cleaveDamage_Overhead - weapon.minBaseCleaveDamage_Overhead)) * 2; // Damage contributes to value twice as much
+                pointIncrease += ((bluntDamage_Swipe - weapon.bluntDamage_Swipe.x) + (pierceDamage_Swipe - weapon.pierceDamage_Swipe.x) + (slashDamage_Swipe - weapon.slashDamage_Swipe.x) + (cleaveDamage_Swipe - weapon.cleaveDamage_Swipe.x)
+                    + (bluntDamage_Thrust - weapon.bluntDamage_Thrust.x) + (pierceDamage_Thrust - weapon.pierceDamage_Thrust.x) + (slashDamage_Thrust - weapon.slashDamage_Thrust.x) + (cleaveDamage_Thrust - weapon.cleaveDamage_Thrust.x)
+                    + (bluntDamage_Overhead - weapon.bluntDamage_Overhead.x) + (pierceDamage_Overhead - weapon.pierceDamage_Overhead.x) + (slashDamage_Overhead - weapon.slashDamage_Overhead.x) + (cleaveDamage_Overhead - weapon.cleaveDamage_Overhead.x)) * 2; // Damage contributes to value twice as much
                 pointIncrease += (blockChanceMultiplier - weapon.minBlockChanceMultiplier) * 10;
             }
             else if (item.IsWearable())
             {
                 Wearable wearable = (Wearable)equipment;
-                pointIncrease += (torsoDefense - wearable.minBaseTorsoDefense) * 2; // Defense contributes to value twice as much
-                pointIncrease += (headDefense - wearable.minBaseHeadDefense) * 2;
-                pointIncrease += (armDefense - wearable.minBaseArmDefense) * 2;
-                pointIncrease += (handDefense - wearable.minBaseHandDefense) * 2;
-                pointIncrease += (legDefense - wearable.minBaseLegDefense) * 2;
-                pointIncrease += (footDefense - wearable.minBaseFootDefense) * 2;
+                pointIncrease += (torsoDefense - wearable.torsoDefense.x) * 2; // Defense contributes to value twice as much
+                pointIncrease += (headDefense - wearable.headDefense.x) * 2;
+                pointIncrease += (armDefense - wearable.armDefense.x) * 2;
+                pointIncrease += (handDefense - wearable.handDefense.x) * 2;
+                pointIncrease += (legDefense - wearable.legDefense.x) * 2;
+                pointIncrease += (footDefense - wearable.footDefense.x) * 2;
             }
             else if (item.IsShield())
             {
                 Shield shield = (Shield)equipment;
-                pointIncrease += (shieldBashDamage - shield.minShieldBashDamage);
+                pointIncrease += (shieldBashDamage - shield.shieldBashDamage.x);
                 pointIncrease += (blockChanceMultiplier - shield.minBlockChanceMultiplier) * 10;
             }
         }
@@ -408,79 +408,79 @@ public class ItemData : MonoBehaviour
         if (item.IsEquipment())
         {
             Equipment equipment = (Equipment)item;
-            if (maxDurability > equipment.maxBaseDurability)
+            if (maxDurability > equipment.baseDurability.y)
             {
-                maxDurability = equipment.maxBaseDurability;
+                maxDurability = equipment.baseDurability.y;
                 durability = maxDurability;
             }
-            else if (maxDurability < equipment.minBaseDurability)
+            else if (maxDurability < equipment.baseDurability.x)
             {
-                maxDurability = equipment.minBaseDurability;
+                maxDurability = equipment.baseDurability.x;
                 durability = maxDurability;
             }
 
             if (item.IsWeapon())
             {
                 Weapon weapon = (Weapon)equipment;
-                if (bluntDamage_Swipe > weapon.maxBaseBluntDamage_Swipe)
-                    bluntDamage_Swipe = weapon.maxBaseBluntDamage_Swipe;
-                else if (bluntDamage_Swipe < weapon.minBaseBluntDamage_Swipe)
-                    bluntDamage_Swipe = weapon.minBaseBluntDamage_Swipe;
+                if (bluntDamage_Swipe > weapon.bluntDamage_Swipe.y)
+                    bluntDamage_Swipe = weapon.bluntDamage_Swipe.y;
+                else if (bluntDamage_Swipe < weapon.bluntDamage_Swipe.x)
+                    bluntDamage_Swipe = weapon.bluntDamage_Swipe.x;
 
-                if (pierceDamage_Swipe > weapon.maxBasePierceDamage_Swipe)
-                    pierceDamage_Swipe = weapon.maxBasePierceDamage_Swipe;
-                else if (pierceDamage_Swipe < weapon.minBasePierceDamage_Swipe)
-                    pierceDamage_Swipe = weapon.minBasePierceDamage_Swipe;
+                if (pierceDamage_Swipe > weapon.pierceDamage_Swipe.y)
+                    pierceDamage_Swipe = weapon.pierceDamage_Swipe.y;
+                else if (pierceDamage_Swipe < weapon.pierceDamage_Swipe.x)
+                    pierceDamage_Swipe = weapon.pierceDamage_Swipe.x;
 
-                if (slashDamage_Swipe > weapon.maxBaseSlashDamage_Swipe)
-                    slashDamage_Swipe = weapon.maxBaseSlashDamage_Swipe;
-                else if (slashDamage_Swipe < weapon.minBaseSlashDamage_Swipe)
-                    slashDamage_Swipe = weapon.minBaseSlashDamage_Swipe;
+                if (slashDamage_Swipe > weapon.slashDamage_Swipe.y)
+                    slashDamage_Swipe = weapon.slashDamage_Swipe.y;
+                else if (slashDamage_Swipe < weapon.slashDamage_Swipe.x)
+                    slashDamage_Swipe = weapon.slashDamage_Swipe.x;
 
-                if (cleaveDamage_Swipe > weapon.maxBaseCleaveDamage_Swipe)
-                    cleaveDamage_Swipe = weapon.maxBaseCleaveDamage_Swipe;
-                else if (cleaveDamage_Swipe < weapon.minBaseCleaveDamage_Swipe)
-                    cleaveDamage_Swipe = weapon.minBaseCleaveDamage_Swipe;
+                if (cleaveDamage_Swipe > weapon.cleaveDamage_Swipe.y)
+                    cleaveDamage_Swipe = weapon.cleaveDamage_Swipe.y;
+                else if (cleaveDamage_Swipe < weapon.cleaveDamage_Swipe.x)
+                    cleaveDamage_Swipe = weapon.cleaveDamage_Swipe.x;
 
-                if (bluntDamage_Thrust > weapon.maxBaseBluntDamage_Thrust)
-                    bluntDamage_Thrust = weapon.maxBaseBluntDamage_Thrust;
-                else if (bluntDamage_Thrust < weapon.minBaseBluntDamage_Thrust)
-                    bluntDamage_Thrust = weapon.minBaseBluntDamage_Thrust;
+                if (bluntDamage_Thrust > weapon.bluntDamage_Thrust.y)
+                    bluntDamage_Thrust = weapon.bluntDamage_Thrust.y;
+                else if (bluntDamage_Thrust < weapon.bluntDamage_Thrust.x)
+                    bluntDamage_Thrust = weapon.bluntDamage_Thrust.x;
 
-                if (pierceDamage_Thrust > weapon.maxBasePierceDamage_Thrust)
-                    pierceDamage_Thrust = weapon.maxBasePierceDamage_Thrust;
-                else if (pierceDamage_Thrust < weapon.minBasePierceDamage_Thrust)
-                    pierceDamage_Thrust = weapon.minBasePierceDamage_Thrust;
+                if (pierceDamage_Thrust > weapon.pierceDamage_Thrust.y)
+                    pierceDamage_Thrust = weapon.pierceDamage_Thrust.y;
+                else if (pierceDamage_Thrust < weapon.pierceDamage_Thrust.x)
+                    pierceDamage_Thrust = weapon.pierceDamage_Thrust.x;
 
-                if (slashDamage_Thrust > weapon.maxBaseSlashDamage_Thrust)
-                    slashDamage_Thrust = weapon.maxBaseSlashDamage_Thrust;
-                else if (slashDamage_Thrust < weapon.minBaseSlashDamage_Thrust)
-                    slashDamage_Thrust = weapon.minBaseSlashDamage_Thrust;
+                if (slashDamage_Thrust > weapon.slashDamage_Thrust.y)
+                    slashDamage_Thrust = weapon.slashDamage_Thrust.y;
+                else if (slashDamage_Thrust < weapon.slashDamage_Thrust.x)
+                    slashDamage_Thrust = weapon.slashDamage_Thrust.x;
 
-                if (cleaveDamage_Thrust > weapon.maxBaseCleaveDamage_Thrust)
-                    cleaveDamage_Thrust = weapon.maxBaseCleaveDamage_Thrust;
-                else if (cleaveDamage_Thrust < weapon.minBaseCleaveDamage_Thrust)
-                    cleaveDamage_Thrust = weapon.minBaseCleaveDamage_Thrust;
+                if (cleaveDamage_Thrust > weapon.cleaveDamage_Thrust.y)
+                    cleaveDamage_Thrust = weapon.cleaveDamage_Thrust.y;
+                else if (cleaveDamage_Thrust < weapon.cleaveDamage_Thrust.x)
+                    cleaveDamage_Thrust = weapon.cleaveDamage_Thrust.x;
 
-                if (bluntDamage_Overhead > weapon.maxBaseBluntDamage_Overhead)
-                    bluntDamage_Overhead = weapon.maxBaseBluntDamage_Overhead;
-                else if (bluntDamage_Overhead < weapon.minBaseBluntDamage_Overhead)
-                    bluntDamage_Overhead = weapon.minBaseBluntDamage_Overhead;
+                if (bluntDamage_Overhead > weapon.bluntDamage_Overhead.y)
+                    bluntDamage_Overhead = weapon.bluntDamage_Overhead.y;
+                else if (bluntDamage_Overhead < weapon.bluntDamage_Overhead.x)
+                    bluntDamage_Overhead = weapon.bluntDamage_Overhead.x;
 
-                if (pierceDamage_Overhead > weapon.maxBasePierceDamage_Overhead)
-                    pierceDamage_Overhead = weapon.maxBasePierceDamage_Overhead;
-                else if (pierceDamage_Overhead < weapon.minBasePierceDamage_Overhead)
-                    pierceDamage_Overhead = weapon.minBasePierceDamage_Overhead;
+                if (pierceDamage_Overhead > weapon.pierceDamage_Overhead.y)
+                    pierceDamage_Overhead = weapon.pierceDamage_Overhead.y;
+                else if (pierceDamage_Overhead < weapon.pierceDamage_Overhead.x)
+                    pierceDamage_Overhead = weapon.pierceDamage_Overhead.x;
 
-                if (slashDamage_Overhead > weapon.maxBaseSlashDamage_Overhead)
-                    slashDamage_Overhead = weapon.maxBaseSlashDamage_Overhead;
-                else if (slashDamage_Overhead < weapon.minBaseSlashDamage_Overhead)
-                    slashDamage_Overhead = weapon.minBaseSlashDamage_Overhead;
+                if (slashDamage_Overhead > weapon.slashDamage_Overhead.y)
+                    slashDamage_Overhead = weapon.slashDamage_Overhead.y;
+                else if (slashDamage_Overhead < weapon.slashDamage_Overhead.x)
+                    slashDamage_Overhead = weapon.slashDamage_Overhead.x;
 
-                if (cleaveDamage_Overhead > weapon.maxBaseCleaveDamage_Overhead)
-                    cleaveDamage_Overhead = weapon.maxBaseCleaveDamage_Overhead;
-                else if (cleaveDamage_Overhead < weapon.minBaseCleaveDamage_Overhead)
-                    cleaveDamage_Overhead = weapon.minBaseCleaveDamage_Overhead;
+                if (cleaveDamage_Overhead > weapon.cleaveDamage_Overhead.y)
+                    cleaveDamage_Overhead = weapon.cleaveDamage_Overhead.y;
+                else if (cleaveDamage_Overhead < weapon.cleaveDamage_Overhead.x)
+                    cleaveDamage_Overhead = weapon.cleaveDamage_Overhead.x;
 
                 if (blockChanceMultiplier > weapon.maxBlockChanceMultiplier)
                     blockChanceMultiplier = weapon.maxBlockChanceMultiplier;
@@ -490,43 +490,43 @@ public class ItemData : MonoBehaviour
             else if (item.IsWearable())
             {
                 Wearable wearable = (Wearable)equipment;
-                if (torsoDefense > wearable.maxBaseTorsoDefense)
-                    torsoDefense = wearable.maxBaseTorsoDefense;
-                else if (torsoDefense < wearable.minBaseTorsoDefense)
-                    torsoDefense = wearable.minBaseTorsoDefense;
+                if (torsoDefense > wearable.torsoDefense.y)
+                    torsoDefense = wearable.torsoDefense.y;
+                else if (torsoDefense < wearable.torsoDefense.x)
+                    torsoDefense = wearable.torsoDefense.x;
 
-                if (headDefense > wearable.maxBaseHeadDefense)
-                    headDefense = wearable.maxBaseHeadDefense;
-                else if (headDefense < wearable.minBaseHeadDefense)
-                    headDefense = wearable.minBaseHeadDefense;
+                if (headDefense > wearable.headDefense.y)
+                    headDefense = wearable.headDefense.y;
+                else if (headDefense < wearable.headDefense.x)
+                    headDefense = wearable.headDefense.x;
 
-                if (armDefense > wearable.maxBaseArmDefense)
-                    armDefense = wearable.maxBaseArmDefense;
-                else if (armDefense < wearable.minBaseArmDefense)
-                    armDefense = wearable.minBaseArmDefense;
+                if (armDefense > wearable.armDefense.y)
+                    armDefense = wearable.armDefense.y;
+                else if (armDefense < wearable.armDefense.x)
+                    armDefense = wearable.armDefense.x;
 
-                if (handDefense > wearable.maxBaseHandDefense)
-                    handDefense = wearable.maxBaseHandDefense;
-                else if (handDefense < wearable.minBaseHandDefense)
-                    handDefense = wearable.minBaseHandDefense;
+                if (handDefense > wearable.handDefense.y)
+                    handDefense = wearable.handDefense.y;
+                else if (handDefense < wearable.handDefense.x)
+                    handDefense = wearable.handDefense.x;
 
-                if (legDefense > wearable.maxBaseLegDefense)
-                    legDefense = wearable.maxBaseLegDefense;
-                else if (legDefense < wearable.minBaseLegDefense)
-                    legDefense = wearable.minBaseLegDefense;
+                if (legDefense > wearable.legDefense.y)
+                    legDefense = wearable.legDefense.y;
+                else if (legDefense < wearable.legDefense.x)
+                    legDefense = wearable.legDefense.x;
 
-                if (footDefense > wearable.maxBaseFootDefense)
-                    footDefense = wearable.maxBaseFootDefense;
-                else if (footDefense < wearable.minBaseFootDefense)
-                    footDefense = wearable.minBaseFootDefense;
+                if (footDefense > wearable.footDefense.y)
+                    footDefense = wearable.footDefense.y;
+                else if (footDefense < wearable.footDefense.x)
+                    footDefense = wearable.footDefense.x;
             }
             else if (item.IsShield())
             {
                 Shield shield = (Shield)equipment;
-                if (shieldBashDamage > shield.maxShieldBashDamage)
-                    shieldBashDamage = shield.maxShieldBashDamage;
-                else if (shieldBashDamage < shield.minShieldBashDamage)
-                    shieldBashDamage = shield.minShieldBashDamage;
+                if (shieldBashDamage > shield.shieldBashDamage.y)
+                    shieldBashDamage = shield.shieldBashDamage.y;
+                else if (shieldBashDamage < shield.shieldBashDamage.x)
+                    shieldBashDamage = shield.shieldBashDamage.x;
 
                 if (blockChanceMultiplier > shield.maxBlockChanceMultiplier)
                     blockChanceMultiplier = shield.maxBlockChanceMultiplier;

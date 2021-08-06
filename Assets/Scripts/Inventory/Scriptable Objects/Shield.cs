@@ -4,8 +4,7 @@ using UnityEngine;
 public class Shield : Equipment
 {
     [Header("Basic Shield Data")]
-    public int minShieldBashDamage = 1;
-    public int maxShieldBashDamage = 5;
+    public Vector2Int shieldBashDamage;
     [Range(0.2f, 2f)] public float minBlockChanceMultiplier = 0.8f;
     [Range(0.2f, 2f)] public float maxBlockChanceMultiplier = 1.2f;
 

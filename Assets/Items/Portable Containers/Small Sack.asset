@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Small Sack
   m_EditorClassIdentifier: 
   name: Small Sack
+  pluralName: 
   itemType: 13
   mainMaterial: 23
   description: A small sack to store small items.
@@ -20,8 +21,7 @@ MonoBehaviour:
   weight: 0.03
   volume: 0.02
   isUsable: 0
-  minBaseValue: 0
-  maxBaseValue: 0
+  value: {x: 0, y: 0}
   staticValue: 6
   pickupSprite: {fileID: -462824376789195924, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
   maxWeight: 12.5

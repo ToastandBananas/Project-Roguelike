@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Tunic
   m_EditorClassIdentifier: 
   name: Tunic
+  pluralName: 
   itemType: 3
   mainMaterial: 13
   description: A simple loose-fitting shirt made of linen.
@@ -20,26 +21,18 @@ MonoBehaviour:
   weight: 0.32
   volume: 1
   isUsable: 1
-  minBaseValue: 4
-  maxBaseValue: 10
+  value: {x: 4, y: 10}
   staticValue: 1
   pickupSprite: {fileID: -851715481033328299, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
   equipmentSlot: 1
-  minBaseDurability: 50
-  maxBaseDurability: 72
+  baseDurability: {x: 65, y: 90}
   primaryEquippedSprite: {fileID: 3268185844855087177, guid: e44b0bda5fde2104399981aac835ec96, type: 3}
   secondaryEquippedSprite: {fileID: 8294215588540098489, guid: 12cf7ee60d0d0da498539b9bfa6b5eb8, type: 3}
-  minBaseTorsoDefense: 1
-  maxBaseTorsoDefense: 2
-  minBaseHeadDefense: 0
-  maxBaseHeadDefense: 0
-  minBaseArmDefense: 1
-  maxBaseArmDefense: 2
-  minBaseHandDefense: 0
-  maxBaseHandDefense: 0
-  minBaseLegDefense: 0
-  maxBaseLegDefense: 0
-  minBaseFootDefense: 0
-  maxBaseFootDefense: 0
+  torsoDefense: {x: 1, y: 2}
+  headDefense: {x: 0, y: 0}
+  armDefense: {x: 1, y: 2}
+  handDefense: {x: 0, y: 0}
+  legDefense: {x: 0, y: 0}
+  footDefense: {x: 0, y: 0}
   coldResistance: 0
   heatResistance: 0

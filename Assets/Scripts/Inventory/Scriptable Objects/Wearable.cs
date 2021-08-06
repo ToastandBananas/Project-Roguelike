@@ -4,18 +4,12 @@ using UnityEngine;
 public class Wearable : Equipment
 {
     [Header("Defense")]
-    public int minBaseTorsoDefense;
-    public int maxBaseTorsoDefense;
-    public int minBaseHeadDefense;
-    public int maxBaseHeadDefense;
-    public int minBaseArmDefense;
-    public int maxBaseArmDefense;
-    public int minBaseHandDefense;
-    public int maxBaseHandDefense;
-    public int minBaseLegDefense;
-    public int maxBaseLegDefense;
-    public int minBaseFootDefense;
-    public int maxBaseFootDefense;
+    public Vector2Int torsoDefense;
+    public Vector2Int headDefense;
+    public Vector2Int armDefense;
+    public Vector2Int handDefense;
+    public Vector2Int legDefense;
+    public Vector2Int footDefense;
 
     [Header("Weather Resistance")]
     public int coldResistance;

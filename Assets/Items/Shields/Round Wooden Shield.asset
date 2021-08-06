@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Round Wooden Shield
   m_EditorClassIdentifier: 
   name: Round Wooden Shield
+  pluralName: 
   itemType: 14
   mainMaterial: 9
   description: The shield is well-made, but will break easily.
@@ -20,16 +21,13 @@ MonoBehaviour:
   weight: 8.25
   volume: 1.92
   isUsable: 1
-  minBaseValue: 14
-  maxBaseValue: 24
+  value: {x: 15, y: 22}
   staticValue: 1
   pickupSprite: {fileID: 1007687392324394931, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
   equipmentSlot: 7
-  minBaseDurability: 75
-  maxBaseDurability: 90
+  baseDurability: {x: 0, y: 0}
   primaryEquippedSprite: {fileID: 2025878411903601715, guid: c0728ec74ed7f9b4c9a37754b5624963, type: 3}
   secondaryEquippedSprite: {fileID: 2025878411903601715, guid: c0728ec74ed7f9b4c9a37754b5624963, type: 3}
-  minShieldBashDamage: 7
-  maxShieldBashDamage: 12
+  shieldBashDamage: {x: 7, y: 12}
   minBlockChanceMultiplier: 0.8
   maxBlockChanceMultiplier: 1.2

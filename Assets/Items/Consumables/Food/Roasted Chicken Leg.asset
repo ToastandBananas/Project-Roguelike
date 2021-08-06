@@ -21,21 +21,20 @@ MonoBehaviour:
   weight: 0.25
   volume: 0.15
   isUsable: 1
-  minBaseValue: 0
-  maxBaseValue: 5
+  value: {x: 3, y: 6}
   staticValue: 1
   pickupSprite: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
   minBaseFreshness: 25
   maxBaseFreshness: 100
   consumableType: 0
   maxUses: 1
-  healthinessAdjustment: 0.75
   nourishment: 20
   thirstQuench: 0
   energyRestoration: 20
-  instantHealPercent: 0
-  gradualHealPercent: 0.02
-  minHealTime: {x: 0, y: 45, z: 0}
-  maxHealTime: {x: 1, y: 0, z: 0}
   staminaRecoveryAmount: 10
   manaRecoveryAmount: 0
+  healthinessAdjustment: 0.75
+  instantHealPercent: 0
+  gradualHealPercent: 0.05
+  minHealTime: {x: 0, y: 45, z: 0}
+  maxHealTime: {x: 1, y: 0, z: 0}

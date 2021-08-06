@@ -5400,33 +5400,66 @@ MonoBehaviour:
   canTakeDamage: 1
   isDeadOrDestroyed: 0
   gm: {fileID: 0}
-  maxHeadHealth:
-    baseValue: 50
-    modifiers: 
-  maxLeftArmHealth:
-    baseValue: 75
-    modifiers: 
-  maxRightArmHealth:
-    baseValue: 75
-    modifiers: 
-  maxLeftHandHealth:
-    baseValue: 35
-    modifiers: 
-  maxRightHandHealth:
-    baseValue: 35
-    modifiers: 
-  maxLeftLegHealth:
-    baseValue: 75
-    modifiers: 
-  maxRightLegHealth:
-    baseValue: 75
-    modifiers: 
-  maxLeftFootHealth:
-    baseValue: 35
-    modifiers: 
-  maxRightFootHealth:
-    baseValue: 35
-    modifiers: 
+  torso:
+    bodyPartType: 0
+    maxHealth:
+      baseValue: 100
+      modifiers: 
+    currentHealth: 0
+  head:
+    bodyPartType: 1
+    maxHealth:
+      baseValue: 50
+      modifiers: 
+    currentHealth: 0
+  leftArm:
+    bodyPartType: 2
+    maxHealth:
+      baseValue: 75
+      modifiers: 
+    currentHealth: 0
+  rightArm:
+    bodyPartType: 3
+    maxHealth:
+      baseValue: 75
+      modifiers: 
+    currentHealth: 0
+  leftHand:
+    bodyPartType: 6
+    maxHealth:
+      baseValue: 40
+      modifiers: 
+    currentHealth: 0
+  rightHand:
+    bodyPartType: 7
+    maxHealth:
+      baseValue: 40
+      modifiers: 
+    currentHealth: 0
+  leftLeg:
+    bodyPartType: 4
+    maxHealth:
+      baseValue: 80
+      modifiers: 
+    currentHealth: 0
+  rightLeg:
+    bodyPartType: 5
+    maxHealth:
+      baseValue: 80
+      modifiers: 
+    currentHealth: 0
+  leftFoot:
+    bodyPartType: 8
+    maxHealth:
+      baseValue: 40
+      modifiers: 
+    currentHealth: 0
+  rightFoot:
+    bodyPartType: 9
+    maxHealth:
+      baseValue: 40
+      modifiers: 
+    currentHealth: 0
   torsoDefense:
     baseValue: 0
     modifiers: 
@@ -15607,39 +15640,72 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locomotionType: 1
   maxHealth:
-    baseValue: 80
+    baseValue: 70
     modifiers: 
   currentHealth: 0
   canTakeDamage: 1
   isDeadOrDestroyed: 0
   gm: {fileID: 0}
-  maxHeadHealth:
-    baseValue: 40
-    modifiers: 
-  maxLeftArmHealth:
-    baseValue: 60
-    modifiers: 
-  maxRightArmHealth:
-    baseValue: 60
-    modifiers: 
-  maxLeftHandHealth:
-    baseValue: 25
-    modifiers: 
-  maxRightHandHealth:
-    baseValue: 25
-    modifiers: 
-  maxLeftLegHealth:
-    baseValue: 60
-    modifiers: 
-  maxRightLegHealth:
-    baseValue: 60
-    modifiers: 
-  maxLeftFootHealth:
-    baseValue: 25
-    modifiers: 
-  maxRightFootHealth:
-    baseValue: 25
-    modifiers: 
+  torso:
+    bodyPartType: 0
+    maxHealth:
+      baseValue: 70
+      modifiers: 
+    currentHealth: 0
+  head:
+    bodyPartType: 1
+    maxHealth:
+      baseValue: 40
+      modifiers: 
+    currentHealth: 0
+  leftArm:
+    bodyPartType: 2
+    maxHealth:
+      baseValue: 60
+      modifiers: 
+    currentHealth: 0
+  rightArm:
+    bodyPartType: 3
+    maxHealth:
+      baseValue: 60
+      modifiers: 
+    currentHealth: 0
+  leftHand:
+    bodyPartType: 6
+    maxHealth:
+      baseValue: 30
+      modifiers: 
+    currentHealth: 0
+  rightHand:
+    bodyPartType: 7
+    maxHealth:
+      baseValue: 30
+      modifiers: 
+    currentHealth: 0
+  leftLeg:
+    bodyPartType: 4
+    maxHealth:
+      baseValue: 65
+      modifiers: 
+    currentHealth: 0
+  rightLeg:
+    bodyPartType: 5
+    maxHealth:
+      baseValue: 65
+      modifiers: 
+    currentHealth: 0
+  leftFoot:
+    bodyPartType: 8
+    maxHealth:
+      baseValue: 30
+      modifiers: 
+    currentHealth: 0
+  rightFoot:
+    bodyPartType: 9
+    maxHealth:
+      baseValue: 30
+      modifiers: 
+    currentHealth: 0
   torsoDefense:
     baseValue: 0
     modifiers: 
@@ -87934,7 +88000,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1067181842}
   m_HandleRect: {fileID: 1067181841}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

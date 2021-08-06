@@ -7,8 +7,7 @@ public class Equipment : Item
 {
     [Header("General Equipment Stats")]
     public EquipmentSlot equipmentSlot;
-    public int minBaseDurability = 75;
-    public int maxBaseDurability = 100;
+    public Vector2Int baseDurability;
 
     [Header("Sprites")]
     public Sprite primaryEquippedSprite;

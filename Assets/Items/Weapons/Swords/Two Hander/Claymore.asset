@@ -21,42 +21,28 @@ MonoBehaviour:
   weight: 5.55
   volume: 22.68
   isUsable: 1
-  minBaseValue: 84
-  maxBaseValue: 136
+  value: {x: 74, y: 136}
   staticValue: 1
   pickupSprite: {fileID: 2451652252212011429, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
   equipmentSlot: 8
-  minBaseDurability: 100
-  maxBaseDurability: 175
+  baseDurability: {x: 100, y: 175}
   primaryEquippedSprite: {fileID: 8453804762826023649, guid: f20a51d4e8c99fb4b989b0d8c061c05f, type: 3}
   secondaryEquippedSprite: {fileID: -1978866322423140336, guid: 8577904861824ce49815bed093713a61, type: 3}
   weaponType: 0
   defaultMeleeAttackType: 2
   isTwoHanded: 1
   attackRange: 2
-  minBaseBluntDamage_Swipe: 0
-  maxBaseBluntDamage_Swipe: 0
-  minBasePierceDamage_Swipe: 0
-  maxBasePierceDamage_Swipe: 0
-  minBaseSlashDamage_Swipe: 12
-  maxBaseSlashDamage_Swipe: 18
-  minBaseCleaveDamage_Swipe: 3
-  maxBaseCleaveDamage_Swipe: 5
-  minBaseBluntDamage_Thrust: 0
-  maxBaseBluntDamage_Thrust: 0
-  minBasePierceDamage_Thrust: 15
-  maxBasePierceDamage_Thrust: 23
-  minBaseSlashDamage_Thrust: 0
-  maxBaseSlashDamage_Thrust: 0
-  minBaseCleaveDamage_Thrust: 0
-  maxBaseCleaveDamage_Thrust: 0
-  minBaseBluntDamage_Overhead: 1
-  maxBaseBluntDamage_Overhead: 5
-  minBasePierceDamage_Overhead: 0
-  maxBasePierceDamage_Overhead: 0
-  minBaseSlashDamage_Overhead: 10
-  maxBaseSlashDamage_Overhead: 16
-  minBaseCleaveDamage_Overhead: 5
-  maxBaseCleaveDamage_Overhead: 7
+  bluntDamage_Swipe: {x: 0, y: 0}
+  pierceDamage_Swipe: {x: 0, y: 0}
+  slashDamage_Swipe: {x: 12, y: 18}
+  cleaveDamage_Swipe: {x: 3, y: 5}
+  bluntDamage_Thrust: {x: 0, y: 0}
+  pierceDamage_Thrust: {x: 15, y: 23}
+  slashDamage_Thrust: {x: 0, y: 0}
+  cleaveDamage_Thrust: {x: 0, y: 0}
+  bluntDamage_Overhead: {x: 0, y: 0}
+  pierceDamage_Overhead: {x: 0, y: 0}
+  slashDamage_Overhead: {x: 10, y: 16}
+  cleaveDamage_Overhead: {x: 5, y: 7}
   minBlockChanceMultiplier: 1.3
   maxBlockChanceMultiplier: 1.5

@@ -19,8 +19,7 @@ public class Item : ScriptableObject
     public bool isUsable = true;
 
     [Header("Value")]
-    public int minBaseValue;
-    public int maxBaseValue;
+    public Vector2Int value;
     public int staticValue = 1;
 
     [Header("Pickup Sprite")]

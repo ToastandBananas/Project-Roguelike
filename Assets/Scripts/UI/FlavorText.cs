@@ -57,7 +57,7 @@ public class FlavorText : MonoBehaviour
         WriteLine(input);
     }
 
-    public void WriteMeleeAttackCharacterLine(CharacterManager attacker, CharacterManager target, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, BodyPart bodyPartHit, int damage)
+    public void WriteMeleeAttackCharacterLine(CharacterManager attacker, CharacterManager target, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, BodyPartType bodyPartHit, int damage)
     {
         switch (generalAttackType)
         {
@@ -79,7 +79,7 @@ public class FlavorText : MonoBehaviour
         }
     }
 
-    public void WritePenetrateArmorAndClothingLine_Melee(CharacterManager attacker, CharacterManager target, Wearable armor, Wearable clothing, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, PhysicalDamageType physicalDamageType, BodyPart bodyPartHit, int damage)
+    public void WritePenetrateArmorAndClothingLine_Melee(CharacterManager attacker, CharacterManager target, Wearable armor, Wearable clothing, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, PhysicalDamageType physicalDamageType, BodyPartType bodyPartHit, int damage)
     {
         switch (generalAttackType)
         {
@@ -98,7 +98,7 @@ public class FlavorText : MonoBehaviour
         }
     }
 
-    public void WritePenetrateWearableLine_Melee(CharacterManager attacker, CharacterManager target, Wearable wearable, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, PhysicalDamageType physicalDamageType, BodyPart bodyPartHit, int damage)
+    public void WritePenetrateWearableLine_Melee(CharacterManager attacker, CharacterManager target, Wearable wearable, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, PhysicalDamageType physicalDamageType, BodyPartType bodyPartHit, int damage)
     {
         switch (generalAttackType)
         {
@@ -137,7 +137,7 @@ public class FlavorText : MonoBehaviour
         }
     }
 
-    public void WriteAbsorbedMeleeAttackLine(CharacterManager attacker, CharacterManager target, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, BodyPart bodyPartHit)
+    public void WriteAbsorbedMeleeAttackLine(CharacterManager attacker, CharacterManager target, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, BodyPartType bodyPartHit)
     {
         switch (generalAttackType)
         {
@@ -532,29 +532,29 @@ public class FlavorText : MonoBehaviour
         }
     }
 
-    string GetHumanoidBodyPartName(BodyPart bodyPart)
+    string GetHumanoidBodyPartName(BodyPartType bodyPart)
     {
         switch (bodyPart)
         {
-            case BodyPart.Torso:
+            case BodyPartType.Torso:
                 return "<b>torso</b>";
-            case BodyPart.Head:
+            case BodyPartType.Head:
                 return "<b>head</b>";
-            case BodyPart.LeftArm:
+            case BodyPartType.LeftArm:
                 return "<b>left arm</b>";
-            case BodyPart.RightArm:
+            case BodyPartType.RightArm:
                 return "<b>right arm</b>";
-            case BodyPart.LeftLeg:
+            case BodyPartType.LeftLeg:
                 return "<b>left leg</b>"; ;
-            case BodyPart.RightLeg:
+            case BodyPartType.RightLeg:
                 return "<b>right leg</b>"; ;
-            case BodyPart.LeftHand:
+            case BodyPartType.LeftHand:
                 return "<b>left hand</b>"; ;
-            case BodyPart.RightHand:
+            case BodyPartType.RightHand:
                 return "<b>right hand</b>"; ;
-            case BodyPart.LeftFoot:
+            case BodyPartType.LeftFoot:
                 return "<b>left foot</b>"; ;
-            case BodyPart.RightFoot:
+            case BodyPartType.RightFoot:
                 return "<b>right foot</b>"; ;
             default:
                 return "";

@@ -2,12 +2,10 @@ using UnityEngine;
 
 public class TraumaSystem : MonoBehaviour
 {
-    [Header("Cuts and Scrapes")]
+    [Header("Bleeding Wounds")]
     public Injury[] abrasions;
     public Injury[] cuts;
     public Injury[] gashes;
-
-    [Header("Stab Wounds")]
     public Injury[] stabWounds;
 
     [Header("Blunt Trauma")]
@@ -30,7 +28,7 @@ public class TraumaSystem : MonoBehaviour
     }
     #endregion
 
-    public static void ApplyInjury(CharacterManager character, Injury injury, BodyPart injuryLocation)
+    public static void ApplyInjury(CharacterManager character, Injury injury, BodyPartType injuryLocation)
     {
         character.status.locationalInjuries.Add(new LocationalInjury(injury, injuryLocation));
     }
@@ -50,7 +48,7 @@ public class TraumaSystem : MonoBehaviour
         character.status.buffs.Remove(buff);
     }
 
-    public Injury GetCut(CharacterManager characterManager, BodyPart bodyPart, int damage)
+    public Injury GetCut(CharacterManager characterManager, BodyPartType bodyPart, int damage)
     {
         // Get the max health for the body part being cut
         int maxBodyPartHealth = characterManager.characterStats.GetBodyPartsMaxHealth(bodyPart).GetValue();

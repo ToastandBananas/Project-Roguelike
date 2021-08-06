@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Deer Hide Cape
   m_EditorClassIdentifier: 
   name: Deer Hide Cape
+  pluralName: 
   itemType: 3
   mainMaterial: 20
   description: A simple cape made of deer hide. Helps keep your upper body warm.
@@ -20,26 +21,18 @@ MonoBehaviour:
   weight: 3.55
   volume: 1.4
   isUsable: 1
-  minBaseValue: 10
-  maxBaseValue: 18
+  value: {x: 10, y: 18}
   staticValue: 1
   pickupSprite: {fileID: -1148262350419438075, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
   equipmentSlot: 14
-  minBaseDurability: 70
-  maxBaseDurability: 110
+  baseDurability: {x: 80, y: 100}
   primaryEquippedSprite: {fileID: 487791989738457031, guid: 992907f17986c6e4db17537373ad9f85, type: 3}
   secondaryEquippedSprite: {fileID: 0}
-  minBaseTorsoDefense: 2
-  maxBaseTorsoDefense: 4
-  minBaseHeadDefense: 0
-  maxBaseHeadDefense: 0
-  minBaseArmDefense: 1
-  maxBaseArmDefense: 2
-  minBaseHandDefense: 0
-  maxBaseHandDefense: 0
-  minBaseLegDefense: 1
-  maxBaseLegDefense: 2
-  minBaseFootDefense: 0
-  maxBaseFootDefense: 0
+  torsoDefense: {x: 0, y: 0}
+  headDefense: {x: 0, y: 0}
+  armDefense: {x: 0, y: 0}
+  handDefense: {x: 0, y: 0}
+  legDefense: {x: 0, y: 0}
+  footDefense: {x: 0, y: 0}
   coldResistance: 0
   heatResistance: 0
