@@ -59,27 +59,14 @@ public class InventoryTooltip : Tooltip
             Wearable wearable = (Wearable)itemData.item;
 
             // Defense
-            /*for (int i = 0; i < wearable.primaryBodyPartsCovered.Length; i++)
-            {
-                
-            }
-            if (itemData.headDefense > 0)
-                stringBuilder.Append("Head Defense: " + itemData.headDefense + "\n");
+            if (itemData.primaryDefense > 0)
+                stringBuilder.Append(GetDefenseHeader(wearable, wearable.primaryBodyPartsCovered) + " Defense: " + itemData.primaryDefense + "\n");
 
-            if (itemData.torsoDefense > 0)
-                stringBuilder.Append("Torso Defense: " + itemData.torsoDefense + "\n");
+            if (itemData.secondaryDefense > 0)
+                stringBuilder.Append(GetDefenseHeader(wearable, wearable.secondaryBodyPartsCovered) + " Defense: " + itemData.secondaryDefense + "\n");
 
-            if (itemData.armDefense > 0)
-                stringBuilder.Append("Arms Defense: " + itemData.armDefense + "\n");
-
-            if (itemData.handDefense > 0)
-                stringBuilder.Append("Hands Defense: " + itemData.handDefense + "\n");
-
-            if (itemData.legDefense > 0)
-                stringBuilder.Append("Legs Defense: " + itemData.legDefense + "\n");
-
-            if (itemData.footDefense > 0)
-                stringBuilder.Append("Feet Defense: " + itemData.footDefense + "\n");*/
+            if (itemData.tertiaryDefense > 0)
+                stringBuilder.Append(GetDefenseHeader(wearable, wearable.tertiaryBodyPartsCovered) + " Defense: " + itemData.tertiaryDefense + "\n");
 
             // Cold resistance
             if (wearable.coldResistance > 0)
@@ -169,6 +156,33 @@ public class InventoryTooltip : Tooltip
         else if (weapon.defaultMeleeAttackType == MeleeAttackType.Overhead)
             return itemData.bluntDamage_Overhead + itemData.pierceDamage_Overhead + itemData.slashDamage_Overhead + itemData.cleaveDamage_Overhead;
         return 0;
+    }
+
+    string GetDefenseHeader(Wearable wearable, BodyPartType[] bodyPartsCovered)
+    {
+        if (bodyPartsCovered.Length == 0)
+        {
+            if (bodyPartsCovered == wearable.primaryBodyPartsCovered)
+                Debug.LogError("PrimaryBodyPartsCovered has not been assigned any BodyPartTypes, but there are corresponding defensive values assigned. Fix me!");
+            else if (bodyPartsCovered == wearable.secondaryBodyPartsCovered)
+                Debug.LogError("SecondaryBodyPartsCovered has not been assigned any BodyPartTypes, but there are corresponding defensive values assigned. Fix me!");
+            else if (bodyPartsCovered == wearable.tertiaryBodyPartsCovered)
+                Debug.LogError("TertiaryBodyPartsCovered has not been assigned any BodyPartTypes, but there are corresponding defensive values assigned. Fix me!");
+        }
+        else if (bodyPartsCovered.Length == 1)
+            return bodyPartsCovered[0].ToString();
+        else
+        {
+            if (bodyPartsCovered[0] == BodyPartType.LeftArm || bodyPartsCovered[0] == BodyPartType.RightArm)
+                return "Arms";
+            else if (bodyPartsCovered[0] == BodyPartType.LeftLeg || bodyPartsCovered[0] == BodyPartType.RightLeg)
+                return "Legs";
+            else if (bodyPartsCovered[0] == BodyPartType.LeftHand || bodyPartsCovered[0] == BodyPartType.RightHand)
+                return "Hands";
+            else if (bodyPartsCovered[0] == BodyPartType.LeftFoot || bodyPartsCovered[0] == BodyPartType.RightFoot)
+                return "Foot";
+        }
+        return "";
     }
 
     string GetDurabilityText(ItemData itemData)

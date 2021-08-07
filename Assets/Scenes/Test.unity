@@ -8360,7 +8360,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abrasions: []
   cuts:
+  - {fileID: 11400000, guid: 6e62f0cfbf00f83438116da13e6aa31b, type: 2}
+  - {fileID: 11400000, guid: 16dc38afcff84b44095b60c06f1be870, type: 2}
+  - {fileID: 11400000, guid: ebb32103ec251904092b932bdc7c24d4, type: 2}
   - {fileID: 11400000, guid: 43e88d1273142554f8d620c0055b0198, type: 2}
+  - {fileID: 11400000, guid: 800e96fd316297442994b796a0c6d069, type: 2}
+  - {fileID: 11400000, guid: f3b298d3ae410764a8d261ff4c4ac634, type: 2}
+  - {fileID: 11400000, guid: daf631e826a9d7941860136c98ec0251, type: 2}
   gashes: []
   stabWounds: []
   bruises: []

@@ -51,8 +51,8 @@ public class TraumaSystem : MonoBehaviour
     public Injury GetCut(CharacterManager characterManager, BodyPartType bodyPartType, int damage)
     {
         // Get the max health for the body part being cut
-        int maxBodyPartHealth = characterManager.status.GetBodyPart(bodyPartType).maxHealth.GetValue();
-
+        float maxBodyPartHealth = characterManager.status.GetBodyPart(bodyPartType).maxHealth.GetValue();
+        
         // Determine the severity of cut based off of the percent damage done in relation to the max health
         if (damage / maxBodyPartHealth <= 0.05f)
         {

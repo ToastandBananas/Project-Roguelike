@@ -166,53 +166,119 @@ public class Status : MonoBehaviour
 
     public int TakeLocationalDamage(int bluntDamage, int pierceDamage, int slashDamage, int cleaveDamage, BodyPartType bodyPartType, EquipmentManager equipmentManager, Wearable armor, Wearable clothing, bool armorPenetrated, bool clothingPenetrated)
     {
-        int totalDamage = bluntDamage + pierceDamage + slashDamage + cleaveDamage;
+        int startTotalDamage = bluntDamage + pierceDamage + slashDamage + cleaveDamage;
+        int finalTotalDamage = startTotalDamage;
+
+        int damageTypeCount = 0;
+        if (bluntDamage > 0) damageTypeCount++;
+        if (pierceDamage > 0) damageTypeCount++;
+        if (slashDamage > 0) damageTypeCount++;
+        if (cleaveDamage > 0) damageTypeCount++;
 
         BodyPart bodyPart = GetBodyPart(bodyPartType);
         if (armorPenetrated == false && equipmentManager != null)
-            totalDamage -= bodyPart.addedDefense_Armor.GetValue();
+            finalTotalDamage -= bodyPart.addedDefense_Armor.GetValue();
 
         if (clothingPenetrated == false && equipmentManager != null)
-            totalDamage -= bodyPart.addedDefense_Clothing.GetValue();
+            finalTotalDamage -= bodyPart.addedDefense_Clothing.GetValue();
 
-        totalDamage -= bodyPart.naturalDefense.GetValue();
-        
-        if (totalDamage <= 0)
-            totalDamage = 0;
-        else if ((armor == null || armorPenetrated) && (clothing == null || clothingPenetrated))
+        finalTotalDamage -= bodyPart.naturalDefense.GetValue();
+
+        if (damageTypeCount == 1)
         {
-            // If armor & clothing was penetrated or the character isn't wearing either, 
-            // cause an injury based off of damage types and amounts relative to the character's max health for the body part attacked
-            Debug.Log(name + " was injured.");
             if (bluntDamage > 0)
-            {
-
-            }
+                bluntDamage = finalTotalDamage;
             else if (pierceDamage > 0)
-            {
-
-            }
+                pierceDamage = finalTotalDamage;
             else if (slashDamage > 0)
-            {
-                TraumaSystem.ApplyInjury(characterManager, gm.traumaSystem.GetCut(characterManager, bodyPartType, slashDamage), bodyPartType);
-            }
+                slashDamage = finalTotalDamage;
             else if (cleaveDamage > 0)
-            {
+                cleaveDamage = finalTotalDamage;
+        }
+        else
+        {
+            float percentDamageReduction = (startTotalDamage - finalTotalDamage) / startTotalDamage;
+            if (bluntDamage > 0)
+                bluntDamage -= Mathf.FloorToInt(bluntDamage * percentDamageReduction);
+            if (pierceDamage > 0)
+                pierceDamage -= Mathf.FloorToInt(pierceDamage * percentDamageReduction);
+            if (slashDamage > 0)
+                slashDamage -= Mathf.FloorToInt(slashDamage * percentDamageReduction);
+            if (cleaveDamage > 0)
+                cleaveDamage = Mathf.FloorToInt(cleaveDamage * percentDamageReduction);
 
+            int postDamageReductionTotalDamage = bluntDamage + pierceDamage + slashDamage + cleaveDamage;
+
+            if (finalTotalDamage != postDamageReductionTotalDamage)
+            {
+                int difference = Mathf.Abs(finalTotalDamage - postDamageReductionTotalDamage);
+                if (bluntDamage > 0 && difference > 0)
+                {
+                    bluntDamage--;
+                    difference--;
+                }
+                if (pierceDamage > 0 && difference > 0)
+                {
+                    pierceDamage--;
+                    difference--;
+                }
+                if (slashDamage > 0 && difference > 0)
+                {
+                    slashDamage--;
+                    difference--;
+                }
+                if (cleaveDamage > 0 && difference > 0)
+                {
+                    cleaveDamage--;
+                    difference--;
+                }
             }
         }
+        
+        if (finalTotalDamage <= 0)
+            finalTotalDamage = 0;
+        else if ((armor == null || armorPenetrated) && (clothing == null || clothingPenetrated))
+        {
+            // If armor & clothing were penetrated or the character isn't wearing either, 
+            // cause an injury based off of damage types and amounts relative to the character's max health for the body part attacked
+            ApplyInjuries(characterManager, bodyPartType, bluntDamage, pierceDamage, slashDamage, cleaveDamage);
+        }
 
-        if (totalDamage > 0)
-            TextPopup.CreateDamagePopup(transform.position, totalDamage, false);
+        if (finalTotalDamage > 0)
+        {
+            TextPopup.CreateDamagePopup(transform.position, finalTotalDamage, false);
+            bodyPart.Damage(finalTotalDamage);
+            if ((bodyPart.bodyPartType == BodyPartType.Torso || bodyPart.bodyPartType == BodyPartType.Head) && bodyPart.currentHealth <= 0)
+                Die();
+        }
         else
             TextPopup.CreateTextStringPopup(transform.position, "Absorbed");
 
-        bodyPart.Damage(totalDamage);
+        return finalTotalDamage;
+    }
 
-        if ((bodyPart.bodyPartType == BodyPartType.Torso || bodyPart.bodyPartType == BodyPartType.Head) && bodyPart.currentHealth <= 0)
-            Die();
+    void ApplyInjuries(CharacterManager characterManager, BodyPartType bodyPartType, int bluntDamage, int pierceDamage, int slashDamage, int cleaveDamage)
+    {
+        Debug.Log(name + " was injured.");
+        if (bluntDamage > 0)
+        {
 
-        return totalDamage;
+        }
+
+        if (pierceDamage > 0)
+        {
+
+        }
+
+        // Let cleave damage take priority, since the injuries caused by them are relatively similar to slashing injuries, but cleave injuries are more severe
+        if (slashDamage > 0 && slashDamage > cleaveDamage)
+        {
+            TraumaSystem.ApplyInjury(characterManager, gm.traumaSystem.GetCut(characterManager, bodyPartType, slashDamage), bodyPartType);
+        }
+        else if (cleaveDamage > 0)
+        {
+
+        }
     }
 
     public virtual void Die()

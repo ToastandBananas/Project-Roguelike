@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum InjuryType { Cut, Abrasion, Bruise }
+public enum InjuryType { Abrasion, Laceration, Puncture, Avulsion, Bruise }
 
 public class Injury : ScriptableObject
 {
