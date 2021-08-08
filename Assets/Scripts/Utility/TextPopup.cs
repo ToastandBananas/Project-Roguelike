@@ -19,14 +19,15 @@ public class TextPopup : MonoBehaviour
     readonly float disappearSpeed = 3f;
     readonly float increaseScaleAmount = 0.2f;
     readonly float decreaseScaleAmount = 0.25f;
-    
-    Vector3 moveVector = new Vector3(1.5f, 1.75f);
+
+    Vector3 moveVector;
+    Vector3 defaultMoveVector = new Vector3(1.5f, 1.75f);
     Vector3 offset = new Vector2(0.2f, 0.2f);
 
     void Update()
     {
         transform.position += moveVector * Time.deltaTime;
-        moveVector -= moveVector * 8f * Time.deltaTime;
+        moveVector -= moveVector * 3f * Time.deltaTime;
 
         if (disappearTimer > DISAPPEAR_TIMER_MAX * 0.5f)
         {
@@ -73,11 +74,11 @@ public class TextPopup : MonoBehaviour
     // Create a text popup with a given string
     public static TextPopup CreateTextStringPopup(Vector3 position, string stringText)
     {
-        TextPopup resourceGainPopup = GameManager.instance.objectPoolManager.textPopupObjectPool.GetPooledTextPopup();
+        TextPopup textPopup = GameManager.instance.objectPoolManager.textPopupObjectPool.GetPooledTextPopup();
 
-        resourceGainPopup.SetupTextStringPopup(position, stringText);
+        textPopup.SetupTextStringPopup(position, stringText);
 
-        return resourceGainPopup;
+        return textPopup;
     }
 
     void SetupDamagePopup(Vector3 position, float damageAmount, bool isCriticalHit)
@@ -126,6 +127,7 @@ public class TextPopup : MonoBehaviour
         sortingOrder++;
         textMesh.sortingOrder = sortingOrder;
 
+        moveVector = defaultMoveVector;
         gameObject.SetActive(true);
         transform.position = position + offset;
     }
@@ -134,7 +136,7 @@ public class TextPopup : MonoBehaviour
     {
         // Reset the size, move vector and disappear timer
         transform.localScale = Vector3.one;
-        moveVector = new Vector3(1.5f, 1.75f);
+        moveVector = new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f));
         disappearTimer = DISAPPEAR_TIMER_MAX;
     }
 }

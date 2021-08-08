@@ -129,17 +129,7 @@ public class ItemData : MonoBehaviour
             if (equipment.baseDurability.y > 0)
                 maxDurability = Random.Range(equipment.baseDurability.x, equipment.baseDurability.y + 1);
 
-            int random = Random.Range(0, 10);
-            if (random < 2)
-                durability = maxDurability;
-            else if (random < 4)
-                durability = Mathf.RoundToInt(Random.Range(maxDurability * 0.8f, maxDurability * 0.99f) * 100f) / 100f;
-            else if (random < 7)
-                durability = Mathf.RoundToInt(Random.Range(maxDurability * 0.5f, maxDurability * 0.79f) * 100f) / 100f;
-            else if (random < 9)
-                durability = Mathf.RoundToInt(Random.Range(maxDurability * 0.3f, maxDurability * 0.49f) * 100f) / 100f;
-            else
-                durability = Mathf.RoundToInt(Random.Range(maxDurability * 0.15f, maxDurability * 0.29f) * 100f) / 100f;
+            RandomizeDurability();
 
             if (item.IsWeapon())
             {
@@ -210,6 +200,20 @@ public class ItemData : MonoBehaviour
         RandomizeData();
     }
 
+    void RandomizeDurability()
+    {
+        int random = Random.Range(0, 10);
+        if (random < 2)
+            durability = maxDurability;
+        else if (random < 4)
+            durability = Mathf.RoundToInt(Random.Range(maxDurability * 0.8f, maxDurability * 0.99f) * 100f) / 100f;
+        else if (random < 7)
+            durability = Mathf.RoundToInt(Random.Range(maxDurability * 0.5f, maxDurability * 0.79f) * 100f) / 100f;
+        else if (random < 9)
+            durability = Mathf.RoundToInt(Random.Range(maxDurability * 0.3f, maxDurability * 0.49f) * 100f) / 100f;
+        else
+            durability = Mathf.RoundToInt(Random.Range(maxDurability * 0.15f, maxDurability * 0.29f) * 100f) / 100f;
+    }
 
     /// <summary> This is used when dragging and dropping an item onto another item of the same type and stats (as long as they are stackable of course) </summary>
     public void AddToItemsStack(InventoryItem invItemTakingFrom)
@@ -394,15 +398,12 @@ public class ItemData : MonoBehaviour
         {
             Equipment equipment = (Equipment)item;
             if (maxDurability > equipment.baseDurability.y)
-            {
                 maxDurability = equipment.baseDurability.y;
-                durability = maxDurability;
-            }
             else if (maxDurability < equipment.baseDurability.x)
-            {
                 maxDurability = equipment.baseDurability.x;
+
+            if (durability > maxDurability)
                 durability = maxDurability;
-            }
 
             if (item.IsWeapon())
             {
@@ -563,32 +564,32 @@ public class ItemData : MonoBehaviour
     void SetMeleeAttackPhysicalDamageTypes()
     {
         // Swipe
-        if (pierceDamage_Swipe > bluntDamage_Swipe && pierceDamage_Swipe > slashDamage_Swipe && pierceDamage_Swipe > cleaveDamage_Swipe)
+        if (pierceDamage_Swipe >= bluntDamage_Swipe && pierceDamage_Swipe >= slashDamage_Swipe && pierceDamage_Swipe >= cleaveDamage_Swipe)
             swipeMainPhysicalDamageType = PhysicalDamageType.Pierce;
-        else if (slashDamage_Swipe > bluntDamage_Swipe && slashDamage_Swipe > pierceDamage_Swipe && slashDamage_Swipe > cleaveDamage_Swipe)
-            swipeMainPhysicalDamageType = PhysicalDamageType.Slash;
-        else if (cleaveDamage_Swipe > bluntDamage_Swipe && cleaveDamage_Swipe > pierceDamage_Swipe && cleaveDamage_Swipe > slashDamage_Swipe)
+        else if (cleaveDamage_Swipe >= bluntDamage_Swipe && cleaveDamage_Swipe >= pierceDamage_Swipe && cleaveDamage_Swipe >= slashDamage_Swipe)
             swipeMainPhysicalDamageType = PhysicalDamageType.Cleave;
+        else if (slashDamage_Swipe >= bluntDamage_Swipe && slashDamage_Swipe >= pierceDamage_Swipe && slashDamage_Swipe >= cleaveDamage_Swipe)
+            swipeMainPhysicalDamageType = PhysicalDamageType.Slash;
         else
             swipeMainPhysicalDamageType = PhysicalDamageType.Blunt;
 
         // Thrust
-        if (pierceDamage_Thrust > bluntDamage_Thrust && pierceDamage_Thrust > slashDamage_Thrust && pierceDamage_Thrust > cleaveDamage_Thrust)
+        if (pierceDamage_Thrust >= bluntDamage_Thrust && pierceDamage_Thrust >= slashDamage_Thrust && pierceDamage_Thrust >= cleaveDamage_Thrust)
             thrustMainPhysicalDamageType = PhysicalDamageType.Pierce;
-        else if (slashDamage_Thrust > bluntDamage_Thrust && slashDamage_Thrust > pierceDamage_Thrust && slashDamage_Thrust > cleaveDamage_Thrust)
-            thrustMainPhysicalDamageType = PhysicalDamageType.Slash;
-        else if (cleaveDamage_Thrust > bluntDamage_Thrust && cleaveDamage_Thrust > pierceDamage_Thrust && cleaveDamage_Thrust > slashDamage_Thrust)
+        else if (cleaveDamage_Thrust >= bluntDamage_Thrust && cleaveDamage_Thrust >= pierceDamage_Thrust && cleaveDamage_Thrust >= slashDamage_Thrust)
             thrustMainPhysicalDamageType = PhysicalDamageType.Cleave;
+        else if (slashDamage_Thrust >= bluntDamage_Thrust && slashDamage_Thrust >= pierceDamage_Thrust && slashDamage_Thrust >= cleaveDamage_Thrust)
+            thrustMainPhysicalDamageType = PhysicalDamageType.Slash;
         else
             thrustMainPhysicalDamageType = PhysicalDamageType.Blunt;
 
         // Overhead
-        if (pierceDamage_Overhead > bluntDamage_Overhead && pierceDamage_Overhead > slashDamage_Overhead && pierceDamage_Overhead > cleaveDamage_Overhead)
+        if (pierceDamage_Overhead >= bluntDamage_Overhead && pierceDamage_Overhead >= slashDamage_Overhead && pierceDamage_Overhead >= cleaveDamage_Overhead)
             overheadMainPhysicalDamageType = PhysicalDamageType.Pierce;
-        else if (slashDamage_Overhead > bluntDamage_Overhead && slashDamage_Overhead > pierceDamage_Overhead && slashDamage_Overhead > cleaveDamage_Overhead)
-            overheadMainPhysicalDamageType = PhysicalDamageType.Slash;
-        else if (cleaveDamage_Overhead > bluntDamage_Overhead && cleaveDamage_Overhead > pierceDamage_Overhead && cleaveDamage_Overhead > slashDamage_Overhead)
+        else if (cleaveDamage_Overhead >= bluntDamage_Overhead && cleaveDamage_Overhead >= pierceDamage_Overhead && cleaveDamage_Overhead >= slashDamage_Overhead)
             overheadMainPhysicalDamageType = PhysicalDamageType.Cleave;
+        else if (slashDamage_Overhead >= bluntDamage_Overhead && slashDamage_Overhead >= pierceDamage_Overhead && slashDamage_Overhead >= cleaveDamage_Overhead)
+            overheadMainPhysicalDamageType = PhysicalDamageType.Slash;
         else
             overheadMainPhysicalDamageType = PhysicalDamageType.Blunt;
     }

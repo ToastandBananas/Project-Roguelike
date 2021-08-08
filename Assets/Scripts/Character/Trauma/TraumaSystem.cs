@@ -4,7 +4,7 @@ public class TraumaSystem : MonoBehaviour
 {
     [Header("Bleeding Wounds")]
     public Injury[] abrasions;
-    public Injury[] cuts;
+    public Injury[] lacerations;
     public Injury[] gashes;
     public Injury[] stabWounds;
 
@@ -48,7 +48,7 @@ public class TraumaSystem : MonoBehaviour
         character.status.buffs.Remove(buff);
     }
 
-    public Injury GetCut(CharacterManager characterManager, BodyPartType bodyPartType, int damage)
+    public Injury GetLaceration(CharacterManager characterManager, BodyPartType bodyPartType, int damage)
     {
         // Get the max health for the body part being cut
         float maxBodyPartHealth = characterManager.status.GetBodyPart(bodyPartType).maxHealth.GetValue();
@@ -57,51 +57,51 @@ public class TraumaSystem : MonoBehaviour
         if (damage / maxBodyPartHealth <= 0.05f)
         {
             // Small Cut
-            if (cuts[0] == null)
+            if (lacerations[0] == null)
                 Debug.LogError("Small Cut Injury not assigned in the TraumaSystem's inspector. Fix me!");
-            return cuts[0];
+            return lacerations[0];
         }
         else if (damage / maxBodyPartHealth <= 0.1f)
         {
             // Minor Cut
-            if (cuts[1] == null)
+            if (lacerations[1] == null)
                 Debug.LogError("Minor Cut Injury not assigned in the TraumaSystem's inspector. Fix me!");
-            return cuts[1];
+            return lacerations[1];
         }
         else if (damage / maxBodyPartHealth <= 0.15f)
         {
             // Cut
-            if (cuts[2] == null)
+            if (lacerations[2] == null)
                 Debug.LogError("Cut not assigned in the TraumaSystem's inspector. Fix me!");
-            return cuts[2];
+            return lacerations[2];
         }
         else if (damage / maxBodyPartHealth <= 0.2f)
         {
             // Bad Cut
-            if (cuts[3] == null)
+            if (lacerations[3] == null)
                 Debug.LogError("Bad Cut Injury not assigned in the TraumaSystem's inspector. Fix me!");
-            return cuts[3];
+            return lacerations[3];
         }
         else if (damage / maxBodyPartHealth <= 0.25f)
         {
             // Laceration
-            if (cuts[4] == null)
+            if (lacerations[4] == null)
                 Debug.LogError("Laceration Injury not assigned in the TraumaSystem's inspector. Fix me!");
-            return cuts[4];
+            return lacerations[4];
         }
         else if (damage / maxBodyPartHealth <= 0.3f)
         {
             // Deep Laceration
-            if (cuts[4] == null)
+            if (lacerations[4] == null)
                 Debug.LogError("Deep Laceration Injury not assigned in the TraumaSystem's inspector. Fix me!");
-            return cuts[4];
+            return lacerations[4];
         }
         else // if (damage / maxBodyPartHealth <= 0.35f)
         {
             // Severe Laceration
-            if (cuts[5] == null)
+            if (lacerations[5] == null)
                 Debug.LogError("Severe Laceration Injury not assigned in the TraumaSystem's inspector. Fix me!");
-            return cuts[5];
+            return lacerations[5];
         }
     }
 }

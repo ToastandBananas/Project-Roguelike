@@ -21,6 +21,9 @@ public class CharacterStats : Stats
     public Stat maxPersonalInvWeight;
     public Stat maxPersonalInvVolume;
 
+    [Header("Skills")]
+    public Stat swordSkill;
+
     [Header("Combat")]
     public Stat unarmedDamage;
     public Stat meleeAccuracy;
@@ -70,7 +73,7 @@ public class CharacterStats : Stats
             if (characterManager.remainingAPToBeUsed < 0)
                 characterManager.remainingAPToBeUsed = 0;
         }
-
+        // Debug.Log("AP used: " + amount);
         currentAP -= amount;
     }
 
@@ -106,9 +109,16 @@ public class CharacterStats : Stats
     {
         characterManager.actionQueued = true;
 
-        while (gm.turnManager.IsPlayersTurn() == false)
+        while (characterManager.isMyTurn == false)
         {
             yield return null;
+        }
+
+        if (characterManager.status.isDead)
+        {
+            characterManager.actionQueued = false;
+            characterManager.remainingAPToBeUsed = 0;
+            yield break;
         }
 
         if (characterManager.remainingAPToBeUsed > 0)
@@ -142,10 +152,17 @@ public class CharacterStats : Stats
             }
             else
             {
-                characterManager.remainingAPToBeUsed = remainingAP;
+                characterManager.remainingAPToBeUsed += remainingAP;
                 gm.turnManager.FinishTurn(characterManager);
                 StartCoroutine(UseAPAndConsume(consumable));
             }
         }
+    }
+
+    public int GetWeaponSkill(Weapon weapon)
+    {
+        if (weapon.weaponType == WeaponType.Sword)
+            return swordSkill.GetValue();
+        return 0;
     }
 }

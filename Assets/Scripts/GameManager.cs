@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.I))
-            TraumaSystem.ApplyInjury(playerManager, traumaSystem.GetCut(playerManager, BodyPartType.Torso, 10), BodyPartType.Torso);
+            TraumaSystem.ApplyInjury(playerManager, traumaSystem.GetLaceration(playerManager, BodyPartType.Torso, 10), BodyPartType.Torso);
     }
 
     void Start()

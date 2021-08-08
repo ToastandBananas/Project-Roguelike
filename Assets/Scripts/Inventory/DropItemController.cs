@@ -206,7 +206,8 @@ public class DropItemController : MonoBehaviour
         if (invItemComingFrom != null)
             invItemComingFrom.UpdateInventoryWeightAndVolume();
 
-        gm.flavorText.WriteDropItemLine(itemData, amountToDrop);
+        if (invComingFrom == null || invComingFrom.CompareTag("Object") == false)
+            gm.flavorText.WriteDropItemLine(itemData, amountToDrop);
 
     }
 

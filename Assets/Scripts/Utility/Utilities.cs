@@ -32,6 +32,17 @@ public class Utilities : MonoBehaviour
         return new Color32(r, g, b, a);
     }
 
+    public static Vector2 ClampedPosition(Vector2 position)
+    {
+        if (position.x % 1f != 0)
+            position = new Vector2(Mathf.RoundToInt(position.x), position.y);
+
+        if (position.y % 1f != 0)
+            position = new Vector2(position.x, Mathf.RoundToInt(position.y));
+
+        return position;
+    }
+
     public static string FormatStringIntoParagraph(string text, int maxCharactersPerLine)
     {
         string[] words = text.Split(" "[0]); // Split the string into seperate words
@@ -62,7 +73,7 @@ public class Utilities : MonoBehaviour
         return result;
     }
 
-    public static string FormatEnumStringWithSpaces(string enumString)
+    public static string FormatEnumStringWithSpaces(string enumString, bool bold)
     {
         if (string.IsNullOrWhiteSpace(enumString))
             return "";
@@ -75,18 +86,10 @@ public class Utilities : MonoBehaviour
                 newText.Append(' ');
             newText.Append(enumString[i]);
         }
+
+        if (bold)
+            return "<b>" + newText.ToString() + "</b>";
         return newText.ToString();
-    }
-
-    public static Vector2 ClampedPosition(Vector2 position)
-    {
-        if (position.x % 1f != 0)
-            position = new Vector2(Mathf.RoundToInt(position.x), position.y);
-
-        if (position.y % 1f != 0)
-            position = new Vector2(position.x, Mathf.RoundToInt(position.y));
-
-        return position;
     }
 
     public static string GetIndefiniteArticle(string noun, bool uppercase, bool returnNoun, string textColor = "#FFFFFF")
@@ -117,5 +120,71 @@ public class Utilities : MonoBehaviour
                 return "a <b><color=" + textColor + ">" + noun + "</color></b>";
             return "a ";
         }
+    }
+
+    public static string GetPronoun(CharacterManager characterManager, bool uppercase, bool possessive)
+    {
+        if (characterManager == null || characterManager.isNPC == false)
+        {
+            if (uppercase)
+            {
+                if (possessive)
+                    return "<b>Your</b> ";
+                else
+                    return "<b>You</b> ";
+            }
+            else
+            {
+                if (possessive)
+                    return "<b>your</b> ";
+                else
+                    return "<b>you</b> ";
+            }
+        }
+        else
+        {
+            if (uppercase)
+            {
+                if (possessive)
+                {
+                    if (characterManager.isNamed)
+                        return "<b>" + characterManager.name + "'s</b> ";
+                    else
+                        return "The <b>" + characterManager.name + "'s</b> ";
+                }
+                else
+                {
+                    if (characterManager.isNamed)
+                        return "<b>" + characterManager.name + "</b> ";
+                    else
+                        return "The <b>" + characterManager.name + "</b> ";
+                }
+            }
+            else
+            {
+                if (possessive)
+                {
+                    if (characterManager.isNamed)
+                        return "<b>" + characterManager.name + "'s</b> ";
+                    else
+                        return "the <b>" + characterManager.name + "'s</b> ";
+                }
+                else
+                {
+                    if (characterManager.isNamed)
+                        return "<b>" + characterManager.name + "</b> ";
+                    else
+                        return "the <b>" + characterManager.name + "</b> ";
+                }
+            }
+        }
+    }
+
+    public static string GetPossessivePronoun(CharacterManager characterManager)
+    {
+        if (characterManager.isNPC)
+            return "their ";
+        else
+            return "your ";
     }
 }

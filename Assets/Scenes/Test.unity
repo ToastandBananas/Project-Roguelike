@@ -5259,6 +5259,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMoving: 0
+  canMove: 0
   onCooldown: 0
   movementObstacleMask:
     serializedVersion: 2
@@ -5422,6 +5423,9 @@ MonoBehaviour:
     modifiers: 
   maxPersonalInvVolume:
     baseValue: 35
+    modifiers: 
+  swordSkill:
+    baseValue: 20
     modifiers: 
   unarmedDamage:
     baseValue: 1
@@ -8359,7 +8363,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abrasions: []
-  cuts:
+  lacerations:
   - {fileID: 11400000, guid: 6e62f0cfbf00f83438116da13e6aa31b, type: 2}
   - {fileID: 11400000, guid: 16dc38afcff84b44095b60c06f1be870, type: 2}
   - {fileID: 11400000, guid: ebb32103ec251904092b932bdc7c24d4, type: 2}
@@ -8956,8 +8960,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1757340663
-  m_SortingLayer: 5
+  m_SortingLayerID: -1323399409
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_Sprite: {fileID: -4711981228565375222, guid: 3a45bc8c9f9f11a409f8dac57796ee15, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -15367,6 +15371,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMoving: 0
+  canMove: 0
   onCooldown: 0
   movementObstacleMask:
     serializedVersion: 2
@@ -15766,6 +15771,9 @@ MonoBehaviour:
     modifiers: 
   maxPersonalInvVolume:
     baseValue: 10
+    modifiers: 
+  swordSkill:
+    baseValue: 20
     modifiers: 
   unarmedDamage:
     baseValue: 2

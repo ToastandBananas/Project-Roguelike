@@ -60,9 +60,12 @@ TagManager:
   - name: Hills
     uniqueID: 963466045
     locked: 0
-  - name: Object
+  - name: Items
     uniqueID: 2537626633
     locked: 0
   - name: Character
     uniqueID: 792488805
+    locked: 0
+  - name: Objects
+    uniqueID: 2971567887
     locked: 0

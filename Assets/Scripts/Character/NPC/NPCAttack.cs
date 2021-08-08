@@ -19,6 +19,9 @@ public class NPCAttack : Attack
 
     public void Fight()
     {
+        if (characterManager.status.isDead)
+            return;
+
         // If the NPC has a target
         if (characterManager.npcMovement.target != null)
         {
@@ -74,7 +77,7 @@ public class NPCAttack : Attack
 
     public void SwitchTarget(CharacterManager newTarget)
     {
-        Debug.Log("Switching target..." + newTarget);
+        Debug.Log("Switching target to: " + newTarget);
         if (newTarget == null)
         {
             characterManager.stateController.SetToDefaultState(characterManager.npcMovement.shouldFollowLeader);

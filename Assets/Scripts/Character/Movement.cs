@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    public bool isMoving, onCooldown;
+    [HideInInspector] public bool isMoving, canMove;
 
     [Header("Obstacle Mask")]
     public LayerMask movementObstacleMask;
@@ -20,6 +20,7 @@ public class Movement : MonoBehaviour
     public virtual void Awake()
     {
         diaganolMoveTime = moveTime / 1.414214f; // 1.414214 is the length of a diagonal movement
+        canMove = true;
 
         characterManager = GetComponent<CharacterManager>();
 
@@ -73,7 +74,7 @@ public class Movement : MonoBehaviour
                 transform.position = Utilities.ClampedPosition(transform.position);
                 break;
             }
-            //if (isNPC) Debug.Log("Arc movement: " + endPos);
+            if (characterManager.isNPC) Debug.Log("Arc movement: " + endPos);
             // Compute the next position, with arc added in
             float nextX = Mathf.MoveTowards(transform.position.x, x1, inverseMoveTime * Time.deltaTime);
             float baseY = Mathf.Lerp(startPos.y, endPos.y, (nextX - x0) / dist);
@@ -112,7 +113,7 @@ public class Movement : MonoBehaviour
 
         while ((Vector2)transform.position != endPos)
         {
-            // if (isNPC) Debug.Log("Smooth movement: " + endPos);
+            if (characterManager.isNPC) Debug.Log("Smooth movement: " + endPos);
             Vector2 newPosition = Vector2.MoveTowards(transform.position, endPos, inverseMoveTime * Time.deltaTime);
             transform.position = newPosition;
 
@@ -189,20 +190,19 @@ public class Movement : MonoBehaviour
         }
 
         isMoving = false;
-
         if (characterManager.isNPC)
             OnFinishedMoving();
     }
 
     public IEnumerator MovementCooldown(float cooldownTime)
     {
-        onCooldown = true;
+        canMove = false;
         while (cooldownTime > 0f)
         {
             cooldownTime -= Time.deltaTime;
             yield return null;
         }
-        onCooldown = false;
+        canMove = true;
     }
 
     bool TargetTileIsWalkable(Vector2 targetCell)

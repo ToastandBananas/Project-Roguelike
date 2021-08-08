@@ -14,7 +14,7 @@ public class Status : MonoBehaviour
 
     [Header("Healthiness")]
     public Stat maxBloodAmount;
-    public int currentBloodAmount;
+    public float currentBloodAmount;
     public Stat maxFullness;
     public float currentFullness;
     public Stat maxWater;
@@ -23,6 +23,7 @@ public class Status : MonoBehaviour
     [HideInInspector] public bool isDead;
 
     readonly float naturalHealingPercentPerTurn = 0.0001f; // 60 minutes (100 turns) to heal entire body 1% if healthiness == 1
+    readonly float naturalBloodProductionPerTurn = 0.0164f; // 1 pint takes 48 hours IRL and 1 pint = 473 mL | (473mL / 48hr / 60min / 60sec) * 6sec/turn = 0.0164mL/turn
 
     // Healthiness signifies your overall bodily health, effecting your natural healing over time.
     // Eating healthy, among other things, slowly builds this up over time, but this can be easily reversed by ailments such as an infection or a concussion.
@@ -115,9 +116,17 @@ public class Status : MonoBehaviour
         }
     }
 
-    void LoseBlood(int amount)
+    public void LoseBlood(float amount)
     {
         currentBloodAmount -= amount;
+        // TODO: Negative effects, such as lightheadedness and fainting
+    }
+
+    public void AddBlood(float amount)
+    {
+        currentBloodAmount += amount;
+        if (currentBloodAmount > maxBloodAmount.GetValue())
+            currentBloodAmount = maxBloodAmount.GetValue();
     }
 
     public bool BodyPartIsBleeding(BodyPartType bodyPartType)
@@ -184,6 +193,7 @@ public class Status : MonoBehaviour
 
         finalTotalDamage -= bodyPart.naturalDefense.GetValue();
 
+        #region Adjust each type of damage to reflect the final total damage
         if (damageTypeCount == 1)
         {
             if (bluntDamage > 0)
@@ -195,7 +205,7 @@ public class Status : MonoBehaviour
             else if (cleaveDamage > 0)
                 cleaveDamage = finalTotalDamage;
         }
-        else
+        else if (startTotalDamage > 0)
         {
             float percentDamageReduction = (startTotalDamage - finalTotalDamage) / startTotalDamage;
             if (bluntDamage > 0)
@@ -234,14 +244,15 @@ public class Status : MonoBehaviour
                 }
             }
         }
-        
+        #endregion
+
         if (finalTotalDamage <= 0)
             finalTotalDamage = 0;
         else if ((armor == null || armorPenetrated) && (clothing == null || clothingPenetrated))
         {
             // If armor & clothing were penetrated or the character isn't wearing either, 
             // cause an injury based off of damage types and amounts relative to the character's max health for the body part attacked
-            ApplyInjuries(characterManager, bodyPartType, bluntDamage, pierceDamage, slashDamage, cleaveDamage);
+            ApplyInjuries(characterManager, bodyPart, bluntDamage, pierceDamage, slashDamage, cleaveDamage);
         }
 
         if (finalTotalDamage > 0)
@@ -257,9 +268,9 @@ public class Status : MonoBehaviour
         return finalTotalDamage;
     }
 
-    void ApplyInjuries(CharacterManager characterManager, BodyPartType bodyPartType, int bluntDamage, int pierceDamage, int slashDamage, int cleaveDamage)
+    void ApplyInjuries(CharacterManager characterManager, BodyPart bodyPart, int bluntDamage, int pierceDamage, int slashDamage, int cleaveDamage)
     {
-        Debug.Log(name + " was injured.");
+        // Debug.Log(name + " was injured.");
         if (bluntDamage > 0)
         {
 
@@ -273,7 +284,9 @@ public class Status : MonoBehaviour
         // Let cleave damage take priority, since the injuries caused by them are relatively similar to slashing injuries, but cleave injuries are more severe
         if (slashDamage > 0 && slashDamage > cleaveDamage)
         {
-            TraumaSystem.ApplyInjury(characterManager, gm.traumaSystem.GetCut(characterManager, bodyPartType, slashDamage), bodyPartType);
+            Injury laceration = gm.traumaSystem.GetLaceration(characterManager, bodyPart.bodyPartType, slashDamage);
+            TraumaSystem.ApplyInjury(characterManager, laceration, bodyPart.bodyPartType);
+            gm.flavorText.WriteInjuryLine(characterManager, laceration, bodyPart.bodyPartType);
         }
         else if (cleaveDamage > 0)
         {
@@ -308,7 +321,7 @@ public class Status : MonoBehaviour
             gameObject.tag = "Dead Body";
             gameObject.layer = 14;
 
-            characterManager.spriteRenderer.sortingLayerName = "Object";
+            characterManager.spriteRenderer.sortingLayerName = "Items";
             characterManager.spriteRenderer.sortingOrder = -1;
 
             gm.turnManager.npcs.Remove(characterManager);
@@ -322,8 +335,6 @@ public class Status : MonoBehaviour
 
             if (characterManager.IsNextToPlayer())
                 gm.containerInvUI.GetItemsAroundPlayer();
-
-            characterManager.movement.enabled = false;
         }
         else // If the player dies
         {
@@ -340,9 +351,11 @@ public class Status : MonoBehaviour
             }
         }
 
+        characterManager.movement.enabled = false;
+
         characterManager.characterSpriteManager.SetToDeathSprite(characterManager.spriteRenderer);
 
-        gm.flavorText.StartCoroutine(gm.flavorText.DelayWriteLine(gm.flavorText.GetPronoun(characterManager, true, false) + "died."));
+        gm.flavorText.StartCoroutine(gm.flavorText.DelayWriteLine(Utilities.GetPronoun(characterManager, true, false) + "died."));
     }
 
     void Heal_Passive(int timePassed)
@@ -350,6 +363,7 @@ public class Status : MonoBehaviour
         // Apply natural healing first, if the character is healthy enough
         if (healthiness > 0)
         {
+            AddBlood(naturalBloodProductionPerTurn);
             for (int i = 0; i < bodyParts.Count; i++)
             {
                 if (BodyPartIsBleeding(bodyParts[i].bodyPartType) == false)
@@ -442,7 +456,7 @@ public class Status : MonoBehaviour
     {
         if (newItemData != null)
         {
-            if (newItemData.item.IsShield() == false)
+            if (newItemData.item.IsShield() == false && newItemData.item.IsBag() == false)
             {
                 Wearable wearable = (Wearable)newItemData.item;
                 if (wearable.isClothing)
@@ -484,7 +498,7 @@ public class Status : MonoBehaviour
 
         if (oldItemData != null)
         {
-            if (oldItemData.item.IsShield() == false)
+            if (oldItemData.item.IsShield() == false && oldItemData.item.IsBag() == false)
             {
                 Wearable wearable = (Wearable)oldItemData.item;
                 if (wearable.isClothing)
@@ -595,7 +609,7 @@ public class LocationalInjury
 
     public float damagePerTurn;
     public int bleedTimeRemaining;
-    public int bloodLossPerTurn;
+    public float bloodLossPerTurn;
     public float injuryHealMultiplier = 1f;
 
     public LocationalInjury(Injury injury, BodyPartType injuryLocation)
@@ -615,9 +629,9 @@ public class LocationalInjury
         if (bleedTimes.y > 0)
             bleedTimeRemaining = Random.Range(bleedTimes.x, bleedTimes.y + 1);
 
-        Vector2Int bloodLossValues = injury.GetBloodLossPerTurn();
+        Vector2 bloodLossValues = injury.GetBloodLossPerTurn();
         if (bloodLossValues.y > 0)
-            bloodLossPerTurn = Random.Range(bloodLossValues.x, bloodLossValues.y + 1);
+            bloodLossPerTurn = Random.Range(bloodLossValues.x, bloodLossValues.y);
     }
 }
 

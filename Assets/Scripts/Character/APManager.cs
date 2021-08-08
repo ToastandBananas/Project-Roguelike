@@ -1,9 +1,17 @@
+using System.Collections;
 using UnityEngine;
 
 public enum ActionType { Move, Attack, Equip, Unequip }
 
 public class APManager : MonoBehaviour
 {
+    readonly int baseWeaponStickCost = 200;
+    readonly int minWeaponStickAPCost = 20;
+
+    readonly int baseMovementCost = 100;
+
+    GameManager gm;
+
     #region Singleton
     public static APManager instance;
 
@@ -22,7 +30,59 @@ public class APManager : MonoBehaviour
     }
     #endregion
 
-    readonly int baseMovementCost = 40;
+    void Start()
+    {
+        gm = GameManager.instance;
+    }
+
+    public IEnumerator LoseAP(CharacterManager characterManager, int APAmount)
+    {
+        characterManager.actionQueued = true;
+
+        while (characterManager.isMyTurn == false) { yield return null; }
+
+        if (characterManager.status.isDead)
+        {
+            characterManager.actionQueued = false;
+            characterManager.remainingAPToBeUsed = 0;
+            yield break;
+        }
+
+        if (characterManager.remainingAPToBeUsed > 0)
+        {
+            if (characterManager.remainingAPToBeUsed <= characterManager.characterStats.currentAP)
+            {
+                characterManager.actionQueued = false;
+                characterManager.characterStats.UseAP(characterManager.remainingAPToBeUsed);
+
+                if (characterManager.characterStats.currentAP <= 0)
+                    gm.turnManager.FinishTurn(characterManager);
+            }
+            else
+            {
+                characterManager.characterStats.UseAP(characterManager.characterStats.currentAP);
+                gm.turnManager.FinishTurn(characterManager);
+                StartCoroutine(LoseAP(characterManager, APAmount));
+            }
+        }
+        else
+        {
+            int remainingAP = characterManager.characterStats.UseAPAndGetRemainder(APAmount);
+            if (remainingAP == 0)
+            {
+                characterManager.actionQueued = false;
+
+                if (characterManager.characterStats.currentAP <= 0)
+                    gm.turnManager.FinishTurn(characterManager);
+            }
+            else
+            {
+                characterManager.remainingAPToBeUsed += remainingAP;
+                gm.turnManager.FinishTurn(characterManager);
+                StartCoroutine(LoseAP(characterManager, APAmount));
+            }
+        }
+    }
 
     public int GetMovementAPCost()
     {
@@ -53,6 +113,30 @@ public class APManager : MonoBehaviour
             default:
                 return 100;
         }
+    }
+
+    public int GetWeaponStickAPCost(CharacterManager characterManager, Weapon weaponUsed, PhysicalDamageType mainPhysicalDamageType, float percentDamage)
+    {
+        int APCost = Mathf.RoundToInt((baseWeaponStickCost * (percentDamage * 2)) - (characterManager.characterStats.strength.GetValue() / 3) - (characterManager.characterStats.swordSkill.GetValue() / 4));
+
+        // When causing piercing damage, stabbing type weapons (or weapons with spikes), use less AP, since they should be easier to remove
+        if (mainPhysicalDamageType == PhysicalDamageType.Pierce)
+        {
+            if (weaponUsed.weaponType == WeaponType.Spear || weaponUsed.weaponType == WeaponType.Dagger || weaponUsed.weaponType == WeaponType.Polearm)
+                APCost = Mathf.RoundToInt(APCost / 2);
+            else if (weaponUsed.weaponType == WeaponType.SpikedAxe || weaponUsed.weaponType == WeaponType.SpikedClub || weaponUsed.weaponType == WeaponType.SpikedHammer || weaponUsed.weaponType == WeaponType.SpikedMace)
+                APCost = Mathf.RoundToInt(APCost / 1.5f);
+        }
+
+        if (APCost < minWeaponStickAPCost)
+            APCost = minWeaponStickAPCost;
+        
+        return APCost;
+    }
+
+    public int GetStuckWithWeaponAPLoss(CharacterManager target, float percentDamage)
+    {
+        return Mathf.RoundToInt(baseWeaponStickCost * percentDamage * Random.Range(0.75f, 1.25f));
     }
 
     int CalculateMeleeAttackAPCost(CharacterManager characterManager, Weapon weapon)

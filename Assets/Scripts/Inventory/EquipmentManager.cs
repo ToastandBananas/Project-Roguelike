@@ -55,6 +55,13 @@ public class EquipmentManager : MonoBehaviour
             yield return null;
         }
 
+        if (characterManager.status.isDead)
+        {
+            characterManager.actionQueued = false;
+            characterManager.remainingAPToBeUsed = 0;
+            yield break;
+        }
+
         if (characterManager.remainingAPToBeUsed > 0)
         {
             if (characterManager.remainingAPToBeUsed <= characterManager.characterStats.currentAP)
@@ -112,7 +119,7 @@ public class EquipmentManager : MonoBehaviour
             }
             else
             {
-                characterManager.remainingAPToBeUsed = remainingAP;
+                characterManager.remainingAPToBeUsed += remainingAP;
                 gm.turnManager.FinishTurn(characterManager);
                 StartCoroutine(UseAPAndSetupEquipment(equipment, equipSlot, newItemData, oldItemData, droppingEquipment));
             }
@@ -609,70 +616,6 @@ public class EquipmentManager : MonoBehaviour
 
         return Mathf.RoundToInt(damage);
     }
-
-    /*public int GetRightWeaponAttackDamage(MeleeAttackType meleeAttackType)
-    {
-        int damage = 0;
-        if (meleeAttackType == MeleeAttackType.Swipe)
-        {
-            damage = currentEquipment[(int)EquipmentSlot.RightWeapon].bluntDamage_Swipe + currentEquipment[(int)EquipmentSlot.RightWeapon].pierceDamage_Swipe
-                + currentEquipment[(int)EquipmentSlot.RightWeapon].slashDamage_Swipe + currentEquipment[(int)EquipmentSlot.RightWeapon].cleaveDamage_Swipe;
-        }
-        else if (meleeAttackType == MeleeAttackType.Thrust)
-        {
-            damage = currentEquipment[(int)EquipmentSlot.RightWeapon].bluntDamage_Thrust + currentEquipment[(int)EquipmentSlot.RightWeapon].pierceDamage_Thrust
-                + currentEquipment[(int)EquipmentSlot.RightWeapon].slashDamage_Thrust + currentEquipment[(int)EquipmentSlot.RightWeapon].cleaveDamage_Thrust;
-        }
-        else if (meleeAttackType == MeleeAttackType.Overhead)
-        {
-            damage = currentEquipment[(int)EquipmentSlot.RightWeapon].bluntDamage_Overhead + currentEquipment[(int)EquipmentSlot.RightWeapon].pierceDamage_Overhead
-                + currentEquipment[(int)EquipmentSlot.RightWeapon].slashDamage_Overhead + currentEquipment[(int)EquipmentSlot.RightWeapon].cleaveDamage_Overhead;
-        }
-        else if (meleeAttackType == MeleeAttackType.Unarmed)
-            Debug.LogWarning("Melee attack type is Unarmed. Fix me!");
-
-        damage += Mathf.RoundToInt(Random.Range(damage * -0.2f, damage * 0.2f));
-
-        if (characterManager.equipmentManager.TwoHandedWeaponEquipped() == false && characterManager.equipmentManager.isTwoHanding)
-            damage = Mathf.RoundToInt(damage * twoHandedDamageMultiplier);
-
-        if (damage <= 0)
-            damage = 1;
-
-        return damage;
-    }
-
-    public int GetLeftWeaponAttackDamage(MeleeAttackType meleeAttackType)
-    {
-        int damage = 0;
-        if (meleeAttackType == MeleeAttackType.Swipe)
-        {
-            damage = currentEquipment[(int)EquipmentSlot.LeftWeapon].bluntDamage_Swipe + currentEquipment[(int)EquipmentSlot.LeftWeapon].pierceDamage_Swipe
-                + currentEquipment[(int)EquipmentSlot.LeftWeapon].slashDamage_Swipe + currentEquipment[(int)EquipmentSlot.LeftWeapon].cleaveDamage_Swipe;
-        }
-        else if (meleeAttackType == MeleeAttackType.Thrust)
-        {
-            damage = currentEquipment[(int)EquipmentSlot.LeftWeapon].bluntDamage_Thrust + currentEquipment[(int)EquipmentSlot.LeftWeapon].pierceDamage_Thrust
-                + currentEquipment[(int)EquipmentSlot.LeftWeapon].slashDamage_Thrust + currentEquipment[(int)EquipmentSlot.LeftWeapon].cleaveDamage_Thrust;
-        }
-        else if (meleeAttackType == MeleeAttackType.Overhead)
-        {
-            damage = currentEquipment[(int)EquipmentSlot.LeftWeapon].bluntDamage_Overhead + currentEquipment[(int)EquipmentSlot.LeftWeapon].pierceDamage_Overhead
-                + currentEquipment[(int)EquipmentSlot.LeftWeapon].slashDamage_Overhead + currentEquipment[(int)EquipmentSlot.LeftWeapon].cleaveDamage_Overhead;
-        }
-        else if (meleeAttackType == MeleeAttackType.Unarmed)
-            Debug.LogWarning("Melee attack type is Unarmed. Fix me!");
-
-        damage += Mathf.RoundToInt(Random.Range(damage * -0.2f, damage * 0.2f));
-
-        if (characterManager.equipmentManager.TwoHandedWeaponEquipped() == false && characterManager.equipmentManager.isTwoHanding)
-            damage = Mathf.RoundToInt(damage * twoHandedDamageMultiplier);
-
-        if (damage <= 0)
-            damage = 1;
-
-        return damage;
-    }*/
 
     public Weapon GetRightWeapon()
     {

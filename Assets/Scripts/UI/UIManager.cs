@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -521,10 +520,10 @@ public class UIManager : MonoBehaviour
                             if (draggedInvItem.myInventory == null || draggedInvItem.myInventory == draggedInvItem.itemData.bagInventory)
                                 GameTiles.RemoveItemData(draggedInvItem.itemData, draggedInvItem.itemData.transform.position);
 
-                            StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+                            StartCoroutine(gm.apManager.LoseAP(gm.playerManager, gm.apManager.GetTransferItemCost(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false)));
                         }
                         else
-                            StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
+                            StartCoroutine(gm.apManager.LoseAP(gm.playerManager, gm.apManager.GetTransferItemCost(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true)));
                     }
 
                     // Write some flavor text
@@ -565,10 +564,10 @@ public class UIManager : MonoBehaviour
                             if (draggedInvItem.myInventory == null || draggedInvItem.myInventory == draggedInvItem.itemData.bagInventory)
                                 GameTiles.RemoveItemData(draggedInvItem.itemData, draggedInvItem.itemData.transform.position);
 
-                            StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+                            StartCoroutine(gm.apManager.LoseAP(gm.playerManager, gm.apManager.GetTransferItemCost(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false)));
                         }
                         else
-                            StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
+                            StartCoroutine(gm.apManager.LoseAP(gm.playerManager, gm.apManager.GetTransferItemCost(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true)));
                     }
 
                     // Remove, unequip or clear the item we were dragging, depending where it's coming from
@@ -609,10 +608,10 @@ public class UIManager : MonoBehaviour
                         if (draggedInvItem.myInventory == null || draggedInvItem.myInventory == draggedInvItem.itemData.bagInventory)
                             GameTiles.RemoveItemData(draggedInvItem.itemData, draggedInvItem.itemData.transform.position);
 
-                        StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+                        StartCoroutine(gm.apManager.LoseAP(gm.playerManager, gm.apManager.GetTransferItemCost(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false)));
                     }
                     else
-                        StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
+                        StartCoroutine(gm.apManager.LoseAP(gm.playerManager, gm.apManager.GetTransferItemCost(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true)));
                 }
 
                 // Write some flavor text
@@ -671,7 +670,7 @@ public class UIManager : MonoBehaviour
                         if (draggedInvItem.myInventory == null || draggedInvItem.myInventory == draggedInvItem.itemData.bagInventory)
                             GameTiles.RemoveItemData(draggedInvItem.itemData, draggedInvItem.itemData.transform.position);
 
-                        StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+                        StartCoroutine(gm.apManager.LoseAP(gm.playerManager, gm.apManager.GetTransferItemCost(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false)));
                     }
 
                     // Remove, unequip or clear the item we were dragging, depending where it's coming from
@@ -697,14 +696,14 @@ public class UIManager : MonoBehaviour
                 else
                 {
                     if (activeInvUI == gm.containerInvUI || gm.containerInvUI.activeInventory != null)
-                        StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
+                        StartCoroutine(gm.apManager.LoseAP(gm.playerManager, gm.apManager.GetTransferItemCost(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true)));
                     else
                     {
                         // Remove the item from the ItemDatas dictionary if it was on the ground
                         if (draggedInvItem.myInventory == null || draggedInvItem.myInventory == draggedInvItem.itemData.bagInventory)
                             GameTiles.RemoveItemData(draggedInvItem.itemData, draggedInvItem.itemData.transform.position);
 
-                        StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+                        StartCoroutine(gm.apManager.LoseAP(gm.playerManager, gm.apManager.GetTransferItemCost(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false)));
                     }
                 }
 
@@ -734,7 +733,7 @@ public class UIManager : MonoBehaviour
                 if (draggedInvItem.myEquipmentManager != null)
                     StartCoroutine(draggedInvItem.myEquipmentManager.UseAPAndSetupEquipment((Equipment)equippedItemData.item, draggedInvItemsEquipSlot, null, equippedItemData, true));
                 else
-                    StartCoroutine(UseAPAndTransferItem(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+                    StartCoroutine(gm.apManager.LoseAP(gm.playerManager, gm.apManager.GetTransferItemCost(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false)));
 
                 // Remove, unequip or clear the item we were dragging, depending where it's coming from
                 RemoveDraggedItem(draggedInvItem, startingItemCount);
@@ -905,51 +904,6 @@ public class UIManager : MonoBehaviour
 
         // Disable all of the ghost items
         ResetandHideGhostItems();
-    }
-
-    public IEnumerator UseAPAndTransferItem(Item item, int itemCount, float invWeight, float invVolume, bool transferringInventoryToInventory)
-    {
-        gm.playerManager.actionQueued = true;
-
-        while (gm.turnManager.IsPlayersTurn() == false)
-        {
-            yield return null;
-        }
-
-        if (gm.playerManager.remainingAPToBeUsed > 0)
-        {
-            if (gm.playerManager.remainingAPToBeUsed <= gm.playerManager.characterStats.currentAP)
-            {
-                gm.playerManager.actionQueued = false;
-                gm.playerManager.characterStats.UseAP(gm.playerManager.remainingAPToBeUsed);
-
-                if (gm.playerManager.characterStats.currentAP <= 0)
-                    gm.turnManager.FinishTurn(gm.playerManager);
-            }
-            else
-            {
-                gm.playerManager.characterStats.UseAP(gm.playerManager.characterStats.currentAP);
-                gm.turnManager.FinishTurn(gm.playerManager);
-                StartCoroutine(UseAPAndTransferItem(item, itemCount, invWeight, invVolume, transferringInventoryToInventory));
-            }
-        }
-        else
-        {
-            int remainingAP = gm.playerManager.characterStats.UseAPAndGetRemainder(gm.apManager.GetTransferItemCost(item, itemCount, invWeight, invVolume, transferringInventoryToInventory));
-            if (remainingAP == 0)
-            {
-                gm.playerManager.actionQueued = false;
-
-                if (gm.playerManager.characterStats.currentAP <= 0)
-                    gm.turnManager.FinishTurn(gm.playerManager);
-            }
-            else
-            {
-                gm.playerManager.remainingAPToBeUsed = remainingAP;
-                gm.turnManager.FinishTurn(gm.playerManager);
-                StartCoroutine(UseAPAndTransferItem(item, itemCount, invWeight, invVolume, transferringInventoryToInventory));
-            }
-        }
     }
 
     void PlaceItemBackToOriginalPosition(InventoryItem draggedInvItem)

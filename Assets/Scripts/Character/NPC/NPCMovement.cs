@@ -99,6 +99,13 @@ public class NPCMovement : Movement
             yield return null;
         }
 
+        if (characterManager.status.isDead)
+        {
+            characterManager.actionQueued = false;
+            characterManager.remainingAPToBeUsed = 0;
+            yield break;
+        }
+
         if (characterManager.remainingAPToBeUsed > 0)
         {
             if (characterManager.remainingAPToBeUsed <= characterManager.characterStats.currentAP)
@@ -124,7 +131,7 @@ public class NPCMovement : Movement
             }
             else
             {
-                characterManager.remainingAPToBeUsed = remainingAP;
+                characterManager.remainingAPToBeUsed += remainingAP;
                 gm.turnManager.FinishTurn(characterManager);
                 StartCoroutine(UseAPAndMove());
             }

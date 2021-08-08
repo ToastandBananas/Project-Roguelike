@@ -18,8 +18,8 @@ public class Injury : ScriptableObject
         return Vector2Int.zero;
     }
 
-    public virtual Vector2Int GetBloodLossPerTurn()
+    public virtual Vector2 GetBloodLossPerTurn()
     {
-        return Vector2Int.zero;
+        return Vector2.zero;
     }
 }

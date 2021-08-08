@@ -20,7 +20,7 @@ public class PlayerMovement : Movement
     void CheckForMovement()
     {
         // Do nothing if the Player is still moving
-        if (gm.turnManager.IsPlayersTurn() == false || isMoving || onCooldown || characterManager.actionQueued || GameControls.gamePlayActions.leftCtrl.IsPressed)
+        if (playerManager.isMyTurn == false || isMoving || characterManager.actionQueued || GameControls.gamePlayActions.leftCtrl.IsPressed)
             return;
 
         Vector2 movementInput = GameControls.gamePlayActions.playerMovementAxis.Value;
@@ -252,6 +252,13 @@ public class PlayerMovement : Movement
         {
             yield return null;
         }
+        
+        if (canMove == false || characterManager.status.isDead)
+        {
+            characterManager.actionQueued = false;
+            characterManager.remainingAPToBeUsed = 0;
+            yield break;
+        }
 
         if (characterManager.remainingAPToBeUsed > 0)
         {
@@ -284,7 +291,7 @@ public class PlayerMovement : Movement
             }
             else
             {
-                characterManager.remainingAPToBeUsed = remainingAP;
+                characterManager.remainingAPToBeUsed += remainingAP;
                 gm.turnManager.FinishTurn(characterManager);
                 StartCoroutine(UseAPAndMove(xDir, yDir));
             }

@@ -156,7 +156,7 @@ public class Attack : MonoBehaviour
                     if (targetCharStats.characterManager.equipmentManager != null)
                         DamageLocationalArmorAndClothing(targetCharStats.characterManager, bodyPartToHit, totalDamage, armorPenetrated, clothingPenetrated);
 
-                    // Damage the durability of the weapon used to attack
+                    // If a weapon was used, damage the durability of the weapon used to attack
                     if (weaponUsedItemData != null)
                         weaponUsedItemData.DamageDurability();
 
@@ -171,6 +171,14 @@ public class Attack : MonoBehaviour
                             gm.flavorText.WritePenetrateWearableLine_Melee(characterManager, targetCharStats.characterManager, armor, generalAttackType, meleeAttackType, mainPhysicalDamageType, bodyPartToHit, finalDamage);
                         else if (clothingPenetrated)
                             gm.flavorText.WritePenetrateWearableLine_Melee(characterManager, targetCharStats.characterManager, clothing, generalAttackType, meleeAttackType, mainPhysicalDamageType, bodyPartToHit, finalDamage);
+
+                        // See if the weapon will stick in the opponent's flesh
+                        if (weaponUsedItemData != null && weaponUsedItemData.durability > 0 && (armor == null || armorPenetrated) && (clothing == null || clothingPenetrated))
+                        {
+                            // This can't happen with blunt damage only weapons
+                            if (pierceDamage > 0 || slashDamage > 0 || cleaveDamage > 0)
+                                TryGetWeaponStuck(targetsStats, targetsCharacterManager, bodyPartToHit, weaponUsedItemData, mainPhysicalDamageType, pierceDamage, slashDamage, cleaveDamage);
+                        }
                     }
                     else
                         gm.flavorText.WriteAbsorbedMeleeAttackLine(characterManager, targetCharStats.characterManager, generalAttackType, meleeAttackType, bodyPartToHit);
@@ -182,7 +190,152 @@ public class Attack : MonoBehaviour
             // Damage the object and show flavor text
             targetsStats.TakeDamage(totalDamage);
             gm.flavorText.WriteMeleeAttackObjectLine(characterManager, targetsStats, generalAttackType, meleeAttackType, totalDamage);
+            TryGetWeaponStuck(targetsStats, null, BodyPartType.Torso, weaponUsedItemData, mainPhysicalDamageType, pierceDamage, slashDamage, cleaveDamage);
         }
+    }
+
+    bool TryGetWeaponStuck(Stats targetsStats, CharacterManager target, BodyPartType bodyPartHit, ItemData weaponUsedItemData, PhysicalDamageType mainPhysicalDamageType, int pierceDamage, int slashDamage, int cleaveDamage)
+    {
+        // A weapon should only get stuck in a character's head if they died from the hit, otherwise it would be unrealistic to have a weapon get lodged into their head and still have them live
+        if (target != null && bodyPartHit == BodyPartType.Head && target.status.isDead == false)
+            return false;
+        else if (target == null && targetsStats.isDestroyed)
+            return false;
+
+        int maxHealth = 0;
+        if (target != null)
+            maxHealth = target.status.GetBodyPart(bodyPartHit).maxHealth.GetValue();
+        else
+            maxHealth = targetsStats.maxHealth.GetValue();
+
+        float random = Random.Range(0f, 1f);
+        float percentDamage = 0f;
+        float stickChance = 0f;
+        // Debug.Log("Pierce: " + pierceDamage + " | Slash: " + slashDamage + " | Cleave: " + cleaveDamage);
+
+        // Chance to stick is the percent damage done, compared to the body part's max health, times 2
+        if (mainPhysicalDamageType == PhysicalDamageType.Pierce)
+            percentDamage = (float)pierceDamage / maxHealth;
+        else if (mainPhysicalDamageType == PhysicalDamageType.Cleave)
+            percentDamage = (float)cleaveDamage / maxHealth;
+        else
+            percentDamage = (float)slashDamage / maxHealth;
+
+        if (percentDamage <= 0.1f)
+            return false;
+
+        stickChance = percentDamage * 2f;
+        
+        if (random <= stickChance) // If stuck
+        {
+            // Use up AP until the character can pull the weapon out
+            StartCoroutine(UseAPAndStickWeapon(targetsStats, target, bodyPartHit, weaponUsedItemData, mainPhysicalDamageType, Mathf.RoundToInt(percentDamage * maxHealth), percentDamage));
+
+            // The target will lose a little bit of AP, based off of damage done
+            if (target != null)
+            {
+                StartCoroutine(gm.apManager.LoseAP(target, gm.apManager.GetStuckWithWeaponAPLoss(target, percentDamage)));
+                gm.flavorText.WriteStickWeaponLine(characterManager, target, bodyPartHit, weaponUsedItemData);
+            }
+            else
+                gm.flavorText.WriteStickWeaponLine(characterManager, targetsStats, weaponUsedItemData);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    IEnumerator UseAPAndStickWeapon(Stats targetsStats, CharacterManager target, BodyPartType bodyPartStuck, ItemData weaponUsedItemData, PhysicalDamageType mainPhysicalDamageType, int damage, float percentDamage)
+    {
+        while (characterManager.movement.isMoving)
+        {
+            yield return null;
+        }
+
+        characterManager.actionQueued = true;
+        if (target != null) target.movement.canMove = false;
+
+        while (characterManager.isMyTurn == false)
+        {
+            yield return null;
+        }
+
+        if (characterManager.status.isDead)
+        {
+            characterManager.actionQueued = false;
+            characterManager.remainingAPToBeUsed = 0;
+            yield break;
+        }
+
+        if (characterManager.remainingAPToBeUsed > 0)
+        {
+            if (characterManager.remainingAPToBeUsed <= characterManager.characterStats.currentAP)
+            {
+                if (target != null)
+                    UnstickWeapon(target, bodyPartStuck, weaponUsedItemData, damage, percentDamage); // If stuck in NPC
+                else
+                    UnstickWeapon(targetsStats, weaponUsedItemData, damage); // If stuck in an object
+
+                characterManager.actionQueued = false;
+                characterManager.characterStats.UseAP(characterManager.remainingAPToBeUsed);
+
+                if (characterManager.characterStats.currentAP <= 0)
+                    gm.turnManager.FinishTurn(characterManager);
+            }
+            else
+            {
+                characterManager.characterStats.UseAP(characterManager.characterStats.currentAP);
+                gm.turnManager.FinishTurn(characterManager);
+                StartCoroutine(UseAPAndStickWeapon(targetsStats, target, bodyPartStuck, weaponUsedItemData, mainPhysicalDamageType, damage, percentDamage));
+            }
+        }
+        else
+        {
+            int remainingAP = characterManager.characterStats.UseAPAndGetRemainder(gm.apManager.GetWeaponStickAPCost(characterManager, (Weapon)weaponUsedItemData.item, mainPhysicalDamageType, percentDamage));
+            if (remainingAP == 0)
+            {
+                if (target != null)
+                    UnstickWeapon(target, bodyPartStuck, weaponUsedItemData, damage, percentDamage); // If stuck in NPC
+                else
+                    UnstickWeapon(targetsStats, weaponUsedItemData, damage); // If stuck in an object
+
+                characterManager.actionQueued = false;
+
+                if (characterManager.characterStats.currentAP <= 0)
+                    gm.turnManager.FinishTurn(characterManager);
+            }
+            else
+            {
+                characterManager.remainingAPToBeUsed += remainingAP;
+                gm.turnManager.FinishTurn(characterManager);
+                StartCoroutine(UseAPAndStickWeapon(targetsStats, target, bodyPartStuck, weaponUsedItemData, mainPhysicalDamageType, damage, percentDamage));
+            }
+        }
+    }
+
+    void UnstickWeapon(CharacterManager target, BodyPartType bodyPartStuck, ItemData weaponUsedItemData, int damage, float percentDamage)
+    {
+        int newDamage = 0;
+        if (target.status.isDead == false)
+        {
+            target.movement.canMove = true;
+
+            // Damage the target a little more upon removing the weapon
+            newDamage = Mathf.RoundToInt(damage * Random.Range(0.2f, 0.4f));
+            target.status.TakeLocationalDamage_IgnoreArmor(newDamage, bodyPartStuck);
+        }
+
+        // The target also loses a spurt of blood
+        target.status.LoseBlood(100f * percentDamage);
+
+        // Write some flavor text
+        gm.flavorText.WriteUnstickWeaponLine(characterManager, target, bodyPartStuck, weaponUsedItemData, newDamage);
+    }
+
+    void UnstickWeapon(Stats targetsStats, ItemData weaponUsedItemData, int damage)
+    {
+        gm.flavorText.WriteUnstickWeaponLine(characterManager, targetsStats, weaponUsedItemData, damage);
     }
 
     bool TryEvade(CharacterStats targetsCharStats)
@@ -586,7 +739,7 @@ public class Attack : MonoBehaviour
             yield return null;
         }
 
-        if (TargetInAttackRange(targetsStats.transform) == false || targetsStats.isDestroyed)
+        if (characterManager.status.isDead || TargetInAttackRange(targetsStats.transform) == false || (targetsCharacterManager != null && targetsCharacterManager.status.isDead) || targetsStats.isDestroyed)
         {
             CancelAttack();
             yield break;
@@ -617,7 +770,7 @@ public class Attack : MonoBehaviour
             }
             else
             {
-                characterManager.remainingAPToBeUsed = remainingAP;
+                characterManager.remainingAPToBeUsed += remainingAP;
                 gm.turnManager.FinishTurn(characterManager);
                 StartCoroutine(UseAPAndAttack(targetsCharacterManager, targetsStats, weapon, attackType, meleeAttackType));
             }

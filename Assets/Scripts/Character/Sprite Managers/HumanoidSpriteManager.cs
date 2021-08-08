@@ -152,7 +152,7 @@ public class HumanoidSpriteManager : SpriteManager
             }
             else
             {
-                characterManager.remainingAPToBeUsed = remainingAP;
+                characterManager.remainingAPToBeUsed += remainingAP;
                 gm.turnManager.FinishTurn(characterManager);
                 StartCoroutine(UseAPAndSwapStance(equipmentManager, characterManager));
             }

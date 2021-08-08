@@ -240,11 +240,11 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
                     // Calculate and use AP
                     if (myInventory != null && (itemData.item.IsBag() == false || itemData.bagInventory != gm.containerInvUI.activeInventory))
-                        gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
+                        gm.uiManager.StartCoroutine(gm.apManager.LoseAP(gm.playerManager, gm.apManager.GetTransferItemCost(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true)));
                     else
                     {
                         GameTiles.RemoveItemData(itemData, itemData.transform.position);
-                        gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+                        gm.uiManager.StartCoroutine(gm.apManager.LoseAP(gm.playerManager, gm.apManager.GetTransferItemCost(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false)));
                     }
 
                     // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
@@ -268,11 +268,11 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
                 // Calculate and use AP
                 if (myInventory != null)
-                    gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
+                    gm.uiManager.StartCoroutine(gm.apManager.LoseAP(gm.playerManager, gm.apManager.GetTransferItemCost(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true)));
                 else
                 {
                     GameTiles.RemoveItemData(itemData, itemData.transform.position);
-                    gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+                    gm.uiManager.StartCoroutine(gm.apManager.LoseAP(gm.playerManager, gm.apManager.GetTransferItemCost(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false)));
                 }
 
                 // Write some flavor text
@@ -294,11 +294,11 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
                         // Calculate and use AP
                         if (myInventory != null)
-                            gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
+                            gm.uiManager.StartCoroutine(gm.apManager.LoseAP(gm.playerManager, gm.apManager.GetTransferItemCost(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true)));
                         else
                         {
                             GameTiles.RemoveItemData(itemData, itemData.transform.position);
-                            gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+                            gm.uiManager.StartCoroutine(gm.apManager.LoseAP(gm.playerManager, gm.apManager.GetTransferItemCost(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false)));
                         }
 
                         // Write some flavor text
@@ -356,9 +356,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                     {
                         // Calculate and use AP
                         if (myInventory != null)
-                            gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true));
+                            gm.uiManager.StartCoroutine(gm.apManager.LoseAP(gm.playerManager, gm.apManager.GetTransferItemCost(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, true)));
                         else
-                            gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+                            gm.uiManager.StartCoroutine(gm.apManager.LoseAP(gm.playerManager, gm.apManager.GetTransferItemCost(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false)));
 
                         // Write some flavor text
                         gm.flavorText.WriteTransferItemLine(itemData, startingItemCount, myEquipmentManager, myInventory, gm.containerInvUI.activeInventory);
@@ -438,7 +438,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                         else
                         {
                             // Calculate and use AP
-                            gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+                            gm.uiManager.StartCoroutine(gm.apManager.LoseAP(gm.playerManager, gm.apManager.GetTransferItemCost(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false)));
 
                             ClearItem();
                         }
@@ -447,7 +447,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 else
                 {
                     // Calculate and use AP
-                    gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false));
+                    gm.uiManager.StartCoroutine(gm.apManager.LoseAP(gm.playerManager, gm.apManager.GetTransferItemCost(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false)));
 
                     ClearItem();
                 }
@@ -587,11 +587,11 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
                     // Calculate and use AP
                     if (invComingFrom != null)
-                        gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, stackSize, bagInvWeight, bagInvVolume, true));
+                        gm.uiManager.StartCoroutine(gm.apManager.LoseAP(gm.playerManager, gm.apManager.GetTransferItemCost(itemData.item, stackSize, bagInvWeight, bagInvVolume, true)));
                     else
                     {
                         GameTiles.RemoveItemData(itemData, itemData.transform.position);
-                        gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, stackSize, bagInvWeight, bagInvVolume, false));
+                        gm.uiManager.StartCoroutine(gm.apManager.LoseAP(gm.playerManager, gm.apManager.GetTransferItemCost(itemData.item, stackSize, bagInvWeight, bagInvVolume, false)));
                     }
 
                     // Write some flavor text
@@ -609,9 +609,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 // Calculate and use AP
                 int amountAdded = stackSize - itemData.currentStackSize;
                 if (invComingFrom != null)
-                    gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, amountAdded, bagInvWeight, bagInvVolume, true));
+                    gm.uiManager.StartCoroutine(gm.apManager.LoseAP(gm.playerManager, gm.apManager.GetTransferItemCost(itemData.item, amountAdded, bagInvWeight, bagInvVolume, true)));
                 else
-                    gm.uiManager.StartCoroutine(gm.uiManager.UseAPAndTransferItem(itemData.item, amountAdded, bagInvWeight, bagInvVolume, false));
+                    gm.uiManager.StartCoroutine(gm.apManager.LoseAP(gm.playerManager, gm.apManager.GetTransferItemCost(itemData.item, amountAdded, bagInvWeight, bagInvVolume, false)));
 
                 // Write some flavor text
                 gm.flavorText.WriteTakeItemLine(itemData, stackSize - itemData.currentStackSize, invComingFrom, invAddingTo);
