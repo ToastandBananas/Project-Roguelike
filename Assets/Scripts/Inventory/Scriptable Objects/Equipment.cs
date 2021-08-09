@@ -69,10 +69,31 @@ public class Equipment : Item
             if (invItem.myEquipmentManager == null && (invItem.myInventory == null || invItem.myInventory == invItem.itemData.bagInventory))
                 GameTiles.RemoveItemData(invItem.itemData, invItem.itemData.transform.position);
 
+            float newBagInvWeight = 0;
+            float oldBagInvWeight = 0;
+            if (itemDataUsing != null && itemDataUsing.item.IsBag())
+                newBagInvWeight += itemDataUsing.bagInventory.currentWeight;
+            if (oldItemData != null && oldItemData.item.IsBag())
+                oldBagInvWeight += oldItemData.bagInventory.currentWeight;
+
+            int APCost = 0;
+            if (itemDataUsing != null)
+                APCost += GameManager.instance.apManager.GetEquipAPCost(newEquipment, newBagInvWeight);
+            if (oldItemData != null)
+                APCost += GameManager.instance.apManager.GetEquipAPCost((Equipment)oldItemData.item, oldBagInvWeight);
+
             if (itemEquipped)
-                characterManager.equipmentManager.StartCoroutine(characterManager.equipmentManager.UseAPAndSetupEquipment(newEquipment, equipSlot, itemDataUsing, oldItemData, false));
+            {
+                GameManager.instance.StartCoroutine(GameManager.instance.apManager.UseAP(characterManager, APCost));
+                characterManager.equipmentManager.StartCoroutine(characterManager.equipmentManager.SetUpEquipment(itemDataUsing, oldItemData, newEquipment, equipSlot, false));
+                //characterManager.equipmentManager.StartCoroutine(characterManager.equipmentManager.UseAPAndSetupEquipment(newEquipment, equipSlot, itemDataUsing, oldItemData, false));
+            }
             else
-                characterManager.equipmentManager.StartCoroutine(characterManager.equipmentManager.UseAPAndSetupEquipment(newEquipment, equipSlot, null, oldItemData, false));
+            {
+                GameManager.instance.StartCoroutine(GameManager.instance.apManager.UseAP(characterManager, APCost));
+                characterManager.equipmentManager.StartCoroutine(characterManager.equipmentManager.SetUpEquipment(null, oldItemData, newEquipment, equipSlot, false));
+                //characterManager.equipmentManager.StartCoroutine(characterManager.equipmentManager.UseAPAndSetupEquipment(newEquipment, equipSlot, null, oldItemData, false));
+            }
 
             base.Use(characterManager, equipSlot, inventory, invItem, itemCount);
 

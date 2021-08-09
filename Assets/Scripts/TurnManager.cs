@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,26 +32,30 @@ public class TurnManager : MonoBehaviour
         gm = GameManager.instance;
     }
 
-    public void FinishTurn(CharacterManager characterManager)
+    public IEnumerator FinishTurn(CharacterManager characterManager)
     {
-        if (characterManager == gm.playerManager)
-            FinishPlayersTurn();
-        else
-            FinishNPCsTurn(characterManager);
+        while (characterManager.movement.isMoving) { yield return null; }
+
+        if (characterManager.isMyTurn)
+        {
+            if (characterManager == gm.playerManager)
+                FinishPlayersTurn();
+            else
+                FinishNPCsTurn(characterManager);
+        }
     }
 
     void FinishPlayersTurn()
     {
         gm.playerManager.isMyTurn = false;
         npcsFinishedTakingTurnCount = 0;
-        
-        gm.playerManager.playerStats.ReplenishAP();
 
         DoAllNPCsTurns();
     }
 
     public void ReadyPlayersTurn()
     {
+        gm.playerManager.playerStats.ReplenishAP();
         gm.playerManager.isMyTurn = true;
         gm.tileInfoDisplay.DisplayTileInfo();
         gm.playerManager.status.UpdateBuffs();
@@ -61,7 +66,6 @@ public class TurnManager : MonoBehaviour
     void FinishNPCsTurn(CharacterManager npcsCharManager)
     {
         npcsCharManager.isMyTurn = false;
-        npcsCharManager.characterStats.ReplenishAP();
         gm.turnManager.npcsFinishedTakingTurnCount++;
 
         if (gm.turnManager.npcsFinishedTakingTurnCount >= gm.turnManager.npcs.Count)
@@ -70,11 +74,14 @@ public class TurnManager : MonoBehaviour
 
     public void TakeNPCTurn(CharacterManager charManager)
     {
-        if (gm.playerManager.playerStats.isDestroyed == false)
+        if (gm.playerManager.status.isDead == false)
         {
+            charManager.characterStats.ReplenishAP();
             charManager.isMyTurn = true;
+
             charManager.status.UpdateBuffs();
             charManager.status.UpdateInjuries();
+
             charManager.TakeTurn();
         }
     }

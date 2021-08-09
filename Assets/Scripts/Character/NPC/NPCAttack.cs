@@ -6,7 +6,6 @@ public class NPCAttack : Attack
 {
     [HideInInspector] public float combatRange;
     [HideInInspector] public bool targetInCombatRange;
-    [HideInInspector] public bool targetInAttackRange;
 
     [HideInInspector] public CombatState currentCombatState;
 
@@ -29,23 +28,18 @@ public class NPCAttack : Attack
             int distX = Mathf.RoundToInt(Mathf.Abs(transform.position.x - characterManager.npcMovement.target.transform.position.x));
             int distY = Mathf.RoundToInt(Mathf.Abs(transform.position.y - characterManager.npcMovement.target.transform.position.y));
 
-            targetInAttackRange = TargetInAttackRange(characterManager.npcMovement.target.transform);
-
             // If the target is too far away for combat, grab the nearest known enemy and pursue them. Otherwise, if there are no known enemies, go back to the default State
             if (distanceToTarget > combatRange)
             {
                 targetInCombatRange = false;
                 SwitchTarget(characterManager.alliances.GetClosestKnownEnemy());
 
-                if (characterManager.npcMovement.target == null)
+                characterManager.npcMovement.SetPathToCurrentTarget();
+
+                if (characterManager.npcMovement.target != null && characterManager.movement.isMoving == false)
                 {
-                    gm.turnManager.FinishTurn(characterManager);
-                    return;
-                }
-                else
-                {
-                    characterManager.npcMovement.SetPathToCurrentTarget();
-                    StartCoroutine(characterManager.npcMovement.UseAPAndMove());
+                    StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
+                    StartCoroutine(characterManager.npcMovement.MoveToNextPointOnPath());
                 }
             }
             // If the target is close enough for combat, move in to attack
@@ -100,14 +94,19 @@ public class NPCAttack : Attack
     public void MoveInToAttack()
     {
         // If close enough, do attack animation
-        if (targetInAttackRange)
+        if (TargetInAttackRange(characterManager.npcMovement.target.transform))
         {
             DetermineAttack(characterManager.npcMovement.target, characterManager.npcMovement.target.characterStats);
         }
-        else if (targetInAttackRange == false)
+        else
         {
             characterManager.npcMovement.SetPathToCurrentTarget();
-            StartCoroutine(characterManager.npcMovement.UseAPAndMove());
+
+            if (characterManager.movement.isMoving == false)
+            {
+                StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
+                StartCoroutine(characterManager.npcMovement.MoveToNextPointOnPath());
+            }
         }
     }
 

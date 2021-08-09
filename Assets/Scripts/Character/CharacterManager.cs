@@ -22,10 +22,11 @@ public class CharacterManager : MonoBehaviour
     [HideInInspector] public Rigidbody2D rigidBody;
     [HideInInspector] public SpriteRenderer spriteRenderer;
 
-    [HideInInspector] public bool isNPC;
-    [HideInInspector] public bool actionQueued;
-    [HideInInspector] public bool isMyTurn = false;
-    [HideInInspector] public int remainingAPToBeUsed;
+    [HideInInspector] public bool isNPC { get; private set; }
+    public bool isMyTurn = false;
+    public int actionsQueued;
+    public int currentQueueNumber;
+    //public int remainingAPToBeUsed;
 
     GameManager gm;
 
@@ -57,7 +58,7 @@ public class CharacterManager : MonoBehaviour
         TryGetComponent(out equipmentManager);
         TryGetComponent(out inventory);
 
-        actionQueued = false;
+        ResetActionsQueue();
     }
 
     public virtual void Start()
@@ -70,7 +71,7 @@ public class CharacterManager : MonoBehaviour
 
     public void TakeTurn()
     {
-        if (actionQueued == false && movement.isMoving == false && characterStats.isDestroyed == false)
+        if (isNPC && characterStats.currentAP > 0 && actionsQueued == 0 && movement.isMoving == false && status.isDead == false)
         {
             vision.CheckEnemyVisibility();
             stateController.DoAction();
@@ -86,5 +87,12 @@ public class CharacterManager : MonoBehaviour
             return true;
 
         return false;
+    }
+
+    public void ResetActionsQueue()
+    {
+        actionsQueued = 0;
+        currentQueueNumber = 0;
+        //remainingAPToBeUsed = 0;
     }
 }

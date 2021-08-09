@@ -50,6 +50,7 @@ public class CharacterStats : Stats
 
     public int UseAPAndGetRemainder(int amount)
     {
+        Debug.Log("Current AP: " + currentAP);
         int remainingAmount = amount;
         if (currentAP >= amount)
         {
@@ -61,18 +62,18 @@ public class CharacterStats : Stats
             remainingAmount = amount - currentAP;
             UseAP(currentAP);
         }
-
+        Debug.Log("Remaining amount: " + remainingAmount);
         return remainingAmount;
     }
 
     public void UseAP(int amount)
     {
-        if (characterManager.remainingAPToBeUsed > 0)
+        /*if (characterManager.remainingAPToBeUsed > 0)
         {
             characterManager.remainingAPToBeUsed -= amount;
             if (characterManager.remainingAPToBeUsed < 0)
                 characterManager.remainingAPToBeUsed = 0;
-        }
+        }*/
         // Debug.Log("AP used: " + amount);
         currentAP -= amount;
     }
@@ -80,6 +81,7 @@ public class CharacterStats : Stats
     public void ReplenishAP()
     {
         currentAP = maxAP.GetValue();
+        Debug.Log("Replenished AP: " + currentAP);
     }
 
     public void AddToCurrentAP(int amountToAdd)
@@ -87,8 +89,17 @@ public class CharacterStats : Stats
         currentAP += amountToAdd;
     }
 
-    public void Consume(Consumable consumable)
+    public IEnumerator Consume(ItemData consumableItemData)
     {
+        int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
+        while (queueNumber != characterManager.currentQueueNumber)
+        {
+            yield return null;
+            if (characterManager.status.isDead) yield break;
+        }
+
+        Consumable consumable = (Consumable)consumableItemData.item;
+
         // Adjust overall bodily healthiness
         if (consumable.healthinessAdjustment != 0)
             characterManager.status.AdjustHealthiness(consumable.healthinessAdjustment);
@@ -105,9 +116,9 @@ public class CharacterStats : Stats
         gm.flavorText.WriteConsumeLine(consumable, characterManager);
     }
 
-    public IEnumerator UseAPAndConsume(Consumable consumable)
+    /*public IEnumerator UseAPAndConsume(Consumable consumable)
     {
-        characterManager.actionQueued = true;
+        characterManager.actionsQueued = true;
 
         while (characterManager.isMyTurn == false)
         {
@@ -116,7 +127,7 @@ public class CharacterStats : Stats
 
         if (characterManager.status.isDead)
         {
-            characterManager.actionQueued = false;
+            characterManager.actionsQueued = false;
             characterManager.remainingAPToBeUsed = 0;
             yield break;
         }
@@ -126,7 +137,7 @@ public class CharacterStats : Stats
             if (characterManager.remainingAPToBeUsed <= characterManager.characterStats.currentAP)
             {
                 Consume(consumable);
-                characterManager.actionQueued = false;
+                characterManager.actionsQueued = false;
                 characterManager.characterStats.UseAP(characterManager.remainingAPToBeUsed);
 
                 if (characterManager.characterStats.currentAP <= 0)
@@ -145,7 +156,7 @@ public class CharacterStats : Stats
             if (remainingAP == 0)
             {
                 Consume(consumable);
-                characterManager.actionQueued = false;
+                characterManager.actionsQueued = false;
 
                 if (characterManager.characterStats.currentAP <= 0)
                     gm.turnManager.FinishTurn(characterManager);
@@ -157,7 +168,7 @@ public class CharacterStats : Stats
                 StartCoroutine(UseAPAndConsume(consumable));
             }
         }
-    }
+    }*/
 
     public int GetWeaponSkill(Weapon weapon)
     {

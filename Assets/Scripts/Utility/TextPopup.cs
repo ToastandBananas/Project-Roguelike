@@ -98,7 +98,7 @@ public class TextPopup : MonoBehaviour
         textMesh.sortingOrder = sortingOrder;
 
         gameObject.SetActive(true);
-        transform.position = position + offset;
+        transform.position = position;
     }
 
     void SetupHealPopup(Vector3 position, float healAmount)
@@ -113,7 +113,7 @@ public class TextPopup : MonoBehaviour
         textMesh.sortingOrder = sortingOrder;
 
         gameObject.SetActive(true);
-        transform.position = position + offset;
+        transform.position = position;
     }
 
     void SetupTextStringPopup(Vector3 position, string stringText)

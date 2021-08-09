@@ -20,7 +20,7 @@ public class PlayerMovement : Movement
     void CheckForMovement()
     {
         // Do nothing if the Player is still moving
-        if (playerManager.isMyTurn == false || isMoving || characterManager.actionQueued || GameControls.gamePlayActions.leftCtrl.IsPressed)
+        if (playerManager.isMyTurn == false || isMoving || characterManager.actionsQueued > 0 || GameControls.gamePlayActions.leftCtrl.IsPressed)
             return;
 
         Vector2 movementInput = GameControls.gamePlayActions.playerMovementAxis.Value;
@@ -55,7 +55,10 @@ public class PlayerMovement : Movement
                         playerManager.playerAttack.DetermineAttack(null, stats);
                     }
                     else
-                        StartCoroutine(UseAPAndMove(0, 1));
+                    {
+                        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
+                        StartCoroutine(Move(0, 1));
+                    }
                 }
                 else if (vertical < -0.3f) // Down
                 {
@@ -67,7 +70,10 @@ public class PlayerMovement : Movement
                         playerManager.playerAttack.DetermineAttack(null, stats);
                     }
                     else
-                        StartCoroutine(UseAPAndMove(0, -1));
+                    {
+                        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
+                        StartCoroutine(Move(0, -1));
+                    }
                 }
             }
             else if (vertical <= 0.3f && vertical >= -0.3f)
@@ -82,7 +88,10 @@ public class PlayerMovement : Movement
                         playerManager.playerAttack.DetermineAttack(null, stats);
                     }
                     else
-                        StartCoroutine(UseAPAndMove(-1, 0));
+                    {
+                        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
+                        StartCoroutine(Move(-1, 0));
+                    }
                 }
                 else if (horizontal > 0.3f) // Right
                 {
@@ -94,7 +103,10 @@ public class PlayerMovement : Movement
                         playerManager.playerAttack.DetermineAttack(null, stats);
                     }
                     else
-                        StartCoroutine(UseAPAndMove(1, 0));
+                    {
+                        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
+                        StartCoroutine(Move(1, 0));
+                    }
                 }
             }
             else if (vertical > 0.3f)
@@ -109,7 +121,10 @@ public class PlayerMovement : Movement
                         playerManager.playerAttack.DetermineAttack(null, stats);
                     }
                     else
-                        StartCoroutine(UseAPAndMove(-1, 1));
+                    {
+                        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
+                        StartCoroutine(Move(-1, 1));
+                    }
                 }
                 else if (horizontal > 0.3f) // Up-right
                 {
@@ -121,7 +136,10 @@ public class PlayerMovement : Movement
                         playerManager.playerAttack.DetermineAttack(null, stats);
                     }
                     else
-                        StartCoroutine(UseAPAndMove(1, 1));
+                    {
+                        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
+                        StartCoroutine(Move(1, 1));
+                    }
                 }
             }
             else if (vertical < -0.3f)
@@ -136,7 +154,10 @@ public class PlayerMovement : Movement
                         playerManager.playerAttack.DetermineAttack(null, stats);
                     }
                     else
-                        StartCoroutine(UseAPAndMove(-1, -1));
+                    {
+                        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
+                        StartCoroutine(Move(-1, -1));
+                    }
                 }
                 else if (horizontal > 0.3f) // Down-right
                 {
@@ -148,7 +169,10 @@ public class PlayerMovement : Movement
                         playerManager.playerAttack.DetermineAttack(null, stats);
                     }
                     else
-                        StartCoroutine(UseAPAndMove(1, -1));
+                    {
+                        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
+                        StartCoroutine(Move(1, -1));
+                    }
                 }
             }
 
@@ -166,7 +190,10 @@ public class PlayerMovement : Movement
                 playerManager.playerAttack.DetermineAttack(null, stats);
             }
             else
-                StartCoroutine(UseAPAndMove(-1, 1));
+            {
+                StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
+                StartCoroutine(Move(-1, 1));
+            }
 
             StartCoroutine(MovementCooldown(0.25f));
         }
@@ -182,7 +209,10 @@ public class PlayerMovement : Movement
                 playerManager.playerAttack.DetermineAttack(null, stats);
             }
             else
-                StartCoroutine(UseAPAndMove(1, 1));
+            {
+                StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
+                StartCoroutine(Move(1, 1));
+            }
 
             StartCoroutine(MovementCooldown(0.25f));
         }
@@ -198,7 +228,10 @@ public class PlayerMovement : Movement
                 playerManager.playerAttack.DetermineAttack(null, stats);
             }
             else
-                StartCoroutine(UseAPAndMove(-1, -1));
+            {
+                StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
+                StartCoroutine(Move(-1, -1));
+            }
 
             StartCoroutine(MovementCooldown(0.25f));
         }
@@ -214,14 +247,24 @@ public class PlayerMovement : Movement
                 playerManager.playerAttack.DetermineAttack(null, stats);
             }
             else
-                StartCoroutine(UseAPAndMove(1, -1));
+            {
+                StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
+                StartCoroutine(Move(1, -1));
+            }
 
             StartCoroutine(MovementCooldown(0.25f));
         }
     }
 
-    public void Move(int xDir, int yDir, bool isNPC)
+    public IEnumerator Move(int xDir, int yDir)
     {
+        int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
+        while (queueNumber != characterManager.currentQueueNumber)
+        {
+            yield return null;
+            if (characterManager.status.isDead) yield break;
+        }
+
         Vector2 startCell = transform.position;
         Vector2 targetCell = startCell + new Vector2(xDir, yDir);
 
@@ -244,9 +287,9 @@ public class PlayerMovement : Movement
         return Physics2D.Raycast(targetCell, Vector2.zero, 1, movementObstacleMask);
     }
 
-    public IEnumerator UseAPAndMove(int xDir, int yDir)
+    /*public IEnumerator UseAPAndMove(int xDir, int yDir)
     {
-        characterManager.actionQueued = true;
+        characterManager.actionsQueued = true;
 
         while (gm.turnManager.IsPlayersTurn() == false)
         {
@@ -255,7 +298,7 @@ public class PlayerMovement : Movement
         
         if (canMove == false || characterManager.status.isDead)
         {
-            characterManager.actionQueued = false;
+            characterManager.actionsQueued = false;
             characterManager.remainingAPToBeUsed = 0;
             yield break;
         }
@@ -265,7 +308,7 @@ public class PlayerMovement : Movement
             if (characterManager.remainingAPToBeUsed <= characterManager.characterStats.currentAP)
             {
                 Move(xDir, yDir, false);
-                characterManager.actionQueued = false;
+                characterManager.actionsQueued = false;
                 characterManager.characterStats.UseAP(characterManager.remainingAPToBeUsed);
 
                 if (characterManager.characterStats.currentAP <= 0)
@@ -284,7 +327,7 @@ public class PlayerMovement : Movement
             if (remainingAP == 0)
             {
                 Move(xDir, yDir, false);
-                characterManager.actionQueued = false;
+                characterManager.actionsQueued = false;
 
                 if (characterManager.characterStats.currentAP <= 0)
                     gm.turnManager.FinishTurn(characterManager);
@@ -296,5 +339,5 @@ public class PlayerMovement : Movement
                 StartCoroutine(UseAPAndMove(xDir, yDir));
             }
         }
-    }
+    }*/
 }

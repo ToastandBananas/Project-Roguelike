@@ -35,53 +35,83 @@ public class APManager : MonoBehaviour
         gm = GameManager.instance;
     }
 
-    public IEnumerator LoseAP(CharacterManager characterManager, int APAmount)
+    public IEnumerator UseAP(CharacterManager characterManager, int APAmount, bool queuingNewAction = true)
     {
-        characterManager.actionQueued = true;
+        Debug.Log(characterManager.name + " is about to use AP...");
+        if (queuingNewAction) characterManager.actionsQueued++;
+
+        if (APAmount <= 0)
+        {
+            Debug.Log("APAmount <= 0");
+            characterManager.actionsQueued--;
+            characterManager.currentQueueNumber++;
+            yield break;
+        }
 
         while (characterManager.isMyTurn == false) { yield return null; }
 
         if (characterManager.status.isDead)
         {
-            characterManager.actionQueued = false;
-            characterManager.remainingAPToBeUsed = 0;
+            characterManager.actionsQueued--;
+            characterManager.currentQueueNumber++;
             yield break;
         }
 
-        if (characterManager.remainingAPToBeUsed > 0)
+        /*if (characterManager.remainingAPToBeUsed > 0)
         {
             if (characterManager.remainingAPToBeUsed <= characterManager.characterStats.currentAP)
             {
-                characterManager.actionQueued = false;
+                characterManager.actionsQueued--;
+                characterManager.currentQueueNumber++;
+
+                Debug.Log(characterManager.name + " Using AP: " + characterManager.remainingAPToBeUsed);
                 characterManager.characterStats.UseAP(characterManager.remainingAPToBeUsed);
 
                 if (characterManager.characterStats.currentAP <= 0)
-                    gm.turnManager.FinishTurn(characterManager);
+                    gm.turnManager.FinishTurn(characterManager, false);
+                else
+                    characterManager.TakeTurn();
             }
             else
             {
-                characterManager.characterStats.UseAP(characterManager.characterStats.currentAP);
-                gm.turnManager.FinishTurn(characterManager);
-                StartCoroutine(LoseAP(characterManager, APAmount));
+                Debug.Log(characterManager.name + " Using AP: " + APAmount);
+                int APRemainder = characterManager.characterStats.UseAPAndGetRemainder(APAmount);
+                Debug.Log(characterManager.name + " AP Remainder: " + APRemainder);
+
+                //characterManager.characterStats.UseAP(characterManager.characterStats.currentAP);
+                gm.turnManager.FinishTurn(characterManager, false);
+                StartCoroutine(UseAP(characterManager, APRemainder, false));
             }
+        }
+        else*/
+        //{
+
+        Debug.Log(characterManager.name + " Using AP: " + APAmount);
+        // Try to use the full AP amount. If we can't, then use what we can and return the remainder to APRemainder
+        int APRemainder = characterManager.characterStats.UseAPAndGetRemainder(APAmount);
+        // If the entire amount was used
+        if (APRemainder <= 0)
+        {
+            // Adjust our queue numbers, so that the appropriate coroutines can finish running
+            characterManager.actionsQueued--;
+            characterManager.currentQueueNumber++;
+
+            // If the character has no AP remaining, end their turn
+            if (characterManager.characterStats.currentAP <= 0)
+                StartCoroutine(gm.turnManager.FinishTurn(characterManager));
+            else // Take another action, if this is an NPC
+                characterManager.TakeTurn();
         }
         else
         {
-            int remainingAP = characterManager.characterStats.UseAPAndGetRemainder(APAmount);
-            if (remainingAP == 0)
-            {
-                characterManager.actionQueued = false;
-
-                if (characterManager.characterStats.currentAP <= 0)
-                    gm.turnManager.FinishTurn(characterManager);
-            }
-            else
-            {
-                characterManager.remainingAPToBeUsed += remainingAP;
-                gm.turnManager.FinishTurn(characterManager);
-                StartCoroutine(LoseAP(characterManager, APAmount));
-            }
+            // Add to the character's remainingAPToBeUsed, finish their turn and run this coroutine again with the remaining AP
+            //characterManager.remainingAPToBeUsed += APRemainder;
+            Debug.Log("Heeeeeeeeere");//characterManager.name + " Remaining AP To Be Used: " + characterManager.remainingAPToBeUsed);
+            StartCoroutine(gm.turnManager.FinishTurn(characterManager));
+            while (characterManager.movement.isMoving) { yield return null; }
+            StartCoroutine(UseAP(characterManager, APRemainder, false));
         }
+        //}
     }
 
     public int GetMovementAPCost()
@@ -136,7 +166,9 @@ public class APManager : MonoBehaviour
 
     public int GetStuckWithWeaponAPLoss(CharacterManager target, float percentDamage)
     {
-        return Mathf.RoundToInt(baseWeaponStickCost * percentDamage * Random.Range(0.75f, 1.25f));
+        int amount = Mathf.RoundToInt(baseWeaponStickCost * percentDamage * Random.Range(0.75f, 1.25f));
+        Debug.Log("Stuck with weapon AP cost: " + amount);
+        return amount;
     }
 
     int CalculateMeleeAttackAPCost(CharacterManager characterManager, Weapon weapon)

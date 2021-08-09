@@ -46,9 +46,9 @@ public class EquipmentManager : MonoBehaviour
         SetupStartingEquipment();
     }
 
-    public IEnumerator UseAPAndSetupEquipment(Equipment equipment, EquipmentSlot equipSlot, ItemData newItemData, ItemData oldItemData, bool droppingEquipment)
+    /*public IEnumerator UseAPAndSetupEquipment(Equipment equipment, EquipmentSlot equipSlot, ItemData newItemData, ItemData oldItemData, bool droppingEquipment)
     {
-        characterManager.actionQueued = true;
+        characterManager.actionsQueued = true;
 
         while (characterManager.isMyTurn == false)
         {
@@ -57,7 +57,7 @@ public class EquipmentManager : MonoBehaviour
 
         if (characterManager.status.isDead)
         {
-            characterManager.actionQueued = false;
+            characterManager.actionsQueued = false;
             characterManager.remainingAPToBeUsed = 0;
             yield break;
         }
@@ -74,7 +74,7 @@ public class EquipmentManager : MonoBehaviour
                 if (oldItemData != null)
                     oldItemData.ReturnToObjectPool();
 
-                characterManager.actionQueued = false;
+                characterManager.actionsQueued = false;
                 characterManager.characterStats.UseAP(characterManager.remainingAPToBeUsed);
 
                 if (characterManager.characterStats.currentAP <= 0)
@@ -113,7 +113,7 @@ public class EquipmentManager : MonoBehaviour
                 if (oldItemData != null)
                     oldItemData.ReturnToObjectPool();
 
-                characterManager.actionQueued = false;
+                characterManager.actionsQueued = false;
                 if (characterManager.characterStats.currentAP <= 0)
                     gm.turnManager.FinishTurn(characterManager);
             }
@@ -124,6 +124,24 @@ public class EquipmentManager : MonoBehaviour
                 StartCoroutine(UseAPAndSetupEquipment(equipment, equipSlot, newItemData, oldItemData, droppingEquipment));
             }
         }
+    }*/
+
+    public IEnumerator SetUpEquipment(ItemData newItemData, ItemData oldItemData, Equipment equipment, EquipmentSlot equipSlot, bool droppingEquipment)
+    {
+        int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
+        while (queueNumber != characterManager.currentQueueNumber)
+        {
+            yield return null;
+            if (characterManager.status.isDead) yield break;
+        }
+
+        SetEquippedSprite(equipSlot, equipment, droppingEquipment);
+        OnEquipmentChanged(oldItemData, newItemData);
+
+        if (newItemData != null)
+            newItemData.ReturnToObjectPool();
+        if (oldItemData != null)
+            oldItemData.ReturnToObjectPool();
     }
 
     public bool Equip(ItemData newItemData, InventoryItem invItemComingFrom, EquipmentSlot equipmentSlot)

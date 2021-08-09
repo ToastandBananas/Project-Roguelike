@@ -21,7 +21,7 @@ public class StateController : MonoBehaviour
 
     public void DoAction()
     {
-        if (characterManager.actionQueued == false)
+        if (characterManager.actionsQueued == 0)
         {
             switch (characterManager.stateController.currentState)
             {

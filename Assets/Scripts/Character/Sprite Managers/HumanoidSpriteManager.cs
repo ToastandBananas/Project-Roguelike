@@ -110,17 +110,24 @@ public class HumanoidSpriteManager : SpriteManager
         characterManager.equipmentManager.isTwoHanding = true;
     }
 
-    public void SwapStance(EquipmentManager equipmentManager, CharacterManager characterManager)
+    public IEnumerator SwapStance(EquipmentManager equipmentManager, CharacterManager characterManager)
     {
+        int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
+        while (queueNumber != characterManager.currentQueueNumber)
+        {
+            yield return null;
+            if (characterManager.status.isDead) yield break;
+        }
+
         if (equipmentManager.isTwoHanding)
             SetupOneHandedWeaponStance(equipmentManager, characterManager);
         else
             SetupTwoHandedWeaponStance(equipmentManager, characterManager);
     }
 
-    public IEnumerator UseAPAndSwapStance(EquipmentManager equipmentManager, CharacterManager characterManager)
+    /*public IEnumerator UseAPAndSwapStance(EquipmentManager equipmentManager, CharacterManager characterManager)
     {
-        characterManager.actionQueued = true;
+        characterManager.actionsQueued = true;
 
         while (characterManager.isMyTurn == false || characterManager.movement.isMoving)
         {
@@ -131,7 +138,7 @@ public class HumanoidSpriteManager : SpriteManager
         {
             if (characterManager.remainingAPToBeUsed <= characterManager.characterStats.currentAP)
             {
-                characterManager.actionQueued = false;
+                characterManager.actionsQueued = false;
                 characterManager.characterStats.UseAP(characterManager.remainingAPToBeUsed);
                 SwapStance(equipmentManager, characterManager);
             }
@@ -147,7 +154,7 @@ public class HumanoidSpriteManager : SpriteManager
             int remainingAP = characterManager.characterStats.UseAPAndGetRemainder(gm.apManager.GetSwapStanceAPCost(characterManager));
             if (remainingAP == 0)
             {
-                characterManager.actionQueued = false;
+                characterManager.actionsQueued = false;
                 SwapStance(equipmentManager, characterManager);
             }
             else
@@ -157,7 +164,7 @@ public class HumanoidSpriteManager : SpriteManager
                 StartCoroutine(UseAPAndSwapStance(equipmentManager, characterManager));
             }
         }
-    }
+    }*/
 
     public void AssignSprite(EquipmentSlot equipSlot, Equipment equipment, EquipmentManager equipmentManager)
     {

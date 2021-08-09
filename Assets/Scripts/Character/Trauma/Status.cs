@@ -352,6 +352,7 @@ public class Status : MonoBehaviour
         }
 
         characterManager.movement.enabled = false;
+        characterManager.ResetActionsQueue();
 
         characterManager.characterSpriteManager.SetToDeathSprite(characterManager.spriteRenderer);
 
@@ -505,34 +506,34 @@ public class Status : MonoBehaviour
                 {
                     for (int i = 0; i < wearable.primaryBodyPartsCovered.Length; i++)
                     {
-                        GetBodyPart(wearable.primaryBodyPartsCovered[i]).addedDefense_Clothing.RemoveModifier(newItemData.primaryDefense);
+                        GetBodyPart(wearable.primaryBodyPartsCovered[i]).addedDefense_Clothing.RemoveModifier(oldItemData.primaryDefense);
                     }
 
                     for (int i = 0; i < wearable.secondaryBodyPartsCovered.Length; i++)
                     {
-                        GetBodyPart(wearable.secondaryBodyPartsCovered[i]).addedDefense_Clothing.RemoveModifier(newItemData.secondaryDefense);
+                        GetBodyPart(wearable.secondaryBodyPartsCovered[i]).addedDefense_Clothing.RemoveModifier(oldItemData.secondaryDefense);
                     }
 
                     for (int i = 0; i < wearable.tertiaryBodyPartsCovered.Length; i++)
                     {
-                        GetBodyPart(wearable.tertiaryBodyPartsCovered[i]).addedDefense_Clothing.RemoveModifier(newItemData.tertiaryDefense);
+                        GetBodyPart(wearable.tertiaryBodyPartsCovered[i]).addedDefense_Clothing.RemoveModifier(oldItemData.tertiaryDefense);
                     }
                 }
                 else
                 {
                     for (int i = 0; i < wearable.primaryBodyPartsCovered.Length; i++)
                     {
-                        GetBodyPart(wearable.primaryBodyPartsCovered[i]).addedDefense_Armor.RemoveModifier(newItemData.primaryDefense);
+                        GetBodyPart(wearable.primaryBodyPartsCovered[i]).addedDefense_Armor.RemoveModifier(oldItemData.primaryDefense);
                     }
 
                     for (int i = 0; i < wearable.secondaryBodyPartsCovered.Length; i++)
                     {
-                        GetBodyPart(wearable.secondaryBodyPartsCovered[i]).addedDefense_Armor.RemoveModifier(newItemData.secondaryDefense);
+                        GetBodyPart(wearable.secondaryBodyPartsCovered[i]).addedDefense_Armor.RemoveModifier(oldItemData.secondaryDefense);
                     }
 
                     for (int i = 0; i < wearable.tertiaryBodyPartsCovered.Length; i++)
                     {
-                        GetBodyPart(wearable.tertiaryBodyPartsCovered[i]).addedDefense_Armor.RemoveModifier(newItemData.tertiaryDefense);
+                        GetBodyPart(wearable.tertiaryBodyPartsCovered[i]).addedDefense_Armor.RemoveModifier(oldItemData.tertiaryDefense);
                     }
                 }
             }

@@ -43,6 +43,7 @@ public class Movement : MonoBehaviour
 
     public IEnumerator ArcMovement(Vector2 endPos, int possibleMoveCount = 1)
     {
+        if (isMoving) yield break;
         isMoving = true;
         transform.position = Utilities.ClampedPosition(transform.position);
         FaceForward(endPos);
@@ -74,7 +75,7 @@ public class Movement : MonoBehaviour
                 transform.position = Utilities.ClampedPosition(transform.position);
                 break;
             }
-            if (characterManager.isNPC) Debug.Log("Arc movement: " + endPos);
+            // if (characterManager.isNPC) Debug.Log("Arc movement: " + endPos);
             // Compute the next position, with arc added in
             float nextX = Mathf.MoveTowards(transform.position.x, x1, inverseMoveTime * Time.deltaTime);
             float baseY = Mathf.Lerp(startPos.y, endPos.y, (nextX - x0) / dist);
@@ -97,6 +98,7 @@ public class Movement : MonoBehaviour
     // Move Animation
     public virtual IEnumerator SmoothMovement(Vector2 endPos, int possibleMoveCount = 1)
     {
+        if (isMoving) yield break;
         isMoving = true;
         transform.position = Utilities.ClampedPosition(transform.position);
         FaceForward(endPos);
@@ -113,7 +115,7 @@ public class Movement : MonoBehaviour
 
         while ((Vector2)transform.position != endPos)
         {
-            if (characterManager.isNPC) Debug.Log("Smooth movement: " + endPos);
+            // if (characterManager.isNPC) Debug.Log("Smooth movement: " + endPos);
             Vector2 newPosition = Vector2.MoveTowards(transform.position, endPos, inverseMoveTime * Time.deltaTime);
             transform.position = newPosition;
 
@@ -136,11 +138,11 @@ public class Movement : MonoBehaviour
         OnFinishedMoving();
     }
 
-    void OnFinishedMoving()
+    void OnFinishedMoving(bool updateTiles = true)
     {
         if (characterManager.isNPC)
         {
-            if (characterManager.actionQueued == false)
+            if (characterManager.actionsQueued == 0)
             {
                 if (characterManager.characterStats.currentAP <= 0)
                     gm.turnManager.FinishTurn(characterManager);
@@ -149,7 +151,13 @@ public class Movement : MonoBehaviour
             }
         }
         else
-            gm.containerInvUI.OnPlayerMoved();
+        {
+            if (updateTiles)
+                gm.containerInvUI.OnPlayerMoved();
+
+            if (characterManager.characterStats.currentAP <= 0)
+                gm.turnManager.FinishTurn(characterManager);
+        }
     }
 
     bool IsDiagonal(Vector2 endPos)
@@ -163,6 +171,7 @@ public class Movement : MonoBehaviour
     // Blocked Animation
     public IEnumerator BlockedMovement(Vector3 endPos)
     {
+        if (isMoving) yield break;
         isMoving = true;
         FaceForward(endPos);
 
@@ -190,8 +199,7 @@ public class Movement : MonoBehaviour
         }
 
         isMoving = false;
-        if (characterManager.isNPC)
-            OnFinishedMoving();
+        OnFinishedMoving(false);
     }
 
     public IEnumerator MovementCooldown(float cooldownTime)

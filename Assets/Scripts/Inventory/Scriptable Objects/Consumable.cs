@@ -26,7 +26,8 @@ public class Consumable : Item
 
     public override void Use(CharacterManager characterManager, EquipmentSlot equipSlot, Inventory inventory, InventoryItem invItem, int itemCount)
     {
-        characterManager.StartCoroutine(characterManager.characterStats.UseAPAndConsume(this));
+        GameManager.instance.apManager.StartCoroutine(GameManager.instance.apManager.UseAP(characterManager, GameManager.instance.apManager.GetConsumeAPCost(this)));
+        characterManager.StartCoroutine(characterManager.characterStats.Consume(invItem.itemData));
 
         base.Use(characterManager, equipSlot, inventory, invItem, itemCount);
     }
