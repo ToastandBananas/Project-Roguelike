@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -354,7 +355,7 @@ public class Status : MonoBehaviour
         characterManager.movement.enabled = false;
         characterManager.ResetActionsQueue();
 
-        characterManager.characterSpriteManager.SetToDeathSprite(characterManager.spriteRenderer);
+        characterManager.spriteManager.SetToDeathSprite(characterManager.spriteRenderer);
 
         gm.flavorText.StartCoroutine(gm.flavorText.DelayWriteLine(Utilities.GetPronoun(characterManager, true, false) + "died."));
     }
@@ -416,6 +417,33 @@ public class Status : MonoBehaviour
                 bodyParts[i].healingBuildup -= roundedHealingAmount;
             }
         }
+    }
+
+    public IEnumerator Consume(ItemData consumableItemData)
+    {
+        int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
+        while (queueNumber != characterManager.currentQueueNumber)
+        {
+            yield return null;
+            if (characterManager.status.isDead) yield break;
+        }
+
+        Consumable consumable = (Consumable)consumableItemData.item;
+
+        // Adjust overall bodily healthiness
+        if (consumable.healthinessAdjustment != 0)
+            characterManager.status.AdjustHealthiness(consumable.healthinessAdjustment);
+
+        // Instantly heal entire body
+        if (consumable.instantHealPercent > 0)
+            characterManager.status.HealAllBodyParts_Percent(consumable.instantHealPercent);
+
+        // Apply heal over time buff
+        if (consumable.gradualHealPercent > 0)
+            TraumaSystem.ApplyBuff(characterManager, consumable);
+
+        // Show some flavor text
+        gm.flavorText.WriteConsumeLine(consumable, characterManager);
     }
 
     public virtual BodyPart GetBodyPart(BodyPartType bodyPartType)

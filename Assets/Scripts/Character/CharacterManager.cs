@@ -5,7 +5,7 @@ public class CharacterManager : MonoBehaviour
     public bool isNamed;
 
     [HideInInspector] public Alliances alliances;
-    [HideInInspector] public SpriteManager characterSpriteManager;
+    [HideInInspector] public SpriteManager spriteManager;
     [HideInInspector] public HumanoidSpriteManager humanoidSpriteManager;
     [HideInInspector] public EquipmentManager equipmentManager;
     [HideInInspector] public Inventory inventory;
@@ -26,7 +26,6 @@ public class CharacterManager : MonoBehaviour
     public bool isMyTurn = false;
     public int actionsQueued;
     public int currentQueueNumber;
-    //public int remainingAPToBeUsed;
 
     GameManager gm;
 
@@ -42,8 +41,9 @@ public class CharacterManager : MonoBehaviour
         alliances = GetComponent<Alliances>();
         attack = GetComponent<Attack>();
         characterStats = GetComponent<CharacterStats>();
-        characterSpriteManager = transform.GetComponentInChildren<SpriteManager>();
-        humanoidSpriteManager = (HumanoidSpriteManager)characterSpriteManager;
+        characterStats.characterManager = this;
+        spriteManager = transform.GetComponentInChildren<SpriteManager>();
+        humanoidSpriteManager = (HumanoidSpriteManager)spriteManager;
         movement = GetComponent<Movement>();
         status = GetComponent<Status>();
         vision = GetComponentInChildren<Vision>();

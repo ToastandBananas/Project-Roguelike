@@ -3,13 +3,14 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    [HideInInspector] public bool isMoving, canMove;
-
     [Header("Obstacle Mask")]
     public LayerMask movementObstacleMask;
 
     [Tooltip("Multiplier for the arc height, which is dependent on the distance from the target (set to 0 for no arc)")]
     public float arcMultiplier = 0.1f;
+
+    [HideInInspector] public bool isMoving, canMove;
+    [HideInInspector] public Direction directionFacing;
 
     [HideInInspector] public GameManager gm;
     [HideInInspector] public CharacterManager characterManager;
@@ -26,6 +27,11 @@ public class Movement : MonoBehaviour
 
         // Make sure the character is properly positioned
         transform.position = Utilities.ClampedPosition(transform.position);
+        
+        if (transform.localScale.x == 1)
+            directionFacing = Direction.East;
+        else
+            directionFacing = Direction.West;
     }
 
     public virtual void Start()
@@ -33,12 +39,12 @@ public class Movement : MonoBehaviour
         gm = GameManager.instance;
     }
 
-    public void FaceForward(Vector2 targetPos)
+    public void FaceForward()
     {
-        if (transform.position.x > targetPos.x)
-            transform.localScale = new Vector3(-1, 1);
-        else
+        if ((directionFacing == Direction.East || directionFacing == Direction.Northeast || directionFacing == Direction.Southeast) && transform.localScale.x != 1)
             transform.localScale = Vector3.one;
+        else if ((directionFacing == Direction.West || directionFacing == Direction.Northwest || directionFacing == Direction.Southwest) && transform.localScale.x != -1)
+            transform.localScale = new Vector3(-1, 1);
     }
 
     public IEnumerator ArcMovement(Vector2 endPos, int possibleMoveCount = 1)
@@ -46,7 +52,6 @@ public class Movement : MonoBehaviour
         if (isMoving) yield break;
         isMoving = true;
         transform.position = Utilities.ClampedPosition(transform.position);
-        FaceForward(endPos);
 
         // Set pathfinding grid graph tags for current and end position nodes
         gm.gameTiles.SetTagForNode(gm.gameTiles.gridGraph.GetNearest(transform.position).node);
@@ -75,6 +80,7 @@ public class Movement : MonoBehaviour
                 transform.position = Utilities.ClampedPosition(transform.position);
                 break;
             }
+
             // if (characterManager.isNPC) Debug.Log("Arc movement: " + endPos);
             // Compute the next position, with arc added in
             float nextX = Mathf.MoveTowards(transform.position.x, x1, inverseMoveTime * Time.deltaTime);
@@ -94,14 +100,12 @@ public class Movement : MonoBehaviour
         isMoving = false;
         OnFinishedMoving();
     }
-
-    // Move Animation
-    public virtual IEnumerator SmoothMovement(Vector2 endPos, int possibleMoveCount = 1)
+    
+    public IEnumerator SmoothMovement(Vector2 endPos, int possibleMoveCount = 1)
     {
         if (isMoving) yield break;
         isMoving = true;
         transform.position = Utilities.ClampedPosition(transform.position);
-        FaceForward(endPos);
 
         // Set pathfinding grid graph tags for current and end position nodes
         gm.gameTiles.SetTagForNode(gm.gameTiles.gridGraph.GetNearest(transform.position).node);
@@ -128,52 +132,11 @@ public class Movement : MonoBehaviour
         isMoving = false;
         OnFinishedMoving();
     }
-
-    public void TeleportToPosition(Vector2 endPos)
-    {
-        transform.position = endPos;
-        if (characterManager.isNPC)
-            GameTiles.AddNPC(characterManager, transform.position);
-
-        OnFinishedMoving();
-    }
-
-    void OnFinishedMoving(bool updateTiles = true)
-    {
-        if (characterManager.isNPC)
-        {
-            if (characterManager.actionsQueued == 0)
-            {
-                if (characterManager.characterStats.currentAP <= 0)
-                    gm.turnManager.FinishTurn(characterManager);
-                else
-                    characterManager.TakeTurn();
-            }
-        }
-        else
-        {
-            if (updateTiles)
-                gm.containerInvUI.OnPlayerMoved();
-
-            if (characterManager.characterStats.currentAP <= 0)
-                gm.turnManager.FinishTurn(characterManager);
-        }
-    }
-
-    bool IsDiagonal(Vector2 endPos)
-    {
-        if (transform.position.x != endPos.x && transform.position.y != endPos.y) 
-            return true;
-
-        return false;
-    }
-
-    // Blocked Animation
+    
     public IEnumerator BlockedMovement(Vector3 endPos)
     {
         if (isMoving) yield break;
         isMoving = true;
-        FaceForward(endPos);
 
         Vector3 originalPos = transform.position;
 
@@ -202,14 +165,474 @@ public class Movement : MonoBehaviour
         OnFinishedMoving(false);
     }
 
+    public void TeleportToPosition(Vector2 endPos)
+    {
+        transform.position = endPos;
+        if (characterManager.isNPC)
+            GameTiles.AddNPC(characterManager, transform.position);
+
+        OnFinishedMoving();
+    }
+
+    void OnFinishedMoving(bool updateTiles = true)
+    {
+        if (characterManager.isNPC)
+        {
+            if (characterManager.isMyTurn && characterManager.characterStats.currentAP > 0)
+                characterManager.TakeTurn();
+        }
+        else
+        {
+            if (updateTiles)
+                gm.containerInvUI.OnPlayerMoved();
+        }
+    }
+
+    public void Rotate(Direction targetDirection)
+    {
+        GetRotationsSegmentCount(targetDirection, out int segmentCount, out bool clockwise);
+
+        for (int i = 0; i < segmentCount; i++)
+        {
+            StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetRotateAPCost()));
+            StartCoroutine(RotateOneSegment(clockwise));
+        }
+    }
+
+    IEnumerator RotateOneSegment(bool clockwise)
+    {
+        int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
+        while (queueNumber != characterManager.currentQueueNumber)
+        {
+            yield return null;
+            if (characterManager.status.isDead) yield break;
+        }
+
+        // Update current direction facing
+        directionFacing = GetRotationsNextDirection(clockwise);
+        FaceForward();
+
+        // Update arrow graphic to point in current direction facing
+        characterManager.humanoidSpriteManager.SetFacingArrowDirection(directionFacing);
+    }
+
+    void GetRotationsSegmentCount(Direction targetDirection, out int count, out bool clockwise)
+    {
+        switch (directionFacing)
+        {
+            case Direction.North:
+                switch (targetDirection)
+                {
+                    case Direction.South:
+                        count = 4;
+                        clockwise = true;
+                        break;
+                    case Direction.West:
+                        count = 2;
+                        clockwise = false;
+                        break;
+                    case Direction.East:
+                        count = 2;
+                        clockwise = true;
+                        break;
+                    case Direction.Northwest:
+                        count = 1;
+                        clockwise = false;
+                        break;
+                    case Direction.Northeast:
+                        count = 1;
+                        clockwise = true;
+                        break;
+                    case Direction.Southwest:
+                        count = 3;
+                        clockwise = false;
+                        break;
+                    case Direction.Southeast:
+                        count = 3;
+                        clockwise = true;
+                        break;
+                    default:
+                        count = 0;
+                        clockwise = true;
+                        break;
+                }
+                break;
+            case Direction.South:
+                switch (targetDirection)
+                {
+                    case Direction.North:
+                        count = 4;
+                        clockwise = true;
+                        break;
+                    case Direction.West:
+                        count = 2;
+                        clockwise = true;
+                        break;
+                    case Direction.East:
+                        count = 2;
+                        clockwise = false;
+                        break;
+                    case Direction.Northwest:
+                        count = 3;
+                        clockwise = true;
+                        break;
+                    case Direction.Northeast:
+                        count = 3;
+                        clockwise = false;
+                        break;
+                    case Direction.Southwest:
+                        count = 1;
+                        clockwise = true;
+                        break;
+                    case Direction.Southeast:
+                        count = 1;
+                        clockwise = false;
+                        break;
+                    default:
+                        count = 0;
+                        clockwise = true;
+                        break;
+                }
+                break;
+            case Direction.West:
+                switch (targetDirection)
+                {
+                    case Direction.North:
+                        count = 2;
+                        clockwise = true;
+                        break;
+                    case Direction.South:
+                        count = 2;
+                        clockwise = false;
+                        break;
+                    case Direction.East:
+                        count = 4;
+                        clockwise = true;
+                        break;
+                    case Direction.Northwest:
+                        count = 1;
+                        clockwise = true;
+                        break;
+                    case Direction.Northeast:
+                        count = 3;
+                        clockwise = true;
+                        break;
+                    case Direction.Southwest:
+                        count = 1;
+                        clockwise = false;
+                        break;
+                    case Direction.Southeast:
+                        count = 3;
+                        clockwise = false;
+                        break;
+                    default:
+                        count = 0;
+                        clockwise = true;
+                        break;
+                }
+                break;
+            case Direction.East:
+                switch (targetDirection)
+                {
+                    case Direction.North:
+                        count = 2;
+                        clockwise = false;
+                        break;
+                    case Direction.South:
+                        count = 2;
+                        clockwise = true;
+                        break;
+                    case Direction.West:
+                        count = 4;
+                        clockwise = true;
+                        break;
+                    case Direction.Northwest:
+                        count = 3;
+                        clockwise = false;
+                        break;
+                    case Direction.Northeast:
+                        count = 1;
+                        clockwise = false;
+                        break;
+                    case Direction.Southwest:
+                        count = 3;
+                        clockwise = true;
+                        break;
+                    case Direction.Southeast:
+                        count = 1;
+                        clockwise = true;
+                        break;
+                    default:
+                        count = 0;
+                        clockwise = true;
+                        break;
+                }
+                break;
+            case Direction.Northwest:
+                switch (targetDirection)
+                {
+                    case Direction.North:
+                        count = 1;
+                        clockwise = true;
+                        break;
+                    case Direction.South:
+                        count = 3;
+                        clockwise = false;
+                        break;
+                    case Direction.West:
+                        count = 1;
+                        clockwise = false;
+                        break;
+                    case Direction.East:
+                        count = 3;
+                        clockwise = true;
+                        break;
+                    case Direction.Northeast:
+                        count = 2;
+                        clockwise = true;
+                        break;
+                    case Direction.Southwest:
+                        count = 2;
+                        clockwise = false;
+                        break;
+                    case Direction.Southeast:
+                        count = 4;
+                        clockwise = true;
+                        break;
+                    default:
+                        count = 0;
+                        clockwise = true;
+                        break;
+                }
+                break;
+            case Direction.Northeast:
+                switch (targetDirection)
+                {
+                    case Direction.North:
+                        count = 1;
+                        clockwise = false;
+                        break;
+                    case Direction.South:
+                        count = 3;
+                        clockwise = true;
+                        break;
+                    case Direction.West:
+                        count = 3;
+                        clockwise = false;
+                        break;
+                    case Direction.East:
+                        count = 1;
+                        clockwise = true;
+                        break;
+                    case Direction.Northwest:
+                        count = 2;
+                        clockwise = false;
+                        break;
+                    case Direction.Southwest:
+                        count = 4;
+                        clockwise = true;
+                        break;
+                    case Direction.Southeast:
+                        count = 2;
+                        clockwise = true;
+                        break;
+                    default:
+                        count = 0;
+                        clockwise = true;
+                        break;
+                }
+                break;
+            case Direction.Southwest:
+                switch (targetDirection)
+                {
+                    case Direction.North:
+                        count = 3;
+                        clockwise = true;
+                        break;
+                    case Direction.South:
+                        count = 1;
+                        clockwise = false;
+                        break;
+                    case Direction.West:
+                        count = 1;
+                        clockwise = true;
+                        break;
+                    case Direction.East:
+                        count = 3;
+                        clockwise = false;
+                        break;
+                    case Direction.Northwest:
+                        count = 2;
+                        clockwise = true;
+                        break;
+                    case Direction.Northeast:
+                        count = 4;
+                        clockwise = true;
+                        break;
+                    case Direction.Southeast:
+                        count = 2;
+                        clockwise = false;
+                        break;
+                    default:
+                        count = 0;
+                        clockwise = true;
+                        break;
+                }
+                break;
+            case Direction.Southeast:
+                switch (targetDirection)
+                {
+                    case Direction.North:
+                        count = 3;
+                        clockwise = false;
+                        break;
+                    case Direction.South:
+                        count = 1;
+                        clockwise = true;
+                        break;
+                    case Direction.West:
+                        count = 3;
+                        clockwise = true;
+                        break;
+                    case Direction.East:
+                        count = 1;
+                        clockwise = false;
+                        break;
+                    case Direction.Northwest:
+                        count = 4;
+                        clockwise = true;
+                        break;
+                    case Direction.Northeast:
+                        count = 2;
+                        clockwise = false;
+                        break;
+                    case Direction.Southwest:
+                        count = 2;
+                        clockwise = true;
+                        break;
+                    default:
+                        count = 0;
+                        clockwise = true;
+                        break;
+                }
+                break;
+            default:
+                count = 0;
+                clockwise = true;
+                break;
+        }
+    }
+
+    Direction GetRotationsNextDirection(bool clockwise)
+    {
+        switch (directionFacing)
+        {
+            case Direction.North:
+                if (clockwise)
+                    return Direction.Northeast;
+                else
+                    return Direction.Northwest;
+            case Direction.South:
+                if (clockwise)
+                    return Direction.Southwest;
+                else
+                    return Direction.Southeast;
+            case Direction.West:
+                if (clockwise)
+                    return Direction.Northwest;
+                else
+                    return Direction.Southwest;
+            case Direction.East:
+                if (clockwise)
+                    return Direction.Southeast;
+                else
+                    return Direction.Northeast;
+            case Direction.Northwest:
+                if (clockwise)
+                    return Direction.North;
+                else
+                    return Direction.West;
+            case Direction.Northeast:
+                if (clockwise)
+                    return Direction.East;
+                else
+                    return Direction.North;
+            case Direction.Southwest:
+                if (clockwise)
+                    return Direction.West;
+                else
+                    return Direction.South;
+            case Direction.Southeast:
+                if (clockwise)
+                    return Direction.South;
+                else
+                    return Direction.East;
+            default:
+                return Direction.East;
+        }
+    }
+
+    public bool IsBehindCharacter(CharacterManager character)
+    {
+        switch (character.movement.directionFacing)
+        {
+            case Direction.North:
+                if (transform.position.y < character.transform.position.y)
+                    return true;
+                break;
+            case Direction.South:
+                if (transform.position.y > character.transform.position.y)
+                    return true;
+                break;
+            case Direction.West:
+                if (transform.position.x > character.transform.position.x)
+                    return true;
+                break;
+            case Direction.East:
+                if (transform.position.x < character.transform.position.x)
+                    return true;
+                break;
+            case Direction.Northwest:
+                if ((transform.position.x > character.transform.position.x && transform.position.y < character.transform.position.y) 
+                    || (transform.position.x == character.transform.position.x && transform.position.y < character.transform.position.y)
+                    || (transform.position.x > character.transform.position.x && transform.position.y == character.transform.position.y))
+                    return true;
+                break;
+            case Direction.Northeast:
+                if ((transform.position.x < character.transform.position.x && transform.position.y < character.transform.position.y)
+                    || (transform.position.x == character.transform.position.x && transform.position.y < character.transform.position.y)
+                    || (transform.position.x < character.transform.position.x && transform.position.y == character.transform.position.y))
+                    return true;
+                break;
+            case Direction.Southwest:
+                if ((transform.position.x > character.transform.position.x && transform.position.y > character.transform.position.y)
+                    || (transform.position.x == character.transform.position.x && transform.position.y > character.transform.position.y)
+                    || (transform.position.x > character.transform.position.x && transform.position.y == character.transform.position.y))
+                    return true;
+                break;
+            case Direction.Southeast:
+                if ((transform.position.x < character.transform.position.x && transform.position.y > character.transform.position.y)
+                    || (transform.position.x == character.transform.position.x && transform.position.y > character.transform.position.y)
+                    || (transform.position.x < character.transform.position.x && transform.position.y == character.transform.position.y))
+                    return true;
+                break;
+            default:
+                return false;
+        }
+        return false;
+    }
+
+    bool IsDiagonal(Vector2 endPos)
+    {
+        if (transform.position.x != endPos.x && transform.position.y != endPos.y) 
+            return true;
+        return false;
+    }
+
     public IEnumerator MovementCooldown(float cooldownTime)
     {
         canMove = false;
-        while (cooldownTime > 0f)
-        {
-            cooldownTime -= Time.deltaTime;
-            yield return null;
-        }
+        yield return new WaitForSeconds(cooldownTime);
         canMove = true;
     }
 

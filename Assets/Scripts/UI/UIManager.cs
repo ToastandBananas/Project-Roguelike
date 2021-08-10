@@ -515,9 +515,9 @@ public class UIManager : MonoBehaviour
                         float bagWeight = 0;
                         if (equippedItemData.bagInventory != null)
                             bagWeight += equippedItemData.bagInventory.currentWeight;
+
                         StartCoroutine(gm.apManager.UseAP(gm.playerManager, gm.apManager.GetEquipAPCost((Equipment)equippedItemData.item, bagWeight)));
                         StartCoroutine(draggedInvItem.myEquipmentManager.SetUpEquipment(null, equippedItemData, (Equipment)equippedItemData.item, draggedInvItemsEquipSlot, false));
-                        //StartCoroutine(draggedInvItem.myEquipmentManager.UseAPAndSetupEquipment((Equipment)equippedItemData.item, draggedInvItemsEquipSlot, null, equippedItemData, false));
                     }
                     else
                     {
@@ -566,9 +566,9 @@ public class UIManager : MonoBehaviour
                         float bagWeight = 0;
                         if (equippedItemData.bagInventory != null)
                             bagWeight += equippedItemData.bagInventory.currentWeight;
+
                         StartCoroutine(gm.apManager.UseAP(gm.playerManager, gm.apManager.GetEquipAPCost((Equipment)equippedItemData.item, bagWeight)));
                         StartCoroutine(draggedInvItem.myEquipmentManager.SetUpEquipment(null, equippedItemData, (Equipment)equippedItemData.item, draggedInvItemsEquipSlot, true));
-                        //StartCoroutine(draggedInvItem.myEquipmentManager.UseAPAndSetupEquipment((Equipment)equippedItemData.item, draggedInvItemsEquipSlot, null, equippedItemData, true));
                     }
                     else
                     {
@@ -617,9 +617,9 @@ public class UIManager : MonoBehaviour
                     float bagWeight = 0;
                     if (equippedItemData.bagInventory != null)
                         bagWeight += equippedItemData.bagInventory.currentWeight;
+
                     StartCoroutine(gm.apManager.UseAP(gm.playerManager, gm.apManager.GetEquipAPCost((Equipment)equippedItemData.item, bagWeight)));
                     StartCoroutine(draggedInvItem.myEquipmentManager.SetUpEquipment(null, equippedItemData, (Equipment)equippedItemData.item, draggedInvItemsEquipSlot, false));
-                    //StartCoroutine(draggedInvItem.myEquipmentManager.UseAPAndSetupEquipment((Equipment)equippedItemData.item, draggedInvItemsEquipSlot, null, equippedItemData, false));
                 }
                 else
                 {
@@ -688,9 +688,9 @@ public class UIManager : MonoBehaviour
                         float bagWeight = 0;
                         if (equippedItemData.bagInventory != null)
                             bagWeight += equippedItemData.bagInventory.currentWeight;
+
                         StartCoroutine(gm.apManager.UseAP(gm.playerManager, gm.apManager.GetEquipAPCost((Equipment)equippedItemData.item, bagWeight)));
                         StartCoroutine(draggedInvItem.myEquipmentManager.SetUpEquipment(null, equippedItemData, (Equipment)equippedItemData.item, draggedInvItemsEquipSlot, true));
-                        //StartCoroutine(draggedInvItem.myEquipmentManager.UseAPAndSetupEquipment((Equipment)equippedItemData.item, draggedInvItemsEquipSlot, null, equippedItemData, true));
                     }
                     else
                     {
@@ -724,9 +724,9 @@ public class UIManager : MonoBehaviour
                     float bagWeight = 0;
                     if (equippedItemData.bagInventory != null)
                         bagWeight += equippedItemData.bagInventory.currentWeight;
+
                     StartCoroutine(gm.apManager.UseAP(gm.playerManager, gm.apManager.GetEquipAPCost((Equipment)equippedItemData.item, bagWeight)));
                     StartCoroutine(draggedInvItem.myEquipmentManager.SetUpEquipment(null, equippedItemData, (Equipment)equippedItemData.item, draggedInvItemsEquipSlot, false));
-                    //StartCoroutine(draggedInvItem.myEquipmentManager.UseAPAndSetupEquipment((Equipment)equippedItemData.item, draggedInvItemsEquipSlot, null, equippedItemData, false));
                 }
                 else
                 {
@@ -770,9 +770,9 @@ public class UIManager : MonoBehaviour
                     float bagWeight = 0;
                     if (equippedItemData.bagInventory != null)
                         bagWeight += equippedItemData.bagInventory.currentWeight;
+
                     StartCoroutine(gm.apManager.UseAP(gm.playerManager, gm.apManager.GetEquipAPCost((Equipment)equippedItemData.item, bagWeight)));
                     StartCoroutine(draggedInvItem.myEquipmentManager.SetUpEquipment(null, equippedItemData, (Equipment)equippedItemData.item, draggedInvItemsEquipSlot, true));
-                    //StartCoroutine(draggedInvItem.myEquipmentManager.UseAPAndSetupEquipment((Equipment)equippedItemData.item, draggedInvItemsEquipSlot, null, equippedItemData, true));
                 }
                 else
                     StartCoroutine(gm.apManager.UseAP(gm.playerManager, gm.apManager.GetTransferItemCost(draggedInvItem.itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false)));

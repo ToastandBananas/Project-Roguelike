@@ -86,13 +86,11 @@ public class Equipment : Item
             {
                 GameManager.instance.StartCoroutine(GameManager.instance.apManager.UseAP(characterManager, APCost));
                 characterManager.equipmentManager.StartCoroutine(characterManager.equipmentManager.SetUpEquipment(itemDataUsing, oldItemData, newEquipment, equipSlot, false));
-                //characterManager.equipmentManager.StartCoroutine(characterManager.equipmentManager.UseAPAndSetupEquipment(newEquipment, equipSlot, itemDataUsing, oldItemData, false));
             }
             else
             {
                 GameManager.instance.StartCoroutine(GameManager.instance.apManager.UseAP(characterManager, APCost));
                 characterManager.equipmentManager.StartCoroutine(characterManager.equipmentManager.SetUpEquipment(null, oldItemData, newEquipment, equipSlot, false));
-                //characterManager.equipmentManager.StartCoroutine(characterManager.equipmentManager.UseAPAndSetupEquipment(newEquipment, equipSlot, null, oldItemData, false));
             }
 
             base.Use(characterManager, equipSlot, inventory, invItem, itemCount);

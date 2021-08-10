@@ -46,86 +46,6 @@ public class EquipmentManager : MonoBehaviour
         SetupStartingEquipment();
     }
 
-    /*public IEnumerator UseAPAndSetupEquipment(Equipment equipment, EquipmentSlot equipSlot, ItemData newItemData, ItemData oldItemData, bool droppingEquipment)
-    {
-        characterManager.actionsQueued = true;
-
-        while (characterManager.isMyTurn == false)
-        {
-            yield return null;
-        }
-
-        if (characterManager.status.isDead)
-        {
-            characterManager.actionsQueued = false;
-            characterManager.remainingAPToBeUsed = 0;
-            yield break;
-        }
-
-        if (characterManager.remainingAPToBeUsed > 0)
-        {
-            if (characterManager.remainingAPToBeUsed <= characterManager.characterStats.currentAP)
-            {
-                SetEquippedSprite(equipSlot, equipment, droppingEquipment);
-                OnEquipmentChanged(oldItemData, newItemData);
-
-                if (newItemData != null)
-                    newItemData.ReturnToObjectPool();
-                if (oldItemData != null)
-                    oldItemData.ReturnToObjectPool();
-
-                characterManager.actionsQueued = false;
-                characterManager.characterStats.UseAP(characterManager.remainingAPToBeUsed);
-
-                if (characterManager.characterStats.currentAP <= 0)
-                    gm.turnManager.FinishTurn(characterManager);
-            }
-            else
-            {
-                characterManager.characterStats.UseAP(characterManager.characterStats.currentAP);
-                gm.turnManager.FinishTurn(characterManager);
-                StartCoroutine(UseAPAndSetupEquipment(equipment, equipSlot, newItemData, oldItemData, droppingEquipment));
-            }
-        }
-        else
-        {
-            float newBagInvWeight = 0;
-            float oldBagInvWeight = 0;
-            if (newItemData != null && newItemData.item.IsBag())
-                newBagInvWeight += newItemData.bagInventory.currentWeight;
-            if (oldItemData != null && oldItemData.item.IsBag())
-                oldBagInvWeight += oldItemData.bagInventory.currentWeight;
-            
-            int APCost = 0;
-            if (newItemData != null)
-                APCost += gm.apManager.GetEquipAPCost(equipment, newBagInvWeight);
-            if (oldItemData != null)
-                APCost += gm.apManager.GetEquipAPCost(equipment, oldBagInvWeight);
-            
-            int remainingAP = characterManager.characterStats.UseAPAndGetRemainder(APCost);
-            if (remainingAP == 0)
-            {
-                SetEquippedSprite(equipSlot, equipment, droppingEquipment);
-                OnEquipmentChanged(oldItemData, newItemData);
-
-                if (newItemData != null)
-                    newItemData.ReturnToObjectPool();
-                if (oldItemData != null)
-                    oldItemData.ReturnToObjectPool();
-
-                characterManager.actionsQueued = false;
-                if (characterManager.characterStats.currentAP <= 0)
-                    gm.turnManager.FinishTurn(characterManager);
-            }
-            else
-            {
-                characterManager.remainingAPToBeUsed += remainingAP;
-                gm.turnManager.FinishTurn(characterManager);
-                StartCoroutine(UseAPAndSetupEquipment(equipment, equipSlot, newItemData, oldItemData, droppingEquipment));
-            }
-        }
-    }*/
-
     public IEnumerator SetUpEquipment(ItemData newItemData, ItemData oldItemData, Equipment equipment, EquipmentSlot equipSlot, bool droppingEquipment)
     {
         int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
@@ -601,6 +521,8 @@ public class EquipmentManager : MonoBehaviour
                     damage = weaponsItemData.bluntDamage_Thrust;
                 else if (meleeAttackType == MeleeAttackType.Overhead)
                     damage = weaponsItemData.bluntDamage_Overhead;
+                else
+                    damage = characterManager.characterStats.unarmedDamage.GetValue();
                 break;
             case PhysicalDamageType.Pierce:
                 if (meleeAttackType == MeleeAttackType.Swipe)

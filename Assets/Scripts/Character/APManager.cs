@@ -9,6 +9,7 @@ public class APManager : MonoBehaviour
     readonly int minWeaponStickAPCost = 20;
 
     readonly int baseMovementCost = 100;
+    readonly int rotationCost = 6;
 
     GameManager gm;
 
@@ -37,7 +38,6 @@ public class APManager : MonoBehaviour
 
     public IEnumerator UseAP(CharacterManager characterManager, int APAmount, bool queuingNewAction = true)
     {
-        Debug.Log(characterManager.name + " is about to use AP...");
         if (queuingNewAction) characterManager.actionsQueued++;
 
         if (APAmount <= 0)
@@ -56,37 +56,7 @@ public class APManager : MonoBehaviour
             characterManager.currentQueueNumber++;
             yield break;
         }
-
-        /*if (characterManager.remainingAPToBeUsed > 0)
-        {
-            if (characterManager.remainingAPToBeUsed <= characterManager.characterStats.currentAP)
-            {
-                characterManager.actionsQueued--;
-                characterManager.currentQueueNumber++;
-
-                Debug.Log(characterManager.name + " Using AP: " + characterManager.remainingAPToBeUsed);
-                characterManager.characterStats.UseAP(characterManager.remainingAPToBeUsed);
-
-                if (characterManager.characterStats.currentAP <= 0)
-                    gm.turnManager.FinishTurn(characterManager, false);
-                else
-                    characterManager.TakeTurn();
-            }
-            else
-            {
-                Debug.Log(characterManager.name + " Using AP: " + APAmount);
-                int APRemainder = characterManager.characterStats.UseAPAndGetRemainder(APAmount);
-                Debug.Log(characterManager.name + " AP Remainder: " + APRemainder);
-
-                //characterManager.characterStats.UseAP(characterManager.characterStats.currentAP);
-                gm.turnManager.FinishTurn(characterManager, false);
-                StartCoroutine(UseAP(characterManager, APRemainder, false));
-            }
-        }
-        else*/
-        //{
-
-        Debug.Log(characterManager.name + " Using AP: " + APAmount);
+        
         // Try to use the full AP amount. If we can't, then use what we can and return the remainder to APRemainder
         int APRemainder = characterManager.characterStats.UseAPAndGetRemainder(APAmount);
         // If the entire amount was used
@@ -96,6 +66,8 @@ public class APManager : MonoBehaviour
             characterManager.actionsQueued--;
             characterManager.currentQueueNumber++;
 
+            yield return null;
+
             // If the character has no AP remaining, end their turn
             if (characterManager.characterStats.currentAP <= 0)
                 StartCoroutine(gm.turnManager.FinishTurn(characterManager));
@@ -104,19 +76,21 @@ public class APManager : MonoBehaviour
         }
         else
         {
-            // Add to the character's remainingAPToBeUsed, finish their turn and run this coroutine again with the remaining AP
-            //characterManager.remainingAPToBeUsed += APRemainder;
-            Debug.Log("Heeeeeeeeere");//characterManager.name + " Remaining AP To Be Used: " + characterManager.remainingAPToBeUsed);
+            // Finish the character's turn and run this coroutine again with the remaining AP, but wait for the character to finish moving
             StartCoroutine(gm.turnManager.FinishTurn(characterManager));
             while (characterManager.movement.isMoving) { yield return null; }
             StartCoroutine(UseAP(characterManager, APRemainder, false));
         }
-        //}
     }
 
     public int GetMovementAPCost()
     {
         return baseMovementCost;
+    }
+
+    public int GetRotateAPCost()
+    {
+        return rotationCost;
     }
 
     public int GetAttackAPCost(CharacterManager characterManager, Weapon weapon, GeneralAttackType attackType)
@@ -166,9 +140,7 @@ public class APManager : MonoBehaviour
 
     public int GetStuckWithWeaponAPLoss(CharacterManager target, float percentDamage)
     {
-        int amount = Mathf.RoundToInt(baseWeaponStickCost * percentDamage * Random.Range(0.75f, 1.25f));
-        Debug.Log("Stuck with weapon AP cost: " + amount);
-        return amount;
+        return Mathf.RoundToInt(baseWeaponStickCost * percentDamage * Random.Range(0.75f, 1.25f));
     }
 
     int CalculateMeleeAttackAPCost(CharacterManager characterManager, Weapon weapon)

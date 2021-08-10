@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class HumanoidSpriteManager : SpriteManager
 {
+    [Header("Facing Arrow")]
+    public SpriteRenderer facingArrow;
+
     [Header("Hair")]
     public Sprite hairSprite;
     public SpriteRenderer hair, beard;
@@ -125,47 +128,6 @@ public class HumanoidSpriteManager : SpriteManager
             SetupTwoHandedWeaponStance(equipmentManager, characterManager);
     }
 
-    /*public IEnumerator UseAPAndSwapStance(EquipmentManager equipmentManager, CharacterManager characterManager)
-    {
-        characterManager.actionsQueued = true;
-
-        while (characterManager.isMyTurn == false || characterManager.movement.isMoving)
-        {
-            yield return null;
-        }
-
-        if (characterManager.remainingAPToBeUsed > 0)
-        {
-            if (characterManager.remainingAPToBeUsed <= characterManager.characterStats.currentAP)
-            {
-                characterManager.actionsQueued = false;
-                characterManager.characterStats.UseAP(characterManager.remainingAPToBeUsed);
-                SwapStance(equipmentManager, characterManager);
-            }
-            else
-            {
-                characterManager.characterStats.UseAP(characterManager.characterStats.currentAP);
-                gm.turnManager.FinishTurn(characterManager);
-                StartCoroutine(UseAPAndSwapStance(equipmentManager, characterManager));
-            }
-        }
-        else
-        {
-            int remainingAP = characterManager.characterStats.UseAPAndGetRemainder(gm.apManager.GetSwapStanceAPCost(characterManager));
-            if (remainingAP == 0)
-            {
-                characterManager.actionsQueued = false;
-                SwapStance(equipmentManager, characterManager);
-            }
-            else
-            {
-                characterManager.remainingAPToBeUsed += remainingAP;
-                gm.turnManager.FinishTurn(characterManager);
-                StartCoroutine(UseAPAndSwapStance(equipmentManager, characterManager));
-            }
-        }
-    }*/
-
     public void AssignSprite(EquipmentSlot equipSlot, Equipment equipment, EquipmentManager equipmentManager)
     {
         switch (equipSlot)
@@ -253,6 +215,39 @@ public class HumanoidSpriteManager : SpriteManager
                 break;
             case EquipmentSlot.Cape:
                 cape.sprite = null;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void SetFacingArrowDirection(Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.North:
+                facingArrow.transform.localEulerAngles = new Vector3(0, 0, 315);
+                break;
+            case Direction.South:
+                facingArrow.transform.localEulerAngles = new Vector3(0, 0, 135);
+                break;
+            case Direction.West:
+                facingArrow.transform.localEulerAngles = new Vector3(0, 0, 225);
+                break;
+            case Direction.East:
+                facingArrow.transform.localEulerAngles = new Vector3(0, 0, 225);
+                break;
+            case Direction.Northwest:
+                facingArrow.transform.localEulerAngles = new Vector3(0, 0, 270);
+                break;
+            case Direction.Northeast:
+                facingArrow.transform.localEulerAngles = new Vector3(0, 0, 270);
+                break;
+            case Direction.Southwest:
+                facingArrow.transform.localEulerAngles = new Vector3(0, 0, 180);
+                break;
+            case Direction.Southeast:
+                facingArrow.transform.localEulerAngles = new Vector3(0, 0, 180);
                 break;
             default:
                 break;

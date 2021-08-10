@@ -333,7 +333,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
                     if (myEquipmentManager != null)
                     {
-                        // Create a temporary ItemData object for use in the UseAPAndSetupEquipment method
+                        // Create a temporary ItemData object for use in the SetupEquipment method
                         ItemData tempItemData = gm.objectPoolManager.GetItemDataFromPool(itemData.item);
                         tempItemData.gameObject.SetActive(true);
                         tempItemData.TransferData(itemData, tempItemData);
@@ -353,9 +353,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                         float bagWeight = 0;
                         if (tempItemData.bagInventory != null)
                             bagWeight += tempItemData.bagInventory.currentWeight;
+
                         gm.StartCoroutine(gm.apManager.UseAP(gm.playerManager, gm.apManager.GetEquipAPCost((Equipment)tempItemData.item, bagWeight)));
                         myEquipmentManager.StartCoroutine(myEquipmentManager.SetUpEquipment(null, tempItemData, (Equipment)tempItemData.item, equipmentSlot, false));
-                        //myEquipmentManager.StartCoroutine(myEquipmentManager.UseAPAndSetupEquipment((Equipment)tempItemData.item, equipmentSlot, null, tempItemData, false));
                     }
                     else
                     {
@@ -404,7 +404,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                     List<ItemData> itemsListAddingTo = gm.containerInvUI.GetItemsListFromActiveDirection();
                     Vector3 dropPos = gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromActiveDirection();
 
-                    // Create a temporary ItemData object for use in the UseAPAndSetupEquipment method
+                    // Create a temporary ItemData object for use in the SetupEquipment method
                     ItemData tempItemData = gm.objectPoolManager.GetItemDataFromPool(itemData.item);
                     tempItemData.gameObject.SetActive(true);
                     tempItemData.TransferData(itemData, tempItemData);
@@ -443,7 +443,6 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                                 bagWeight += tempItemData.bagInventory.currentWeight;
                             gm.StartCoroutine(gm.apManager.UseAP(gm.playerManager, gm.apManager.GetEquipAPCost((Equipment)tempItemData.item, bagWeight)));
                             myEquipmentManager.StartCoroutine(myEquipmentManager.SetUpEquipment(null, tempItemData, (Equipment)tempItemData.item, equipmentSlot, false));
-                            //myEquipmentManager.StartCoroutine(myEquipmentManager.UseAPAndSetupEquipment((Equipment)tempItemData.item, equipmentSlot, null, tempItemData, true));
                         }
                         else
                         {

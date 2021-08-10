@@ -559,7 +559,7 @@ public class ContainerInventoryUI : InventoryUI
         if (inventory.container == null)
         {
             if (inventory.inventoryOwner != null)
-                return inventory.inventoryOwner.characterSpriteManager.deathSprite;
+                return inventory.inventoryOwner.spriteManager.deathSprite;
             else
                 return floorIconSprite;
         }

@@ -210,47 +210,6 @@ public class ContextMenu : MonoBehaviour
         contextButton.button.onClick.AddListener(TransferItem);
     }
 
-    /*void DropItem()
-    {
-        List<ItemData> itemsListAddingTo = gm.containerInvUI.GetItemsListFromActiveDirection();
-        Vector3 dropPos = gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromActiveDirection();
-
-        // Make sure there's room on the ground first
-        if (gm.uiManager.IsRoomOnGround(contextActiveInvItem.itemData, itemsListAddingTo, dropPos))
-        {
-            gm.dropItemController.DropItem(dropPos, contextActiveInvItem.itemData, contextActiveInvItem.itemData.currentStackSize, contextActiveInvItem.myInventory, contextActiveInvItem);
-            gm.containerInvUI.AddItemToActiveDirectionList(contextActiveInvItem.itemData);
-
-            if (contextActiveInvItem.myEquipmentManager != null)
-            {
-                Equipment equipment = (Equipment)contextActiveInvItem.itemData.item;
-                EquipmentSlot equipSlot = gm.playerManager.equipmentManager.GetEquipmentSlotFromItemData(contextActiveInvItem.itemData);
-
-                // Setup a temp ItemData for the UseAPAndSetupEquipment method
-                ItemData equipmentsItemData = gm.objectPoolManager.GetItemDataFromPool(contextActiveInvItem.itemData.item);
-                equipmentsItemData.gameObject.SetActive(true);
-                equipmentsItemData.TransferData(contextActiveInvItem.itemData, equipmentsItemData);
-                if (contextActiveInvItem.itemData.bagInventory != null)
-                {
-                    equipmentsItemData.bagInventory.currentWeight = contextActiveInvItem.itemData.bagInventory.currentWeight;
-                    equipmentsItemData.bagInventory.currentVolume = contextActiveInvItem.itemData.bagInventory.currentVolume;
-                }
-
-                gm.playerManager.equipmentManager.Unequip(equipment.equipmentSlot, false, false);
-                gm.playerManager.equipmentManager.StartCoroutine(gm.playerManager.equipmentManager.UseAPAndSetupEquipment(equipment, equipSlot, null, equipmentsItemData));
-
-                gm.playerInvUI.UpdateUI();
-            }
-            else
-            {
-                contextActiveInvItem.UpdateInventoryWeightAndVolume();
-                contextActiveInvItem.ClearItem();
-            }
-        }
-
-        DisableContextMenu();
-    }*/
-
     ContextMenuButton GetNextInactiveButton()
     {
         for (int i = 0; i < buttons.Length; i++)

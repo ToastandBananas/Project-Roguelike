@@ -141,7 +141,8 @@ public class GameTiles : MonoBehaviour
     public static void AddNPC(CharacterManager characterManager, Vector2 position)
     {
         position = Utilities.ClampedPosition(position);
-        npcs.Add(position, characterManager);
+        if (npcs.ContainsKey(position) == false)
+            npcs.Add(position, characterManager);
     }
 
     public static void RemoveNPC(Vector2 position)

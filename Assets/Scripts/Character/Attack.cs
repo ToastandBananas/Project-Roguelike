@@ -50,8 +50,6 @@ public class Attack : MonoBehaviour
             yield break;
         }
 
-        characterManager.movement.FaceForward(targetsStats.transform.position);
-
         switch (attackType)
         {
             case GeneralAttackType.Unarmed:
@@ -85,25 +83,21 @@ public class Attack : MonoBehaviour
         {
             StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetAttackAPCost(characterManager, characterManager.equipmentManager.GetRightWeapon(), GeneralAttackType.DualWield)));
             StartCoroutine(DoAttack(targetsCharacterManager, targetsStats, GeneralAttackType.DualWield, meleeAttackType));
-            //StartCoroutine(UseAPAndAttack(targetsCharacterManager, targetsStats, characterManager.equipmentManager.GetRightWeapon(), GeneralAttackType.DualWield, meleeAttackType));
         }
         else if (characterManager.equipmentManager.RightWeaponEquipped())
         {
             StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetAttackAPCost(characterManager, characterManager.equipmentManager.GetRightWeapon(), GeneralAttackType.PrimaryWeapon)));
             StartCoroutine(DoAttack(targetsCharacterManager, targetsStats, GeneralAttackType.PrimaryWeapon, meleeAttackType));
-            //StartCoroutine(UseAPAndAttack(targetsCharacterManager, targetsStats, characterManager.equipmentManager.GetRightWeapon(), GeneralAttackType.PrimaryWeapon, meleeAttackType));
         }
         else if (characterManager.equipmentManager.LeftWeaponEquipped())
         {
             StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetAttackAPCost(characterManager, characterManager.equipmentManager.GetLeftWeapon(), GeneralAttackType.SecondaryWeapon)));
             StartCoroutine(DoAttack(targetsCharacterManager, targetsStats, GeneralAttackType.SecondaryWeapon, meleeAttackType));
-            //StartCoroutine(UseAPAndAttack(targetsCharacterManager, targetsStats, characterManager.equipmentManager.GetLeftWeapon(), GeneralAttackType.SecondaryWeapon, meleeAttackType));
         }
         else // Punch, if no weapons equipped
         {
             StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetAttackAPCost(characterManager, null, GeneralAttackType.Unarmed)));
             StartCoroutine(DoAttack(targetsCharacterManager, targetsStats, GeneralAttackType.Unarmed, meleeAttackType));
-            //StartCoroutine(UseAPAndAttack(targetsCharacterManager, targetsStats, null, GeneralAttackType.Unarmed, MeleeAttackType.Unarmed));
         }
     }
 
@@ -128,7 +122,6 @@ public class Attack : MonoBehaviour
 
             StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetAttackAPCost(characterManager, characterManager.equipmentManager.GetLeftWeapon(), GeneralAttackType.SecondaryWeapon)));
             StartCoroutine(DoAttack(targetsCharacterManager, targetsStats, GeneralAttackType.SecondaryWeapon, meleeAttackType));
-            //StartCoroutine(UseAPAndAttack(targetsCharacterManager, targetsStats, characterManager.equipmentManager.GetLeftWeapon(), GeneralAttackType.DualWield, meleeAttackType));
         }
         else
         {
@@ -215,7 +208,7 @@ public class Attack : MonoBehaviour
                         {
                             // This can't happen with blunt damage only weapons
                             if (pierceDamage > 0 || slashDamage > 0 || cleaveDamage > 0)
-                                TryGetWeaponStuck(targetsStats, targetsCharacterManager, bodyPartToHit, weaponUsedItemData, mainPhysicalDamageType, pierceDamage, slashDamage, cleaveDamage);
+                                TryGetWeaponStuck(targetsStats, targetsCharacterManager, weaponUsedItemData, mainPhysicalDamageType, pierceDamage, slashDamage, cleaveDamage, bodyPartToHit);
                         }
                     }
                     else
@@ -228,11 +221,11 @@ public class Attack : MonoBehaviour
             // Damage the object and show flavor text
             targetsStats.TakeDamage(totalDamage);
             gm.flavorText.WriteMeleeAttackObjectLine(characterManager, targetsStats, generalAttackType, meleeAttackType, totalDamage);
-            TryGetWeaponStuck(targetsStats, null, BodyPartType.Torso, weaponUsedItemData, mainPhysicalDamageType, pierceDamage, slashDamage, cleaveDamage);
+            TryGetWeaponStuck(targetsStats, null, weaponUsedItemData, mainPhysicalDamageType, pierceDamage, slashDamage, cleaveDamage);
         }
     }
 
-    bool TryGetWeaponStuck(Stats targetsStats, CharacterManager target, BodyPartType bodyPartHit, ItemData weaponUsedItemData, PhysicalDamageType mainPhysicalDamageType, int pierceDamage, int slashDamage, int cleaveDamage)
+    bool TryGetWeaponStuck(Stats targetsStats, CharacterManager target, ItemData weaponUsedItemData, PhysicalDamageType mainPhysicalDamageType, int pierceDamage, int slashDamage, int cleaveDamage, BodyPartType bodyPartHit = BodyPartType.Torso)
     {
         // A weapon should only get stuck in a character's head if they died from the hit, otherwise it would be unrealistic to have a weapon get lodged into their head and still have them live
         if ((target != null && bodyPartHit == BodyPartType.Head && target.status.isDead == false) || (target == null && targetsStats.isDestroyed))
@@ -285,74 +278,6 @@ public class Attack : MonoBehaviour
 
         return false;
     }
-
-    /*IEnumerator UseAPAndStickWeapon(Stats targetsStats, CharacterManager target, BodyPartType bodyPartStuck, ItemData weaponUsedItemData, PhysicalDamageType mainPhysicalDamageType, int damage, float percentDamage)
-    {
-        while (characterManager.movement.isMoving)
-        {
-            yield return null;
-        }
-
-        characterManager.actionsQueued = true;
-        if (target != null) target.movement.canMove = false;
-
-        while (characterManager.isMyTurn == false)
-        {
-            yield return null;
-        }
-
-        if (characterManager.status.isDead)
-        {
-            characterManager.actionsQueued = false;
-            characterManager.remainingAPToBeUsed = 0;
-            yield break;
-        }
-
-        if (characterManager.remainingAPToBeUsed > 0)
-        {
-            if (characterManager.remainingAPToBeUsed <= characterManager.characterStats.currentAP)
-            {
-                if (target != null)
-                    UnstickWeapon(target, bodyPartStuck, weaponUsedItemData, damage, percentDamage); // If stuck in NPC
-                else
-                    UnstickWeapon(targetsStats, weaponUsedItemData, damage); // If stuck in an object
-
-                characterManager.actionsQueued = false;
-                characterManager.characterStats.UseAP(characterManager.remainingAPToBeUsed);
-
-                if (characterManager.characterStats.currentAP <= 0)
-                    gm.turnManager.FinishTurn(characterManager);
-            }
-            else
-            {
-                characterManager.characterStats.UseAP(characterManager.characterStats.currentAP);
-                gm.turnManager.FinishTurn(characterManager);
-                StartCoroutine(UseAPAndStickWeapon(targetsStats, target, bodyPartStuck, weaponUsedItemData, mainPhysicalDamageType, damage, percentDamage));
-            }
-        }
-        else
-        {
-            int remainingAP = characterManager.characterStats.UseAPAndGetRemainder(gm.apManager.GetWeaponStickAPCost(characterManager, (Weapon)weaponUsedItemData.item, mainPhysicalDamageType, percentDamage));
-            if (remainingAP == 0)
-            {
-                if (target != null)
-                    UnstickWeapon(target, bodyPartStuck, weaponUsedItemData, damage, percentDamage); // If stuck in NPC
-                else
-                    UnstickWeapon(targetsStats, weaponUsedItemData, damage); // If stuck in an object
-
-                characterManager.actionsQueued = false;
-
-                if (characterManager.characterStats.currentAP <= 0)
-                    gm.turnManager.FinishTurn(characterManager);
-            }
-            else
-            {
-                characterManager.remainingAPToBeUsed += remainingAP;
-                gm.turnManager.FinishTurn(characterManager);
-                StartCoroutine(UseAPAndStickWeapon(targetsStats, target, bodyPartStuck, weaponUsedItemData, mainPhysicalDamageType, damage, percentDamage));
-            }
-        }
-    }*/
 
     IEnumerator UnstickWeapon(CharacterManager target, BodyPartType bodyPartStuck, ItemData weaponUsedItemData, int damage, float percentDamage)
     {
@@ -783,53 +708,6 @@ public class Attack : MonoBehaviour
 
         return null;
     }
-
-    /*public IEnumerator UseAPAndAttack(CharacterManager targetsCharacterManager, Stats targetsStats, Weapon weapon, GeneralAttackType attackType, MeleeAttackType meleeAttackType)
-    {
-        characterManager.actionsQueued = true;
-
-        while (characterManager.isMyTurn == false || characterManager.movement.isMoving || canAttack == false)
-        {
-            yield return null;
-        }
-
-        if (characterManager.status.isDead || TargetInAttackRange(targetsStats.transform) == false || (targetsCharacterManager != null && targetsCharacterManager.status.isDead) || targetsStats.isDestroyed)
-        {
-            CancelAttack();
-            yield break;
-        }
-
-        if (characterManager.remainingAPToBeUsed > 0)
-        {
-            if (characterManager.remainingAPToBeUsed <= characterManager.characterStats.currentAP)
-            {
-                characterManager.actionsQueued = false;
-                characterManager.characterStats.UseAP(characterManager.remainingAPToBeUsed);
-                DoAttack(targetsCharacterManager, targetsStats, attackType, meleeAttackType);
-            }
-            else
-            {
-                characterManager.characterStats.UseAP(characterManager.characterStats.currentAP);
-                gm.turnManager.FinishTurn(characterManager);
-                StartCoroutine(UseAPAndAttack(targetsCharacterManager, targetsStats, weapon, attackType, meleeAttackType));
-            }
-        }
-        else
-        {
-            int remainingAP = characterManager.characterStats.UseAPAndGetRemainder(gm.apManager.GetAttackAPCost(characterManager, weapon, attackType));
-            if (remainingAP == 0)
-            {
-                characterManager.actionsQueued = false;
-                DoAttack(targetsCharacterManager, targetsStats, attackType, meleeAttackType);
-            }
-            else
-            {
-                characterManager.remainingAPToBeUsed += remainingAP;
-                gm.turnManager.FinishTurn(characterManager);
-                StartCoroutine(UseAPAndAttack(targetsCharacterManager, targetsStats, weapon, attackType, meleeAttackType));
-            }
-        }
-    }*/
 
     public bool TargetInAttackRange(Transform target)
     {

@@ -36,10 +36,9 @@ public class NPCAttack : Attack
 
                 characterManager.npcMovement.SetPathToCurrentTarget();
 
-                if (characterManager.npcMovement.target != null && characterManager.movement.isMoving == false)
+                if (characterManager.npcMovement.target != null && characterManager.npcMovement.isMoving == false)
                 {
-                    StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
-                    StartCoroutine(characterManager.npcMovement.MoveToNextPointOnPath());
+                    StartCoroutine(characterManager.npcMovement.Move());//StartCoroutine(characterManager.npcMovement.MoveToNextPointOnPath());
                 }
             }
             // If the target is close enough for combat, move in to attack
@@ -63,7 +62,7 @@ public class NPCAttack : Attack
             SwitchTarget(characterManager.alliances.GetClosestKnownEnemy());
 
             if (characterManager.npcMovement.target == null)
-                gm.turnManager.FinishTurn(characterManager);
+                StartCoroutine(gm.turnManager.FinishTurn(characterManager));
             else
                 Fight();
         }
@@ -75,7 +74,7 @@ public class NPCAttack : Attack
         if (newTarget == null)
         {
             characterManager.stateController.SetToDefaultState(characterManager.npcMovement.shouldFollowLeader);
-            gm.turnManager.FinishTurn(characterManager);
+            StartCoroutine(gm.turnManager.FinishTurn(characterManager));
             return;
         }
 
@@ -88,7 +87,12 @@ public class NPCAttack : Attack
         else
             characterManager.stateController.SetCurrentState(State.Fight);
 
-        gm.turnManager.FinishTurn(characterManager);
+        StartCoroutine(gm.turnManager.FinishTurn(characterManager));
+    }
+
+    public void SwitchTarget_Nearest()
+    {
+        SwitchTarget(characterManager.alliances.GetClosestKnownEnemy());
     }
 
     public void MoveInToAttack()
@@ -104,15 +108,44 @@ public class NPCAttack : Attack
 
             if (characterManager.movement.isMoving == false)
             {
-                StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
-                StartCoroutine(characterManager.npcMovement.MoveToNextPointOnPath());
+                StartCoroutine(characterManager.npcMovement.Move());//StartCoroutine(characterManager.npcMovement.MoveToNextPointOnPath());
             }
         }
     }
 
     public override void DetermineAttack(CharacterManager targetsCharacterManager, Stats targetsStats)
     {
+        characterManager.movement.Rotate(GetDirectionFromCharacter(targetsStats.transform));
         StartRandomMeleeAttack(targetsCharacterManager, targetsStats);
+    }
+
+    public Direction GetDirectionFromCharacter(Transform targetsTransform)
+    {
+        if (transform.position == targetsTransform.position)
+            return Direction.Center;
+        else if (transform.position.x == targetsTransform.position.x)
+        {
+            if (transform.position.y > targetsTransform.position.y)
+                return Direction.South;
+            else
+                return Direction.North;
+        }
+        else if (transform.position.y == targetsTransform.position.y)
+        {
+            if (transform.position.x > targetsTransform.position.x)
+                return Direction.West;
+            else
+                return Direction.East;
+        }
+        else if (transform.position.x < targetsTransform.position.x && transform.position.y > targetsTransform.position.y)
+            return Direction.Southeast;
+        else if (transform.position.x > targetsTransform.position.x && transform.position.y > targetsTransform.position.y)
+            return Direction.Southwest;
+        else if (transform.position.x < targetsTransform.position.x && transform.position.y < targetsTransform.position.y)
+            return Direction.Northeast;
+        else if (transform.position.x > targetsTransform.position.x && transform.position.y < targetsTransform.position.y)
+            return Direction.Northwest;
+        return Direction.Center;
     }
 
     void SetMoveToTargetPos(bool moveToTargetPos)

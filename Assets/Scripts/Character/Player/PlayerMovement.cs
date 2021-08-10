@@ -47,6 +47,8 @@ public class PlayerMovement : Movement
             {
                 if (vertical > 0.3f) // Up
                 {
+                    Rotate(Direction.North);
+
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(0, 1));
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                         playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
@@ -62,6 +64,8 @@ public class PlayerMovement : Movement
                 }
                 else if (vertical < -0.3f) // Down
                 {
+                    Rotate(Direction.South);
+
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(0, -1));
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                         playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
@@ -80,6 +84,8 @@ public class PlayerMovement : Movement
             {
                 if (horizontal < -0.3f) // Left
                 {
+                    Rotate(Direction.West);
+
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(-1, 0));
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                         playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
@@ -95,6 +101,8 @@ public class PlayerMovement : Movement
                 }
                 else if (horizontal > 0.3f) // Right
                 {
+                    Rotate(Direction.East);
+
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(1, 0));
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                         playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
@@ -113,6 +121,8 @@ public class PlayerMovement : Movement
             {
                 if (horizontal < -0.3f) // Up-left
                 {
+                    Rotate(Direction.Northwest);
+
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(-1, 1));
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                         playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
@@ -128,6 +138,8 @@ public class PlayerMovement : Movement
                 }
                 else if (horizontal > 0.3f) // Up-right
                 {
+                    Rotate(Direction.Northeast);
+
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(1, 1));
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                         playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
@@ -146,6 +158,8 @@ public class PlayerMovement : Movement
             {
                 if (horizontal < -0.3f) // Down-left
                 {
+                    Rotate(Direction.Southwest);
+
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(-1, -1));
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                         playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
@@ -161,6 +175,8 @@ public class PlayerMovement : Movement
                 }
                 else if (horizontal > 0.3f) // Down-right
                 {
+                    Rotate(Direction.Southeast);
+
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(1, -1));
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                         playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
@@ -182,6 +198,8 @@ public class PlayerMovement : Movement
         {
             gm.uiManager.DisableInventoryUIComponents();
 
+            Rotate(Direction.Northwest);
+
             hit = RaycastMovePosition(transform.position, transform.position + new Vector3(-1, 1));
             if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                 playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
@@ -200,6 +218,8 @@ public class PlayerMovement : Movement
         else if (GameControls.gamePlayActions.playerMoveUpRight.IsPressed) // Up-right
         {
             gm.uiManager.DisableInventoryUIComponents();
+
+            Rotate(Direction.Northeast);
 
             hit = RaycastMovePosition(transform.position, transform.position + new Vector3(1, 1));
             if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
@@ -220,6 +240,8 @@ public class PlayerMovement : Movement
         {
             gm.uiManager.DisableInventoryUIComponents();
 
+            Rotate(Direction.Southwest);
+
             hit = RaycastMovePosition(transform.position, transform.position + new Vector3(-1, -1));
             if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                 playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
@@ -238,6 +260,8 @@ public class PlayerMovement : Movement
         else if (GameControls.gamePlayActions.playerMoveDownRight.IsPressed) // Down-right
         {
             gm.uiManager.DisableInventoryUIComponents();
+
+            Rotate(Direction.Southeast);
 
             hit = RaycastMovePosition(transform.position, transform.position + new Vector3(1, -1));
             if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
@@ -286,58 +310,4 @@ public class PlayerMovement : Movement
     {
         return Physics2D.Raycast(targetCell, Vector2.zero, 1, movementObstacleMask);
     }
-
-    /*public IEnumerator UseAPAndMove(int xDir, int yDir)
-    {
-        characterManager.actionsQueued = true;
-
-        while (gm.turnManager.IsPlayersTurn() == false)
-        {
-            yield return null;
-        }
-        
-        if (canMove == false || characterManager.status.isDead)
-        {
-            characterManager.actionsQueued = false;
-            characterManager.remainingAPToBeUsed = 0;
-            yield break;
-        }
-
-        if (characterManager.remainingAPToBeUsed > 0)
-        {
-            if (characterManager.remainingAPToBeUsed <= characterManager.characterStats.currentAP)
-            {
-                Move(xDir, yDir, false);
-                characterManager.actionsQueued = false;
-                characterManager.characterStats.UseAP(characterManager.remainingAPToBeUsed);
-
-                if (characterManager.characterStats.currentAP <= 0)
-                    gm.turnManager.FinishTurn(characterManager);
-            }
-            else
-            {
-                characterManager.characterStats.UseAP(characterManager.characterStats.currentAP);
-                gm.turnManager.FinishTurn(characterManager);
-                StartCoroutine(UseAPAndMove(xDir, yDir));
-            }
-        }
-        else
-        {
-            int remainingAP = characterManager.characterStats.UseAPAndGetRemainder(gm.apManager.GetMovementAPCost());
-            if (remainingAP == 0)
-            {
-                Move(xDir, yDir, false);
-                characterManager.actionsQueued = false;
-
-                if (characterManager.characterStats.currentAP <= 0)
-                    gm.turnManager.FinishTurn(characterManager);
-            }
-            else
-            {
-                characterManager.remainingAPToBeUsed += remainingAP;
-                gm.turnManager.FinishTurn(characterManager);
-                StartCoroutine(UseAPAndMove(xDir, yDir));
-            }
-        }
-    }*/
 }

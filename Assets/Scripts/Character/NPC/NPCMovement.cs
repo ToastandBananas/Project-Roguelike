@@ -66,8 +66,26 @@ public class NPCMovement : Movement
         gm.turnManager.npcs.Add(characterManager);
     }
 
-    public IEnumerator MoveToNextPointOnPath()
+    public IEnumerator Move()
     {
+        yield return null;
+
+        // Update the character's path
+        AIPath.SearchPath();
+
+        // Finish searching for a path before moving
+        while (AIPath.pathPending) { yield return null; }
+
+        Rotate(GetNextDirection());
+        StartCoroutine(MoveToNextPointOnPath());
+    }
+
+    IEnumerator MoveToNextPointOnPath()
+    {
+        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
+
+        //yield return null;
+
         int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
         while (queueNumber != characterManager.currentQueueNumber)
         {
@@ -77,72 +95,31 @@ public class NPCMovement : Movement
 
         yield return null;
 
+        // Update the character's path
         AIPath.SearchPath();
 
         // Finish searching for a path before moving
         while (AIPath.pathPending) { yield return null; }
 
+        // Remove the NPC from the tile they were on
         GameTiles.RemoveNPC(transform.position);
 
+        // Possible move count will determine the speed of the character's movement, to prevent gameplay delays
         int possibleMoveCount = Mathf.FloorToInt(characterManager.characterStats.maxAP.GetValue() / gm.apManager.GetMovementAPCost());
-        
+
+        // Get the next position and the direction the character needs to face
+        Vector2 nextPos = GetNextPosition();
+
+        // Move
         if (characterManager.spriteRenderer.isVisible == false)
-            TeleportToPosition(GetNextPosition());
-        else if (transform.position.y == GetNextPosition().y)
-            StartCoroutine(ArcMovement(GetNextPosition(), possibleMoveCount));
+            TeleportToPosition(nextPos);
+        else if (transform.position.y == nextPos.y)
+            StartCoroutine(ArcMovement(nextPos, possibleMoveCount));
         else
-            StartCoroutine(SmoothMovement(GetNextPosition(), possibleMoveCount));
+            StartCoroutine(SmoothMovement(nextPos, possibleMoveCount));
     }
 
-    /*public IEnumerator UseAPAndMove()
-    {
-        characterManager.actionsQueued = true;
-
-        while (characterManager.isMyTurn == false)
-        {
-            yield return null;
-        }
-
-        if (characterManager.status.isDead)
-        {
-            characterManager.actionsQueued = false;
-            characterManager.remainingAPToBeUsed = 0;
-            yield break;
-        }
-
-        if (characterManager.remainingAPToBeUsed > 0)
-        {
-            if (characterManager.remainingAPToBeUsed <= characterManager.characterStats.currentAP)
-            {
-                StartCoroutine(MoveToNextPointOnPath());
-                characterManager.actionsQueued = false;
-                characterManager.characterStats.UseAP(characterManager.remainingAPToBeUsed);
-            }
-            else
-            {
-                characterManager.characterStats.UseAP(characterManager.characterStats.currentAP);
-                gm.turnManager.FinishTurn(characterManager);
-                StartCoroutine(UseAPAndMove());
-            }
-        }
-        else
-        {
-            int remainingAP = characterManager.characterStats.UseAPAndGetRemainder(gm.apManager.GetMovementAPCost());
-            if (remainingAP == 0)
-            {
-                StartCoroutine(MoveToNextPointOnPath());
-                characterManager.actionsQueued = false;
-            }
-            else
-            {
-                characterManager.remainingAPToBeUsed += remainingAP;
-                gm.turnManager.FinishTurn(characterManager);
-                StartCoroutine(UseAPAndMove());
-            }
-        }
-    }*/
-
-    Vector3 GetNextPosition()
+    Vector2 GetNextPosition()
     {
         Path path = seeker.GetCurrentPath();
         if (path == null || path.vectorPath.Count <= 1)
@@ -150,7 +127,7 @@ public class NPCMovement : Movement
         else
         {
             Vector3 dir = (path.vectorPath[1] - transform.position).normalized;
-            Vector3 nextPos;
+            Vector2 nextPos;
             if (dir == new Vector3(0, 1) || dir == new Vector3(0, -1) || dir == new Vector3(-1, 0) || dir == new Vector3(1, 0)) // Up, down, left, or right
                 nextPos = transform.position + dir;
             else if (dir.x < 0 && dir.y > 0) // Up-left
@@ -178,6 +155,37 @@ public class NPCMovement : Movement
         }
     }
 
+    Direction GetNextDirection()
+    {
+        Path path = seeker.GetCurrentPath();
+        if (path == null || path.vectorPath.Count <= 1)
+        {
+            return directionFacing;
+        }
+        else
+        {
+            Vector3 dir = (path.vectorPath[1] - transform.position).normalized;
+            if (dir.x == 0 && dir.y == 1) // North
+                return Direction.North;
+            else if (dir.x == 0 && dir.y == -1) // South
+                return Direction.South;
+            else if (dir.x == 1 && dir.y == 0) // East
+                return Direction.East;
+            else if (dir.x == -1 && dir.y == 0) // West
+                return Direction.West;
+            else if (dir.x < 0 && dir.y > 0) // Northwest
+                return Direction.Northwest;
+            else if (dir.x > 0 && dir.y > 0) // Northeast
+                return Direction.Northeast;
+            else if (dir.x < 0 && dir.y < 0) // Southwest
+                return Direction.Southwest;
+            else if (dir.x > 0 && dir.y < 0) // Southeast
+                return Direction.Southeast;
+            else
+                return directionFacing;
+        }
+    }
+
     #region Set Pathfinding Target
     public void SetTarget(CharacterManager targetsCharManager)
     {
@@ -191,6 +199,17 @@ public class NPCMovement : Movement
     public void SetPathToCurrentTarget()
     {
         if (target != null) SetTarget(target);
+    }
+
+    public void SetPathToTargetAndMove()
+    {
+        SetPathToCurrentTarget();
+        if (target != null && isMoving == false && characterManager.characterStats.currentAP > 0)
+        {
+            StartCoroutine(Move());//StartCoroutine(MoveToNextPointOnPath());
+        }
+        else if (isMoving == false)
+            StartCoroutine(gm.turnManager.FinishTurn(characterManager));
     }
 
     // Used for waypoint and wandering movement (or any other time assigning a target transform is impossible)
@@ -212,7 +231,7 @@ public class NPCMovement : Movement
 
             if (distToTarget <= startFollowingDistance)
             {
-                gm.turnManager.FinishTurn(characterManager);
+                StartCoroutine(gm.turnManager.FinishTurn(characterManager));
                 return;
             }
             else if (characterManager.npcMovement.AIDestSetter.target != theTarget)
@@ -220,8 +239,7 @@ public class NPCMovement : Movement
 
             if (characterManager.movement.isMoving == false)
             {
-                StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
-                StartCoroutine(MoveToNextPointOnPath());
+                StartCoroutine(Move());//StartCoroutine(MoveToNextPointOnPath());
             }
         }
         else
@@ -269,8 +287,7 @@ public class NPCMovement : Movement
 
             if (characterManager.movement.isMoving == false)
             {
-                StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
-                StartCoroutine(MoveToNextPointOnPath());
+                StartCoroutine(Move());//StartCoroutine(MoveToNextPointOnPath());
             }
         }
         else // If the character has reached a safe distance from the targetToFleeFrom, resume its default State
@@ -318,8 +335,7 @@ public class NPCMovement : Movement
 
             if (characterManager.movement.isMoving == false)
             {
-                StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
-                StartCoroutine(MoveToNextPointOnPath());
+                StartCoroutine(Move());//StartCoroutine(MoveToNextPointOnPath());
             }
         }
         else
@@ -369,31 +385,24 @@ public class NPCMovement : Movement
             }
             else
             {
+                characterManager.npcAttack.targetInCombatRange = false;
                 if (distanceToTarget <= maxChaseDistance)
                 {
-                    SetTarget(target);
-
-                    if (characterManager.movement.isMoving == false)
-                    {
-                        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
-                        StartCoroutine(MoveToNextPointOnPath());
-                    }
+                    SetPathToTargetAndMove();
                 }
                 else
                 {
-                    StopPathfinding();
-                    gm.turnManager.FinishTurn(characterManager);
+                    characterManager.npcAttack.SwitchTarget_Nearest();
+                    SetPathToTargetAndMove();
                 }
 
-                characterManager.npcAttack.targetInCombatRange = false;
             }
         }
         else if (AIDestSetter.moveToTargetPos)
         {
             if (characterManager.movement.isMoving == false)
             {
-                StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
-                StartCoroutine(MoveToNextPointOnPath());
+                StartCoroutine(Move());//StartCoroutine(MoveToNextPointOnPath());
             }
         }
         else
@@ -404,14 +413,13 @@ public class NPCMovement : Movement
 
                 if (characterManager.movement.isMoving == false)
                 {
-                    StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
-                    StartCoroutine(MoveToNextPointOnPath());
+                    StartCoroutine(Move());//StartCoroutine(MoveToNextPointOnPath());
                 }
             }
             else
             {
                 StopPathfinding();
-                gm.turnManager.FinishTurn(characterManager);
+                StartCoroutine(gm.turnManager.FinishTurn(characterManager));
                 characterManager.npcAttack.targetInCombatRange = false;
                 characterManager.stateController.SetToDefaultState(shouldFollowLeader);
             }
@@ -431,23 +439,21 @@ public class NPCMovement : Movement
 
                 if (characterManager.movement.isMoving == false)
                 {
-                    StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
-                    StartCoroutine(MoveToNextPointOnPath());
+                    StartCoroutine(Move());//StartCoroutine(MoveToNextPointOnPath());
                 }
             }
             else
-                gm.turnManager.FinishTurn(characterManager);
+                StartCoroutine(gm.turnManager.FinishTurn(characterManager));
         }
         else if (Vector2.Distance(roamPosition, transform.position) <= 0.1f)
         {
             // Get a new roamPosition when the current one is reached
             roamPositionSet = false;
-            gm.turnManager.FinishTurn(characterManager);
+            StartCoroutine(gm.turnManager.FinishTurn(characterManager));
         }
         else if(characterManager.movement.isMoving == false)
         {
-            StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
-            StartCoroutine(MoveToNextPointOnPath());
+            StartCoroutine(Move());//StartCoroutine(MoveToNextPointOnPath());
         }
     }
 

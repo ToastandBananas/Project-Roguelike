@@ -38,6 +38,7 @@ public class TurnManager : MonoBehaviour
 
         if (characterManager.isMyTurn)
         {
+            // Debug.Log(characterManager.name + " is finishing their turn");
             if (characterManager == gm.playerManager)
                 FinishPlayersTurn();
             else
