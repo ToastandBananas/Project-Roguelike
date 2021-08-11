@@ -46,13 +46,14 @@ public class CharacterManager : MonoBehaviour
         humanoidSpriteManager = (HumanoidSpriteManager)spriteManager;
         movement = GetComponent<Movement>();
         status = GetComponent<Status>();
+        status.characterManager = this;
         vision = GetComponentInChildren<Vision>();
 
         if (isNPC)
         {
             npcAttack = (NPCAttack)attack;
             npcMovement = (NPCMovement)movement;
-            TryGetComponent(out stateController);
+            stateController = GetComponent<StateController>();
         }
 
         TryGetComponent(out equipmentManager);

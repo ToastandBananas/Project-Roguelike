@@ -1,12 +1,11 @@
 using UnityEngine;
 
-public enum BodyPartType { Torso, Head, LeftArm, RightArm, LeftLeg, RightLeg, LeftHand, RightHand, LeftFoot, RightFoot }
-
 public class CharacterStats : Stats
 {
     [Header("Main Stats")]
     public Stat agility;
     public Stat constitution;
+    public Stat dexterity;
     public Stat endurance;
     public Stat speed;
     public Stat strength;
@@ -14,6 +13,7 @@ public class CharacterStats : Stats
     [Header("AP")]
     public Stat maxAP;
     public int currentAP { get; private set; }
+    int APLossBuildup;
 
     [Header("Weight/Volume")]
     public Stat maxPersonalInvWeight;
@@ -79,10 +79,35 @@ public class CharacterStats : Stats
         currentAP += amountToAdd;
     }
 
+    public void AddToAPLossBuildup(int amount)
+    {
+        APLossBuildup += amount;
+    }
+
+    public void ApplyAPLossBuildup()
+    {
+        if (currentAP > APLossBuildup)
+        {
+            currentAP -= APLossBuildup;
+            APLossBuildup = 0;
+        }
+        else
+        {
+            APLossBuildup -= currentAP;
+            currentAP = 0;
+            StartCoroutine(gm.turnManager.FinishTurn(characterManager));
+        }
+    }
+
     public int GetWeaponSkill(Weapon weapon)
     {
         if (weapon.weaponType == WeaponType.Sword)
             return swordSkill.GetValue();
         return 0;
+    }
+
+    public float GetCriticalChance()
+    {
+        return (strength.GetValue() + dexterity.GetValue()) / 10f;
     }
 }

@@ -7,7 +7,7 @@ public class TextPopup : MonoBehaviour
     Color textColor;
 
     string defaultHitColor = "FF1100"; // Reddish-Orange
-    // string criticalHitColor = "FF7700"; // Orangish-Yellow
+    string criticalHitColor = "FF7700"; // Orangish-Yellow
 
     Color positiveValueColor = Color.green; // Green
     Color negativeValueColor = Color.red;   // Red
@@ -86,13 +86,19 @@ public class TextPopup : MonoBehaviour
         ResetPopup();
 
         textMesh.SetText(damageAmount.ToString());
-        textColor = Utilities.HexToRGBAColor(defaultHitColor);
-        textMesh.color = textColor;
 
         if (isCriticalHit)
+        {
             textMesh.fontSize = 4f;
+            textColor = Utilities.HexToRGBAColor(criticalHitColor);
+        }
         else // Normal Hit
+        {
             textMesh.fontSize = 3f;
+            textColor = Utilities.HexToRGBAColor(defaultHitColor);
+        }
+
+        textMesh.color = textColor;
 
         sortingOrder++;
         textMesh.sortingOrder = sortingOrder;

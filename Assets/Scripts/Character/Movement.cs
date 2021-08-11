@@ -194,13 +194,14 @@ public class Movement : MonoBehaviour
 
         for (int i = 0; i < segmentCount; i++)
         {
-            StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetRotateAPCost()));
             StartCoroutine(RotateOneSegment(clockwise));
         }
     }
 
     IEnumerator RotateOneSegment(bool clockwise)
     {
+        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetRotateAPCost()));
+
         int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
         while (queueNumber != characterManager.currentQueueNumber)
         {

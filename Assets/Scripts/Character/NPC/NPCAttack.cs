@@ -37,9 +37,7 @@ public class NPCAttack : Attack
                 characterManager.npcMovement.SetPathToCurrentTarget();
 
                 if (characterManager.npcMovement.target != null && characterManager.npcMovement.isMoving == false)
-                {
-                    StartCoroutine(characterManager.npcMovement.Move());//StartCoroutine(characterManager.npcMovement.MoveToNextPointOnPath());
-                }
+                    StartCoroutine(characterManager.npcMovement.Move());
             }
             // If the target is close enough for combat, move in to attack
             else if (targetInCombatRange == false && distanceToTarget <= combatRange)
@@ -107,9 +105,7 @@ public class NPCAttack : Attack
             characterManager.npcMovement.SetPathToCurrentTarget();
 
             if (characterManager.movement.isMoving == false)
-            {
-                StartCoroutine(characterManager.npcMovement.Move());//StartCoroutine(characterManager.npcMovement.MoveToNextPointOnPath());
-            }
+                StartCoroutine(characterManager.npcMovement.Move());
         }
     }
 

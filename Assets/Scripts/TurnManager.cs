@@ -35,7 +35,7 @@ public class TurnManager : MonoBehaviour
     public IEnumerator FinishTurn(CharacterManager characterManager)
     {
         while (characterManager.movement.isMoving) { yield return null; }
-
+        
         if (characterManager.isMyTurn)
         {
             // Debug.Log(characterManager.name + " is finishing their turn");
@@ -62,6 +62,8 @@ public class TurnManager : MonoBehaviour
         gm.playerManager.status.UpdateBuffs();
         gm.playerManager.status.UpdateInjuries();
         TimeSystem.IncreaseTime();
+
+        gm.playerManager.characterStats.ApplyAPLossBuildup();
     }
 
     void FinishNPCsTurn(CharacterManager npcsCharManager)
@@ -83,7 +85,10 @@ public class TurnManager : MonoBehaviour
             charManager.status.UpdateBuffs();
             charManager.status.UpdateInjuries();
 
-            charManager.TakeTurn();
+            charManager.characterStats.ApplyAPLossBuildup();
+
+            if (charManager.characterStats.currentAP > 0)
+                charManager.TakeTurn();
         }
     }
 

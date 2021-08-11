@@ -34,7 +34,7 @@ public class ItemData : MonoBehaviour
     public float blockChanceMultiplier;
 
     [Header("Consumable Data")]
-    public int freshness = 100;
+    public float freshness = 100f;
     public int uses = 1;
     
     [HideInInspector] public Inventory bagInventory;

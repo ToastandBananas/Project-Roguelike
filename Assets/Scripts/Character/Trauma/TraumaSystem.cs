@@ -28,9 +28,9 @@ public class TraumaSystem : MonoBehaviour
     }
     #endregion
 
-    public static void ApplyInjury(CharacterManager character, Injury injury, BodyPartType injuryLocation)
+    public static void ApplyInjury(CharacterManager character, Injury injury, BodyPartType injuryLocation, bool onBackOfBodyPart)
     {
-        character.status.GetBodyPart(injuryLocation).injuries.Add(new LocationalInjury(injury, injuryLocation));
+        character.status.GetBodyPart(injuryLocation).injuries.Add(new LocationalInjury(injury, injuryLocation, onBackOfBodyPart));
     }
 
     public static void RemoveInjury(CharacterManager character, LocationalInjury personalInjury)

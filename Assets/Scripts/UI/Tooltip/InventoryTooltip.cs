@@ -127,9 +127,25 @@ public class InventoryTooltip : Tooltip
 
             stringBuilder.Append("\n");
         }
+        else if (itemData.item.IsMedicalSupply())
+        {
+            MedicalSupply medicalSupply = (MedicalSupply)itemData.item;
+
+            // Medical quality
+            stringBuilder.Append("Quality: " + medicalSupply.quality.ToString("#0.00") + "\n");
+
+            // Soilage
+            if (itemData.freshness % 1f == 0)
+                stringBuilder.Append("Soilage: " + (100f - itemData.freshness).ToString("#0") + "%\n");
+            else
+                stringBuilder.Append("Soilage: " + (100f - itemData.freshness).ToString("#0") + "%\n");
+
+            stringBuilder.Append("\n");
+        }
         else if (itemData.item.IsKey())
         {
             // Perhaps put which door it goes to if the player knows? (And if not, maybe just put "???" for the door name?)
+            stringBuilder.Append("Unlocks: ???");
         }
 
         if (itemData.item.IsEquipment())

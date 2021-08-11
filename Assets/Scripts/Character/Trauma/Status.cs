@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum LocomotionType { Inanimate, Humanoid, Biped, Quadruped, Hexapod, Octoped }
+public enum BodyPartType { Torso, Head, LeftArm, RightArm, LeftLeg, RightLeg, LeftHand, RightHand, LeftFoot, RightFoot }
+/*public enum TorsoSublocation_Front { LeftShoulder, RightShoulder, Sternum, LeftPectoral, RightPectoral, LeftRibCage, RightRibCage, Gut }
+public enum TorsoSublocation_Back { LeftShoulder, RightShoulder, UpperLeftBack, UpperRightBack, MidLeftBack, MidRightBack, LowerLeftBack, LowerRightBack }
+public enum HeadSublocation_Front { Head, Forehead, Nose, UpperLip, LowerLip, LeftCheek, RightCheek, Chin, LeftEye, RightEye, LeftNeck, RightNeck, Throat }
+public enum HeadSublocation_Back { Head, LeftNeck, RightNeck, Neck }
+public enum ArmSublocation_Front { Wrist, Forearm, InnerElbow, Bicep, UpperArm }
+public enum ArmSublocation_Back {  }*/
 
 public class Status : MonoBehaviour
 {
-    public CharacterManager characterManager;
     public LocomotionType locomotionType = LocomotionType.Humanoid;
 
     [Header("Lists")]
@@ -22,15 +28,19 @@ public class Status : MonoBehaviour
     public float currentWater;
 
     [HideInInspector] public bool isDead;
+    [HideInInspector] public CharacterManager characterManager;
 
     readonly float naturalHealingPercentPerTurn = 0.0001f; // 60 minutes (100 turns) to heal entire body 1% if healthiness == 1
     readonly float naturalBloodProductionPerTurn = 0.0164f; // 1 pint takes 48 hours IRL and 1 pint = 473 mL | (473mL / 48hr / 60min / 60sec) * 6sec/turn = 0.0164mL/turn
 
     // Healthiness signifies your overall bodily health, effecting your natural healing over time.
     // Eating healthy, among other things, slowly builds this up over time, but this can be easily reversed by ailments such as an infection or a concussion.
-    float healthiness = 100f;
+    float healthiness = 50f;
     readonly float minHealthiness = -200f;
     readonly float maxHealthiness = 200f;
+
+    // Used whenever a critical hit happens (always happens with attacks from behind)
+    readonly Vector2 criticalHitMultiplier = new Vector2(1.15f, 1.4f);
 
     GameManager gm;
 
@@ -49,6 +59,11 @@ public class Status : MonoBehaviour
 
         characterManager.equipmentManager.onWearableChanged += OnWearableChanged;
         characterManager.equipmentManager.onWeaponChanged += OnWeaponChanged;
+    }
+
+    public float GetHealthiness()
+    {
+        return healthiness;
     }
 
     public void AdjustHealthiness(float amount)
@@ -70,6 +85,7 @@ public class Status : MonoBehaviour
             int buffCount = buffs.Count;
             for (int i = buffCount - 1; i >= 0; i--)
             {
+                // Update buff time remaining
                 buffs[i].buffTimeRemaining -= timePassed;
                 if (buffs[i].buffTimeRemaining <= 0)
                     buffs.Remove(buffs[i]);
@@ -82,6 +98,7 @@ public class Status : MonoBehaviour
         Bleed(timePassed);
         ApplyDamageBuildup();
 
+        // For each injury on each body part
         for (int i = 0; i < bodyParts.Count; i++)
         {
             if (bodyParts[i].injuries.Count > 0)
@@ -89,6 +106,10 @@ public class Status : MonoBehaviour
                 int injuryCount = bodyParts[i].injuries.Count;
                 for (int j = injuryCount - 1; j >= 0; j--)
                 {
+                    // Update bandage soil, if one has been applied to the wound
+                    bodyParts[i].injuries[j].SoilBandage(0.1f / bodyParts[i].injuries[j].bandage.quality);
+
+                    // Update injury time remaining
                     bodyParts[i].injuries[j].injuryTimeRemaining -= Mathf.RoundToInt(timePassed * bodyParts[i].injuries[j].injuryHealMultiplier);
                     if (bodyParts[i].injuries[j].injuryTimeRemaining <= 0)
                         bodyParts[i].injuries.Remove(bodyParts[i].injuries[j]);
@@ -103,17 +124,28 @@ public class Status : MonoBehaviour
         {
             for (int k = 0; k < bodyParts[i].injuries.Count; k++)
             {
-                if (bodyParts[i].injuries[k].bleedTimeRemaining > 0) // If the injury is still bleeding
+                // If the injury is still bleeding
+                if (bodyParts[i].injuries[k].bleedTimeRemaining > 0)
                 {
+                    // Add to the damage buildup
                     bodyParts[i].damageBuildup += bodyParts[i].injuries[k].damagePerTurn;
 
+                    // Lose some blood
                     LoseBlood(bodyParts[i].injuries[k].bloodLossPerTurn);
 
+                    // Update bandage soil, if one has been applied to the wound
+                    bodyParts[i].injuries[k].SoilBandage(bodyParts[i].injuries[k].bloodLossPerTurn / 10f / bodyParts[i].injuries[k].bandage.quality);
+
+                    // Update bleed time remaining
                     bodyParts[i].injuries[k].bleedTimeRemaining -= Mathf.RoundToInt(timePassed * bodyParts[i].injuries[k].injuryHealMultiplier);
                     if (bodyParts[i].injuries[k].bleedTimeRemaining < 0)
                         bodyParts[i].injuries[k].bleedTimeRemaining = 0;
                 }
             }
+
+            // Show some flavor text if the injury is bleeding
+            if (bodyParts[i].damageBuildup >= 1f && characterManager.isNPC == false)
+                gm.flavorText.WriteBleedLine(characterManager, bodyParts[i].bodyPartType, Mathf.FloorToInt(bodyParts[i].damageBuildup));
         }
     }
 
@@ -149,7 +181,7 @@ public class Status : MonoBehaviour
             if (bodyParts[i].damageBuildup >= 1f)
             {
                 roundedDamageAmount = Mathf.FloorToInt(bodyParts[i].damageBuildup);
-                TakeLocationalDamage_IgnoreArmor(Mathf.RoundToInt(bodyParts[i].damageBuildup), bodyParts[i].bodyPartType);
+                TakeLocationalDamage_IgnoreArmor(roundedDamageAmount, bodyParts[i].bodyPartType);
                 bodyParts[i].damageBuildup -= roundedDamageAmount;
             }
         }
@@ -174,8 +206,20 @@ public class Status : MonoBehaviour
         return damage;
     }
 
-    public int TakeLocationalDamage(int bluntDamage, int pierceDamage, int slashDamage, int cleaveDamage, BodyPartType bodyPartType, EquipmentManager equipmentManager, Wearable armor, Wearable clothing, bool armorPenetrated, bool clothingPenetrated)
+    public int TakeLocationalDamage(CharacterManager attacker, int bluntDamage, int pierceDamage, int slashDamage, int cleaveDamage, bool attackedFromBehind, BodyPartType bodyPartType, EquipmentManager equipmentManager, Wearable armor, Wearable clothing, bool armorPenetrated, bool clothingPenetrated)
     {
+        bool criticalHit = false;
+        if (attackedFromBehind || Random.Range(1f, 100f) <= attacker.characterStats.GetCriticalChance())
+            criticalHit = true;
+
+        if (criticalHit)
+        {
+            bluntDamage = Mathf.RoundToInt(bluntDamage * Random.Range(criticalHitMultiplier.x, criticalHitMultiplier.y));
+            pierceDamage = Mathf.RoundToInt(pierceDamage * Random.Range(criticalHitMultiplier.x, criticalHitMultiplier.y));
+            slashDamage = Mathf.RoundToInt(slashDamage * Random.Range(criticalHitMultiplier.x, criticalHitMultiplier.y));
+            cleaveDamage = Mathf.RoundToInt(cleaveDamage * Random.Range(criticalHitMultiplier.x, criticalHitMultiplier.y));
+        }
+
         int startTotalDamage = bluntDamage + pierceDamage + slashDamage + cleaveDamage;
         int finalTotalDamage = startTotalDamage;
 
@@ -253,12 +297,12 @@ public class Status : MonoBehaviour
         {
             // If armor & clothing were penetrated or the character isn't wearing either, 
             // cause an injury based off of damage types and amounts relative to the character's max health for the body part attacked
-            ApplyInjuries(characterManager, bodyPart, bluntDamage, pierceDamage, slashDamage, cleaveDamage);
+            ApplyInjuries(characterManager, bodyPart, bluntDamage, pierceDamage, slashDamage, cleaveDamage, attackedFromBehind);
         }
 
         if (finalTotalDamage > 0)
         {
-            TextPopup.CreateDamagePopup(transform.position, finalTotalDamage, false);
+            TextPopup.CreateDamagePopup(transform.position, finalTotalDamage, criticalHit);
             bodyPart.Damage(finalTotalDamage);
             if ((bodyPart.bodyPartType == BodyPartType.Torso || bodyPart.bodyPartType == BodyPartType.Head) && bodyPart.currentHealth <= 0)
                 Die();
@@ -269,8 +313,27 @@ public class Status : MonoBehaviour
         return finalTotalDamage;
     }
 
-    void ApplyInjuries(CharacterManager characterManager, BodyPart bodyPart, int bluntDamage, int pierceDamage, int slashDamage, int cleaveDamage)
+    void ApplyInjuries(CharacterManager characterManager, BodyPart bodyPart, int bluntDamage, int pierceDamage, int slashDamage, int cleaveDamage, bool attackedFromBehind)
     {
+        // If there are already injuries on this body part
+        if (bodyPart.injuries.Count > 0)
+        {
+            int random = Random.Range(1, 100);
+            if (random < 100) // 15% chance to hit the same injury
+            {
+                List<LocationalInjury> applicableInjuries = new List<LocationalInjury>();
+                for (int i = 0; i < bodyPart.injuries.Count; i++)
+                {
+                    if (bodyPart.injuries[i].onBackOfBodyPart == attackedFromBehind)
+                        applicableInjuries.Add(bodyPart.injuries[i]);
+                }
+
+                random = Random.Range(0, applicableInjuries.Count);
+                applicableInjuries[random].Reinjure();
+                gm.flavorText.WriteReinjureLine(characterManager, applicableInjuries[random].injury, bodyPart.bodyPartType);
+            }
+        }
+
         // Debug.Log(name + " was injured.");
         if (bluntDamage > 0)
         {
@@ -286,7 +349,7 @@ public class Status : MonoBehaviour
         if (slashDamage > 0 && slashDamage > cleaveDamage)
         {
             Injury laceration = gm.traumaSystem.GetLaceration(characterManager, bodyPart.bodyPartType, slashDamage);
-            TraumaSystem.ApplyInjury(characterManager, laceration, bodyPart.bodyPartType);
+            TraumaSystem.ApplyInjury(characterManager, laceration, bodyPart.bodyPartType, attackedFromBehind);
             gm.flavorText.WriteInjuryLine(characterManager, laceration, bodyPart.bodyPartType);
         }
         else if (cleaveDamage > 0)
@@ -421,6 +484,8 @@ public class Status : MonoBehaviour
 
     public IEnumerator Consume(ItemData consumableItemData)
     {
+        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetConsumeAPCost((Consumable)consumableItemData.item)));
+
         int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
         while (queueNumber != characterManager.currentQueueNumber)
         {
@@ -634,17 +699,24 @@ public class LocationalInjury
 {
     public Injury injury;
     public BodyPartType injuryLocation;
+    public bool onBackOfBodyPart;
+
+    public float injuryHealMultiplier = 1f;
+    public bool sterilized;
+    public MedicalSupply bandage;
+    public float bandageSoil;
+
     public int injuryTimeRemaining;
 
     public float damagePerTurn;
     public int bleedTimeRemaining;
     public float bloodLossPerTurn;
-    public float injuryHealMultiplier = 1f;
 
-    public LocationalInjury(Injury injury, BodyPartType injuryLocation)
+    public LocationalInjury(Injury injury, BodyPartType injuryLocation, bool onBackOfBodyPart)
     {
         this.injury = injury;
         this.injuryLocation = injuryLocation;
+        this.onBackOfBodyPart = onBackOfBodyPart;
         SetupInjuryVariables();
     }
 
@@ -661,6 +733,51 @@ public class LocationalInjury
         Vector2 bloodLossValues = injury.GetBloodLossPerTurn();
         if (bloodLossValues.y > 0)
             bloodLossPerTurn = Random.Range(bloodLossValues.x, bloodLossValues.y);
+    }
+
+    public void ApplyBandage(ItemData bandageItemData)
+    {
+        this.bandage = (MedicalSupply)bandageItemData.item;
+        bandageSoil = 100f - bandageItemData.freshness;
+        injuryHealMultiplier += bandage.quality;
+
+        // TODO: Create new ItemData object for the bandage
+    }
+
+    public void RemoveBandage(LocationalInjury injury)
+    {
+        // TODO: Create new ItemData object for the bandage and place in inventory or drop
+    }
+
+    public void SoilBandage(float amount)
+    {
+        if (bandage != null && bandageSoil < 100f)
+        {
+            bandageSoil += amount;
+            if (bandageSoil >= 100f)
+            {
+                bandageSoil = 100f;
+                injuryHealMultiplier -= bandage.quality;
+            }
+        }
+    }
+
+    public void Reinjure()
+    {
+        // If this is an injury that bleeds, re-open it or add onto the bleed time
+        if (bloodLossPerTurn > 0)
+        {
+            Vector2Int bleedTimes = injury.GetBleedTime();
+            bleedTimeRemaining += Random.Range(Mathf.RoundToInt(bleedTimes.x / 1.2f), Mathf.RoundToInt(bleedTimes.y / 1.2f));
+            if (bleedTimeRemaining > bleedTimes.y)
+                bleedTimeRemaining = bleedTimes.y;
+        }
+
+        // Also add to the total injury time remaining
+        Vector2Int injuryTimes = new Vector2Int(TimeSystem.GetTotalSeconds(injury.minInjuryHealTime), TimeSystem.GetTotalSeconds(injury.maxInjuryHealTime) + 1);
+        injuryTimeRemaining += Random.Range(injuryTimes.x / 2, injuryTimes.y / 2);
+        if (injuryTimeRemaining > injuryTimes.y)
+            injuryTimeRemaining = injuryTimes.y;
     }
 }
 

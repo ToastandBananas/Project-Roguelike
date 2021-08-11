@@ -40,8 +40,8 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I))
-            TraumaSystem.ApplyInjury(playerManager, traumaSystem.GetLaceration(playerManager, BodyPartType.Torso, 10), BodyPartType.Torso);
+        if (Input.GetKeyDown(KeyCode.P))
+            apManager.LoseAP(playerManager, 75);
     }
 
     void Start()

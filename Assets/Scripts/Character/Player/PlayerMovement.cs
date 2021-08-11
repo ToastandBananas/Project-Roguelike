@@ -53,14 +53,9 @@ public class PlayerMovement : Movement
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                         playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
                     else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDestroyed == false)
-                    {
                         playerManager.playerAttack.DetermineAttack(null, stats);
-                    }
                     else
-                    {
-                        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
                         StartCoroutine(Move(0, 1));
-                    }
                 }
                 else if (vertical < -0.3f) // Down
                 {
@@ -70,14 +65,9 @@ public class PlayerMovement : Movement
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                         playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
                     else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDestroyed == false)
-                    {
                         playerManager.playerAttack.DetermineAttack(null, stats);
-                    }
                     else
-                    {
-                        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
                         StartCoroutine(Move(0, -1));
-                    }
                 }
             }
             else if (vertical <= 0.3f && vertical >= -0.3f)
@@ -90,14 +80,9 @@ public class PlayerMovement : Movement
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                         playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
                     else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDestroyed == false)
-                    {
                         playerManager.playerAttack.DetermineAttack(null, stats);
-                    }
                     else
-                    {
-                        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
                         StartCoroutine(Move(-1, 0));
-                    }
                 }
                 else if (horizontal > 0.3f) // Right
                 {
@@ -107,14 +92,9 @@ public class PlayerMovement : Movement
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                         playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
                     else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDestroyed == false)
-                    {
                         playerManager.playerAttack.DetermineAttack(null, stats);
-                    }
                     else
-                    {
-                        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
                         StartCoroutine(Move(1, 0));
-                    }
                 }
             }
             else if (vertical > 0.3f)
@@ -127,14 +107,9 @@ public class PlayerMovement : Movement
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                         playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
                     else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDestroyed == false)
-                    {
                         playerManager.playerAttack.DetermineAttack(null, stats);
-                    }
                     else
-                    {
-                        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
                         StartCoroutine(Move(-1, 1));
-                    }
                 }
                 else if (horizontal > 0.3f) // Up-right
                 {
@@ -144,14 +119,9 @@ public class PlayerMovement : Movement
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                         playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
                     else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDestroyed == false)
-                    {
                         playerManager.playerAttack.DetermineAttack(null, stats);
-                    }
                     else
-                    {
-                        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
                         StartCoroutine(Move(1, 1));
-                    }
                 }
             }
             else if (vertical < -0.3f)
@@ -164,14 +134,9 @@ public class PlayerMovement : Movement
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                         playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
                     else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDestroyed == false)
-                    {
                         playerManager.playerAttack.DetermineAttack(null, stats);
-                    }
                     else
-                    {
-                        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
                         StartCoroutine(Move(-1, -1));
-                    }
                 }
                 else if (horizontal > 0.3f) // Down-right
                 {
@@ -181,14 +146,9 @@ public class PlayerMovement : Movement
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                         playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
                     else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDestroyed == false)
-                    {
                         playerManager.playerAttack.DetermineAttack(null, stats);
-                    }
                     else
-                    {
-                        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
                         StartCoroutine(Move(1, -1));
-                    }
                 }
             }
 
@@ -204,14 +164,9 @@ public class PlayerMovement : Movement
             if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                 playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
             else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDestroyed == false)
-            {
                 playerManager.playerAttack.DetermineAttack(null, stats);
-            }
             else
-            {
-                StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
                 StartCoroutine(Move(-1, 1));
-            }
 
             StartCoroutine(MovementCooldown(0.25f));
         }
@@ -225,14 +180,9 @@ public class PlayerMovement : Movement
             if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                 playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
             else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDestroyed == false)
-            {
                 playerManager.playerAttack.DetermineAttack(null, stats);
-            }
             else
-            {
-                StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
                 StartCoroutine(Move(1, 1));
-            }
 
             StartCoroutine(MovementCooldown(0.25f));
         }
@@ -246,14 +196,9 @@ public class PlayerMovement : Movement
             if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                 playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
             else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDestroyed == false)
-            {
                 playerManager.playerAttack.DetermineAttack(null, stats);
-            }
             else
-            {
-                StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
                 StartCoroutine(Move(-1, -1));
-            }
 
             StartCoroutine(MovementCooldown(0.25f));
         }
@@ -267,14 +212,9 @@ public class PlayerMovement : Movement
             if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                 playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
             else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDestroyed == false)
-            {
                 playerManager.playerAttack.DetermineAttack(null, stats);
-            }
             else
-            {
-                StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
                 StartCoroutine(Move(1, -1));
-            }
 
             StartCoroutine(MovementCooldown(0.25f));
         }
@@ -282,6 +222,8 @@ public class PlayerMovement : Movement
 
     public IEnumerator Move(int xDir, int yDir)
     {
+        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
+
         int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
         while (queueNumber != characterManager.currentQueueNumber)
         {

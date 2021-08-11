@@ -15,6 +15,7 @@ MonoBehaviour:
   name: Minor Cut
   description: A small cut that bleeds for a short time.
   injuryType: 1
+  severity: 1
   minInjuryHealTime: {x: 5, y: 0, z: 0}
   maxInjuryHealTime: {x: 10, y: 0, z: 0}
   damagePerTurn: {x: 0.025, y: 0.05}

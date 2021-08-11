@@ -31,6 +31,8 @@ public class HumanoidSpriteManager : SpriteManager
     {
         base.SetToDeathSprite(spriteRenderer);
 
+        facingArrow.enabled = false;
+
         if (hair != null)
             hair.sprite = null;
         if (beard != null)
@@ -115,6 +117,8 @@ public class HumanoidSpriteManager : SpriteManager
 
     public IEnumerator SwapStance(EquipmentManager equipmentManager, CharacterManager characterManager)
     {
+        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetSwapStanceAPCost(characterManager)));
+
         int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
         while (queueNumber != characterManager.currentQueueNumber)
         {

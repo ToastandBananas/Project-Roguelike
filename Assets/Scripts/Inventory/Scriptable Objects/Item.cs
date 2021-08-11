@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum ItemType { Item, Weapon, Ammo, Clothing, Armor, Food, Drink, Ingredient, Seed, Readable, Key, QuestItem, Bag, Container, Shield }
+public enum ItemType { Item, Weapon, Ammo, Clothing, Armor, Food, Drink, Ingredient, Seed, Readable, Key, QuestItem, Bag, Container, Shield, Medical }
 public enum ItemMaterial { Liquid, ViscousLiquid, Meat, Bone, Food, Fat, Bug, Leaf, Charcoal, Wood, Bark, Paper, Hair, Linen, QuiltedLinen, Cotton, Wool, QuiltedWool, Silk, Hemp, Fur,
                             UncuredHide, Rawhide, SoftLeather, HardLeather, Keratin, Chitin, Glass, Obsidian, Stone, Gemstone, Silver, Gold, Copper, Bronze, Iron, Brass, Steel, Mithril, Dragonscale }
 
@@ -69,43 +69,21 @@ public class Item : ScriptableObject
         inventory.RemoveItem(invItem.itemData, itemCount, invItem);
     }
 
-    public virtual bool IsEquipment()
-    {
-        return false;
-    }
+    public virtual bool IsEquipment() { return false; }
 
-    public virtual bool IsWeapon()
-    {
-        return false;
-    }
+    public virtual bool IsWeapon() { return false; }
 
-    public virtual bool IsWearable()
-    {
-        return false;
-    }
+    public virtual bool IsWearable() { return false; }
 
-    public virtual bool IsShield()
-    {
-        return false;
-    }
+    public virtual bool IsShield() { return false; }
 
-    public virtual bool IsBag()
-    {
-        return false;
-    }
+    public virtual bool IsBag() { return false; }
 
-    public virtual bool IsPortableContainer()
-    {
-        return false;
-    }
+    public virtual bool IsPortableContainer() { return false; }
 
-    public virtual bool IsConsumable()
-    {
-        return false;
-    }
+    public virtual bool IsConsumable() { return false; }
 
-    public virtual bool IsKey()
-    {
-        return false;
-    }
+    public virtual bool IsMedicalSupply() { return false; }
+
+    public virtual bool IsKey() { return false; }
 }

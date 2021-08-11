@@ -78,8 +78,26 @@ public class APManager : MonoBehaviour
         {
             // Finish the character's turn and run this coroutine again with the remaining AP, but wait for the character to finish moving
             StartCoroutine(gm.turnManager.FinishTurn(characterManager));
+
             while (characterManager.movement.isMoving) { yield return null; }
+
             StartCoroutine(UseAP(characterManager, APRemainder, false));
+        }
+    }
+
+    public void LoseAP(CharacterManager characterManager, int APAmount)
+    {
+        if (characterManager.characterStats.currentAP > APAmount)
+            characterManager.characterStats.UseAP(APAmount);
+        else
+        {
+            APAmount -= characterManager.characterStats.currentAP;
+            characterManager.characterStats.UseAP(characterManager.characterStats.currentAP);
+
+            if (APAmount > 0)
+                characterManager.characterStats.AddToAPLossBuildup(APAmount);
+
+            StartCoroutine(gm.turnManager.FinishTurn(characterManager));
         }
     }
 
@@ -148,8 +166,7 @@ public class APManager : MonoBehaviour
         float amount = 50 + (weapon.volume * 3) + (weapon.weight * 2);
         if (characterManager.equipmentManager.isTwoHanding)
             amount *= 1.35f;
-
-        //Debug.Log(Mathf.RoundToInt(amount));
+        
         return Mathf.RoundToInt(amount);
     }
 

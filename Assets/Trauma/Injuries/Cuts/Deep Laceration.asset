@@ -15,6 +15,7 @@ MonoBehaviour:
   name: Deep Laceration
   description: Ouch.
   injuryType: 1
+  severity: 5
   minInjuryHealTime: {x: 120, y: 0, z: 0}
   maxInjuryHealTime: {x: 192, y: 0, z: 0}
   damagePerTurn: {x: 0.6, y: 0.9}

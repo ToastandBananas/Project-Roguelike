@@ -399,6 +399,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
+--- !u!4 &75851822 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+  m_PrefabInstance: {fileID: 1035852634}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &85766084
 GameObject:
   m_ObjectHideFlags: 0
@@ -5405,6 +5410,9 @@ MonoBehaviour:
   constitution:
     baseValue: 0
     modifiers: 
+  dexterity:
+    baseValue: 20
+    modifiers: 
   endurance:
     baseValue: 0
     modifiers: 
@@ -5480,7 +5488,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dee27d701694e7040bed070669729f18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterManager: {fileID: 549636870}
   locomotionType: 1
   bodyParts:
   - bodyPartType: 0
@@ -5667,6 +5674,7 @@ MonoBehaviour:
     modifiers: 
   currentWater: 0
   isDead: 0
+  characterManager: {fileID: 549636870}
 --- !u!1 &554865803
 GameObject:
   m_ObjectHideFlags: 0
@@ -8167,6 +8175,7 @@ Transform:
   - {fileID: 1005194242}
   - {fileID: 470905430}
   - {fileID: 1185530268}
+  - {fileID: 75851822}
   m_Father: {fileID: 1417868993}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9289,7 +9298,6 @@ MonoBehaviour:
   defaultSprite: {fileID: 21300000, guid: 7f1f03550b4155340b1eec075b651700, type: 3}
   secondarySprite: {fileID: 21300000, guid: 4267fe348beb44449be30f8bb5d37a0c, type: 3}
   deathSprite: {fileID: 21300000, guid: ac619ced7f997ef42b35f275583ca557, type: 3}
-  characterManager: {fileID: 549636870}
   facingArrow: {fileID: 2132382815}
   hairSprite: {fileID: 9030113176026869921, guid: 16ab00b87e95c8740b70e66d06f34f80, type: 3}
   hair: {fileID: 788545504}
@@ -11594,6 +11602,75 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b3e2231364fb8e14ba521ef01c6406c4, type: 3}
+--- !u!1001 &1035852634
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 802752643}
+    m_Modifications:
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_RootOrder
+      value: 23
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: b636b1391c80cf94d9de90a6eb15ee70, type: 2}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -2601098512575542242, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Name
+      value: Bandage
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_TagString
+      value: Item Pickup
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}
 --- !u!1001 &1048482991
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15837,6 +15914,9 @@ MonoBehaviour:
   constitution:
     baseValue: 0
     modifiers: 
+  dexterity:
+    baseValue: 20
+    modifiers: 
   endurance:
     baseValue: 0
     modifiers: 
@@ -15889,7 +15969,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dee27d701694e7040bed070669729f18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterManager: {fileID: 1347319899}
   locomotionType: 1
   bodyParts:
   - bodyPartType: 0
@@ -16076,6 +16155,7 @@ MonoBehaviour:
     modifiers: 
   currentWater: 0
   isDead: 0
+  characterManager: {fileID: 1347319899}
 --- !u!4 &1392199866 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
@@ -16323,7 +16403,7 @@ MonoBehaviour:
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
+  m_paragraphSpacing: 30
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
@@ -88383,7 +88463,6 @@ MonoBehaviour:
   defaultSprite: {fileID: 21300000, guid: 0e96580f4e4eed24c8c1207b30756e93, type: 3}
   secondarySprite: {fileID: 21300000, guid: 9301d580430d6e84cb9cbd7b3ac4662a, type: 3}
   deathSprite: {fileID: 21300000, guid: ac619ced7f997ef42b35f275583ca557, type: 3}
-  characterManager: {fileID: 1347319899}
   facingArrow: {fileID: 979333108}
   hairSprite: {fileID: 0}
   hair: {fileID: 0}

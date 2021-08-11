@@ -15,6 +15,7 @@ MonoBehaviour:
   name: Cut
   description: Just your average cut. Nothing to see here.
   injuryType: 1
+  severity: 2
   minInjuryHealTime: {x: 12, y: 0, z: 0}
   maxInjuryHealTime: {x: 24, y: 0, z: 0}
   damagePerTurn: {x: 0.05, y: 0.1}

@@ -7,6 +7,7 @@ public class Injury : ScriptableObject
     new public string name = "New Injury";
     public string description;
     public InjuryType injuryType;
+    public int severity;
 
     [Header("Bleed Variables")]
     public Vector3Int minInjuryHealTime;

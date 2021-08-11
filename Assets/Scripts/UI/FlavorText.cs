@@ -18,7 +18,7 @@ public class FlavorText : MonoBehaviour
 
     readonly int maxLines = 50;
 
-    #region
+    #region Singleton
     public static FlavorText instance;
     void Awake()
     {
@@ -53,49 +53,55 @@ public class FlavorText : MonoBehaviour
         StartCoroutine(SetupScrollbar());
     }
 
-    public IEnumerator DelayWriteLine(string input)
+    public IEnumerator DelayWriteLine(string input, int yieldCount = 1)
     {
-        yield return null;
+        for (int i = 0; i < yieldCount; i++) { yield return null; }
         WriteLine(input);
     }
 
     #region Combat
-    public void WriteMeleeAttackCharacterLine(CharacterManager attacker, CharacterManager target, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, BodyPartType bodyPartHit, int damage)
+    public void WriteMeleeAttackCharacterLine(CharacterManager attacker, CharacterManager target, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, BodyPartType bodyPartHit, int damage, bool attackedFromBehind)
     {
+        string attackFromBehindText = "";
+        if (attackedFromBehind) attackFromBehindText = " from behind";
+
         switch (generalAttackType)
         {
             case GeneralAttackType.Unarmed:
                 WriteLine(Utilities.GetPronoun(attacker, true, false) + "punched " + Utilities.GetPronoun(target, false, true) + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) 
-                    + " for <b><color=red>" + damage + "</color></b> damage.");
+                    + attackFromBehindText + " for <b><color=red>" + damage + "</color></b> damage.");
                 break;
             case GeneralAttackType.PrimaryWeapon:
                 WriteLine(Utilities.GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon(), meleeAttackType) + Utilities.GetPronoun(target, false, true) 
-                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName, false, true) 
-                    + " for <b><color=red>" + damage + "</color></b> damage.");
+                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName, false, true)
+                    + attackFromBehindText + " for <b><color=red>" + damage + "</color></b> damage.");
                 break;
             case GeneralAttackType.SecondaryWeapon:
                 WriteLine(Utilities.GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetLeftWeapon(), meleeAttackType) + Utilities.GetPronoun(target, false, true) 
-                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon].itemName, false, true) 
-                    + " for <b><color=red>" + damage + "</color></b> damage.");
+                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon].itemName, false, true)
+                    + attackFromBehindText + " for <b><color=red>" + damage + "</color></b> damage.");
                 break;
             default:
                 break;
         }
     }
 
-    public void WritePenetrateArmorAndClothingLine_Melee(CharacterManager attacker, CharacterManager target, Wearable armor, Wearable clothing, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, PhysicalDamageType physicalDamageType, BodyPartType bodyPartHit, int damage)
+    public void WritePenetrateArmorAndClothingLine_Melee(CharacterManager attacker, CharacterManager target, Wearable armor, Wearable clothing, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, PhysicalDamageType physicalDamageType, BodyPartType bodyPartHit, int damage, bool attackedFromBehind)
     {
+        string attackFromBehindText = "";
+        if (attackedFromBehind) attackFromBehindText = " from behind";
+
         switch (generalAttackType)
         {
             case GeneralAttackType.PrimaryWeapon:
                 WriteLine(Utilities.GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon(), meleeAttackType) + Utilities.GetPronoun(target, false, true) 
-                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName, false, true) 
+                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + attackFromBehindText + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName, false, true) 
                     + " and " + GetPenetrateArmorVerb(physicalDamageType, armor) + Utilities.GetPronoun(target, false, true) + "<b>" + armor.name + "</b> and <b>" + clothing.name 
                     + "</b>, ignoring defenses and causing <b><color=red>" + damage + "</color></b> damage.");
                 break;
             case GeneralAttackType.SecondaryWeapon:
                 WriteLine(Utilities.GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetLeftWeapon(), meleeAttackType) + Utilities.GetPronoun(target, false, true) 
-                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon].itemName, false, true) 
+                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + attackFromBehindText + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon].itemName, false, true) 
                     + " and " + GetPenetrateArmorVerb(physicalDamageType, armor) + Utilities.GetPronoun(target, false, true) + "<b>" + armor.name + "</b> and <b>" + clothing.name 
                     + "</b>, ignoring defenses and causing <b><color=red>" + damage + "</color></b> damage.");
                 break;
@@ -104,19 +110,22 @@ public class FlavorText : MonoBehaviour
         }
     }
 
-    public void WritePenetrateWearableLine_Melee(CharacterManager attacker, CharacterManager target, Wearable wearable, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, PhysicalDamageType physicalDamageType, BodyPartType bodyPartHit, int damage)
+    public void WritePenetrateWearableLine_Melee(CharacterManager attacker, CharacterManager target, Wearable wearable, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, PhysicalDamageType physicalDamageType, BodyPartType bodyPartHit, int damage, bool attackedFromBehind)
     {
+        string attackFromBehindText = "";
+        if (attackedFromBehind) attackFromBehindText = " from behind";
+
         switch (generalAttackType)
         {
             case GeneralAttackType.PrimaryWeapon:
                 WriteLine(Utilities.GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon(), meleeAttackType) + Utilities.GetPronoun(target, false, true) 
-                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName, false, true) 
+                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + attackFromBehindText + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName, false, true) 
                     + " and " + GetPenetrateArmorVerb(physicalDamageType, wearable) + Utilities.GetPronoun(target, false, true) + "<b>" + wearable.name + "</b>, ignoring its defenses and causing <b><color=red>" 
                     + damage + "</color></b> damage.");
                 break;
             case GeneralAttackType.SecondaryWeapon:
                 WriteLine(Utilities.GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetLeftWeapon(), meleeAttackType) + Utilities.GetPronoun(target, false, true) 
-                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon].itemName, false, true) + " and " 
+                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + attackFromBehindText + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon].itemName, false, true) + " and " 
                     + GetPenetrateArmorVerb(physicalDamageType, wearable) + Utilities.GetPronoun(target, false, true) + "<b>" + wearable.name + "</b>, ignoring its defenses and causing <b><color=red>" 
                     + damage + "</color></b> damage.");
                 break;
@@ -145,22 +154,25 @@ public class FlavorText : MonoBehaviour
         }
     }
 
-    public void WriteAbsorbedMeleeAttackLine(CharacterManager attacker, CharacterManager target, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, BodyPartType bodyPartHit)
+    public void WriteAbsorbedMeleeAttackLine(CharacterManager attacker, CharacterManager target, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, BodyPartType bodyPartHit, bool attackedFromBehind)
     {
+        string attackFromBehindText = "";
+        if (attackedFromBehind) attackFromBehindText = " from behind";
+
         switch (generalAttackType)
         {
             case GeneralAttackType.Unarmed:
-                WriteLine(Utilities.GetPronoun(attacker, true, false) + "punched " + Utilities.GetPronoun(target, false, true) + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + ", but the hit was absorbed by " 
-                    + Utilities.GetPronoun(target, false, true) + "armor.");
+                WriteLine(Utilities.GetPronoun(attacker, true, false) + "punched " + Utilities.GetPronoun(target, false, true) + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + attackFromBehindText 
+                    + ", but the hit was absorbed by " + Utilities.GetPronoun(target, false, true) + "armor.");
                 break;
             case GeneralAttackType.PrimaryWeapon:
                 WriteLine(Utilities.GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon(), meleeAttackType) + Utilities.GetPronoun(target, false, true) 
-                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName, false, true) 
+                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + attackFromBehindText + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName, false, true) 
                     + ", but the attack was absorbed by " + Utilities.GetPronoun(target, false, true) + "armor.");
                 break;
             case GeneralAttackType.SecondaryWeapon:
                 WriteLine(Utilities.GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetLeftWeapon(), meleeAttackType) + Utilities.GetPronoun(target, false, true) 
-                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon].itemName, false, true) 
+                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + attackFromBehindText + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon].itemName, false, true) 
                     + ", but the attack was absorbed by " + Utilities.GetPronoun(target, false, true) + "armor.");
                 break;
             default:
@@ -413,6 +425,18 @@ public class FlavorText : MonoBehaviour
     {
         StartCoroutine(DelayWriteLine(Utilities.GetPronoun(characterManager, true, false) + "received " + Utilities.GetIndefiniteArticle(injury.name, false, true) + " on " 
             + Utilities.GetPossessivePronoun(characterManager) + Utilities.FormatEnumStringWithSpaces(bodyPartType.ToString(), true) + "."));
+    }
+
+    public void WriteReinjureLine(CharacterManager characterManager, Injury injury, BodyPartType bodyPartType)
+    {
+        StartCoroutine(DelayWriteLine("An existing <b>" + injury.name + "</b> on " + Utilities.GetPronoun(characterManager, false, true) 
+            + Utilities.FormatEnumStringWithSpaces(bodyPartType.ToString(), true) + " was also hit, reinjuring it.", 2));
+    }
+
+    public void WriteBleedLine(CharacterManager characterManager, BodyPartType bodyPartType, int damage)
+    {
+        StartCoroutine(DelayWriteLine(Utilities.GetPronoun(characterManager, true, false) + "bleed from injuries on " + Utilities.GetPronoun(characterManager, false, true)
+            + Utilities.FormatEnumStringWithSpaces(bodyPartType.ToString(), true) + ", causing <b><color=red>" + damage + "</color></b> damage.", 3));
     }
 
     /*string GetInjuryDescription(Injury injury)
