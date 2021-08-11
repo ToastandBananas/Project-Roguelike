@@ -159,7 +159,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         }
 
         if (itemData != null && gm.playerManager.isMyTurn && gm.playerManager.actionsQueued == 0)
-            itemData.item.Use(gm.playerManager, equipSlot, myInventory, this, amountToUse);
+            itemData.item.Use(gm.playerManager, myInventory, this, amountToUse, equipSlot);
     }
 
     public void UpdateAllItemTexts()

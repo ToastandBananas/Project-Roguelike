@@ -135,10 +135,7 @@ public class InventoryTooltip : Tooltip
             stringBuilder.Append("Quality: " + medicalSupply.quality.ToString("#0.00") + "\n");
 
             // Soilage
-            if (itemData.freshness % 1f == 0)
-                stringBuilder.Append("Soilage: " + (100f - itemData.freshness).ToString("#0") + "%\n");
-            else
-                stringBuilder.Append("Soilage: " + (100f - itemData.freshness).ToString("#0") + "%\n");
+            stringBuilder.Append("Condition: " + GetSoilageText(itemData) + "\n");
 
             stringBuilder.Append("\n");
         }
@@ -199,6 +196,20 @@ public class InventoryTooltip : Tooltip
                 return "Foot";
         }
         return "";
+    }
+
+    string GetSoilageText(ItemData itemData)
+    {
+        if (itemData.freshness == 100)
+            return "Clean";
+        else if (itemData.freshness >= 75)
+            return "Lightly Soiled";
+        else if (itemData.freshness >= 50)
+            return "Moderately Soiled";
+        else if (itemData.freshness >= 25)
+            return "Soiled";
+        else
+            return "Filthy";
     }
 
     string GetDurabilityText(ItemData itemData)

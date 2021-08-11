@@ -150,7 +150,7 @@ public class ContextMenu : MonoBehaviour
     void EquipLeftWeapon()
     {
         Weapon weapon = (Weapon)contextActiveInvItem.itemData.item;
-        weapon.Use(gm.playerManager, EquipmentSlot.LeftWeapon, contextActiveInvItem.myInventory, contextActiveInvItem, 1);
+        weapon.Use(gm.playerManager, contextActiveInvItem.myInventory, contextActiveInvItem, 1, EquipmentSlot.LeftWeapon);
         DisableContextMenu();
     }
 

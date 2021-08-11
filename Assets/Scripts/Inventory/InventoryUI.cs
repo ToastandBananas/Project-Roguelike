@@ -21,7 +21,7 @@ public class InventoryUI : MonoBehaviour
     [HideInInspector] public Inventory activeInventory;
     [HideInInspector] public bool isActive, isMinimized, scrollbarSelected;
 
-    [HideInInspector] public int maxInvItems = 31;
+    [HideInInspector] public int maxInvItems = 15;
     [HideInInspector] public int invItemHeight = 32;
 
     int addItemEffectsPlayCount;
@@ -88,7 +88,7 @@ public class InventoryUI : MonoBehaviour
         }
 
         if (inventoryItemObjectPool.activePooledInventoryItems.Count > maxInvItems)
-            EditInventoryItemsParentHeight(invItemHeight);
+            EditInventoryItemsParentHeight(-invItemHeight);
 
         if ((newItemData.item.itemType == ItemType.Bag || newItemData.item.itemType == ItemType.Container) && gm.playerManager.playerEquipmentManager.ItemIsEquipped(newItemData) == false && invItem.disclosureWidget != null)
             invItem.disclosureWidget.EnableDisclosureWidget();
@@ -323,7 +323,10 @@ public class InventoryUI : MonoBehaviour
 
     public void EditInventoryItemsParentHeight(int amount)
     {
-        invItemsParentRectTransform.offsetMin = new Vector2(invItemsParentRectTransform.offsetMin.x, invItemsParentRectTransform.offsetMin.y + amount);
+        Debug.Log(amount);
+        Debug.Log(invItemsParentRectTransform.offsetMin.y + amount);
+        Debug.Log(invItemsParentRectTransform.offsetMin);
+        invItemsParentRectTransform.offsetMin = new Vector2(0, invItemsParentRectTransform.offsetMin.y + amount);
     }
 
     public void ResetInventoryItemsParentHeight()

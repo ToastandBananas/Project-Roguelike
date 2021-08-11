@@ -95,7 +95,7 @@ public class InventoryCycler : MonoBehaviour
             }
         }
 
-        transform.position = gm.containerInvUI.GetSideBarButtonFromDirection(gm.containerInvUI.activeDirection).transform.position + new Vector3(52, -16.5f);
+        transform.position = gm.containerInvUI.GetSideBarButtonFromDirection(gm.containerInvUI.activeDirection).transform.position + new Vector3(27, -41.5f);
     }
 
     public void Hide()

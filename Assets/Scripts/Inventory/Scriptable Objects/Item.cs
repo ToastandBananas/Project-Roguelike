@@ -25,7 +25,7 @@ public class Item : ScriptableObject
     [Header("Pickup Sprite")]
     public Sprite pickupSprite;
 
-    public virtual void Use(CharacterManager characterManager, EquipmentSlot equipSlot, Inventory inventory, InventoryItem invItem, int itemCount)
+    public virtual void Use(CharacterManager characterManager, Inventory inventory, InventoryItem invItem, int itemCount, EquipmentSlot equipSlot = EquipmentSlot.Shirt)
     {
         if (invItem != null && invItem.itemData != null)
         {
