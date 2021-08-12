@@ -80,7 +80,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
         // Update the scrollbar if necessary
         if (myInvUI.inventoryItemObjectPool.activePooledInventoryItems.Count > myInvUI.maxInvItems)
-            myInvUI.EditInventoryItemsParentHeight(-myInvUI.invItemHeight);
+            myInvUI.EditInventoryItemsParentHeight(myInvUI.invItemHeight);
         else if (myInvUI.inventoryItemObjectPool.activePooledInventoryItems.Count == myInvUI.maxInvItems)
             myInvUI.ResetInventoryItemsParentHeight();
 
@@ -159,7 +159,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         }
 
         if (itemData != null && gm.playerManager.isMyTurn && gm.playerManager.actionsQueued == 0)
-            itemData.item.Use(gm.playerManager, myInventory, this, amountToUse, equipSlot);
+            itemData.item.Use(gm.playerManager, myInventory, this, itemData, amountToUse, equipSlot);
     }
 
     public void UpdateAllItemTexts()

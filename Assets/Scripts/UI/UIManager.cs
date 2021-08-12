@@ -989,14 +989,14 @@ public class UIManager : MonoBehaviour
         if (draggedInvItem.transform.GetSiblingIndex() != 0 && draggedInvItem.myInvUI == activeInvUI && activeInvItem != draggedInvItem && Input.mousePosition.y > draggedInvItem.transform.position.y + 40)
         {
             // Set the new sibling index of the item
-            if (draggedInvItem.parentInvItem == null || draggedInvItem.parentInvItem.itemData.CompareTag("Item Pickup") == false
+            if (draggedInvItem.parentInvItem == null || draggedInvItem.parentInvItem.itemData.IsPickup() == false
                 || draggedInvItem.parentInvItem.itemData.item.IsPortableContainer() || draggedInvItem.transform.GetSiblingIndex() >= draggedInvItem.parentInvItem.transform.GetSiblingIndex() + 2) // If the parent bag item of the item we're dragging is on the ground, make sure not to move the dragged item above the bag item
             {
                 draggedInvItem.transform.SetSiblingIndex(draggedInvItem.transform.GetSiblingIndex() - 1);
             }
 
             // If the item is in a bag and we drag it above its bag item
-            if (draggedInvItem.parentInvItem != null && (draggedInvItem.parentInvItem.itemData.CompareTag("Item Pickup") == false || draggedInvItem.parentInvItem.itemData.item.IsPortableContainer())
+            if (draggedInvItem.parentInvItem != null && (draggedInvItem.parentInvItem.itemData.IsPickup() == false || draggedInvItem.parentInvItem.itemData.item.IsPortableContainer())
                 && draggedInvItem.transform.GetSiblingIndex() < draggedInvItem.parentInvItem.transform.GetSiblingIndex())
             {
                 draggedInvItem.canDragToCurrentLocation = true;
@@ -1065,7 +1065,7 @@ public class UIManager : MonoBehaviour
                     draggedInvItem.originalSiblingIndex = draggedInvItem.transform.GetSiblingIndex();
 
                     // If the item was a pickup, setup a new ItemData object to be a child of the bag/portable container we're putting the item in
-                    if (draggedInvItem.itemData.CompareTag("Item Pickup"))
+                    if (draggedInvItem.itemData.IsPickup())
                     {
                         ItemData newItemData = CreateNewItemDataChild(draggedInvItem.itemData, lastActiveItem.parentInvItem.itemData.bagInventory, false);
 
@@ -1151,7 +1151,7 @@ public class UIManager : MonoBehaviour
                 draggedInvItem.canDragToCurrentLocation = true;
 
                 int indexOfBag = 0;
-                if (draggedInvItem.parentInvItem.itemData.CompareTag("Item Pickup"))
+                if (draggedInvItem.parentInvItem.itemData.IsPickup())
                     indexOfBag = gm.containerInvUI.GetItemsListFromActiveDirection().IndexOf(draggedInvItem.parentInvItem.itemData);
                 else
                     indexOfBag = draggedInvItem.parentInvItem.myInventory.items.IndexOf(draggedInvItem.parentInvItem.itemData);

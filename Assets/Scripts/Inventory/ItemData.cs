@@ -645,6 +645,23 @@ public class ItemData : MonoBehaviour
         }
     }
 
+    public bool IsPickup()
+    {
+        if (CompareTag("Item Pickup"))
+            return true;
+        return false;
+    }
+
+    public bool IsEquipped()
+    {
+        for (int i = 0; i < gm.playerManager.playerEquipmentManager.currentEquipment.Length; i++)
+        {
+            if (gm.playerManager.playerEquipmentManager.currentEquipment[i] == this)
+                return true;
+        }
+        return false;
+    }
+
     public void ReturnToObjectPool()
     {
         if (bagInventory != null)

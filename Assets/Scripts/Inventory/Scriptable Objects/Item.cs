@@ -25,25 +25,25 @@ public class Item : ScriptableObject
     [Header("Pickup Sprite")]
     public Sprite pickupSprite;
 
-    public virtual void Use(CharacterManager characterManager, Inventory inventory, InventoryItem invItem, int itemCount, EquipmentSlot equipSlot = EquipmentSlot.Shirt)
+    public virtual void Use(CharacterManager characterManager, Inventory inventory, InventoryItem invItem, ItemData itemData, int itemCount, EquipmentSlot equipSlot = EquipmentSlot.Shirt)
     {
-        if (invItem != null && invItem.itemData != null)
+        if (itemData != null)
         {
             if (isUsable)
             {
-                invItem.itemData.currentStackSize -= itemCount;
+                itemData.currentStackSize -= itemCount;
 
                 // If there's none left, remove the item
-                if (invItem.itemData.currentStackSize <= 0)
+                if (itemData.currentStackSize <= 0)
                 {
                     // Remove the item from the ItemDatas dictionary if it was on the ground
-                    if (invItem.myInventory == null)
+                    if (invItem != null && invItem.myInventory == null)
                         GameTiles.RemoveItemData(invItem.itemData, invItem.itemData.transform.position);
 
                     if (inventory != null) // If using an item that's inside and inventory
                     {
                         // Remove it from the inventory
-                        RemoveFromInventory(inventory, itemCount, invItem);
+                        RemoveFromInventory(inventory, invItem, itemData, itemCount);
                     }
                     else if (invItem.myEquipmentManager == null) // If using an item that was on the ground
                     {
@@ -51,10 +51,11 @@ public class Item : ScriptableObject
                         invItem.ClearItem();
                     }
                 }
-                else
+                else if (invItem != null)
                     invItem.UpdateInventoryWeightAndVolume();
 
-                invItem.myInvUI.UpdateUI();
+                if (invItem != null)
+                    invItem.myInvUI.UpdateUI();
             }
             else
             {
@@ -64,9 +65,9 @@ public class Item : ScriptableObject
         }
     }
 
-    public void RemoveFromInventory(Inventory inventory, int itemCount, InventoryItem invItem)
+    public void RemoveFromInventory(Inventory inventory, InventoryItem invItem, ItemData itemData, int itemCount)
     {
-        inventory.RemoveItem(invItem.itemData, itemCount, invItem);
+        inventory.RemoveItem(itemData, itemCount, invItem);
     }
 
     public virtual bool IsEquipment() { return false; }

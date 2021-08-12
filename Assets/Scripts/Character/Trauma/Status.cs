@@ -107,7 +107,8 @@ public class Status : MonoBehaviour
                 for (int j = injuryCount - 1; j >= 0; j--)
                 {
                     // Update bandage soil, if one has been applied to the wound
-                    bodyParts[i].injuries[j].SoilBandage(0.1f / bodyParts[i].injuries[j].bandage.quality);
+                    if (bodyParts[i].injuries[j].bandage != null)
+                        bodyParts[i].injuries[j].SoilBandage(0.1f / bodyParts[i].injuries[j].bandage.quality);
 
                     // Update injury time remaining
                     bodyParts[i].injuries[j].injuryTimeRemaining -= Mathf.RoundToInt(timePassed * bodyParts[i].injuries[j].injuryHealMultiplier);
@@ -134,7 +135,8 @@ public class Status : MonoBehaviour
                     LoseBlood(bodyParts[i].injuries[k].bloodLossPerTurn);
 
                     // Update bandage soil, if one has been applied to the wound
-                    bodyParts[i].injuries[k].SoilBandage(bodyParts[i].injuries[k].bloodLossPerTurn / 10f / bodyParts[i].injuries[k].bandage.quality);
+                    if (bodyParts[i].injuries[k].bandage != null)
+                        bodyParts[i].injuries[k].SoilBandage(bodyParts[i].injuries[k].bloodLossPerTurn / 10f / bodyParts[i].injuries[k].bandage.quality);
 
                     // Update bleed time remaining
                     bodyParts[i].injuries[k].bleedTimeRemaining -= Mathf.RoundToInt(timePassed * bodyParts[i].injuries[k].injuryHealMultiplier);

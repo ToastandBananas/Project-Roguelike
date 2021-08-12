@@ -140,7 +140,7 @@ public class Inventory : MonoBehaviour
             if (itemDataComingFrom.item.IsBag() || itemDataComingFrom.item.IsPortableContainer())
             {
                 Inventory itemDataComingFromsInv = null;
-                if (itemDataComingFrom.CompareTag("Item Pickup") && itemDataComingFrom.item.IsBag()) // If this is a bag we're picking up from the ground
+                if (itemDataComingFrom.IsPickup() && itemDataComingFrom.item.IsBag()) // If this is a bag we're picking up from the ground
                     itemDataComingFromsInv = itemDataComingFrom.bagInventory;
                 else if (invComingFrom == null && itemDataComingFrom.item.IsBag())
                     itemDataComingFromsInv = gm.playerInvUI.GetInventoryFromBagEquipSlot(itemDataComingFrom);

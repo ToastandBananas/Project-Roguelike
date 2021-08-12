@@ -24,11 +24,11 @@ public class Consumable : Item
     public Vector3Int minGradualHealTime;
     public Vector3Int maxGradualHealTime;
 
-    public override void Use(CharacterManager characterManager, Inventory inventory, InventoryItem invItem, int itemCount, EquipmentSlot equipSlot = EquipmentSlot.Shirt)
+    public override void Use(CharacterManager characterManager, Inventory inventory, InventoryItem invItem, ItemData itemData, int itemCount, EquipmentSlot equipSlot = EquipmentSlot.Shirt)
     {
-        characterManager.StartCoroutine(characterManager.status.Consume(invItem.itemData));
+        characterManager.StartCoroutine(characterManager.status.Consume(itemData));
 
-        base.Use(characterManager, inventory, invItem, itemCount, equipSlot);
+        base.Use(characterManager, inventory, invItem, itemData, itemCount, equipSlot);
     }
 
     public override bool IsConsumable()

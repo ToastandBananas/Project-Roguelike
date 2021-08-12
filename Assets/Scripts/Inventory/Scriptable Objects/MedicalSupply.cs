@@ -8,11 +8,11 @@ public class MedicalSupply : Item
     [Header("Medical Stats")]
     public float quality = 0.5f;
 
-    public override void Use(CharacterManager characterManager, Inventory inventory, InventoryItem invItem, int itemCount, EquipmentSlot equipSlot = EquipmentSlot.Shirt)
+    public override void Use(CharacterManager characterManager, Inventory inventory, InventoryItem invItem, ItemData itemData, int itemCount, EquipmentSlot equipSlot = EquipmentSlot.Shirt)
     {
         
 
-        base.Use(characterManager, inventory, invItem, itemCount);
+        base.Use(characterManager, inventory, invItem, itemData, itemCount);
     }
 
     public override bool IsMedicalSupply() { return true; }

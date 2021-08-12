@@ -189,7 +189,7 @@ public class InventoryUI : MonoBehaviour
             totalWeight += Mathf.RoundToInt(itemsList[i].item.weight * itemsList[i].currentStackSize * 100f) / 100f;
             if (itemsList[i].item.IsBag() || itemsList[i].item.IsPortableContainer())
             {
-                if (itemsList[i].item.IsBag() && itemsList[i].CompareTag("Item Pickup"))
+                if (itemsList[i].item.IsBag() && itemsList[i].IsPickup())
                     totalWeight -= Mathf.RoundToInt(itemsList[i].item.weight * itemsList[i].currentStackSize * 100f) / 100f;
 
                 for (int j = 0; j < itemsList[i].bagInventory.items.Count; j++)
@@ -230,7 +230,7 @@ public class InventoryUI : MonoBehaviour
             totalVolume += Mathf.RoundToInt(itemsList[i].item.volume * itemsList[i].currentStackSize * 100f) / 100f;
             if (itemsList[i].item.IsBag() || itemsList[i].item.itemType == ItemType.Container)
             {
-                if (itemsList[i].item.IsBag() && itemsList[i].CompareTag("Item Pickup"))
+                if (itemsList[i].item.IsBag() && itemsList[i].IsPickup())
                     totalVolume -= Mathf.RoundToInt(itemsList[i].item.volume * itemsList[i].currentStackSize * 100f) / 100f;
 
                 for (int j = 0; j < itemsList[i].bagInventory.items.Count; j++)

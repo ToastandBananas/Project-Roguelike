@@ -116,7 +116,7 @@ public class ContainerInventoryUI : InventoryUI
             AssignInventoryToInventoryItem(invItem, direction);
             
             // If this is a bag on the ground, just automatically expand its disclosure widget to show the items inside the bag
-            if (invItem.myInventory != null && invItem.myInventory.CompareTag("Item Pickup") && invItem.itemData.item.IsBag())
+            if (invItem.itemData.IsPickup() && invItem.itemData.item.IsBag())
                 invItem.disclosureWidget.ExpandDisclosureWidget();
         }
     }

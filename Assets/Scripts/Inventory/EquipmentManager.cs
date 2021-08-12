@@ -150,7 +150,7 @@ public class EquipmentManager : MonoBehaviour
             gm.playerInvUI.ShowNewInventoryItem(equipmentItemData);
 
         // If the item is a bag and it was on the ground, set the sidebar icon to a floor icon
-        if (newItemData.item.IsBag() && newItemData.CompareTag("Item Pickup"))
+        if (newItemData.item.IsBag() && newItemData.IsPickup())
         {
             gm.containerInvUI.SetSideBarIcon_Floor(gm.containerInvUI.activeDirection);
             gm.containerInvUI.GetInventoriesListFromDirection(gm.containerInvUI.activeDirection).Remove(newItemData.bagInventory);
