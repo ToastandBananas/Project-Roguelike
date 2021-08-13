@@ -44,9 +44,8 @@ public class Status : MonoBehaviour
 
     GameManager gm;
 
-    void Start()
+    void Awake()
     {
-        gm = GameManager.instance;
         if (characterManager == null)
             characterManager = GetComponent<CharacterManager>();
 
@@ -54,8 +53,14 @@ public class Status : MonoBehaviour
 
         for (int i = 0; i < bodyParts.Count; i++)
         {
+            bodyParts[i].characterManager = characterManager;
             bodyParts[i].currentHealth = bodyParts[i].maxHealth.GetValue();
         }
+    }
+
+    void Start()
+    {
+        gm = GameManager.instance;
 
         characterManager.equipmentManager.onWearableChanged += OnWearableChanged;
         characterManager.equipmentManager.onWeaponChanged += OnWeaponChanged;
@@ -128,6 +133,8 @@ public class Status : MonoBehaviour
                 // If the injury is still bleeding
                 if (bodyParts[i].injuries[k].bleedTimeRemaining > 0)
                 {
+                    if (characterManager.isNPC)
+                        Debug.Log(bodyParts[i].bodyPartType + " bleeds from " + bodyParts[i].injuries[k].injury.name);
                     // Add to the damage buildup
                     bodyParts[i].damageBuildup += bodyParts[i].injuries[k].damagePerTurn;
 
@@ -141,7 +148,12 @@ public class Status : MonoBehaviour
                     // Update bleed time remaining
                     bodyParts[i].injuries[k].bleedTimeRemaining -= Mathf.RoundToInt(timePassed * bodyParts[i].injuries[k].injuryHealMultiplier);
                     if (bodyParts[i].injuries[k].bleedTimeRemaining < 0)
+                    {
                         bodyParts[i].injuries[k].bleedTimeRemaining = 0;
+
+                        if (characterManager.isNPC == false)
+                            gm.healthDisplay.UpdateHealthHeaderColor(bodyParts[i].bodyPartType, bodyParts[i]);
+                    }
                 }
             }
 
@@ -638,170 +650,5 @@ public class Status : MonoBehaviour
     public virtual void OnWeaponChanged(ItemData newItemData, ItemData oldItemData)
     {
 
-    }
-}
-
-[System.Serializable]
-public class BodyPart
-{
-    public BodyPartType bodyPartType;
-
-    [Header("Health")]
-    public Stat maxHealth;
-    public int currentHealth;
-    public List<LocationalInjury> injuries = new List<LocationalInjury>();
-
-    [Header("Buildups")]
-    public float damageBuildup;
-    public float healingBuildup;
-
-    [Header("Defense")]
-    public Stat naturalDefense;
-    public Stat addedDefense_Armor, addedDefense_Clothing;
-
-    public BodyPart(BodyPartType bodyPartType, int baseMaxHealth)
-    {
-        this.bodyPartType = bodyPartType;
-        maxHealth.SetBaseValue(baseMaxHealth);
-        currentHealth = baseMaxHealth;
-    }
-
-    public int Damage(int damageAmount)
-    {
-        currentHealth -= damageAmount;
-        if (currentHealth < 0)
-            currentHealth = 0;
-        return currentHealth;
-    }
-
-    public int HealInstant_StaticValue(int healAmount)
-    {
-        currentHealth += healAmount;
-        if (currentHealth > maxHealth.GetValue())
-            currentHealth = maxHealth.GetValue();
-        return currentHealth;
-    }
-
-    public int HealInstant_Percent(float healPercent)
-    {
-        int healAmount = Mathf.RoundToInt(maxHealth.GetValue() * healPercent);
-        if (currentHealth + healAmount > maxHealth.GetValue()) // Make sure not to heal over the max health
-        {
-            healAmount = maxHealth.GetValue() - currentHealth;
-            currentHealth += healAmount;
-        }
-        else
-            currentHealth += healAmount;
-        return currentHealth;
-    }
-}
-
-[System.Serializable]
-public class LocationalInjury
-{
-    public Injury injury;
-    public BodyPartType injuryLocation;
-    public bool onBackOfBodyPart;
-
-    public float injuryHealMultiplier = 1f;
-    public bool sterilized;
-    public MedicalSupply bandage;
-    public float bandageSoil;
-
-    public int injuryTimeRemaining;
-
-    public float damagePerTurn;
-    public int bleedTimeRemaining;
-    public float bloodLossPerTurn;
-
-    public LocationalInjury(Injury injury, BodyPartType injuryLocation, bool onBackOfBodyPart)
-    {
-        this.injury = injury;
-        this.injuryLocation = injuryLocation;
-        this.onBackOfBodyPart = onBackOfBodyPart;
-        SetupInjuryVariables();
-    }
-
-    void SetupInjuryVariables()
-    {
-        damagePerTurn = Mathf.RoundToInt(Random.Range(injury.damagePerTurn.x, injury.damagePerTurn.y) * 100f) / 100f;
-
-        injuryTimeRemaining = Random.Range(TimeSystem.GetTotalSeconds(injury.minInjuryHealTime), TimeSystem.GetTotalSeconds(injury.maxInjuryHealTime) + 1);
-
-        Vector2Int bleedTimes = injury.GetBleedTime();
-        if (bleedTimes.y > 0)
-            bleedTimeRemaining = Random.Range(bleedTimes.x, bleedTimes.y + 1);
-
-        Vector2 bloodLossValues = injury.GetBloodLossPerTurn();
-        if (bloodLossValues.y > 0)
-            bloodLossPerTurn = Random.Range(bloodLossValues.x, bloodLossValues.y);
-    }
-
-    public void ApplyBandage(ItemData bandageItemData)
-    {
-        this.bandage = (MedicalSupply)bandageItemData.item;
-        bandageSoil = 100f - bandageItemData.freshness;
-        injuryHealMultiplier += bandage.quality;
-
-        // TODO: Create new ItemData object for the bandage
-    }
-
-    public void RemoveBandage(LocationalInjury injury)
-    {
-        // TODO: Create new ItemData object for the bandage and place in inventory or drop
-    }
-
-    public void SoilBandage(float amount)
-    {
-        if (bandage != null && bandageSoil < 100f)
-        {
-            bandageSoil += amount;
-            if (bandageSoil >= 100f)
-            {
-                bandageSoil = 100f;
-                injuryHealMultiplier -= bandage.quality;
-            }
-        }
-    }
-
-    public void Reinjure()
-    {
-        // If this is an injury that bleeds, re-open it or add onto the bleed time
-        if (bloodLossPerTurn > 0)
-        {
-            Vector2Int bleedTimes = injury.GetBleedTime();
-            bleedTimeRemaining += Random.Range(Mathf.RoundToInt(bleedTimes.x / 1.2f), Mathf.RoundToInt(bleedTimes.y / 1.2f));
-            if (bleedTimeRemaining > bleedTimes.y)
-                bleedTimeRemaining = bleedTimes.y;
-        }
-
-        // Also add to the total injury time remaining
-        Vector2Int injuryTimes = new Vector2Int(TimeSystem.GetTotalSeconds(injury.minInjuryHealTime), TimeSystem.GetTotalSeconds(injury.maxInjuryHealTime) + 1);
-        injuryTimeRemaining += Random.Range(injuryTimes.x / 2, injuryTimes.y / 2);
-        if (injuryTimeRemaining > injuryTimes.y)
-            injuryTimeRemaining = injuryTimes.y;
-    }
-}
-
-[System.Serializable]
-public class Buff
-{
-    public Consumable consumable;
-    public int buffTimeRemaining;
-
-    public float healPercentPerTurn;
-    public int healTimeRemaining;
-
-    public Buff(Consumable consumable)
-    {
-        this.consumable = consumable;
-        SetupBuffVariables(consumable);
-    }
-
-    void SetupBuffVariables(Consumable consumable)
-    {
-        healTimeRemaining = Random.Range(TimeSystem.GetTotalSeconds(consumable.minGradualHealTime), TimeSystem.GetTotalSeconds(consumable.maxGradualHealTime) + 1);
-        buffTimeRemaining = healTimeRemaining;
-        healPercentPerTurn = consumable.gradualHealPercent / buffTimeRemaining;
     }
 }

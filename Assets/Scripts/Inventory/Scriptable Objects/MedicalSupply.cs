@@ -6,6 +6,7 @@ public enum MedicalSupplyType { Bandage }
 public class MedicalSupply : Item
 {
     [Header("Medical Stats")]
+    public MedicalSupplyType medicalSupplyType;
     public float quality = 0.5f;
 
     public override void Use(CharacterManager characterManager, Inventory inventory, InventoryItem invItem, ItemData itemData, int itemCount, EquipmentSlot equipSlot = EquipmentSlot.Shirt)

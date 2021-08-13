@@ -298,7 +298,7 @@ public class InventoryUI : MonoBehaviour
             if (containerSideBarButton != null)
                 addItemEffect.DoEffect_Left(itemSprite, containerSideBarButton.transform.position.y);
             else
-                addItemEffect.DoEffect_Right(itemSprite, playerInvSideBarButton.transform.position.y);
+                addItemEffect.DoEffect_Left(itemSprite, playerInvSideBarButton.transform.position.y);
 
             yield return new WaitForSeconds(addItemEffect.anim.GetCurrentAnimatorStateInfo(0).length);
             addItemEffectsPlayCount--;

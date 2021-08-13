@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public ContainerInventoryUI containerInvUI;
     [HideInInspector] public GameTiles gameTiles;
     [HideInInspector] public FlavorText flavorText;
+    [HideInInspector] public HealthDisplay healthDisplay;
     [HideInInspector] public PlayerInventoryUI playerInvUI;
     [HideInInspector] public PlayerManager playerManager;
     [HideInInspector] public DropItemController dropItemController;
@@ -51,6 +52,7 @@ public class GameManager : MonoBehaviour
         containerInvUI = ContainerInventoryUI.instance;
         flavorText = FlavorText.instance;
         gameTiles = GameTiles.instance;
+        healthDisplay = HealthDisplay.instance;
         playerInvUI = PlayerInventoryUI.instance;
         playerManager = PlayerManager.instance;
         dropItemController = DropItemController.instance;
