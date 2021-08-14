@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class ContextMenu : MonoBehaviour
 {
-    public ContextMenuButton[] buttons;
-
     [HideInInspector] public InventoryItem contextActiveInvItem;
     [HideInInspector] public bool isActive;
 
+    List<ContextMenuButton> activeContextButtons = new List<ContextMenuButton>();
+
     Canvas canvas;
     GameManager gm;
-
-    readonly float buttonHeight = 32f;
-    readonly float buttonWidth = 110f;
+    
+    readonly float minButtonWidth = 110f;
+    float currentWidth;
 
     #region Singleton
     public static ContextMenu instance;
@@ -34,11 +34,6 @@ public class ContextMenu : MonoBehaviour
 
     void Start()
     {
-        for (int i = 0; i < buttons.Length; i++)
-        {
-            buttons[i].gameObject.SetActive(false);
-        }
-
         canvas = GetComponentInParent<Canvas>();
         gm = GameManager.instance;
     }
@@ -70,6 +65,10 @@ public class ContextMenu : MonoBehaviour
 
                 CreateUseItemButton();
             }
+            else if (gm.uiManager.activeInvItem.itemData.item.IsMedicalSupply())
+            {
+                CreateApplyMedicalSupplyButtons();
+            }
 
             if (gm.uiManager.activeInvItem.itemData.currentStackSize > 1)
                 CreateSplitStackButton();
@@ -87,19 +86,56 @@ public class ContextMenu : MonoBehaviour
                 CreateTransferButton();
         }
 
-        float xPosAddon = 0;
+        SetActiveButtonsWidth();
+
+        float xPosAddon = xPosAddon = (currentWidth - minButtonWidth) / 2; // Account for any resizing of the context button that may have happened
         float yPosAddon = 0;
 
         // Get the desired position:
         // If the mouse position is too close to the bottom of the screen
         if (Input.mousePosition.y <= 190f)
-            yPosAddon = GetActiveButtonCount() * buttonHeight;
+            yPosAddon = GetActiveButtonCount() * gm.playerInvUI.invItemHeight;
 
         // If the mouse position is too far to the right of the screen
-        if (Input.mousePosition.x >= 1780f)
-            xPosAddon = -buttonWidth;
+        if (Input.mousePosition.x >= 1680f)
+            xPosAddon = -currentWidth;
 
         transform.position = Input.mousePosition + new Vector3(xPosAddon, yPosAddon);
+    }
+
+    void CreateApplyMedicalSupplyButtons()
+    {
+        MedicalSupply medSupply = (MedicalSupply)gm.uiManager.activeInvItem.itemData.item;
+        for (int i = 0; i < gm.playerManager.status.bodyParts.Count; i++)
+        {
+            for (int j = 0; j < gm.playerManager.status.bodyParts[i].injuries.Count; j++)
+            {
+                ContextMenuButton contextButton = GetNextInactiveButton();
+                LocationalInjury locationalInjury = gm.playerManager.status.bodyParts[i].injuries[j];
+                bool canApplyItem = false;
+
+                // If this is a bandage and the wound is something that can be remedied with a bandage (and it's not already bandaged)
+                if (locationalInjury.CanApplyBandage(gm.uiManager.activeInvItem.itemData))
+                {
+                    canApplyItem = true;
+                    contextButton.textMesh.text = "Bandage " + locationalInjury.injury.name + " - " + Utilities.FormatEnumStringWithSpaces(gm.playerManager.status.bodyParts[i].bodyPartType.ToString(), false);
+                }
+
+                if (canApplyItem)
+                {
+                    contextButton.gameObject.SetActive(true);
+                    contextButton.button.onClick.AddListener(delegate { ApplyMedicalItemToInjury(locationalInjury); });
+                }
+                else
+                    activeContextButtons.Remove(contextButton);
+            }
+        }
+    }
+
+    void ApplyMedicalItemToInjury(LocationalInjury locationalInjury)
+    {
+        StartCoroutine(locationalInjury.ApplyMedicalItem(contextActiveInvItem.itemData, contextActiveInvItem.myInventory, contextActiveInvItem));
+        DisableContextMenu();
     }
 
     void CreateUseItemButton()
@@ -212,24 +248,20 @@ public class ContextMenu : MonoBehaviour
 
     ContextMenuButton GetNextInactiveButton()
     {
-        for (int i = 0; i < buttons.Length; i++)
-        {
-            if (buttons[i].gameObject.activeSelf == false)
-                return buttons[i];
-        }
-
-        Debug.LogError("Not enough Context Menu Buttons. Fix me!");
-        return null;
+        ContextMenuButton contextButton = gm.objectPoolManager.contextButtonObjectPool.GetPooledContextButton();
+        activeContextButtons.Add(contextButton);
+        return contextButton;
     }
 
     public void DisableContextMenu()
     {
-        for (int i = 0; i < buttons.Length; i++)
+        for (int i = 0; i < activeContextButtons.Count; i++)
         {
-            buttons[i].button.onClick.RemoveAllListeners();
-            buttons[i].gameObject.SetActive(false);
+            activeContextButtons[i].button.onClick.RemoveAllListeners();
+            activeContextButtons[i].gameObject.SetActive(false);
         }
 
+        activeContextButtons.Clear();
         isActive = false;
         contextActiveInvItem = null;
         gm.uiManager.activeContextMenuButton = null;
@@ -244,13 +276,22 @@ public class ContextMenu : MonoBehaviour
 
     int GetActiveButtonCount()
     {
-        int activeCount = 0;
-        for (int i = 0; i < buttons.Length; i++)
-        {
-            if (buttons[i].gameObject.activeSelf)
-                activeCount++;
-        }
+        return activeContextButtons.Count;
+    }
 
-        return activeCount;
+    void SetActiveButtonsWidth()
+    {
+        currentWidth = minButtonWidth;
+        for (int i = 0; i < activeContextButtons.Count; i++)
+        {
+            activeContextButtons[i].textMesh.ForceMeshUpdate();
+            if (currentWidth < activeContextButtons[i].textMesh.textBounds.size.x)
+                currentWidth = activeContextButtons[i].textMesh.textBounds.size.x + 40;
+        }
+        
+        for (int i = 0; i < activeContextButtons.Count; i++)
+        {
+            activeContextButtons[i].rectTransform.sizeDelta = new Vector2(currentWidth, activeContextButtons[i].rectTransform.sizeDelta.y);
+        }
     }
 }

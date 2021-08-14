@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public class ContextMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    public RectTransform rectTransform;
     public Button button;
     public TextMeshProUGUI textMesh;
 

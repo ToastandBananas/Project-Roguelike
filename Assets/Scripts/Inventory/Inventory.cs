@@ -203,7 +203,7 @@ public class Inventory : MonoBehaviour
     public void RemoveItem(ItemData itemData, int itemCount, InventoryItem invItem)
     {
         // Update InventoryUI
-        if (invItem.myInvUI.activeInventory == this)
+        if (invItem != null && invItem.myInvUI.activeInventory == this)
             invItem.myInvUI.UpdateUI();
 
         // Subtract itemCount from the item's currentStackSize
@@ -211,7 +211,8 @@ public class Inventory : MonoBehaviour
         if (itemData.currentStackSize < 0)
             itemData.currentStackSize = 0;
 
-        invItem.UpdateInventoryWeightAndVolume();
+        if (invItem != null)
+            invItem.UpdateInventoryWeightAndVolume();
 
         // If there's none left:
         if (itemData.currentStackSize <= 0)
@@ -220,7 +221,8 @@ public class Inventory : MonoBehaviour
             items.Remove(itemData);
 
             // Clear out the InventoryItem
-            invItem.ClearItem();
+            if (invItem != null)
+                invItem.ClearItem();
         }
     }
 

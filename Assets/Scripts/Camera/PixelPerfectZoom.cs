@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.U2D;
+using UnityEngine.EventSystems;
 
-public class PerfectPixelWithZoom : MonoBehaviour
+public class PixelPerfectZoom : MonoBehaviour
 {
     [SerializeField] float pixelsPerUnit = 16;
 
@@ -57,7 +58,7 @@ public class PerfectPixelWithZoom : MonoBehaviour
             UpdateCameraScale();
         }
 
-        if (gm.uiManager.activeInvUI == null)
+        if (EventSystem.current.IsPointerOverGameObject() == false)
         {
             if (GameControls.gamePlayActions.cameraZoomAxis > 0)
                 ZoomIn();

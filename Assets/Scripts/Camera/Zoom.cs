@@ -4,11 +4,11 @@ public class Zoom : MonoBehaviour
 {
     [SerializeField] Camera ppwzCamera;
 
-    PerfectPixelWithZoom ppwz;
+    PixelPerfectZoom ppwz;
 
     void Start()
     {
-        ppwz = ppwzCamera.GetComponent<PerfectPixelWithZoom>();
+        ppwz = ppwzCamera.GetComponent<PixelPerfectZoom>();
     }
 
     void Update()

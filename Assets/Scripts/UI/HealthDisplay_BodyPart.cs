@@ -7,12 +7,13 @@ public class HealthDisplay_BodyPart : MonoBehaviour, IPointerEnterHandler, IPoin
 {
     [SerializeField] Image image;
     [SerializeField] BodyPartType bodyPartType;
-    BodyPart bodyPart;
+    [HideInInspector] public BodyPart bodyPart;
 
-    string lightGray = "#4B4B4B";
-    string darkGray = "#2E2E2E";
-    string red = "#C81236";
-    string orange = "#FE6E00";
+    readonly string lightGray = "#4B4B4B";
+    readonly string darkGray = "#2E2E2E";
+    readonly string red = "#C81236";
+    readonly string orange = "#FE6E00";
+    readonly string blue = "#0055B3";
 
     StringBuilder stringBuilder = new StringBuilder();
     GameManager gm;
@@ -22,6 +23,14 @@ public class HealthDisplay_BodyPart : MonoBehaviour, IPointerEnterHandler, IPoin
         gm = GameManager.instance;
 
         bodyPart = gm.playerManager.status.GetBodyPart(bodyPartType);
+    }
+
+    void Update()
+    {
+        if (GameControls.gamePlayActions.menuSelect.WasPressed && gm.healthDisplay.focusedBodyPart == this && gm.healthDisplay.selectedBodyPart != this)
+        {
+            gm.healthDisplay.selectedBodyPart = this;
+        }
     }
 
     public void GenerateTooltipText()
@@ -36,14 +45,21 @@ public class HealthDisplay_BodyPart : MonoBehaviour, IPointerEnterHandler, IPoin
         {
             for (int i = 0; i < bodyPart.injuries.Count; i++)
             {
+                // Injury Name
                 stringBuilder.Append("<size=22>" + bodyPart.injuries[i].injury.name + "</size>\n");
+
+                // Bandaged?
+                if (bodyPart.injuries[i].bandage != null)
+                    stringBuilder.Append("- <color=" + blue + ">" + "Bandaged with " + bodyPart.injuries[i].bandage.name + " (Soilage: " + bodyPart.injuries[i].bandageSoil.ToString("#0") + "%)</color>\n");
+
+                // Bleed Severity
                 if (bodyPart.injuries[i].bleedTimeRemaining > 0)
-                    stringBuilder.Append("<color=" + red + ">" + GetBleedSeverity(bodyPart.injuries[i]) + "</color>");
+                    stringBuilder.Append("- <color=" + red + ">" + GetBleedSeverity(bodyPart.injuries[i]) + "</color>\n");
                 else if (bodyPart.injuries[i].injury.GetBleedTime().y > 0)
-                    stringBuilder.Append("<color=" + orange + ">" + "Bleeding Stopped</color>");
+                    stringBuilder.Append("- <color=" + orange + ">Bleeding Stopped</color>\n");
 
                 if (i != bodyPart.injuries.Count - 1)
-                    stringBuilder.Append("\n\n");
+                    stringBuilder.Append("\n");
             }
         }
 
@@ -69,17 +85,21 @@ public class HealthDisplay_BodyPart : MonoBehaviour, IPointerEnterHandler, IPoin
     public void OnPointerEnter(PointerEventData eventData)
     {
         image.color = Utilities.HexToRGBAColor(darkGray);
-        gm.healthDisplay.activeBodyPart = this;
+        gm.healthDisplay.focusedBodyPart = this;
         GenerateTooltipText();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         image.color = Utilities.HexToRGBAColor(lightGray);
-        if (gm.healthDisplay.activeBodyPart == this)
+        if (gm.healthDisplay.focusedBodyPart == this)
         {
-            gm.healthDisplay.activeBodyPart = null;
-            gm.healthDisplay.HideTooltip();
+            gm.healthDisplay.focusedBodyPart = null;
+
+            if (gm.healthDisplay.selectedBodyPart == null)
+                gm.healthDisplay.HideTooltip();
+            else
+                gm.healthDisplay.selectedBodyPart.GenerateTooltipText();
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Text;
 public class HealthDisplay : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI tooltipText;
+    [SerializeField] GameObject tooltipParent;
 
     [Header("Header Texts")]
     [SerializeField] TextMeshProUGUI headHeader;
@@ -16,13 +17,15 @@ public class HealthDisplay : MonoBehaviour
     [SerializeField] TextMeshProUGUI torsoHealthText, leftArmHealthText, leftHandHealthText, leftLegHealthText, leftFootHealthText;
     [SerializeField] TextMeshProUGUI rightArmHealthText, rightHandHealthText, rightLegHealthText, rightFootHealthText;
 
-    [HideInInspector] public HealthDisplay_BodyPart activeBodyPart;
+    [HideInInspector] public HealthDisplay_BodyPart focusedBodyPart;
+    [HideInInspector] public HealthDisplay_BodyPart selectedBodyPart;
 
     StringBuilder stringBuilder = new StringBuilder();
     GameManager gm;
 
-    string red = "#C81236";
-    string orange = "#FE6E00";
+    readonly string red = "#C81236";
+    readonly string orange = "#FE6E00";
+    readonly string blue = "#0055B3";
 
     #region Singleton
     public static HealthDisplay instance;
@@ -115,7 +118,22 @@ public class HealthDisplay : MonoBehaviour
         if (bodyPart.IsBleeding())
             headerColor = Utilities.HexToRGBAColor(red);
         else if (bodyPart.injuries.Count > 0)
-            headerColor = Utilities.HexToRGBAColor(orange);
+        {
+            bool allInjuriesRemedied = true;
+            for (int i = 0; i < bodyPart.injuries.Count; i++)
+            {
+                if (bodyPart.injuries[i].InjuryRemedied() == false)
+                {
+                    allInjuriesRemedied = false;
+                    break;
+                }
+            }
+
+            if (allInjuriesRemedied)
+                headerColor = Utilities.HexToRGBAColor(blue);
+            else
+                headerColor = Utilities.HexToRGBAColor(orange);
+        }
 
         switch (bodyPartType)
         {
@@ -162,11 +180,20 @@ public class HealthDisplay : MonoBehaviour
 
     public void ShowTooltip()
     {
-        tooltipText.transform.parent.gameObject.SetActive(true);
+        tooltipParent.SetActive(true);
     }
 
     public void HideTooltip()
     {
-        tooltipText.transform.parent.gameObject.SetActive(false);
+        tooltipParent.SetActive(false);
+        selectedBodyPart = null;
+    }
+
+    public void UpdateTooltip()
+    {
+        if (focusedBodyPart != null)
+            focusedBodyPart.GenerateTooltipText();
+        else if (selectedBodyPart != null)
+            selectedBodyPart.GenerateTooltipText();
     }
 }

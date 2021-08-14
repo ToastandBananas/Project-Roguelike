@@ -130,11 +130,15 @@ public class Status : MonoBehaviour
         {
             for (int k = 0; k < bodyParts[i].injuries.Count; k++)
             {
+                // Lower blood loss per turn as the injury heals
+                if (bodyParts[i].injuries[k].injury.GetBloodLossPerTurn().x > 0 && bodyParts[i].injuries[k].bloodLossPerTurn >= bodyParts[i].injuries[k].injury.GetBloodLossPerTurn().x / 2f)
+                    bodyParts[i].injuries[k].bloodLossPerTurn -= bodyParts[i].injuries[k].injury.GetBloodLossPerTurn().x * 0.001f;
+
                 // If the injury is still bleeding
                 if (bodyParts[i].injuries[k].bleedTimeRemaining > 0)
                 {
-                    if (characterManager.isNPC)
-                        Debug.Log(bodyParts[i].bodyPartType + " bleeds from " + bodyParts[i].injuries[k].injury.name);
+                    //if (characterManager.isNPC) Debug.Log(bodyParts[i].bodyPartType + " bleeds from " + bodyParts[i].injuries[k].injury.name);
+
                     // Add to the damage buildup
                     bodyParts[i].damageBuildup += bodyParts[i].injuries[k].damagePerTurn;
 
@@ -332,8 +336,8 @@ public class Status : MonoBehaviour
         // If there are already injuries on this body part
         if (bodyPart.injuries.Count > 0)
         {
-            int random = Random.Range(1, 100);
-            if (random < 100) // 15% chance to hit the same injury
+            int random = Random.Range(0, 100);
+            if (random < 10 * bodyPart.injuries.Count) // 10% chance per injury to hit an existing injury
             {
                 List<LocationalInjury> applicableInjuries = new List<LocationalInjury>();
                 for (int i = 0; i < bodyPart.injuries.Count; i++)
@@ -342,9 +346,17 @@ public class Status : MonoBehaviour
                         applicableInjuries.Add(bodyPart.injuries[i]);
                 }
 
-                random = Random.Range(0, applicableInjuries.Count);
-                applicableInjuries[random].Reinjure();
-                gm.flavorText.WriteReinjureLine(characterManager, applicableInjuries[random].injury, bodyPart.bodyPartType);
+                if (applicableInjuries.Count > 0)
+                {
+                    random = Random.Range(0, applicableInjuries.Count);
+
+                    int random2 = Random.Range(0, 100);
+                    if (applicableInjuries[random].bandage == null || random2 < 50 / applicableInjuries[random].bandage.quality)
+                    {
+                        applicableInjuries[random].Reinjure();
+                        gm.flavorText.WriteReinjureLine(characterManager, applicableInjuries[random].injury, bodyPart.bodyPartType);
+                    }
+                }
             }
         }
 

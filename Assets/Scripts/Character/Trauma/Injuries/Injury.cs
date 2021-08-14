@@ -14,6 +14,11 @@ public class Injury : ScriptableObject
     public Vector3Int maxInjuryHealTime;
     public Vector2 damagePerTurn;
 
+    public Vector2Int GetInjuryTimesInSeconds()
+    {
+        return new Vector2Int(TimeSystem.GetTotalSeconds(minInjuryHealTime), TimeSystem.GetTotalSeconds(maxInjuryHealTime));
+    }
+
     public virtual Vector2Int GetBleedTime()
     {
         return Vector2Int.zero;
@@ -22,5 +27,12 @@ public class Injury : ScriptableObject
     public virtual Vector2 GetBloodLossPerTurn()
     {
         return Vector2.zero;
+    }
+
+    public bool CanBandage()
+    {
+        if (injuryType == InjuryType.Abrasion || injuryType == InjuryType.Laceration || injuryType == InjuryType.Puncture || injuryType == InjuryType.Bruise)
+            return true;
+        return false;
     }
 }

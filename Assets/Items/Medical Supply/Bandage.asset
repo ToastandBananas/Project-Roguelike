@@ -20,8 +20,9 @@ MonoBehaviour:
   maxStackSize: 10
   weight: 0.05
   volume: 0.1
-  isUsable: 1
+  isUsable: 0
   value: {x: 0, y: 0}
   staticValue: 15
   pickupSprite: {fileID: -2601098512575542242, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
+  medicalSupplyType: 0
   quality: 0.8

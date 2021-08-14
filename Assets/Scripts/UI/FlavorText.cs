@@ -439,6 +439,12 @@ public class FlavorText : MonoBehaviour
             + Utilities.FormatEnumStringWithSpaces(bodyPartType.ToString(), true) + ", causing <b><color=red>" + damage + "</color></b> damage.", 3));
     }
 
+    public void WriteApplyBandageLine(CharacterManager characterManager, Injury injury, MedicalSupply medSupply, BodyPartType bodyPartType)
+    {
+        WriteLine(Utilities.GetPronoun(characterManager, true, false) + "wrap up the <b>" + injury.name + "</b> on " + Utilities.GetPronoun(characterManager, false, true)
+            + Utilities.FormatEnumStringWithSpaces(bodyPartType.ToString(), true) + " with " + Utilities.GetIndefiniteArticle(medSupply.name, false, true) + ".");
+    }
+
     /*string GetInjuryDescription(Injury injury)
     {
         for (int i = 0; i < gm.traumaSystem.lacerations.Length; i++)

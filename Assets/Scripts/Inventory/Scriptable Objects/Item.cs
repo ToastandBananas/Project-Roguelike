@@ -29,39 +29,36 @@ public class Item : ScriptableObject
     {
         if (itemData != null)
         {
-            if (isUsable)
-            {
-                itemData.currentStackSize -= itemCount;
+            itemData.currentStackSize -= itemCount;
 
-                // If there's none left, remove the item
-                if (itemData.currentStackSize <= 0)
+            // If there's none left, remove the item
+            if (itemData.currentStackSize <= 0)
+            {
+                // Remove the item from the ItemDatas dictionary if it was on the ground
+                if (invItem != null && invItem.myInventory == null)
+                    GameTiles.RemoveItemData(invItem.itemData, invItem.itemData.transform.position);
+
+                if (inventory != null) // If using an item that's inside and inventory
                 {
-                    // Remove the item from the ItemDatas dictionary if it was on the ground
-                    if (invItem != null && invItem.myInventory == null)
-                        GameTiles.RemoveItemData(invItem.itemData, invItem.itemData.transform.position);
-
-                    if (inventory != null) // If using an item that's inside and inventory
-                    {
-                        // Remove it from the inventory
-                        RemoveFromInventory(inventory, invItem, itemData, itemCount);
-                    }
-                    else if (invItem.myEquipmentManager == null) // If using an item that was on the ground
-                    {
-                        invItem.gm.containerInvUI.GetItemsListFromActiveDirection().Remove(invItem.itemData);
-                        invItem.ClearItem();
-                    }
+                    // Remove it from the inventory
+                    RemoveFromInventory(inventory, invItem, itemData, itemCount);
                 }
-                else if (invItem != null)
-                    invItem.UpdateInventoryWeightAndVolume();
+                else if (invItem.myEquipmentManager == null) // If using an item that was on the ground
+                {
+                    invItem.gm.containerInvUI.GetItemsListFromActiveDirection().Remove(invItem.itemData);
+                    invItem.ClearItem();
+                }
+            }
+            else if (invItem != null)
+                invItem.UpdateInventoryWeightAndVolume();
 
-                if (invItem != null)
-                    invItem.myInvUI.UpdateUI();
-            }
-            else
-            {
-                Debug.Log("You cannot use this item");
-                return;
-            }
+            if (invItem != null)
+                invItem.myInvUI.UpdateUI();
+        }
+        else
+        {
+            Debug.Log("You cannot use this item");
+            return;
         }
     }
 

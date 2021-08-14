@@ -58,10 +58,14 @@ public class TurnManager : MonoBehaviour
     {
         gm.playerManager.playerStats.ReplenishAP();
         gm.playerManager.isMyTurn = true;
+
         gm.tileInfoDisplay.DisplayTileInfo();
+
         gm.playerManager.status.UpdateBuffs();
         gm.playerManager.status.UpdateInjuries();
         TimeSystem.IncreaseTime();
+
+        gm.healthDisplay.UpdateTooltip();
 
         gm.playerManager.characterStats.ApplyAPLossBuildup();
     }

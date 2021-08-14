@@ -4,10 +4,10 @@ public enum CombatState { MoveInToAttack, CircleOpponent, Ranged }
 
 public class NPCAttack : Attack
 {
+    [HideInInspector] public CombatState currentCombatState;
+
     [HideInInspector] public float combatRange;
     [HideInInspector] public bool targetInCombatRange;
-
-    [HideInInspector] public CombatState currentCombatState;
 
     public override void Start()
     {

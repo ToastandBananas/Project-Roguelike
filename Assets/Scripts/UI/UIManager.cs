@@ -158,7 +158,7 @@ public class UIManager : MonoBehaviour
                         // Reset variables and clear out our lists:
                         ResetSelections();
                     }
-                    else if (invItemsDragging.Count > 0)
+                    else if (invItemsDragging.Count > 0) // If dragging one or more inventory items
                     {
                         for (int i = 0; i < invItemsDragging.Count; i++)
                         {
@@ -477,8 +477,17 @@ public class UIManager : MonoBehaviour
             }
         }
 
+        // If we drag and drop a medical item onto a body part on the health display
+        if (gm.healthDisplay.focusedBodyPart != null && draggedInvItem.itemData.item.IsMedicalSupply())
+        {
+            MedicalSupply medSupply = (MedicalSupply)draggedInvItem.itemData.item;
+            if (gm.healthDisplay.focusedBodyPart.bodyPart.injuries.Count == 1 && gm.healthDisplay.focusedBodyPart.bodyPart.injuries[0].CanApplyMedicalItem(draggedInvItem.itemData))
+            {
+                StartCoroutine(gm.healthDisplay.focusedBodyPart.bodyPart.injuries[0].ApplyMedicalItem(draggedInvItem.itemData, draggedInvItem.myInventory, draggedInvItem));
+            }
+        }
         // If we drag and drop an item onto a container sidebar button, place the item in the corresponding inventory/ground space
-        if (activeContainerSideBarButton != null)
+        else if (activeContainerSideBarButton != null)
         {
             // Get the side bar button's corresponding inventory, if it has one
             Inventory inv = activeContainerSideBarButton.GetInventory();

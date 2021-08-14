@@ -8,6 +8,8 @@ public class APManager : MonoBehaviour
     readonly int baseWeaponStickCost = 200;
     readonly int minWeaponStickAPCost = 20;
 
+    readonly int baseBandageAPCost = 1000;
+
     readonly int baseMovementCost = 100;
     readonly int rotationCost = 6;
 
@@ -250,5 +252,12 @@ public class APManager : MonoBehaviour
     public int GetConsumeAPCost(Consumable consumable)
     {
         return Mathf.RoundToInt((consumable.volume * 100) + (consumable.weight * 100));
+    }
+
+    public int GetApplyMedicalItemAPCost(MedicalSupply medSupply)
+    {
+        if (medSupply.medicalSupplyType == MedicalSupplyType.Bandage)
+            return baseBandageAPCost;
+        return 100;
     }
 }

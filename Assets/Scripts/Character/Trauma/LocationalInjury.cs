@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [System.Serializable]
@@ -44,11 +45,34 @@ public class LocationalInjury
             bloodLossPerTurn = Random.Range(bloodLossValues.x, bloodLossValues.y);
     }
 
-    public void ApplyBandage(ItemData bandageItemData)
+    public IEnumerator ApplyMedicalItem(ItemData itemData, Inventory inventory, InventoryItem invItem)
     {
-        this.bandage = (MedicalSupply)bandageItemData.item;
+        MedicalSupply medSupply = (MedicalSupply)itemData.item;
+        characterManager.StartCoroutine(APManager.instance.UseAP(characterManager, APManager.instance.GetApplyMedicalItemAPCost(medSupply)));
+
+        int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
+        while (queueNumber != characterManager.currentQueueNumber)
+        {
+            yield return null;
+            if (characterManager.status.isDead) yield break;
+        }
+
+        if (CanApplyBandage(itemData))
+            ApplyBandage(itemData);
+
+        itemData.item.Use(characterManager, inventory, invItem, itemData, 1);
+
+        if (characterManager.isNPC == false)
+            HealthDisplay.instance.UpdateHealthHeaderColor(injuryLocation);
+    }
+
+    void ApplyBandage(ItemData bandageItemData)
+    {
+        bandage = (MedicalSupply)bandageItemData.item;
         bandageSoil = 100f - bandageItemData.freshness;
         injuryHealMultiplier += bandage.quality;
+
+        FlavorText.instance.WriteApplyBandageLine(characterManager, injury, bandage, injuryLocation);
 
         // TODO: Create new ItemData object for the bandage
     }
@@ -71,24 +95,54 @@ public class LocationalInjury
         }
     }
 
+    public bool CanApplyMedicalItem(ItemData itemData)
+    {
+        MedicalSupply medSupply = (MedicalSupply)itemData.item;
+        if (CanApplyBandage(itemData))
+            return true;
+        return false;
+    }
+
+    public bool CanApplyBandage(ItemData itemData)
+    {
+        MedicalSupply medSupply = (MedicalSupply)itemData.item;
+        if (medSupply.medicalSupplyType == MedicalSupplyType.Bandage && bandage == null && injury.CanBandage())
+            return true;
+        return false;
+    }
+
     public void Reinjure()
     {
         // If this is an injury that bleeds, re-open it or add onto the bleed time
         if (bloodLossPerTurn > 0)
         {
+            // Start bleeding again, or increase bleed time up to the max value
             Vector2Int bleedTimes = injury.GetBleedTime();
-            bleedTimeRemaining += Random.Range(Mathf.RoundToInt(bleedTimes.x / 1.2f), Mathf.RoundToInt(bleedTimes.y / 1.2f));
+            bleedTimeRemaining += Random.Range(Mathf.RoundToInt(bleedTimes.x / 1.25f), Mathf.RoundToInt(bleedTimes.y / 1.25f));
             if (bleedTimeRemaining > bleedTimes.y)
                 bleedTimeRemaining = bleedTimes.y;
+
+            // Worsen bleeding, up to the max value
+            Vector2 bloodLoss = injury.GetBloodLossPerTurn();
+            bloodLossPerTurn *= 1.25f;
+            if (bloodLossPerTurn > bloodLoss.y)
+                bloodLossPerTurn = bloodLoss.y;
         }
 
-        // Also add to the total injury time remaining
-        Vector2Int injuryTimes = new Vector2Int(TimeSystem.GetTotalSeconds(injury.minInjuryHealTime), TimeSystem.GetTotalSeconds(injury.maxInjuryHealTime) + 1);
-        injuryTimeRemaining += Random.Range(injuryTimes.x / 2, injuryTimes.y / 2);
+        // Add to the total injury time remaining, up to the max value
+        Vector2Int injuryTimes = injury.GetInjuryTimesInSeconds();
+        injuryTimeRemaining += Random.Range(injuryTimes.x / 2, (injuryTimes.y + 1) / 2);
         if (injuryTimeRemaining > injuryTimes.y)
             injuryTimeRemaining = injuryTimes.y;
 
         if (characterManager.isNPC == false)
             HealthDisplay.instance.UpdateHealthHeaderColor(injuryLocation);
+    }
+
+    public bool InjuryRemedied()
+    {
+        if (injury.CanBandage() && bandage != null)
+            return true;
+        return false;
     }
 }
