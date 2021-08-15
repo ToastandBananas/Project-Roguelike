@@ -260,4 +260,9 @@ public class APManager : MonoBehaviour
             return baseBandageAPCost;
         return 100;
     }
+
+    public int GetRemoveMedicalItemAPCost(MedicalSupply medSupply)
+    {
+        return Mathf.RoundToInt(GetApplyMedicalItemAPCost(medSupply) * 0.75f);
+    }
 }

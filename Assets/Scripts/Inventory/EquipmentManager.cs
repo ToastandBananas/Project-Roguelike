@@ -121,7 +121,7 @@ public class EquipmentManager : MonoBehaviour
 
             for (int i = 0; i < newItemData.bagInventory.items.Count; i++)
             {
-                gm.uiManager.CreateNewItemDataChild(newItemData.bagInventory.items[i], bagsInventory, true);
+                gm.uiManager.CreateNewItemDataChild(newItemData.bagInventory.items[i], bagsInventory, bagsInventory.itemsParent, true);
             }
 
             // Set the weight and volume of the "new" bag
@@ -227,7 +227,7 @@ public class EquipmentManager : MonoBehaviour
 
                     // Try adding to the player's inventory and if it is added, play the add item effect
                     if (gm.playerInvUI.backpackEquipped && gm.playerInvUI.backpackInventory != invComingFrom)
-                        itemWasAddedToInv = gm.playerInvUI.backpackInventory.AddItem(invItemComingFrom, oldItemData, oldItemData.currentStackSize, invComingFrom, true);
+                        itemWasAddedToInv = gm.playerInvUI.backpackInventory.AddItem(oldItemData, oldItemData.currentStackSize, invComingFrom, true);
 
                     if (itemWasAddedToInv)
                     {
@@ -240,7 +240,7 @@ public class EquipmentManager : MonoBehaviour
                         gm.flavorText.WriteUnquipLine(oldItemData, characterManager);
                     }
                     else if (gm.playerInvUI.leftHipPouchEquipped && gm.playerInvUI.leftHipPouchInventory != invComingFrom)
-                        itemWasAddedToInv = gm.playerInvUI.leftHipPouchInventory.AddItem(invItemComingFrom, oldItemData, oldItemData.currentStackSize, invComingFrom, true);
+                        itemWasAddedToInv = gm.playerInvUI.leftHipPouchInventory.AddItem(oldItemData, oldItemData.currentStackSize, invComingFrom, true);
 
                     if (itemWasAddedToInv && addItemEffectPlayed == false)
                     {
@@ -253,7 +253,7 @@ public class EquipmentManager : MonoBehaviour
                         gm.flavorText.WriteUnquipLine(oldItemData, characterManager);
                     }
                     else if (itemWasAddedToInv == false && gm.playerInvUI.rightHipPouchEquipped && gm.playerInvUI.rightHipPouchInventory != invComingFrom)
-                        itemWasAddedToInv = gm.playerInvUI.rightHipPouchInventory.AddItem(invItemComingFrom, oldItemData, oldItemData.currentStackSize, invComingFrom, true);
+                        itemWasAddedToInv = gm.playerInvUI.rightHipPouchInventory.AddItem(oldItemData, oldItemData.currentStackSize, invComingFrom, true);
 
                     if (itemWasAddedToInv && addItemEffectPlayed == false)
                     {
@@ -266,7 +266,7 @@ public class EquipmentManager : MonoBehaviour
                         gm.flavorText.WriteUnquipLine(oldItemData, characterManager);
                     }
                     else if (itemWasAddedToInv == false)
-                        itemWasAddedToInv = gm.playerInvUI.personalInventory.AddItem(invItemComingFrom, oldItemData, oldItemData.currentStackSize, invComingFrom, true);
+                        itemWasAddedToInv = gm.playerInvUI.personalInventory.AddItem(oldItemData, oldItemData.currentStackSize, invComingFrom, true);
 
                     if (itemWasAddedToInv && addItemEffectPlayed == false)
                     {
@@ -283,7 +283,7 @@ public class EquipmentManager : MonoBehaviour
                 else // If this is an NPC's equipment
                 {
                     // Try adding to the NPC's inventory, else drop the item at their feet
-                    if (characterManager.inventory.AddItem(null, oldItemData, oldItemData.currentStackSize, invComingFrom, true) == false)
+                    if (characterManager.inventory.AddItem(oldItemData, oldItemData.currentStackSize, invComingFrom, true) == false)
                         shouldDropItem = true;
                     else
                         characterManager.inventory.UpdateCurrentWeightAndVolume();

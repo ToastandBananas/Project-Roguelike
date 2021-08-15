@@ -267,18 +267,18 @@ public class InventoryUI : MonoBehaviour
     {
         if (this == gm.playerInvUI)
         {
-            for (int i = 0; i < gm.objectPoolManager.playerInventoryItemObjectPool.pooledInventoryItems.Count; i++)
+            for (int i = 0; i < gm.objectPoolManager.playerInventoryItemObjectPool.activePooledInventoryItems.Count; i++)
             {
-                if (gm.objectPoolManager.playerInventoryItemObjectPool.pooledInventoryItems[i].itemData == itemData)
-                    return gm.objectPoolManager.playerInventoryItemObjectPool.pooledInventoryItems[i];
+                if (gm.objectPoolManager.playerInventoryItemObjectPool.activePooledInventoryItems[i].itemData == itemData)
+                    return gm.objectPoolManager.playerInventoryItemObjectPool.activePooledInventoryItems[i];
             }
         }
         else if (this == gm.containerInvUI)
         {
-            for (int i = 0; i < gm.objectPoolManager.containerInventoryItemObjectPool.pooledInventoryItems.Count; i++)
+            for (int i = 0; i < gm.objectPoolManager.containerInventoryItemObjectPool.activePooledInventoryItems.Count; i++)
             {
-                if (gm.objectPoolManager.containerInventoryItemObjectPool.pooledInventoryItems[i].itemData == itemData)
-                    return gm.objectPoolManager.containerInventoryItemObjectPool.pooledInventoryItems[i];
+                if (gm.objectPoolManager.containerInventoryItemObjectPool.activePooledInventoryItems[i].itemData == itemData)
+                    return gm.objectPoolManager.containerInventoryItemObjectPool.activePooledInventoryItems[i];
             }
         }
 

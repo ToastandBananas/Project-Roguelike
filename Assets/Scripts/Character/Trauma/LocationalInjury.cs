@@ -7,11 +7,12 @@ public class LocationalInjury
     public Injury injury;
     public BodyPartType injuryLocation;
     public bool onBackOfBodyPart;
-
     public float injuryHealMultiplier = 1f;
+
     public bool sterilized;
+
+    public ItemData bandageItemData;
     public MedicalSupply bandage;
-    public float bandageSoil;
 
     public int injuryTimeRemaining;
 
@@ -63,33 +64,72 @@ public class LocationalInjury
         itemData.item.Use(characterManager, inventory, invItem, itemData, 1);
 
         if (characterManager.isNPC == false)
+        {
             HealthDisplay.instance.UpdateHealthHeaderColor(injuryLocation);
+            HealthDisplay.instance.UpdateTooltip();
+        }
     }
 
     void ApplyBandage(ItemData bandageItemData)
     {
-        bandage = (MedicalSupply)bandageItemData.item;
-        bandageSoil = 100f - bandageItemData.freshness;
+        // Create new ItemData object for the bandage
+        ItemData tempItemData = ObjectPoolManager.instance.itemDataObjectPool.GetPooledItemData();
+        tempItemData.gameObject.SetActive(true);
+        tempItemData.TransferData(bandageItemData, tempItemData);
+        tempItemData.currentStackSize = 1;
+        Debug.Log(tempItemData);
+
+        ItemData newItemData = UIManager.instance.CreateNewItemDataChild(tempItemData, null, HealthDisplay.instance.medicalItemsParent, false);
+        tempItemData.ReturnToItemDataObjectPool();
+
+        this.bandageItemData = newItemData;
+        bandage = (MedicalSupply)newItemData.item;
         injuryHealMultiplier += bandage.quality;
 
         FlavorText.instance.WriteApplyBandageLine(characterManager, injury, bandage, injuryLocation);
-
-        // TODO: Create new ItemData object for the bandage
     }
 
-    public void RemoveBandage(LocationalInjury injury)
+    public IEnumerator RemoveMedicalItem(MedicalSupplyType medicalSupplyType)
     {
-        // TODO: Create new ItemData object for the bandage and place in inventory or drop
+        characterManager.StartCoroutine(APManager.instance.UseAP(characterManager, APManager.instance.GetRemoveMedicalItemAPCost(bandage)));
+
+        int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
+        while (queueNumber != characterManager.currentQueueNumber)
+        {
+            yield return null;
+            if (characterManager.status.isDead) yield break;
+        }
+
+        if (medicalSupplyType == MedicalSupplyType.Bandage)
+            RemoveBandage();
+    }
+
+    public void RemoveBandage()
+    {
+        if (bandage == null) return;
+
+        if (characterManager.isNPC)
+            DropItemController.instance.ForceDropNearest(bandageItemData, 1, null, null);
+        else
+        {
+            // Try to place the bandage in one of the player's inventories. If it won't fit, drop it
+            if (PlayerInventoryUI.instance.TryAddingItemToPlayersInventory(bandageItemData, null, false) == false)
+                DropItemController.instance.ForceDropNearest(bandageItemData, 1, null, null);
+        }
+
+        bandageItemData.ReturnToItemDataObjectPool();
+        bandageItemData = null;
+        bandage = null;
     }
 
     public void SoilBandage(float amount)
     {
-        if (bandage != null && bandageSoil < 100f)
+        if (bandageItemData != null && bandageItemData.freshness > 0f)
         {
-            bandageSoil += amount;
-            if (bandageSoil >= 100f)
+            bandageItemData.freshness -= amount;
+            if (bandageItemData.freshness <= 0f)
             {
-                bandageSoil = 100f;
+                bandageItemData.freshness = 0f;
                 injuryHealMultiplier -= bandage.quality;
             }
         }
@@ -144,5 +184,21 @@ public class LocationalInjury
         if (injury.CanBandage() && bandage != null)
             return true;
         return false;
+    }
+
+    public string GetBleedSeverity()
+    {
+        if (bloodLossPerTurn <= 1)
+            return "Barely Bleeding";
+        else if (bloodLossPerTurn <= 3)
+            return "Bleeding Lightly";
+        else if (bloodLossPerTurn <= 6)
+            return "Bleeding";
+        else if (bloodLossPerTurn <= 9.5f)
+            return "Bleeding Moderately";
+        else if (bloodLossPerTurn <= 13.5f)
+            return "Bleeding Heavily";
+        else
+            return "Bleeding Severely";
     }
 }

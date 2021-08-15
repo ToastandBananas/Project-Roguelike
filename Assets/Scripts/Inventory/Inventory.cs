@@ -68,7 +68,7 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public bool AddItem(InventoryItem invItemComingFrom, ItemData itemDataComingFrom, int itemCount, Inventory invComingFrom, bool shouldUpdateWeightAndVolume)
+    public bool AddItem(ItemData itemDataComingFrom, int itemCount, Inventory invComingFrom, bool shouldUpdateWeightAndVolume)
     {
         // Prevent putting bags in bags
         if (itemDataComingFrom.item.IsBag() && gameObject.CompareTag("Item Pickup"))
@@ -149,7 +149,7 @@ public class Inventory : MonoBehaviour
                 
                 for (int i = 0; i < itemDataComingFromsInv.items.Count; i++)
                 {
-                    gm.uiManager.CreateNewItemDataChild(itemDataComingFromsInv.items[i], itemDataToAdd.bagInventory, true);
+                    gm.uiManager.CreateNewItemDataChild(itemDataComingFromsInv.items[i], itemDataToAdd.bagInventory, itemDataToAdd.bagInventory.itemsParent, true);
                 }
 
                 for (int i = 0; i < itemDataComingFromsInv.items.Count; i++)
@@ -190,11 +190,8 @@ public class Inventory : MonoBehaviour
                 itemDataToAdd.gameObject.name = itemDataToAdd.itemName;
             #endif
 
-            // If we're only taking 1 count of the item, subtract 1 from the currentStackSize, otherwise it should now be 0
-            if (itemCount == 1)
-                itemDataComingFrom.currentStackSize--;
-            else
-                itemDataComingFrom.currentStackSize = 0;
+            // CurrentStackSize should now be 0
+            itemDataComingFrom.currentStackSize = 0;
         }
 
         return true;

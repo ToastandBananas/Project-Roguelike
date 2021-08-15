@@ -5,6 +5,7 @@ using UnityEngine;
 public class ContextMenu : MonoBehaviour
 {
     [HideInInspector] public InventoryItem contextActiveInvItem;
+    [HideInInspector] public InjuryTextButton contextActiveInjuryTextButton;
     [HideInInspector] public bool isActive;
 
     List<ContextMenuButton> activeContextButtons = new List<ContextMenuButton>();
@@ -38,6 +39,76 @@ public class ContextMenu : MonoBehaviour
         gm = GameManager.instance;
     }
 
+    #region Health Display
+    public void BuildContextMenu(InjuryTextButton injuryTextButton)
+    {
+        isActive = true;
+        contextActiveInjuryTextButton = injuryTextButton;
+
+        if (injuryTextButton.locationalInjury != null)
+        {
+            if (injuryTextButton.locationalInjury.InjuryRemedied() == false)
+                CreateApplyMedicalItemButtons(injuryTextButton.locationalInjury);
+            else if (injuryTextButton.locationalInjury.bandage != null)
+                CreateRemoveMedicalItemButton(injuryTextButton.locationalInjury.bandageItemData, injuryTextButton.locationalInjury, MedicalSupplyType.Bandage);
+        }
+        else
+        {
+            DisableContextMenu();
+            return;
+        }
+
+        SetupContextButton();
+    }
+
+    void CreateApplyMedicalItemButtons(LocationalInjury locationalInjury)
+    {
+        List<ItemData> medicalItems = new List<ItemData>();
+
+        // If the injury can be bandaged, get all bandages from player's inventories
+        if (locationalInjury.injury.CanBandage() && locationalInjury.bandage == null)
+            medicalItems = gm.playerInvUI.GetMedicalSupplies(MedicalSupplyType.Bandage);
+
+        // For each medical item, create a context button
+        for (int i = 0; i < medicalItems.Count; i++)
+        {
+            ItemData medItemData = medicalItems[i];
+            MedicalSupply medSupply = (MedicalSupply)medItemData.item;
+            ContextMenuButton contextButton = GetNextInactiveButton();
+            contextButton.gameObject.SetActive(true);
+
+            // Determine the button's text based off of thes medical supply type
+            if (medSupply.medicalSupplyType == MedicalSupplyType.Bandage)
+                contextButton.textMesh.text = "Apply " + medicalItems[i].GetSoilageText() + " " + medicalItems[i].itemName;
+
+            contextButton.button.onClick.AddListener(delegate { ApplyMedicalItemToInjury_FromInventory(locationalInjury, medItemData, medItemData.GetItemDatasInventory()); });
+        }
+    }
+
+    void ApplyMedicalItemToInjury_FromInventory(LocationalInjury locationalInjury, ItemData medicalItemData, Inventory inventory)
+    {
+        StartCoroutine(locationalInjury.ApplyMedicalItem(medicalItemData, inventory, gm.playerInvUI.GetItemDatasInventoryItem(medicalItemData)));
+        DisableContextMenu();
+    }
+
+    void CreateRemoveMedicalItemButton(ItemData medicalItemData, LocationalInjury locationalInjury, MedicalSupplyType medicalSupplyType)
+    {
+        ContextMenuButton contextButton = GetNextInactiveButton();
+        contextButton.gameObject.SetActive(true);
+
+        contextButton.textMesh.text = "Remove " + medicalItemData.itemName;
+
+        contextButton.button.onClick.AddListener(delegate { RemoveMedicalItem(locationalInjury, medicalSupplyType); });
+    }
+
+    void RemoveMedicalItem(LocationalInjury locationalInjury, MedicalSupplyType medicalSupplyType)
+    {
+        StartCoroutine(locationalInjury.RemoveMedicalItem(medicalSupplyType));
+        DisableContextMenu();
+    }
+    #endregion
+
+    #region Inventory
     public void BuildContextMenu(InventoryItem invItem)
     {
         isActive = true;
@@ -86,21 +157,7 @@ public class ContextMenu : MonoBehaviour
                 CreateTransferButton();
         }
 
-        SetActiveButtonsWidth();
-
-        float xPosAddon = xPosAddon = (currentWidth - minButtonWidth) / 2; // Account for any resizing of the context button that may have happened
-        float yPosAddon = 0;
-
-        // Get the desired position:
-        // If the mouse position is too close to the bottom of the screen
-        if (Input.mousePosition.y <= 190f)
-            yPosAddon = GetActiveButtonCount() * gm.playerInvUI.invItemHeight;
-
-        // If the mouse position is too far to the right of the screen
-        if (Input.mousePosition.x >= 1680f)
-            xPosAddon = -currentWidth;
-
-        transform.position = Input.mousePosition + new Vector3(xPosAddon, yPosAddon);
+        SetupContextButton();
     }
 
     void CreateApplyMedicalSupplyButtons()
@@ -124,7 +181,7 @@ public class ContextMenu : MonoBehaviour
                 if (canApplyItem)
                 {
                     contextButton.gameObject.SetActive(true);
-                    contextButton.button.onClick.AddListener(delegate { ApplyMedicalItemToInjury(locationalInjury); });
+                    contextButton.button.onClick.AddListener(delegate { ApplyMedicalItemToInjury_InventoryItem(locationalInjury); });
                 }
                 else
                     activeContextButtons.Remove(contextButton);
@@ -132,7 +189,7 @@ public class ContextMenu : MonoBehaviour
         }
     }
 
-    void ApplyMedicalItemToInjury(LocationalInjury locationalInjury)
+    void ApplyMedicalItemToInjury_InventoryItem(LocationalInjury locationalInjury)
     {
         StartCoroutine(locationalInjury.ApplyMedicalItem(contextActiveInvItem.itemData, contextActiveInvItem.myInventory, contextActiveInvItem));
         DisableContextMenu();
@@ -245,6 +302,7 @@ public class ContextMenu : MonoBehaviour
 
         contextButton.button.onClick.AddListener(TransferItem);
     }
+    #endregion
 
     ContextMenuButton GetNextInactiveButton()
     {
@@ -264,6 +322,7 @@ public class ContextMenu : MonoBehaviour
         activeContextButtons.Clear();
         isActive = false;
         contextActiveInvItem = null;
+        contextActiveInjuryTextButton = null;
         gm.uiManager.activeContextMenuButton = null;
     }
 
@@ -293,5 +352,24 @@ public class ContextMenu : MonoBehaviour
         {
             activeContextButtons[i].rectTransform.sizeDelta = new Vector2(currentWidth, activeContextButtons[i].rectTransform.sizeDelta.y);
         }
+    }
+
+    void SetupContextButton()
+    {
+        SetActiveButtonsWidth();
+
+        float xPosAddon = xPosAddon = (currentWidth - minButtonWidth) / 2; // Account for any resizing of the context button that may have happened
+        float yPosAddon = 0;
+
+        // Get the desired position:
+        // If the mouse position is too close to the bottom of the screen
+        if (Input.mousePosition.y <= 190f)
+            yPosAddon = GetActiveButtonCount() * gm.playerInvUI.invItemHeight;
+
+        // If the mouse position is too far to the right of the screen
+        if (Input.mousePosition.x >= 1680f)
+            xPosAddon = -currentWidth;
+
+        transform.position = Input.mousePosition + new Vector3(xPosAddon, yPosAddon);
     }
 }

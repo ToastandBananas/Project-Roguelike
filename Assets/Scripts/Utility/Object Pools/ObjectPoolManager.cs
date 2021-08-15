@@ -4,6 +4,7 @@ public class ObjectPoolManager : MonoBehaviour
 {
     public AddItemEffectObjectPool addItemEffectObjectPool;
     public ContextButtonObjectPool contextButtonObjectPool;
+    public InjuryTextButtonObjectPool injuryTextButtonObjectPool;
     public InventoryItemObjectPool containerInventoryItemObjectPool;
     public InventoryItemObjectPool playerInventoryItemObjectPool;
     public InventoryItemObjectPool ghostImageInventoryItemObjectPool;

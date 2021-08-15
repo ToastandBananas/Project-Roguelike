@@ -66,7 +66,7 @@ public class ItemPickup : Interactable
 
     void PickUp(Inventory inventory)
     {
-        bool wasPickedUp = inventory.AddItem(null, itemData, itemCount, null, true);
+        bool wasPickedUp = inventory.AddItem(itemData, itemCount, null, true);
 
         if (wasPickedUp)
         {

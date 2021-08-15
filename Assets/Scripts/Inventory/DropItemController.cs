@@ -96,7 +96,7 @@ public class DropItemController : MonoBehaviour
             // If the item we're dropping is a bag (or portable container), add new ItemData Objects to the items parent of the dropped bag and transfer data to them
             for (int i = 0; i < bagInv.items.Count; i++)
             {
-                gm.uiManager.CreateNewItemDataChild(bagInv.items[i], newItemPickup.itemData.bagInventory, true);
+                gm.uiManager.CreateNewItemDataChild(bagInv.items[i], newItemPickup.itemData.bagInventory, newItemPickup.itemData.bagInventory.itemsParent, true);
             }
 
             // Set the weight and volume of the "new" bag

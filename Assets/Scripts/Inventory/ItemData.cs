@@ -645,6 +645,20 @@ public class ItemData : MonoBehaviour
         }
     }
 
+    public string GetSoilageText()
+    {
+        if (freshness == 100)
+            return "Clean";
+        else if (freshness >= 75)
+            return "Lightly Soiled";
+        else if (freshness >= 50)
+            return "Moderately Soiled";
+        else if (freshness >= 25)
+            return "Soiled";
+        else
+            return "Filthy";
+    }
+
     public bool IsPickup()
     {
         if (CompareTag("Item Pickup"))
@@ -698,5 +712,63 @@ public class ItemData : MonoBehaviour
         bagInventory.items.Clear();
         ClearData();
         gameObject.SetActive(false);
+    }
+
+    public Inventory GetItemDatasInventory()
+    {
+        for (int i = 0; i < gm.playerInvUI.personalInventory.items.Count; i++)
+        {
+            if (gm.playerInvUI.personalInventory.items[i] == this)
+                return gm.playerInvUI.personalInventory;
+        }
+
+        if (gm.playerInvUI.backpackEquipped)
+        {
+            for (int i = 0; i < gm.playerInvUI.backpackInventory.items.Count; i++)
+            {
+                if (gm.playerInvUI.backpackInventory.items[i] == this)
+                    return gm.playerInvUI.backpackInventory;
+            }
+        }
+
+        if (gm.playerInvUI.leftHipPouchEquipped)
+        {
+            for (int i = 0; i < gm.playerInvUI.leftHipPouchInventory.items.Count; i++)
+            {
+                if (gm.playerInvUI.leftHipPouchInventory.items[i] == this)
+                    return gm.playerInvUI.leftHipPouchInventory;
+            }
+        }
+
+        if (gm.playerInvUI.rightHipPouchEquipped)
+        {
+            for (int i = 0; i < gm.playerInvUI.rightHipPouchInventory.items.Count; i++)
+            {
+                if (gm.playerInvUI.rightHipPouchInventory.items[i] == this)
+                    return gm.playerInvUI.rightHipPouchInventory;
+            }
+        }
+
+        if (gm.playerInvUI.quiverEquipped)
+        {
+            for (int i = 0; i < gm.playerInvUI.quiverInventory.items.Count; i++)
+            {
+                if (gm.playerInvUI.quiverInventory.items[i] == this)
+                    return gm.playerInvUI.quiverInventory;
+            }
+        }
+
+        for (int i = 0; i < gm.playerInvUI.keysInventory.items.Count; i++)
+        {
+            if (gm.playerInvUI.keysInventory.items[i] == this)
+                return gm.playerInvUI.keysInventory;
+        }
+
+        return null;
+    }
+
+    public float GetSoilage()
+    {
+        return 100f - freshness;
     }
 }

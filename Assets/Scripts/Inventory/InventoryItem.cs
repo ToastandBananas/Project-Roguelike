@@ -235,7 +235,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             // We don't want to add items directly to the keys inv (unless it's a key) or to the current equipment inv
             if (gm.playerInvUI.activeInventory != null && gm.playerInvUI.activeInventory != gm.playerInvUI.keysInventory && itemData.item.itemType != ItemType.Key && itemData.item.itemType != ItemType.Ammo)
             {
-                if (gm.playerInvUI.activeInventory.AddItem(this, itemData, itemData.currentStackSize, myInventory, true)) // If there's room in the inventory
+                if (gm.playerInvUI.activeInventory.AddItem(itemData, itemData.currentStackSize, myInventory, true)) // If there's room in the inventory
                 {
                     gm.playerInvUI.activeInventory.UpdateCurrentWeightAndVolume();
                     UpdateInventoryWeightAndVolume();
@@ -264,7 +264,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             }
             else if (itemData.item.itemType == ItemType.Key) // If the item is a key, add it directly to the keys inventory
             {
-                gm.playerInvUI.keysInventory.AddItem(this, itemData, itemData.currentStackSize, myInventory, true);
+                gm.playerInvUI.keysInventory.AddItem(itemData, itemData.currentStackSize, myInventory, true);
                 gm.playerInvUI.keysInventory.UpdateCurrentWeightAndVolume();
                 UpdateInventoryWeightAndVolume();
                 myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.keysSideBarButton));
@@ -287,7 +287,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             {
                 if (gm.playerInvUI.quiverEquipped)
                 {
-                    if (gm.playerInvUI.quiverInventory.AddItem(this, itemData, itemData.currentStackSize, myInventory, true) == false)
+                    if (gm.playerInvUI.quiverInventory.AddItem(itemData, itemData.currentStackSize, myInventory, true) == false)
                         AddItemToOtherBags(itemData);
                     else
                     {
@@ -328,7 +328,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                     return;
                 }
 
-                if (gm.containerInvUI.activeInventory.AddItem(this, itemData, itemData.currentStackSize, myInventory, true)) // Try adding the item's entire stack
+                if (gm.containerInvUI.activeInventory.AddItem(itemData, itemData.currentStackSize, myInventory, true)) // Try adding the item's entire stack
                 {
                     gm.containerInvUI.activeInventory.UpdateCurrentWeightAndVolume();
                     UpdateInventoryWeightAndVolume();
@@ -586,7 +586,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         for (int i = 0; i < stackSize; i++)
         {
             // Try to add a single item to the inventory
-            if (invAddingTo.AddItem(this, itemData, 1, invComingFrom, true))
+            if (invAddingTo.AddItem(itemData, 1, invComingFrom, true))
             {
                 // If we were able to add one, set someAdded to true
                 someAdded = true;

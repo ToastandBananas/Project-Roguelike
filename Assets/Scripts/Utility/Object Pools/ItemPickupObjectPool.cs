@@ -45,10 +45,10 @@ public class ItemPickupObjectPool : ObjectPool
                 return pooledItemPickups[i];
         }
 
-        ItemPickup invItem = Instantiate(objectToPool).GetComponent<ItemPickup>();
-        invItem.transform.SetParent(transform);
-        pooledItemPickups.Add(invItem);
-        pooledObjects.Add(invItem.gameObject);
-        return invItem;
+        ItemPickup itemPickup = Instantiate(objectToPool).GetComponent<ItemPickup>();
+        itemPickup.transform.SetParent(transform);
+        pooledItemPickups.Add(itemPickup);
+        pooledObjects.Add(itemPickup.gameObject);
+        return itemPickup;
     }
 }

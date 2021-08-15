@@ -417,6 +417,135 @@ public class PlayerInventoryUI : InventoryUI
         return false;
     }
 
+    public List<ItemData> GetMedicalSupplies(MedicalSupplyType medicalSupplyType)
+    {
+        List<ItemData> itemDatas = new List<ItemData>();
+        for (int i = 0; i < personalInventory.items.Count; i++)
+        {
+            if (personalInventory.items[i].item.IsMedicalSupply())
+            {
+                MedicalSupply medSupply = (MedicalSupply)personalInventory.items[i].item;
+                if (medSupply.medicalSupplyType == medicalSupplyType)
+                    itemDatas.Add(personalInventory.items[i]);
+            }
+        }
+
+        if (backpackEquipped)
+        {
+            for (int i = 0; i < backpackInventory.items.Count; i++)
+            {
+                if (backpackInventory.items[i].item.IsMedicalSupply())
+                {
+                    MedicalSupply medSupply = (MedicalSupply)backpackInventory.items[i].item;
+                    if (medSupply.medicalSupplyType == medicalSupplyType)
+                        itemDatas.Add(backpackInventory.items[i]);
+                }
+            }
+        }
+
+        if (leftHipPouchEquipped)
+        {
+            for (int i = 0; i < leftHipPouchInventory.items.Count; i++)
+            {
+                if (leftHipPouchInventory.items[i].item.IsMedicalSupply())
+                {
+                    MedicalSupply medSupply = (MedicalSupply)leftHipPouchInventory.items[i].item;
+                    if (medSupply.medicalSupplyType == medicalSupplyType)
+                        itemDatas.Add(leftHipPouchInventory.items[i]);
+                }
+            }
+        }
+
+        if (rightHipPouchEquipped)
+        {
+            for (int i = 0; i < rightHipPouchInventory.items.Count; i++)
+            {
+                if (rightHipPouchInventory.items[i].item.IsMedicalSupply())
+                {
+                    MedicalSupply medSupply = (MedicalSupply)rightHipPouchInventory.items[i].item;
+                    if (medSupply.medicalSupplyType == medicalSupplyType)
+                        itemDatas.Add(rightHipPouchInventory.items[i]);
+                }
+            }
+        }
+
+        if (quiverEquipped)
+        {
+            for (int i = 0; i < quiverInventory.items.Count; i++)
+            {
+                if (quiverInventory.items[i].item.IsMedicalSupply())
+                {
+                    MedicalSupply medSupply = (MedicalSupply)quiverInventory.items[i].item;
+                    if (medSupply.medicalSupplyType == medicalSupplyType)
+                        itemDatas.Add(quiverInventory.items[i]);
+                }
+            }
+        }
+
+        return itemDatas;
+    }
+
+    public bool TryAddingItemToPlayersInventory(ItemData itemData, Inventory itemDatasInventory, bool canAddToQuiver)
+    {
+        bool itemAdded = false;
+        if (itemData.item.IsKey())
+        {
+            keysInventory.AddItem(itemData, itemData.currentStackSize, itemDatasInventory, true);
+            gm.playerInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.keysSideBarButton);
+            return true;
+        }
+        else if (itemData.item.itemType == ItemType.Ammo)
+            itemAdded = quiverInventory.AddItem(itemData, itemData.currentStackSize, itemDatasInventory, true);
+
+        if (itemAdded)
+        {
+            gm.playerInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.quiverSidebarButton);
+            return true;
+        }
+        else
+            itemAdded = personalInventory.AddItem(itemData, itemData.currentStackSize, itemDatasInventory, true);
+
+        if (itemAdded)
+        {
+            gm.playerInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.personalInventorySideBarButton);
+            return true;
+        }
+        else if (backpackEquipped)
+            itemAdded = backpackInventory.AddItem(itemData, itemData.currentStackSize, itemDatasInventory, true);
+
+        if (itemAdded)
+        {
+            gm.playerInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.backpackSidebarButton);
+            return true;
+        }
+        else if (leftHipPouchEquipped)
+            itemAdded = leftHipPouchInventory.AddItem(itemData, itemData.currentStackSize, itemDatasInventory, true);
+
+        if (itemAdded)
+        {
+            gm.playerInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.leftHipPouchSidebarButton);
+            return true;
+        }
+        else if (rightHipPouchEquipped)
+            itemAdded = rightHipPouchInventory.AddItem(itemData, itemData.currentStackSize, itemDatasInventory, true);
+
+        if (itemAdded)
+        {
+            gm.playerInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.rightHipPouchSidebarButton);
+            return true;
+        }
+        else if (canAddToQuiver && quiverEquipped)
+            itemAdded = quiverInventory.AddItem(itemData, itemData.currentStackSize, itemDatasInventory, true);
+
+        if (itemAdded)
+        {
+            gm.playerInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.quiverSidebarButton);
+            return true;
+        }
+
+        return false;
+    }
+
     void InitInventories()
     {
         personalInventory.Init();

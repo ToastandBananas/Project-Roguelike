@@ -82,9 +82,14 @@ public class UIManager : MonoBehaviour
                     if (activeInvItem != null)
                         SelectActiveItem();
 
-                    if (gm.contextMenu.isActive == false && activeInvItem != null && activeInvItem.itemData != null)
-                        gm.contextMenu.BuildContextMenu(activeInvItem);
-                    else if (gm.contextMenu.isActive)
+                    if (gm.contextMenu.isActive == false)
+                    {
+                        if (gm.healthDisplay.focusedInjuryTextButton != null && gm.healthDisplay.focusedInjuryTextButton.button.enabled)
+                            gm.contextMenu.BuildContextMenu(gm.healthDisplay.focusedInjuryTextButton);
+                        else if (activeInvItem != null && activeInvItem.itemData != null)
+                            gm.contextMenu.BuildContextMenu(activeInvItem);
+                    }
+                    else
                         gm.contextMenu.DisableContextMenu();
 
                     if (gm.stackSizeSelector.isActive)
@@ -503,7 +508,7 @@ public class UIManager : MonoBehaviour
                 }
 
                 // Try adding the item to the corresponding inventory
-                if (inv.AddItem(draggedInvItem, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, true))
+                if (inv.AddItem(draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, true))
                 {
 
                     // If the item was added to the inventory:
@@ -606,7 +611,7 @@ public class UIManager : MonoBehaviour
             Inventory inv = activePlayerInvSideBarButton.GetInventory();
 
             // Try adding the item to the corresponding inventory
-            if (inv.AddItem(draggedInvItem, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, true))
+            if (inv.AddItem(draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, true))
             {
                 // If the item was added to the inventory:
                 // Update weight/volume
@@ -672,7 +677,7 @@ public class UIManager : MonoBehaviour
                 }
 
                 // Try adding the item to the inventory
-                wasAddedToInventory = activeInvUI.activeInventory.AddItem(draggedInvItem, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, true);
+                wasAddedToInventory = activeInvUI.activeInventory.AddItem(draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, true);
 
                 // If the item was a bag and we took it from the ground
                 if (draggedInvItem.itemData.item.IsBag() && gm.containerInvUI.activeInventory == draggedInvItem.itemData.bagInventory)
@@ -807,7 +812,7 @@ public class UIManager : MonoBehaviour
                         if (draggedInvItem.myInventory == null || draggedInvItem.myInventory == draggedInvItem.itemData.bagInventory)
                             GameTiles.RemoveItemData(draggedInvItem.itemData, draggedInvItem.itemData.transform.position);
 
-                        activeInvItem.itemData.bagInventory.AddItem(draggedInvItem, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, false);
+                        activeInvItem.itemData.bagInventory.AddItem(draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, false);
 
                         if (activeInvItem.disclosureWidget.isExpanded)
                         {
@@ -872,7 +877,7 @@ public class UIManager : MonoBehaviour
                         if (draggedInvItem.myInventory == null || draggedInvItem.myInventory == draggedInvItem.itemData.bagInventory)
                             GameTiles.RemoveItemData(draggedInvItem.itemData, draggedInvItem.itemData.transform.position);
 
-                        activeInvItem.itemData.bagInventory.AddItem(draggedInvItem, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, false);
+                        activeInvItem.itemData.bagInventory.AddItem(draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, false);
 
                         if (activeInvItem.disclosureWidget.isExpanded)
                         {
@@ -1076,7 +1081,7 @@ public class UIManager : MonoBehaviour
                     // If the item was a pickup, setup a new ItemData object to be a child of the bag/portable container we're putting the item in
                     if (draggedInvItem.itemData.IsPickup())
                     {
-                        ItemData newItemData = CreateNewItemDataChild(draggedInvItem.itemData, lastActiveItem.parentInvItem.itemData.bagInventory, false);
+                        ItemData newItemData = CreateNewItemDataChild(draggedInvItem.itemData, lastActiveItem.parentInvItem.itemData.bagInventory, lastActiveItem.parentInvItem.itemData.bagInventory.itemsParent, false);
 
                         // Deactivate the pickup and remove it from the directional list
                         gm.containerInvUI.GetItemsListFromActiveDirection().Remove(draggedInvItem.itemData);
@@ -1319,7 +1324,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public ItemData CreateNewItemDataChild(ItemData newItemData, Inventory parentInventory, bool shouldAddItemToParentInventory)
+    public ItemData CreateNewItemDataChild(ItemData newItemData, Inventory parentInventory, Transform itemsParent, bool shouldAddItemToParentInventory)
     {
         // Add new ItemData Objects to the items parent of the new bag and transfer data to them
         ItemData newItemDataObject = null;
@@ -1328,7 +1333,7 @@ public class UIManager : MonoBehaviour
         else
             newItemDataObject = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData();
 
-        newItemDataObject.transform.SetParent(parentInventory.itemsParent);
+        newItemDataObject.transform.SetParent(itemsParent);
         newItemDataObject.gameObject.SetActive(true);
         newItemData.TransferData(newItemData, newItemDataObject);
 
@@ -1347,7 +1352,7 @@ public class UIManager : MonoBehaviour
 
             for (int i = 0; i < newItemData.bagInventory.items.Count; i++)
             {
-                CreateNewItemDataChild(newItemData.bagInventory.items[i], newItemDataObject.bagInventory, true);
+                CreateNewItemDataChild(newItemData.bagInventory.items[i], newItemDataObject.bagInventory, newItemDataObject.bagInventory.itemsParent, true);
             }
 
             for (int i = 0; i < newItemData.bagInventory.items.Count; i++)
@@ -1357,7 +1362,7 @@ public class UIManager : MonoBehaviour
         }
 
         // Populate the new bag's inventory, but make sure it's not already in the items list (because of the Inventory's Init method, which populates this list)
-        if (shouldAddItemToParentInventory && parentInventory.items.Contains(newItemDataObject) == false)
+        if (shouldAddItemToParentInventory && parentInventory != null && parentInventory.items.Contains(newItemDataObject) == false)
             parentInventory.items.Add(newItemDataObject);
 
         #if UNITY_EDITOR

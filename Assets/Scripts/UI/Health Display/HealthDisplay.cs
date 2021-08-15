@@ -5,8 +5,9 @@ using System.Text;
 
 public class HealthDisplay : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI tooltipText;
+    [SerializeField] TextMeshProUGUI tooltipHeader;
     [SerializeField] GameObject tooltipParent;
+    public Transform medicalItemsParent;
 
     [Header("Header Texts")]
     [SerializeField] TextMeshProUGUI headHeader;
@@ -19,6 +20,7 @@ public class HealthDisplay : MonoBehaviour
 
     [HideInInspector] public HealthDisplay_BodyPart focusedBodyPart;
     [HideInInspector] public HealthDisplay_BodyPart selectedBodyPart;
+    [HideInInspector] public InjuryTextButton focusedInjuryTextButton;
 
     StringBuilder stringBuilder = new StringBuilder();
     GameManager gm;
@@ -172,10 +174,22 @@ public class HealthDisplay : MonoBehaviour
         }
     }
 
-    public void SetTooltipText(string text)
+    public void SetTooltipHeader(BodyPartType bodyPartType)
     {
-        tooltipText.text = text;
+        tooltipHeader.text = Utilities.FormatEnumStringWithSpaces(bodyPartType.ToString(), true);
         ShowTooltip();
+    }
+
+    public void SetTooltipText(string text, LocationalInjury locationalInjury, bool useButtonHighlighting)
+    {
+        InjuryTextButton injuryTextButton = gm.objectPoolManager.injuryTextButtonObjectPool.GetPooledInjuryTextButton();
+        injuryTextButton.injuryText.text = text;
+        injuryTextButton.locationalInjury = locationalInjury;
+
+        if (useButtonHighlighting == false)
+            injuryTextButton.button.enabled = false;
+
+        injuryTextButton.gameObject.SetActive(true);
     }
 
     public void ShowTooltip()
@@ -189,11 +203,22 @@ public class HealthDisplay : MonoBehaviour
         selectedBodyPart = null;
     }
 
+    public void ClearInjuryTextButtons()
+    {
+        for (int i = 0; i < gm.objectPoolManager.injuryTextButtonObjectPool.pooledInjuryTextButtons.Count; i++)
+        {
+            gm.objectPoolManager.injuryTextButtonObjectPool.pooledObjects[i].SetActive(false);
+            gm.objectPoolManager.injuryTextButtonObjectPool.pooledInjuryTextButtons[i].locationalInjury = null;
+            gm.objectPoolManager.injuryTextButtonObjectPool.pooledInjuryTextButtons[i].button.enabled = true;
+            gm.objectPoolManager.injuryTextButtonObjectPool.pooledInjuryTextButtons[i].injuryText.ClearMesh();
+        }
+    }
+
     public void UpdateTooltip()
     {
         if (focusedBodyPart != null)
-            focusedBodyPart.GenerateTooltipText();
+            focusedBodyPart.GenerateTooltipTexts();
         else if (selectedBodyPart != null)
-            selectedBodyPart.GenerateTooltipText();
+            selectedBodyPart.GenerateTooltipTexts();
     }
 }
