@@ -6,6 +6,8 @@ public class ContextMenu : MonoBehaviour
 {
     [HideInInspector] public InventoryItem contextActiveInvItem;
     [HideInInspector] public InjuryTextButton contextActiveInjuryTextButton;
+    [HideInInspector] public CharacterManager contextActiveCharacter;
+
     [HideInInspector] public bool isActive;
 
     List<ContextMenuButton> activeContextButtons = new List<ContextMenuButton>();
@@ -48,9 +50,9 @@ public class ContextMenu : MonoBehaviour
         if (injuryTextButton.locationalInjury != null)
         {
             if (injuryTextButton.locationalInjury.InjuryRemedied() == false)
-                CreateApplyMedicalItemButtons(injuryTextButton.locationalInjury);
+                CreateApplyMedicalItemButtons(injuryTextButton.locationalInjury, false);
             else if (injuryTextButton.locationalInjury.bandage != null)
-                CreateRemoveMedicalItemButton(injuryTextButton.locationalInjury.bandageItemData, injuryTextButton.locationalInjury, MedicalSupplyType.Bandage);
+                CreateRemoveMedicalItemButton(injuryTextButton.locationalInjury.bandageItemData, injuryTextButton.locationalInjury, MedicalSupplyType.Bandage, false);
         }
         else
         {
@@ -61,13 +63,13 @@ public class ContextMenu : MonoBehaviour
         SetupContextButton();
     }
 
-    void CreateApplyMedicalItemButtons(LocationalInjury locationalInjury)
+    void CreateApplyMedicalItemButtons(LocationalInjury locationalInjury, bool includeInjury)
     {
         List<ItemData> medicalItems = new List<ItemData>();
-
+        
         // If the injury can be bandaged, get all bandages from player's inventories
         if (locationalInjury.injury.CanBandage() && locationalInjury.bandage == null)
-            medicalItems = gm.playerInvUI.GetMedicalSupplies(MedicalSupplyType.Bandage);
+            medicalItems = gm.playerManager.GetMedicalSupplies(MedicalSupplyType.Bandage);
 
         // For each medical item, create a context button
         for (int i = 0; i < medicalItems.Count; i++)
@@ -81,30 +83,63 @@ public class ContextMenu : MonoBehaviour
             if (medSupply.medicalSupplyType == MedicalSupplyType.Bandage)
                 contextButton.textMesh.text = "Apply " + medicalItems[i].GetSoilageText() + " " + medicalItems[i].itemName;
 
-            contextButton.button.onClick.AddListener(delegate { ApplyMedicalItemToInjury_FromInventory(locationalInjury, medItemData, medItemData.GetItemDatasInventory()); });
+            if (includeInjury)
+                contextButton.textMesh.text += " - " + Utilities.FormatEnumStringWithSpaces(locationalInjury.injuryLocation.ToString(), false) + " - " + locationalInjury.injury.name;
+
+            contextButton.button.onClick.AddListener(delegate { ApplyMedicalItemToInjury_FromInventory(locationalInjury, medItemData, medItemData.GetItemDatasPlayerInventory()); });
         }
     }
 
     void ApplyMedicalItemToInjury_FromInventory(LocationalInjury locationalInjury, ItemData medicalItemData, Inventory inventory)
     {
-        StartCoroutine(locationalInjury.ApplyMedicalItem(medicalItemData, inventory, gm.playerInvUI.GetItemDatasInventoryItem(medicalItemData)));
+        StartCoroutine(locationalInjury.ApplyMedicalItem(gm.playerManager, medicalItemData, inventory, medicalItemData.GetItemDatasInventoryItem()));
         DisableContextMenu();
     }
 
-    void CreateRemoveMedicalItemButton(ItemData medicalItemData, LocationalInjury locationalInjury, MedicalSupplyType medicalSupplyType)
+    void CreateRemoveMedicalItemButton(ItemData medicalItemData, LocationalInjury locationalInjury, MedicalSupplyType medicalSupplyType, bool includeInjury)
     {
         ContextMenuButton contextButton = GetNextInactiveButton();
         contextButton.gameObject.SetActive(true);
 
         contextButton.textMesh.text = "Remove " + medicalItemData.itemName;
+        if (includeInjury)
+            contextButton.textMesh.text += " - " + Utilities.FormatEnumStringWithSpaces(locationalInjury.injuryLocation.ToString(), false) + " - " + locationalInjury.injury.name;
 
         contextButton.button.onClick.AddListener(delegate { RemoveMedicalItem(locationalInjury, medicalSupplyType); });
     }
 
     void RemoveMedicalItem(LocationalInjury locationalInjury, MedicalSupplyType medicalSupplyType)
     {
-        StartCoroutine(locationalInjury.RemoveMedicalItem(medicalSupplyType));
+        StartCoroutine(locationalInjury.RemoveMedicalItem(gm.playerManager, medicalSupplyType));
         DisableContextMenu();
+    }
+    #endregion
+
+    #region Character
+    public void BuildContextMenu(CharacterManager characterManager)
+    {
+        isActive = true;
+        contextActiveCharacter = characterManager;
+        if (characterManager != null)
+        {
+            for (int i = 0; i < characterManager.status.bodyParts.Count; i++)
+            {
+                for (int j = 0; j < characterManager.status.bodyParts[i].injuries.Count; j++)
+                {
+                    if (characterManager.status.bodyParts[i].injuries[j].InjuryRemedied() == false)
+                        CreateApplyMedicalItemButtons(characterManager.status.bodyParts[i].injuries[j], true);
+                    else if (characterManager.status.bodyParts[i].injuries[j].bandage != null)
+                        CreateRemoveMedicalItemButton(characterManager.status.bodyParts[i].injuries[j].bandageItemData, characterManager.status.bodyParts[i].injuries[j], MedicalSupplyType.Bandage, true);
+                }
+            }
+        }
+        else
+        {
+            DisableContextMenu();
+            return;
+        }
+
+        SetupContextButton();
     }
     #endregion
 
@@ -191,7 +226,7 @@ public class ContextMenu : MonoBehaviour
 
     void ApplyMedicalItemToInjury_InventoryItem(LocationalInjury locationalInjury)
     {
-        StartCoroutine(locationalInjury.ApplyMedicalItem(contextActiveInvItem.itemData, contextActiveInvItem.myInventory, contextActiveInvItem));
+        StartCoroutine(locationalInjury.ApplyMedicalItem(gm.playerManager, contextActiveInvItem.itemData, contextActiveInvItem.myInventory, contextActiveInvItem));
         DisableContextMenu();
     }
 
@@ -323,6 +358,7 @@ public class ContextMenu : MonoBehaviour
         isActive = false;
         contextActiveInvItem = null;
         contextActiveInjuryTextButton = null;
+        contextActiveCharacter = null;
         gm.uiManager.activeContextMenuButton = null;
     }
 

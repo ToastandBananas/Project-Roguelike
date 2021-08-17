@@ -8,6 +8,10 @@ public class TileInfoDisplay : MonoBehaviour
 {
     public TextMeshProUGUI displayText;
 
+    public CharacterManager focusedCharacter;
+    public GameObject focusedObject;
+    public List<ItemData> focusedItems = new List<ItemData>();
+
     StringBuilder stringBuilder = new StringBuilder();
 
     readonly string blueHexColor = "#005BEA";
@@ -53,9 +57,12 @@ public class TileInfoDisplay : MonoBehaviour
     public void DisplayTileInfo()
     {
         lastPositionChecked = mouseWorldPos;
-        GameTiles.objects.TryGetValue(mouseWorldPos, out GameObject worldObject);
-        GameTiles.npcs.TryGetValue(mouseWorldPos, out CharacterManager npc);
+
         GameTiles.itemDatas.TryGetValue(mouseWorldPos, out List<ItemData> list);
+        if (list != null)
+            focusedItems = new List<ItemData>(list);
+        else
+            focusedItems.Clear();
 
         stringBuilder.Clear();
 
@@ -67,25 +74,27 @@ public class TileInfoDisplay : MonoBehaviour
 
         if (Vector2.Distance(mouseWorldPos, gm.playerManager.transform.position) > gm.playerManager.vision.lookRadius)
             stringBuilder.Append("You can't see that far...");
-        else if (npc == null && worldObject == null && (list == null || list.Count == 0))
+        else if (focusedCharacter == null && focusedObject == null && (list == null || list.Count == 0))
             stringBuilder.Append("You don't see anything here...");
         else
         {
             // If there's an object on this tile, show its name
-            if (worldObject != null)
+            if (focusedObject != null)
             {
-                stringBuilder.Append("You see " + Utilities.GetIndefiniteArticle(worldObject.name, false, true) + ".\n\n");
+                stringBuilder.Append("You see " + Utilities.GetIndefiniteArticle(focusedObject.name, false, true) + ".\n\n");
             }
 
-            // If there's an NPC on this tile, show its name
-            if (npc != null)
+            // If there's a character on this tile, show their name
+            if (focusedCharacter != null)
             {
                 stringBuilder.Append("You see ");
 
-                if (npc.isNamed)
-                    stringBuilder.Append("<b><color=" + GetNameColor(npc) + ">" + npc.name + " </color></b>.\n\n");
+                if (focusedCharacter.isNPC == false) // If this is the player
+                    stringBuilder.Append("yourself.");
+                else if (focusedCharacter.isNamed)
+                    stringBuilder.Append("<b><color=" + GetNameColor(focusedCharacter) + ">" + focusedCharacter.name + " </color></b>.\n\n");
                 else
-                    stringBuilder.Append(Utilities.GetIndefiniteArticle(npc.name, false, true, GetNameColor(npc)) + ".\n\n");
+                    stringBuilder.Append(Utilities.GetIndefiniteArticle(focusedCharacter.name, false, true, GetNameColor(focusedCharacter)) + ".\n\n");
             }
 
             // If there are any items at this position, show their names
@@ -98,7 +107,7 @@ public class TileInfoDisplay : MonoBehaviour
 
                 for (int i = 0; i < list.Count; i++)
                 {
-                    if ((npc != null && i >= 5) || i >= 7)
+                    if ((focusedCharacter != null && i >= 5) || i >= 7)
                     {
                         stringBuilder.Append("And more...");
                         break;

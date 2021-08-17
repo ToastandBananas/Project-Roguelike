@@ -41,7 +41,7 @@ public class ItemPickupObjectPool : ObjectPool
     {
         for (int i = 0; i < pooledItemPickups.Count; i++)
         {
-            if (pooledItemPickups[i].gameObject.activeSelf == false)
+            if (pooledItemPickups[i].gameObject.activeSelf == false && pooledItemPickups[i].itemData.item == null)
                 return pooledItemPickups[i];
         }
 

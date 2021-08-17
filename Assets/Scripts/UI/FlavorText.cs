@@ -439,10 +439,16 @@ public class FlavorText : MonoBehaviour
             + Utilities.FormatEnumStringWithSpaces(bodyPartType.ToString(), true) + ", causing <b><color=red>" + damage + "</color></b> damage.", 3));
     }
 
-    public void WriteApplyBandageLine(CharacterManager characterManager, Injury injury, MedicalSupply medSupply, BodyPartType bodyPartType)
+    public void WriteApplyBandageLine(CharacterManager characterApplying, CharacterManager characterBeingBandaged, Injury injury, ItemData itemData, BodyPartType bodyPartType)
     {
-        WriteLine(Utilities.GetPronoun(characterManager, true, false) + "wrap up the <b>" + injury.name + "</b> on " + Utilities.GetPronoun(characterManager, false, true)
-            + Utilities.FormatEnumStringWithSpaces(bodyPartType.ToString(), true) + " with " + Utilities.GetIndefiniteArticle(medSupply.name, false, true) + ".");
+        WriteLine(Utilities.GetPronoun(characterApplying, true, false) + "wrapped up the <b>" + injury.name + "</b> on " + Utilities.GetPronoun(characterBeingBandaged, false, true)
+            + Utilities.FormatEnumStringWithSpaces(bodyPartType.ToString(), true) + " with " + Utilities.GetIndefiniteArticle(itemData.GetSoilageText() + " " + itemData.itemName, false, true) + ".");
+    }
+
+    public void WriteRemoveBandageLine(CharacterManager characterRemoving, CharacterManager bandagedCharacter, ItemData itemData, BodyPartType bodyPartType)
+    {
+        WriteLine(Utilities.GetPronoun(characterRemoving, true, false) + "removed the " + Utilities.GetIndefiniteArticle(itemData.GetSoilageText() + " " + itemData.itemName, false, true)
+            + " from " + Utilities.GetPronoun(bandagedCharacter, false, true) + Utilities.FormatEnumStringWithSpaces(bodyPartType.ToString(), true) + ".");
     }
 
     /*string GetInjuryDescription(Injury injury)

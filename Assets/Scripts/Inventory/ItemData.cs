@@ -38,8 +38,7 @@ public class ItemData : MonoBehaviour
     public int uses = 1;
     
     [HideInInspector] public Inventory bagInventory;
-
-    GameManager gm;
+    [HideInInspector] public Inventory parentInventory;
 
     void Awake()
     {
@@ -49,11 +48,6 @@ public class ItemData : MonoBehaviour
             RandomizeData();
 
         TryGetComponent(out bagInventory);
-    }
-
-    void Start()
-    {
-        gm = GameManager.instance;
     }
 
     public void TransferData(ItemData dataGiver, ItemData dataReceiver)
@@ -246,6 +240,7 @@ public class ItemData : MonoBehaviour
     public void ClearData()
     {
         hasBeenRandomized = false;
+        parentInventory = null;
         
         item = null;
         
@@ -645,20 +640,6 @@ public class ItemData : MonoBehaviour
         }
     }
 
-    public string GetSoilageText()
-    {
-        if (freshness == 100)
-            return "Clean";
-        else if (freshness >= 75)
-            return "Lightly Soiled";
-        else if (freshness >= 50)
-            return "Moderately Soiled";
-        else if (freshness >= 25)
-            return "Soiled";
-        else
-            return "Filthy";
-    }
-
     public bool IsPickup()
     {
         if (CompareTag("Item Pickup"))
@@ -668,12 +649,109 @@ public class ItemData : MonoBehaviour
 
     public bool IsEquipped()
     {
-        for (int i = 0; i < gm.playerManager.playerEquipmentManager.currentEquipment.Length; i++)
+        for (int i = 0; i < GameManager.instance.playerManager.playerEquipmentManager.currentEquipment.Length; i++)
         {
-            if (gm.playerManager.playerEquipmentManager.currentEquipment[i] == this)
+            if (GameManager.instance.playerManager.playerEquipmentManager.currentEquipment[i] == this)
                 return true;
         }
         return false;
+    }
+
+    public Inventory GetItemDatasPlayerInventory()
+    {
+        for (int i = 0; i < PlayerManager.instance.personalInventory.items.Count; i++)
+        {
+            if (PlayerManager.instance.personalInventory.items[i] == this)
+                return PlayerManager.instance.personalInventory;
+        }
+
+        if (PlayerManager.instance.backpackInventory != null)
+        {
+            for (int i = 0; i < PlayerManager.instance.backpackInventory.items.Count; i++)
+            {
+                if (PlayerManager.instance.backpackInventory.items[i] == this)
+                    return PlayerManager.instance.backpackInventory;
+            }
+        }
+
+        if (PlayerManager.instance.leftHipPouchInventory != null)
+        {
+            for (int i = 0; i < PlayerManager.instance.leftHipPouchInventory.items.Count; i++)
+            {
+                if (PlayerManager.instance.leftHipPouchInventory.items[i] == this)
+                    return PlayerManager.instance.leftHipPouchInventory;
+            }
+        }
+
+        if (PlayerManager.instance.rightHipPouchInventory != null)
+        {
+            for (int i = 0; i < PlayerManager.instance.rightHipPouchInventory.items.Count; i++)
+            {
+                if (PlayerManager.instance.rightHipPouchInventory.items[i] == this)
+                    return PlayerManager.instance.rightHipPouchInventory;
+            }
+        }
+
+        if (PlayerManager.instance.quiverInventory != null)
+        {
+            for (int i = 0; i < PlayerManager.instance.quiverInventory.items.Count; i++)
+            {
+                if (PlayerManager.instance.quiverInventory.items[i] == this)
+                    return PlayerManager.instance.quiverInventory;
+            }
+        }
+
+        for (int i = 0; i < PlayerManager.instance.keysInventory.items.Count; i++)
+        {
+            if (PlayerManager.instance.keysInventory.items[i] == this)
+                return PlayerManager.instance.keysInventory;
+        }
+
+        return null;
+    }
+
+    public InventoryItem GetItemDatasInventoryItem()
+    {
+        for (int i = 0; i < ObjectPoolManager.instance.playerInventoryItemObjectPool.activePooledInventoryItems.Count; i++)
+        {
+            if (ObjectPoolManager.instance.playerInventoryItemObjectPool.activePooledInventoryItems[i].itemData == this)
+                return ObjectPoolManager.instance.playerInventoryItemObjectPool.activePooledInventoryItems[i];
+        }
+
+        for (int i = 0; i < ObjectPoolManager.instance.containerInventoryItemObjectPool.activePooledInventoryItems.Count; i++)
+        {
+            if (ObjectPoolManager.instance.containerInventoryItemObjectPool.activePooledInventoryItems[i].itemData == this)
+                return ObjectPoolManager.instance.containerInventoryItemObjectPool.activePooledInventoryItems[i];
+        }
+
+        return null;
+    }
+
+    public float GetSoilage()
+    {
+        return 100f - freshness;
+    }
+
+    public string GetSoilageText()
+    {
+        if (freshness == 100)
+            return "Clean";
+        else if (freshness >= 90)
+            return "Barely Soiled";
+        else if (freshness >= 75)
+            return "Lightly Soiled";
+        else if (freshness >= 50)
+            return "Moderately Soiled";
+        else if (freshness >= 25)
+            return "Heavily Soiled";
+        else
+            return "Filthy";
+    }
+
+    public IEnumerator DelayReturnToObjectPool()
+    {
+        yield return null;
+        ReturnToObjectPool();
     }
 
     public void ReturnToObjectPool()
@@ -686,14 +764,7 @@ public class ItemData : MonoBehaviour
 
     public void ReturnToItemDataObjectPool()
     {
-        if (gm == null) gm = GameManager.instance;
-
-        transform.SetParent(gm.objectPoolManager.itemDataObjectPool.transform);
-        if (gm.objectPoolManager.itemDataObjectPool.pooledObjects.Contains(gameObject) == false)
-        {
-            gm.objectPoolManager.itemDataObjectPool.pooledObjects.Add(gameObject);
-            gm.objectPoolManager.itemDataObjectPool.pooledItemDatas.Add(this);
-        }
+        transform.SetParent(ObjectPoolManager.instance.itemDataObjectPool.transform);
 
         ClearData();
         gameObject.SetActive(false);
@@ -701,74 +772,11 @@ public class ItemData : MonoBehaviour
 
     public void ReturnToItemDataContainerObjectPool()
     {
-        if (gm == null) gm = GameManager.instance;
-        transform.SetParent(gm.objectPoolManager.itemDataContainerObjectPool.transform);
-        if (gm.objectPoolManager.itemDataContainerObjectPool.pooledObjects.Contains(gameObject) == false)
-        {
-            gm.objectPoolManager.itemDataContainerObjectPool.pooledObjects.Add(gameObject);
-            gm.objectPoolManager.itemDataContainerObjectPool.pooledItemDatas.Add(this);
-        }
+        transform.SetParent(ObjectPoolManager.instance.itemDataContainerObjectPool.transform);
 
+        bagInventory.myInvUI = null;
         bagInventory.items.Clear();
         ClearData();
         gameObject.SetActive(false);
-    }
-
-    public Inventory GetItemDatasInventory()
-    {
-        for (int i = 0; i < gm.playerInvUI.personalInventory.items.Count; i++)
-        {
-            if (gm.playerInvUI.personalInventory.items[i] == this)
-                return gm.playerInvUI.personalInventory;
-        }
-
-        if (gm.playerInvUI.backpackEquipped)
-        {
-            for (int i = 0; i < gm.playerInvUI.backpackInventory.items.Count; i++)
-            {
-                if (gm.playerInvUI.backpackInventory.items[i] == this)
-                    return gm.playerInvUI.backpackInventory;
-            }
-        }
-
-        if (gm.playerInvUI.leftHipPouchEquipped)
-        {
-            for (int i = 0; i < gm.playerInvUI.leftHipPouchInventory.items.Count; i++)
-            {
-                if (gm.playerInvUI.leftHipPouchInventory.items[i] == this)
-                    return gm.playerInvUI.leftHipPouchInventory;
-            }
-        }
-
-        if (gm.playerInvUI.rightHipPouchEquipped)
-        {
-            for (int i = 0; i < gm.playerInvUI.rightHipPouchInventory.items.Count; i++)
-            {
-                if (gm.playerInvUI.rightHipPouchInventory.items[i] == this)
-                    return gm.playerInvUI.rightHipPouchInventory;
-            }
-        }
-
-        if (gm.playerInvUI.quiverEquipped)
-        {
-            for (int i = 0; i < gm.playerInvUI.quiverInventory.items.Count; i++)
-            {
-                if (gm.playerInvUI.quiverInventory.items[i] == this)
-                    return gm.playerInvUI.quiverInventory;
-            }
-        }
-
-        for (int i = 0; i < gm.playerInvUI.keysInventory.items.Count; i++)
-        {
-            if (gm.playerInvUI.keysInventory.items[i] == this)
-                return gm.playerInvUI.keysInventory;
-        }
-
-        return null;
-    }
-
-    public float GetSoilage()
-    {
-        return 100f - freshness;
     }
 }

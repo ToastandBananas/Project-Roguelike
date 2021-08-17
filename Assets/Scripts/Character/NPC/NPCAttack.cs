@@ -20,7 +20,7 @@ public class NPCAttack : Attack
     {
         if (characterManager.status.isDead)
             return;
-
+        
         // If the NPC has a target
         if (characterManager.npcMovement.target != null)
         {
@@ -71,6 +71,7 @@ public class NPCAttack : Attack
         Debug.Log("Switching target to: " + newTarget);
         if (newTarget == null)
         {
+            characterManager.npcMovement.target = null;
             characterManager.stateController.SetToDefaultState(characterManager.npcMovement.shouldFollowLeader);
             StartCoroutine(gm.turnManager.FinishTurn(characterManager));
             return;

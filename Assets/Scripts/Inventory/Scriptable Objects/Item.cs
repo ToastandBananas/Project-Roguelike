@@ -48,9 +48,14 @@ public class Item : ScriptableObject
                     invItem.gm.containerInvUI.GetItemsListFromActiveDirection().Remove(invItem.itemData);
                     invItem.ClearItem();
                 }
+
+                GameManager.instance.StartCoroutine(itemData.DelayReturnToObjectPool());
             }
             else if (invItem != null)
                 invItem.UpdateInventoryWeightAndVolume();
+
+            if (inventory != null)
+                inventory.UpdateCurrentWeightAndVolume();
 
             if (invItem != null)
                 invItem.myInvUI.UpdateUI();

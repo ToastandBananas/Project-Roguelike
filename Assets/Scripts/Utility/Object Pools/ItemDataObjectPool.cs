@@ -14,40 +14,33 @@ public class ItemDataObjectPool : ObjectPool
     {
         if (hasBeenInitialized == false)
         {
-            // Add existing objects to the list
-            for (int i = 0; i < transform.childCount; i++)
-            {
-                ItemData existingItemData = transform.GetChild(i).GetComponent<ItemData>();
-                pooledItemDatas.Add(existingItemData);
-                pooledObjects.Add(existingItemData.gameObject);
-
-                if (existingItemData.CompareTag("Item Data Container Object"))
-                    existingItemData.GetComponent<Inventory>().Init();
-            }
-
             // Create and add new objects to the list
             ItemData itemData;
             for (int i = 0; i < amountToPool; i++)
             {
                 itemData = Instantiate(objectToPool.GetComponent<ItemData>());
                 itemData.transform.SetParent(transform);
-                itemData.gameObject.SetActive(false);
                 pooledItemDatas.Add(itemData);
                 pooledObjects.Add(itemData.gameObject);
 
                 if (itemData.CompareTag("Item Data Container Object"))
-                    itemData.GetComponent<Inventory>().Init();
+                {
+                    itemData.bagInventory = itemData.GetComponent<Inventory>();
+                    itemData.bagInventory.Init();
+                }
+
+                itemData.gameObject.SetActive(false);
             }
 
             hasBeenInitialized = true;
         }
     }
 
-    public ItemData GetPooledItemData()
+    public ItemData GetPooledItemData(Inventory inventoryAddingTo)
     {
-        for (int i = 0; i < pooledObjects.Count; i++)
+        for (int i = 0; i < pooledItemDatas.Count; i++)
         {
-            if (pooledObjects[i].activeInHierarchy == false)
+            if (pooledItemDatas[i].gameObject.activeInHierarchy == false && pooledItemDatas[i].item == null)
                 return pooledItemDatas[i];
         }
 
@@ -57,7 +50,13 @@ public class ItemDataObjectPool : ObjectPool
         pooledObjects.Add(itemData.gameObject);
 
         if (itemData.CompareTag("Item Data Container Object"))
-            itemData.GetComponent<Inventory>().Init();
+        {
+            itemData.bagInventory = itemData.GetComponent<Inventory>();
+            itemData.bagInventory.Init();
+        }
+
+        if (inventoryAddingTo != null)
+            itemData.parentInventory = inventoryAddingTo;
 
         return itemData;
     }

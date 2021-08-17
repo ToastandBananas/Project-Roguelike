@@ -10,6 +10,8 @@ public class EquipmentManager : MonoBehaviour
     public OnWeaponChanged onWeaponChanged;
 
     public Transform itemsParent;
+
+    [NamedArray(new string[] { "Helmet", "Shirt", "Pants", "Boots", "Gloves", "BodyArmor", "LegArmor", "LeftWeapon", "RightWeapon", "Ranged", "Quiver", "Backpack", "LeftHipPouch", "RightHipPouch", "Cape" })]
     public ItemData[] currentEquipment;
 
     public float currentWeight, currentVolume;
@@ -21,25 +23,13 @@ public class EquipmentManager : MonoBehaviour
 
     [HideInInspector] public GameManager gm;
     [HideInInspector] public CharacterManager characterManager;
-    [HideInInspector] public bool isPlayer, isTwoHanding;
+    [HideInInspector] public bool isTwoHanding;
 
     float twoHandedDamageMultiplier = 1.35f;
 
     public virtual void Start()
     {
         gm = GameManager.instance;
-
-        if (gameObject.CompareTag("NPC"))
-        {
-            characterManager = GetComponent<CharacterManager>();
-            isPlayer = false;
-        }
-        else
-        {
-            characterManager = PlayerManager.instance;
-            isPlayer = true;
-            itemsParent = gm.playerInvUI.equipmentSideBarButton.transform.GetChild(1);
-        }
         
         currentEquipment = new ItemData[System.Enum.GetNames(typeof(EquipmentSlot)).Length];
 
@@ -76,11 +66,11 @@ public class EquipmentManager : MonoBehaviour
         ItemData equipmentItemData = null;
         if (newItemData.item.IsBag())
         {
-            equipmentItemData = gm.objectPoolManager.itemDataContainerObjectPool.GetPooledItemData();
+            equipmentItemData = gm.objectPoolManager.itemDataContainerObjectPool.GetPooledItemData(null);
             equipmentItemData.bagInventory.items.Clear();
         }
         else
-            equipmentItemData = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData();
+            equipmentItemData = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData(null);
 
         newItemData.TransferData(newItemData, equipmentItemData);
         equipmentItemData.currentStackSize = 1;
@@ -146,7 +136,7 @@ public class EquipmentManager : MonoBehaviour
         StartCoroutine(gm.playerInvUI.PlayAddItemEffect(equipmentItemData.item.pickupSprite, null, gm.playerInvUI.equipmentSideBarButton));
 
         // If the equipment inventory is active, show the item in the menu
-        if (gm.playerInvUI.activeInventory == null && isPlayer)
+        if (gm.playerInvUI.activeInventory == null && characterManager.isNPC == false)
             gm.playerInvUI.ShowNewInventoryItem(equipmentItemData);
 
         // If the item is a bag and it was on the ground, set the sidebar icon to a floor icon
@@ -166,7 +156,7 @@ public class EquipmentManager : MonoBehaviour
         if (currentEquipment[(int)equipmentSlot] != null)
         {
             ItemData oldItemData = currentEquipment[(int)equipmentSlot];
-            InventoryItem invItemComingFrom = gm.playerInvUI.GetItemDatasInventoryItem(oldItemData);
+            InventoryItem invItemComingFrom = oldItemData.GetItemDatasInventoryItem();
             Inventory invComingFrom = null;
             int stackSize = oldItemData.currentStackSize;
             bool shouldDropItem = false;
@@ -186,19 +176,19 @@ public class EquipmentManager : MonoBehaviour
                 }
                 else // If we're trying to add the bag to our inventory before dropping it
                 {
-                    // Check through each of the player's inventories and see if there's room in any of them...if there is, we can continue on
+                    // Check through each of the character's inventories and see if there's room in any of them...if there is, we can continue on
                     bool hasRoomInInventory = false;
-                    if (gm.playerInvUI.backpackEquipped && gm.playerInvUI.backpackInventory != invComingFrom)
-                        hasRoomInInventory = gm.playerInvUI.backpackInventory.HasRoomInInventory(oldItemData, 1);
+                    if (characterManager.backpackInventory != null && characterManager.backpackInventory != invComingFrom)
+                        hasRoomInInventory = characterManager.backpackInventory.HasRoomInInventory(oldItemData, 1);
 
-                    if (hasRoomInInventory == false && gm.playerInvUI.leftHipPouchEquipped && gm.playerInvUI.leftHipPouchInventory != invComingFrom)
-                        hasRoomInInventory = gm.playerInvUI.leftHipPouchInventory.HasRoomInInventory(oldItemData, 1);
+                    if (hasRoomInInventory == false && characterManager.leftHipPouchInventory != null && characterManager.leftHipPouchInventory != invComingFrom)
+                        hasRoomInInventory = characterManager.leftHipPouchInventory.HasRoomInInventory(oldItemData, 1);
 
-                    if (hasRoomInInventory == false && gm.playerInvUI.rightHipPouchEquipped && gm.playerInvUI.rightHipPouchInventory != invComingFrom)
-                        hasRoomInInventory = gm.playerInvUI.rightHipPouchInventory.HasRoomInInventory(oldItemData, 1);
+                    if (hasRoomInInventory == false && characterManager.rightHipPouchInventory != null && characterManager.rightHipPouchInventory != invComingFrom)
+                        hasRoomInInventory = characterManager.rightHipPouchInventory.HasRoomInInventory(oldItemData, 1);
 
                     if (hasRoomInInventory == false)
-                        hasRoomInInventory = gm.playerInvUI.personalInventory.HasRoomInInventory(oldItemData, 1);
+                        hasRoomInInventory = characterManager.personalInventory.HasRoomInInventory(oldItemData, 1);
 
                     if (hasRoomInInventory == false) // If there's no room in any of our inventories
                     {
@@ -220,74 +210,63 @@ public class EquipmentManager : MonoBehaviour
 
             if (shouldAddToInventory)
             {
-                if (isPlayer) // If this is the player's equipment
+                bool itemWasAddedToInv = false;
+                bool addItemEffectPlayed = false;
+
+                // Try adding to the player's inventory and if it is added, play the add item effect
+                if (characterManager.backpackInventory != null && characterManager.backpackInventory != invComingFrom)
+                    itemWasAddedToInv = characterManager.backpackInventory.AddItem(oldItemData, oldItemData.currentStackSize, invComingFrom, true);
+
+                if (itemWasAddedToInv)
                 {
-                    bool itemWasAddedToInv = false;
-                    bool addItemEffectPlayed = false;
+                    if (invItemComingFrom != null && invItemComingFrom.myInventory != null)
+                        invItemComingFrom.UpdateInventoryWeightAndVolume();
 
-                    // Try adding to the player's inventory and if it is added, play the add item effect
-                    if (gm.playerInvUI.backpackEquipped && gm.playerInvUI.backpackInventory != invComingFrom)
-                        itemWasAddedToInv = gm.playerInvUI.backpackInventory.AddItem(oldItemData, oldItemData.currentStackSize, invComingFrom, true);
-
-                    if (itemWasAddedToInv)
-                    {
-                        if (invItemComingFrom != null && invItemComingFrom.myInventory != null)
-                            invItemComingFrom.UpdateInventoryWeightAndVolume();
-
-                        gm.playerInvUI.backpackInventory.UpdateCurrentWeightAndVolume();
-                        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.backpackSidebarButton));
-                        addItemEffectPlayed = true;
-                        gm.flavorText.WriteUnquipLine(oldItemData, characterManager);
-                    }
-                    else if (gm.playerInvUI.leftHipPouchEquipped && gm.playerInvUI.leftHipPouchInventory != invComingFrom)
-                        itemWasAddedToInv = gm.playerInvUI.leftHipPouchInventory.AddItem(oldItemData, oldItemData.currentStackSize, invComingFrom, true);
-
-                    if (itemWasAddedToInv && addItemEffectPlayed == false)
-                    {
-                        if (invItemComingFrom != null && invItemComingFrom.myInventory != null)
-                            invItemComingFrom.UpdateInventoryWeightAndVolume();
-
-                        gm.playerInvUI.leftHipPouchInventory.UpdateCurrentWeightAndVolume();
-                        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.leftHipPouchSidebarButton));
-                        addItemEffectPlayed = true;
-                        gm.flavorText.WriteUnquipLine(oldItemData, characterManager);
-                    }
-                    else if (itemWasAddedToInv == false && gm.playerInvUI.rightHipPouchEquipped && gm.playerInvUI.rightHipPouchInventory != invComingFrom)
-                        itemWasAddedToInv = gm.playerInvUI.rightHipPouchInventory.AddItem(oldItemData, oldItemData.currentStackSize, invComingFrom, true);
-
-                    if (itemWasAddedToInv && addItemEffectPlayed == false)
-                    {
-                        if (invItemComingFrom != null && invItemComingFrom.myInventory != null)
-                            invItemComingFrom.UpdateInventoryWeightAndVolume();
-
-                        gm.playerInvUI.rightHipPouchInventory.UpdateCurrentWeightAndVolume();
-                        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.rightHipPouchSidebarButton));
-                        addItemEffectPlayed = true;
-                        gm.flavorText.WriteUnquipLine(oldItemData, characterManager);
-                    }
-                    else if (itemWasAddedToInv == false)
-                        itemWasAddedToInv = gm.playerInvUI.personalInventory.AddItem(oldItemData, oldItemData.currentStackSize, invComingFrom, true);
-
-                    if (itemWasAddedToInv && addItemEffectPlayed == false)
-                    {
-                        if (invItemComingFrom != null && invItemComingFrom.myInventory != null)
-                            invItemComingFrom.UpdateInventoryWeightAndVolume();
-
-                        gm.playerInvUI.personalInventory.UpdateCurrentWeightAndVolume();
-                        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.personalInventorySideBarButton));
-                        gm.flavorText.WriteUnquipLine(oldItemData, characterManager);
-                    }
-                    else if (itemWasAddedToInv == false) // If we can't add it to the Inventory, drop it, but first we need to run the rest of the code in this method, so we'll just set a bool for now
-                        shouldDropItem = true;
+                    characterManager.backpackInventory.UpdateCurrentWeightAndVolume();
+                    StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.backpackSidebarButton));
+                    addItemEffectPlayed = true;
+                    gm.flavorText.WriteUnquipLine(oldItemData, characterManager);
                 }
-                else // If this is an NPC's equipment
+                else if (characterManager.leftHipPouchInventory != null && characterManager.leftHipPouchInventory != invComingFrom)
+                    itemWasAddedToInv = characterManager.leftHipPouchInventory.AddItem(oldItemData, oldItemData.currentStackSize, invComingFrom, true);
+
+                if (itemWasAddedToInv && addItemEffectPlayed == false)
                 {
-                    // Try adding to the NPC's inventory, else drop the item at their feet
-                    if (characterManager.inventory.AddItem(oldItemData, oldItemData.currentStackSize, invComingFrom, true) == false)
-                        shouldDropItem = true;
-                    else
-                        characterManager.inventory.UpdateCurrentWeightAndVolume();
+                    if (invItemComingFrom != null && invItemComingFrom.myInventory != null)
+                        invItemComingFrom.UpdateInventoryWeightAndVolume();
+
+                    characterManager.leftHipPouchInventory.UpdateCurrentWeightAndVolume();
+                    StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.leftHipPouchSidebarButton));
+                    addItemEffectPlayed = true;
+                    gm.flavorText.WriteUnquipLine(oldItemData, characterManager);
                 }
+                else if (itemWasAddedToInv == false && characterManager.rightHipPouchInventory != null && characterManager.rightHipPouchInventory != invComingFrom)
+                    itemWasAddedToInv = characterManager.rightHipPouchInventory.AddItem(oldItemData, oldItemData.currentStackSize, invComingFrom, true);
+
+                if (itemWasAddedToInv && addItemEffectPlayed == false)
+                {
+                    if (invItemComingFrom != null && invItemComingFrom.myInventory != null)
+                        invItemComingFrom.UpdateInventoryWeightAndVolume();
+
+                    characterManager.rightHipPouchInventory.UpdateCurrentWeightAndVolume();
+                    StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.rightHipPouchSidebarButton));
+                    addItemEffectPlayed = true;
+                    gm.flavorText.WriteUnquipLine(oldItemData, characterManager);
+                }
+                else if (itemWasAddedToInv == false)
+                    itemWasAddedToInv = characterManager.personalInventory.AddItem(oldItemData, oldItemData.currentStackSize, invComingFrom, true);
+
+                if (itemWasAddedToInv && addItemEffectPlayed == false)
+                {
+                    if (invItemComingFrom != null && invItemComingFrom.myInventory != null)
+                        invItemComingFrom.UpdateInventoryWeightAndVolume();
+
+                    characterManager.personalInventory.UpdateCurrentWeightAndVolume();
+                    StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.personalInventorySideBarButton));
+                    gm.flavorText.WriteUnquipLine(oldItemData, characterManager);
+                }
+                else if (itemWasAddedToInv == false) // If we can't add it to the Inventory, drop it, but first we need to run the rest of the code in this method, so we'll just set a bool for now
+                    shouldDropItem = true;
             }
             else
                 shouldDropItem = true;
@@ -346,7 +325,7 @@ public class EquipmentManager : MonoBehaviour
             // If the item we're equipping is a bag, we need to temporarily disable the corresponding bag inventory so that the bag that we're unequipping doesn't try to place itself in its own inventory. 
             // It will be re-enabled in the Equip method, or below if we weren't able to assign it.
             if (oldItemData.item.IsBag())
-                gm.playerInvUI.TemporarilyDisableBag(oldItemData);
+                gm.playerInvUI.TemporarilyDisableBag(characterManager, oldItemData);
 
             // Try to unequip the old Item
             canAssignEquipment = Unequip(equipmentSlot, true, true, false);
@@ -371,10 +350,22 @@ public class EquipmentManager : MonoBehaviour
                 else if (TwoHandedWeaponEquipped() && equipmentSlot == EquipmentSlot.LeftWeapon)
                     Unequip(EquipmentSlot.RightWeapon, true, true, true);
             }
+            else if (newItemData.item.IsBag())
+            {
+                // If the new equipment is a bag and this is the player equipping it, then assign the bag's inventory in PlayerInventoryUI
+                if (equipmentSlot == EquipmentSlot.Backpack)
+                    characterManager.backpackInventory = newItemData.bagInventory;
+                else if (equipmentSlot == EquipmentSlot.LeftHipPouch)
+                    characterManager.leftHipPouchInventory = newItemData.bagInventory;
+                else if (equipmentSlot == EquipmentSlot.RightHipPouch)
+                    characterManager.rightHipPouchInventory = newItemData.bagInventory;
+                else if (equipmentSlot == EquipmentSlot.Quiver)
+                    characterManager.quiverInventory = newItemData.bagInventory;
+            }
         }
         else if (oldItemData.item.IsBag()) // If we aren't able to assign the equipment
         {
-            gm.playerInvUI.ReenableBag(oldItemData); // Re-enable the bag, since we disabled it earlier
+            gm.playerInvUI.ReenableBag(characterManager, oldItemData); // Re-enable the bag, since we disabled it earlier
 
             if (gm.containerInvUI.activeInventory == newItemData.bagInventory)
             {
@@ -390,6 +381,16 @@ public class EquipmentManager : MonoBehaviour
     public virtual void UnassignEquipment(EquipmentSlot equipmentSlot)
     {
         currentEquipment[(int)equipmentSlot] = null;
+        
+        // If the new equipment is a bag and this is the player equipping it, then assign the bag's inventory in PlayerInventoryUI
+        if (equipmentSlot == EquipmentSlot.Backpack)
+            characterManager.backpackInventory = null;
+        else if (equipmentSlot == EquipmentSlot.LeftHipPouch)
+            characterManager.leftHipPouchInventory = null;
+        else if (equipmentSlot == EquipmentSlot.RightHipPouch)
+            characterManager.rightHipPouchInventory = null;
+        else if (equipmentSlot == EquipmentSlot.Quiver)
+            characterManager.quiverInventory = null;
     }
 
     public void OnEquipmentChanged(ItemData oldItemData, ItemData newItemData)
@@ -694,13 +695,20 @@ public class EquipmentManager : MonoBehaviour
         EquipNewEquipment(startingBackpack, EquipmentSlot.Backpack);
         EquipNewEquipment(startingLeftHipPouch, EquipmentSlot.LeftHipPouch);
         EquipNewEquipment(startingRightHipPouch, EquipmentSlot.RightHipPouch);
+
+        if (startingRightWeapon != null)
+        {
+            Weapon weapon = (Weapon)startingRightWeapon;
+            if (weapon.isTwoHanded)
+                characterManager.humanoidSpriteManager.SetupTwoHandedWeaponStance(this, characterManager);
+        }
     }
 
     void EquipNewEquipment(Equipment equipment, EquipmentSlot equipSlot)
     {
         if (equipment != null)
         {
-            ItemData newItemData = gm.objectPoolManager.GetItemDataFromPool(equipment);
+            ItemData newItemData = gm.objectPoolManager.GetItemDataFromPool(equipment, null);
             newItemData.gameObject.SetActive(true);
             newItemData.transform.SetParent(itemsParent);
             newItemData.item = equipment;

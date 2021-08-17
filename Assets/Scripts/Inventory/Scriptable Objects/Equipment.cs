@@ -29,7 +29,7 @@ public class Equipment : Item
         ItemData oldItemData = null;
         if (characterManager.equipmentManager.currentEquipment[(int)equipSlot] != null)
         {
-            oldItemData = GameManager.instance.objectPoolManager.GetItemDataFromPool(characterManager.equipmentManager.currentEquipment[(int)equipSlot].item);
+            oldItemData = GameManager.instance.objectPoolManager.GetItemDataFromPool(characterManager.equipmentManager.currentEquipment[(int)equipSlot].item, null);
             oldItemData.gameObject.SetActive(true);
             oldItemData.TransferData(characterManager.equipmentManager.currentEquipment[(int)equipSlot], oldItemData);
             Inventory playersInv = null;
@@ -41,7 +41,7 @@ public class Equipment : Item
             }
         }
 
-        ItemData itemDataUsing = GameManager.instance.objectPoolManager.GetItemDataFromPool(itemData.item);
+        ItemData itemDataUsing = GameManager.instance.objectPoolManager.GetItemDataFromPool(itemData.item, null);
         itemDataUsing.gameObject.SetActive(true);
         itemDataUsing.TransferData(itemData, itemDataUsing);
         if (itemData.item.IsBag())

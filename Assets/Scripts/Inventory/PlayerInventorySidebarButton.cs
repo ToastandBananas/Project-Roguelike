@@ -28,17 +28,17 @@ public class PlayerInventorySidebarButton : MonoBehaviour, IPointerEnterHandler,
         switch (playerInventoryType)
         {
             case PlayerInventoryType.Personal:
-                return gm.playerInvUI.personalInventory;
+                return gm.playerManager.personalInventory;
             case PlayerInventoryType.Backpack:
-                return gm.playerInvUI.backpackInventory;
+                return gm.playerManager.backpackInventory;
             case PlayerInventoryType.LeftHipPouch:
-                return gm.playerInvUI.leftHipPouchInventory;
+                return gm.playerManager.leftHipPouchInventory;
             case PlayerInventoryType.RightHipPouch:
-                return gm.playerInvUI.rightHipPouchInventory;
+                return gm.playerManager.rightHipPouchInventory;
             case PlayerInventoryType.Quiver:
-                return gm.playerInvUI.quiverInventory;
+                return gm.playerManager.quiverInventory;
             case PlayerInventoryType.Keys:
-                return gm.playerInvUI.keysInventory;
+                return gm.playerManager.keysInventory;
             default:
                 return null;
         }
@@ -51,22 +51,22 @@ public class PlayerInventorySidebarButton : MonoBehaviour, IPointerEnterHandler,
         switch (playerInventoryType)
         {
             case PlayerInventoryType.Personal:
-                gm.playerInvUI.PopulateInventoryUI(gm.playerInvUI.personalInventory.items, PlayerInventoryType.Personal);
+                gm.playerInvUI.PopulateInventoryUI(gm.playerManager.personalInventory.items, PlayerInventoryType.Personal);
                 break;
             case PlayerInventoryType.Backpack:
-                gm.playerInvUI.PopulateInventoryUI(gm.playerInvUI.backpackInventory.items, PlayerInventoryType.Backpack);
+                gm.playerInvUI.PopulateInventoryUI(gm.playerManager.backpackInventory.items, PlayerInventoryType.Backpack);
                 break;
             case PlayerInventoryType.LeftHipPouch:
-                gm.playerInvUI.PopulateInventoryUI(gm.playerInvUI.leftHipPouchInventory.items, PlayerInventoryType.LeftHipPouch);
+                gm.playerInvUI.PopulateInventoryUI(gm.playerManager.leftHipPouchInventory.items, PlayerInventoryType.LeftHipPouch);
                 break;
             case PlayerInventoryType.RightHipPouch:
-                gm.playerInvUI.PopulateInventoryUI(gm.playerInvUI.rightHipPouchInventory.items, PlayerInventoryType.RightHipPouch);
+                gm.playerInvUI.PopulateInventoryUI(gm.playerManager.rightHipPouchInventory.items, PlayerInventoryType.RightHipPouch);
                 break;
             case PlayerInventoryType.Quiver:
-                gm.playerInvUI.PopulateInventoryUI(gm.playerInvUI.quiverInventory.items, PlayerInventoryType.Quiver);
+                gm.playerInvUI.PopulateInventoryUI(gm.playerManager.quiverInventory.items, PlayerInventoryType.Quiver);
                 break;
             case PlayerInventoryType.Keys:
-                gm.playerInvUI.PopulateInventoryUI(gm.playerInvUI.keysInventory.items, PlayerInventoryType.Keys);
+                gm.playerInvUI.PopulateInventoryUI(gm.playerManager.keysInventory.items, PlayerInventoryType.Keys);
                 break;
             case PlayerInventoryType.EquippedItems:
                 gm.playerInvUI.PopulateInventoryUI(gm.playerInvUI.gm.playerManager.equipmentManager.currentEquipment, PlayerInventoryType.EquippedItems);
@@ -80,23 +80,23 @@ public class PlayerInventorySidebarButton : MonoBehaviour, IPointerEnterHandler,
     {
         gameObject.SetActive(false);
 
-        switch (playerInventoryType)
+        /*switch (playerInventoryType)
         {
             case PlayerInventoryType.Backpack:
-                gm.playerInvUI.backpackEquipped = false;
+                gm.playerManager.backpackInventory = null;
                 break;
             case PlayerInventoryType.LeftHipPouch:
-                gm.playerInvUI.leftHipPouchEquipped = false;
+                gm.playerManager.leftHipPouchInventory = null;
                 break;
             case PlayerInventoryType.RightHipPouch:
-                gm.playerInvUI.rightHipPouchEquipped = false;
+                gm.playerManager.rightHipPouchInventory = null;
                 break;
             case PlayerInventoryType.Quiver:
-                gm.playerInvUI.quiverEquipped = false;
+                gm.playerManager.quiverInventory = null;
                 break;
             default:
                 break;
-        }
+        }*/
     }
 
     public void ShowSideBarButton(Bag bag)
@@ -106,19 +106,15 @@ public class PlayerInventorySidebarButton : MonoBehaviour, IPointerEnterHandler,
         switch (playerInventoryType)
         {
             case PlayerInventoryType.Backpack:
-                gm.playerInvUI.backpackEquipped = true;
                 gm.playerInvUI.backpackSidebarButton.icon.sprite = bag.sidebarSprite;
                 break;
             case PlayerInventoryType.LeftHipPouch:
-                gm.playerInvUI.leftHipPouchEquipped = true;
                 gm.playerInvUI.leftHipPouchSidebarButton.icon.sprite = bag.sidebarSprite;
                 break;
             case PlayerInventoryType.RightHipPouch:
-                gm.playerInvUI.rightHipPouchEquipped = true;
                 gm.playerInvUI.rightHipPouchSidebarButton.icon.sprite = bag.sidebarSprite;
                 break;
             case PlayerInventoryType.Quiver:
-                gm.playerInvUI.quiverEquipped = true;
                 gm.playerInvUI.quiverSidebarButton.icon.sprite = bag.sidebarSprite;
                 break;
             default:
@@ -128,8 +124,8 @@ public class PlayerInventorySidebarButton : MonoBehaviour, IPointerEnterHandler,
 
     void HideInactiveBags()
     {
-        if ((gm.playerInvUI.backpackEquipped == false && playerInventoryType == PlayerInventoryType.Backpack) || (gm.playerInvUI.leftHipPouchEquipped == false && playerInventoryType == PlayerInventoryType.LeftHipPouch)
-            || (gm.playerInvUI.rightHipPouchEquipped == false && playerInventoryType == PlayerInventoryType.RightHipPouch) || (gm.playerInvUI.quiverEquipped == false && playerInventoryType == PlayerInventoryType.Quiver))
+        if ((gm.playerManager.backpackInventory == null && playerInventoryType == PlayerInventoryType.Backpack) || (gm.playerManager.leftHipPouchInventory == null && playerInventoryType == PlayerInventoryType.LeftHipPouch)
+            || (gm.playerManager.rightHipPouchInventory == null && playerInventoryType == PlayerInventoryType.RightHipPouch) || (gm.playerManager.quiverInventory == null && playerInventoryType == PlayerInventoryType.Quiver))
             HideSideBarButton();
     }
 

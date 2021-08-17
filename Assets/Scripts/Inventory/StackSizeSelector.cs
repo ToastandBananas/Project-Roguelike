@@ -105,7 +105,7 @@ public class StackSizeSelector : MonoBehaviour
             ItemData newItemData = null;
             if (selectedInvItem.myInventory != null) // If the item is in an inventory
             {
-                newItemData = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData();
+                newItemData = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData(selectedInvItem.myInventory);
                 newItemData.transform.SetParent(selectedInvItem.myInventory.itemsParent);
                 newItemData.gameObject.SetActive(true);
 

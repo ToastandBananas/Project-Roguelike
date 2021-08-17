@@ -37,4 +37,14 @@ public class Container : Interactable
         if (gm.playerInvUI.inventoryParent.activeSelf == false)
             gm.playerInvUI.ToggleInventoryMenu();
     }
+    void OnMouseEnter()
+    {
+        gm.tileInfoDisplay.focusedObject = gameObject;
+    }
+
+    void OnMouseExit()
+    {
+        if (gm.tileInfoDisplay.focusedObject == gameObject)
+            gm.tileInfoDisplay.focusedObject = null;
+    }
 }

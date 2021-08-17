@@ -61,6 +61,9 @@ public class Inventory : MonoBehaviour
                         items[i].currentStackSize = items[i].item.maxStackSize;
                     else if (items[i].currentStackSize <= 0)
                         items[i].currentStackSize = 1;
+
+                    // Also set the parent inventory
+                    items[i].parentInventory = this;
                 }
             }
 
@@ -93,14 +96,7 @@ public class Inventory : MonoBehaviour
         if ((itemCount == 1 && amountAddedToExistingStacks == 0) || (itemCount > 1 && itemDataComingFrom.currentStackSize > 0))
         {
             // Create a new ItemData Object
-            ItemData itemDataToAdd = null;
-            if (itemDataComingFrom.item.IsBag() || itemDataComingFrom.item.IsPortableContainer())
-            {
-                itemDataToAdd = gm.objectPoolManager.itemDataContainerObjectPool.GetPooledItemData();
-                itemDataToAdd.bagInventory.items.Clear();
-            }
-            else
-                itemDataToAdd = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData();
+            ItemData itemDataToAdd = gm.objectPoolManager.GetItemDataFromPool(itemDataComingFrom.item, this);
 
             // Transfer data to the new ItemData
             itemDataToAdd.TransferData(itemDataComingFrom, itemDataToAdd);
@@ -175,10 +171,7 @@ public class Inventory : MonoBehaviour
                     if (bagInvItem.disclosureWidget.isExpanded == false)
                         bagInvItem.disclosureWidget.ExpandDisclosureWidget();
                     else
-                    {
-                        InventoryItem newInvItem = myInvUI.ShowNewBagItem(itemDataToAdd, bagInvItem);
-                        newInvItem.transform.SetAsLastSibling();
-                    }
+                        myInvUI.ShowNewBagItem(itemDataToAdd, bagInvItem).transform.SetAsLastSibling();
 
                     bagInvItem.UpdateItemNumberTexts();
                 }
@@ -193,6 +186,12 @@ public class Inventory : MonoBehaviour
             // CurrentStackSize should now be 0
             itemDataComingFrom.currentStackSize = 0;
         }
+
+        UpdateCurrentWeightAndVolume();
+        if (myInvUI == gm.containerInvUI && gm.containerInvUI.activeInventory == this)
+            gm.containerInvUI.UpdateUI();
+        else if (myInvUI == gm.playerInvUI && gm.playerInvUI.activeInventory == this)
+            gm.playerInvUI.UpdateUI();
 
         return true;
     }
@@ -231,8 +230,7 @@ public class Inventory : MonoBehaviour
             if (itemDataComingFrom.StackableItemsDataIsEqual(items[i], itemDataComingFrom) && items[i].currentStackSize < items[i].item.maxStackSize)
             {
                 // Get the InventoryItem using the ItemData we're adding to (and make sure it has an InventoryUI)
-                if (myInvUI == null) myInvUI = invComingFrom.myInvUI;
-                InventoryItem itemDatasInvItem = myInvUI.GetItemDatasInventoryItem(items[i]);
+                InventoryItem itemDatasInvItem = itemDataComingFrom.GetItemDatasInventoryItem();
 
                 for (int j = 0; j < itemCount; j++)
                 {

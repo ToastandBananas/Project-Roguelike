@@ -32,7 +32,7 @@ public class NPCMovement : Movement
     [HideInInspector] public int currentPatrolPointIndex;
     [HideInInspector] public bool initialPatrolPointSet;
 
-    [HideInInspector] public CharacterManager target;
+    public CharacterManager target;
     [HideInInspector] public Vector2 targetPosition;
 
     [HideInInspector] public AIPath AIPath;
@@ -421,22 +421,31 @@ public class NPCMovement : Movement
             roamPosition = GetNewRoamingPosition();
             if (RoamingPositionValid())
             {
+                Debug.Log("Valid roam position");
                 SetTargetPosition(roamPosition);
 
                 if (characterManager.movement.isMoving == false)
                     StartCoroutine(Move());
             }
             else
+            {
+                Debug.Log("Invalid roam position");
                 StartCoroutine(gm.turnManager.FinishTurn(characterManager));
+            }
         }
         else if (Vector2.Distance(roamPosition, transform.position) <= 0.1f)
         {
+            Debug.Log("Roam position reached.");
             // Get a new roamPosition when the current one is reached
             roamPositionSet = false;
             StartCoroutine(gm.turnManager.FinishTurn(characterManager));
         }
-        else if(characterManager.movement.isMoving == false)
+        else if (characterManager.movement.isMoving == false)
+        {
+            Debug.Log("Moving to roam position");
             StartCoroutine(Move());
+        }
+        Debug.Log("Here");
     }
 
     bool RoamingPositionValid()

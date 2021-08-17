@@ -100,6 +100,8 @@ public class Status : MonoBehaviour
 
     public void UpdateInjuries(int timePassed = TimeSystem.defaultTimeTickInSeconds)
     {
+        if (isDead) return;
+
         Bleed(timePassed);
         ApplyDamageBuildup();
 
@@ -119,6 +121,23 @@ public class Status : MonoBehaviour
                     bodyParts[i].injuries[j].injuryTimeRemaining -= Mathf.RoundToInt(timePassed * bodyParts[i].injuries[j].injuryHealMultiplier);
                     if (bodyParts[i].injuries[j].injuryTimeRemaining <= 0)
                         bodyParts[i].injuries.Remove(bodyParts[i].injuries[j]);
+
+                    // If this is an NPC and any of their injuries are untreated, check if they have the appropriate medical items and if so, treat the wound
+                    if (characterManager.isNPC && characterManager.actionsQueued == 0 && bodyParts[i].injuries[j].InjuryRemedied() == false && characterManager.stateController.currentState != State.Fight)
+                    {
+                        Debug.Log("Thinking about bandaging " + bodyParts[i].injuries[j].injury.name);
+                        if (bodyParts[i].injuries[j].injury.CanBandage() && bodyParts[i].injuries[j].bandage == null)
+                        {
+                            Debug.Log("Can bandage " + bodyParts[i].injuries[j].injury.name);
+                            List<ItemData> bandages = characterManager.GetMedicalSupplies(MedicalSupplyType.Bandage);
+                            if (bandages.Count > 0)
+                            {
+                                Debug.Log("Bandage Inv: " + bandages[0].parentInventory);
+                                Debug.Log("Bandaging " + bodyParts[i].injuries[j].injury.name);
+                                StartCoroutine(bodyParts[i].injuries[j].ApplyMedicalItem(characterManager, bandages[0], bandages[0].parentInventory, null));
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -171,6 +190,7 @@ public class Status : MonoBehaviour
     {
         currentBloodAmount -= amount;
         // TODO: Negative effects, such as lightheadedness and fainting
+        
     }
 
     public void AddBlood(float amount)
@@ -397,15 +417,14 @@ public class Status : MonoBehaviour
                 {
                     if (characterManager.equipmentManager.currentEquipment[i] != null)
                     {
-                        characterManager.inventory.items.Add(characterManager.equipmentManager.currentEquipment[i]);
+                        characterManager.personalInventory.items.Add(characterManager.equipmentManager.currentEquipment[i]);
                         characterManager.equipmentManager.currentEquipment[i] = null;
                     }
                 }
             }
 
-            characterManager.vision.visionCollider.enabled = false;
-            characterManager.vision.enabled = false;
-            characterManager.attack.CancelAttack();
+            if (characterManager.attack.isAttacking)
+                characterManager.attack.CancelAttack();
             characterManager.attack.enabled = false;
 
             gameObject.tag = "Dead Body";
@@ -428,18 +447,23 @@ public class Status : MonoBehaviour
         }
         else // If the player dies
         {
-            for (int i = 0; i < characterManager.vision.enemiesInRange.Count; i++)
-            {
-                if (characterManager.vision.enemiesInRange[i].vision.enemiesInRange.Contains(characterManager))
-                    characterManager.vision.enemiesInRange[i].vision.enemiesInRange.Remove(characterManager);
-
-                if (characterManager.vision.enemiesInRange[i].vision.knownEnemiesInRange.Contains(characterManager))
-                    characterManager.vision.enemiesInRange[i].vision.knownEnemiesInRange.Remove(characterManager);
-
-                if (characterManager.vision.enemiesInRange[i].npcMovement.target == characterManager)
-                    characterManager.vision.enemiesInRange[i].npcAttack.SwitchTarget(characterManager.vision.enemiesInRange[i].alliances.GetClosestKnownEnemy());
-            }
+            
         }
+
+        for (int i = 0; i < characterManager.vision.enemiesInRange.Count; i++)
+        {
+            if (characterManager.vision.enemiesInRange[i].vision.enemiesInRange.Contains(characterManager))
+                characterManager.vision.enemiesInRange[i].vision.enemiesInRange.Remove(characterManager);
+
+            if (characterManager.vision.enemiesInRange[i].vision.knownEnemiesInRange.Contains(characterManager))
+                characterManager.vision.enemiesInRange[i].vision.knownEnemiesInRange.Remove(characterManager);
+
+            if (characterManager.vision.enemiesInRange[i].isNPC && characterManager.vision.enemiesInRange[i].npcMovement.target == characterManager)
+                characterManager.vision.enemiesInRange[i].npcAttack.SwitchTarget(characterManager.vision.enemiesInRange[i].alliances.GetClosestKnownEnemy());
+        }
+
+        characterManager.vision.visionCollider.enabled = false;
+        characterManager.vision.enabled = false;
 
         characterManager.movement.enabled = false;
         characterManager.ResetActionsQueue();
@@ -510,7 +534,9 @@ public class Status : MonoBehaviour
 
     public IEnumerator Consume(ItemData consumableItemData)
     {
-        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetConsumeAPCost((Consumable)consumableItemData.item)));
+        Consumable consumable = (Consumable)consumableItemData.item;
+
+        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetConsumeAPCost(consumable)));
 
         int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
         while (queueNumber != characterManager.currentQueueNumber)
@@ -518,8 +544,6 @@ public class Status : MonoBehaviour
             yield return null;
             if (characterManager.status.isDead) yield break;
         }
-
-        Consumable consumable = (Consumable)consumableItemData.item;
 
         // Adjust overall bodily healthiness
         if (consumable.healthinessAdjustment != 0)

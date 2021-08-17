@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PlayerManager : CharacterManager
 {
+    public Inventory keysInventory;
+
     [HideInInspector] public GameObject playerGameObject;
     [HideInInspector] public PlayerAttack playerAttack;
     [HideInInspector] public PlayerController playerController;
@@ -49,6 +51,8 @@ public class PlayerManager : CharacterManager
         equipmentManager = playerEquipmentManager;
 
         isMyTurn = true;
+
+        keysInventory.Init();
     }
 
     public Interactable GetNearestInteractable()

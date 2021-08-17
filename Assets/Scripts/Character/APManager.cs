@@ -40,12 +40,12 @@ public class APManager : MonoBehaviour
 
     public IEnumerator UseAP(CharacterManager characterManager, int APAmount, bool queuingNewAction = true)
     {
-        if (queuingNewAction) characterManager.actionsQueued++;
+        if (queuingNewAction) characterManager.EditActionsQueued(1);
 
         if (APAmount <= 0)
         {
             Debug.Log("APAmount <= 0");
-            characterManager.actionsQueued--;
+            characterManager.EditActionsQueued(-1);
             characterManager.currentQueueNumber++;
             yield break;
         }
@@ -54,7 +54,7 @@ public class APManager : MonoBehaviour
 
         if (characterManager.status.isDead)
         {
-            characterManager.actionsQueued--;
+            characterManager.EditActionsQueued(-1);
             characterManager.currentQueueNumber++;
             yield break;
         }
@@ -65,7 +65,7 @@ public class APManager : MonoBehaviour
         if (APRemainder <= 0)
         {
             // Adjust our queue numbers, so that the appropriate coroutines can finish running
-            characterManager.actionsQueued--;
+            characterManager.EditActionsQueued(-1);
             characterManager.currentQueueNumber++;
 
             yield return null;

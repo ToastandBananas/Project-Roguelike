@@ -9,7 +9,8 @@ public class Attack : MonoBehaviour
 
     [HideInInspector] public GameManager gm;
     [HideInInspector] public CharacterManager characterManager;
-    
+
+    [HideInInspector] public bool isAttacking;
     [HideInInspector] public bool canAttack = true;
     [HideInInspector] public int dualWieldAttackCount = 0;
 
@@ -33,6 +34,7 @@ public class Attack : MonoBehaviour
     public virtual IEnumerator DoAttack(CharacterManager targetsCharacterManager, Stats targetsStats, Weapon weapon, GeneralAttackType attackType, MeleeAttackType meleeAttackType)
     {
         StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetAttackAPCost(characterManager, weapon, attackType)));
+        isAttacking = true;
 
         int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
         while (queueNumber != characterManager.currentQueueNumber || canAttack == false)
@@ -76,6 +78,7 @@ public class Attack : MonoBehaviour
                 break;
         }
 
+        isAttacking = false;
         StartCoroutine(AttackCooldown());
     }
 
@@ -718,13 +721,15 @@ public class Attack : MonoBehaviour
 
     public void CancelAttack()
     {
-        Debug.Log("Cancelling attack...");
-        cancellingAttacking = true;
-        dualWieldAttackCount = 0;
-        //characterManager.remainingAPToBeUsed = 0;
-        characterManager.actionsQueued--;
-        characterManager.currentQueueNumber++;
-        characterManager.TakeTurn();
+        if (isAttacking)
+        {
+            Debug.Log("Cancelling attack...");
+            cancellingAttacking = true;
+            dualWieldAttackCount = 0;
+            characterManager.EditActionsQueued(-1);
+            characterManager.currentQueueNumber++;
+            characterManager.TakeTurn();
+        }
     }
 
     IEnumerator AttackCooldown()

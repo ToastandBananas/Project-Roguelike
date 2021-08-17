@@ -20,7 +20,7 @@ public class LocationalInjury
     public int bleedTimeRemaining;
     public float bloodLossPerTurn;
 
-    CharacterManager characterManager;
+    [HideInInspector] public CharacterManager characterManager;
 
     public LocationalInjury(CharacterManager characterManager, Injury injury, BodyPartType injuryLocation, bool onBackOfBodyPart)
     {
@@ -46,22 +46,26 @@ public class LocationalInjury
             bloodLossPerTurn = Random.Range(bloodLossValues.x, bloodLossValues.y);
     }
 
-    public IEnumerator ApplyMedicalItem(ItemData itemData, Inventory inventory, InventoryItem invItem)
+    public IEnumerator ApplyMedicalItem(CharacterManager characterApplying, ItemData itemData, Inventory inventory, InventoryItem invItem)
     {
-        MedicalSupply medSupply = (MedicalSupply)itemData.item;
-        characterManager.StartCoroutine(APManager.instance.UseAP(characterManager, APManager.instance.GetApplyMedicalItemAPCost(medSupply)));
+        characterApplying.StartCoroutine(APManager.instance.UseAP(characterApplying, APManager.instance.GetApplyMedicalItemAPCost((MedicalSupply)itemData.item)));
 
-        int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
-        while (queueNumber != characterManager.currentQueueNumber)
+        // If the someone else is applying the bandage, lose AP so that this character can't try to perform any actions
+        if (characterApplying != characterManager)
+            APManager.instance.LoseAP(characterManager, APManager.instance.GetApplyMedicalItemAPCost((MedicalSupply)itemData.item));
+
+        int queueNumber = characterApplying.currentQueueNumber + characterApplying.actionsQueued;
+        while (queueNumber != characterApplying.currentQueueNumber)
         {
             yield return null;
-            if (characterManager.status.isDead) yield break;
+            if (characterManager.status.isDead || characterApplying.status.isDead)
+                yield break;
         }
-
+        
         if (CanApplyBandage(itemData))
-            ApplyBandage(itemData);
+            ApplyBandage(characterApplying, itemData);
 
-        itemData.item.Use(characterManager, inventory, invItem, itemData, 1);
+        itemData.item.Use(characterApplying, inventory, invItem, itemData, 1);
 
         if (characterManager.isNPC == false)
         {
@@ -70,52 +74,56 @@ public class LocationalInjury
         }
     }
 
-    void ApplyBandage(ItemData bandageItemData)
+    void ApplyBandage(CharacterManager characterApplying, ItemData bandageItemData)
     {
         // Create new ItemData object for the bandage
-        ItemData tempItemData = ObjectPoolManager.instance.itemDataObjectPool.GetPooledItemData();
-        tempItemData.gameObject.SetActive(true);
-        tempItemData.TransferData(bandageItemData, tempItemData);
-        tempItemData.currentStackSize = 1;
-        Debug.Log(tempItemData);
-
-        ItemData newItemData = UIManager.instance.CreateNewItemDataChild(tempItemData, null, HealthDisplay.instance.medicalItemsParent, false);
-        tempItemData.ReturnToItemDataObjectPool();
+        ItemData newItemData = UIManager.instance.CreateNewItemDataChild(bandageItemData, null, characterManager.appliedItemsParent, false);
 
         this.bandageItemData = newItemData;
+        this.bandageItemData.currentStackSize = 1;
         bandage = (MedicalSupply)newItemData.item;
         injuryHealMultiplier += bandage.quality;
 
-        FlavorText.instance.WriteApplyBandageLine(characterManager, injury, bandage, injuryLocation);
+        FlavorText.instance.WriteApplyBandageLine(characterApplying, characterManager, injury, newItemData, injuryLocation);
     }
 
-    public IEnumerator RemoveMedicalItem(MedicalSupplyType medicalSupplyType)
+    public IEnumerator RemoveMedicalItem(CharacterManager characterRemoving, MedicalSupplyType medicalSupplyType)
     {
-        characterManager.StartCoroutine(APManager.instance.UseAP(characterManager, APManager.instance.GetRemoveMedicalItemAPCost(bandage)));
+        characterRemoving.StartCoroutine(APManager.instance.UseAP(characterRemoving, APManager.instance.GetRemoveMedicalItemAPCost(bandage)));
 
-        int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
-        while (queueNumber != characterManager.currentQueueNumber)
+        // If the someone else is removing the bandage, lose AP so that this character can't try to perform any actions
+        if (characterRemoving != characterManager)
+            APManager.instance.LoseAP(characterManager, APManager.instance.GetRemoveMedicalItemAPCost(bandage));
+
+        int queueNumber = characterRemoving.currentQueueNumber + characterRemoving.actionsQueued;
+        while (queueNumber != characterRemoving.currentQueueNumber)
         {
             yield return null;
-            if (characterManager.status.isDead) yield break;
+            if (characterManager.status.isDead || characterRemoving.status.isDead)
+                yield break;
         }
 
         if (medicalSupplyType == MedicalSupplyType.Bandage)
-            RemoveBandage();
+            RemoveBandage(characterRemoving);
+
+        if (characterManager.isNPC == false)
+        {
+            HealthDisplay.instance.UpdateHealthHeaderColor(injuryLocation);
+            HealthDisplay.instance.UpdateTooltip();
+        }
     }
 
-    public void RemoveBandage()
+    public void RemoveBandage(CharacterManager characterRemoving)
     {
         if (bandage == null) return;
 
-        if (characterManager.isNPC)
+        injuryHealMultiplier -= bandage.quality;
+
+        // Try to place the bandage in one of the player's inventories. If it won't fit, drop it
+        if (characterRemoving.TryAddingItemToInventory(bandageItemData, null, false) == false)
             DropItemController.instance.ForceDropNearest(bandageItemData, 1, null, null);
-        else
-        {
-            // Try to place the bandage in one of the player's inventories. If it won't fit, drop it
-            if (PlayerInventoryUI.instance.TryAddingItemToPlayersInventory(bandageItemData, null, false) == false)
-                DropItemController.instance.ForceDropNearest(bandageItemData, 1, null, null);
-        }
+
+        FlavorText.instance.WriteRemoveBandageLine(characterRemoving, characterManager, bandageItemData, injuryLocation);
 
         bandageItemData.ReturnToItemDataObjectPool();
         bandageItemData = null;
@@ -137,7 +145,6 @@ public class LocationalInjury
 
     public bool CanApplyMedicalItem(ItemData itemData)
     {
-        MedicalSupply medSupply = (MedicalSupply)itemData.item;
         if (CanApplyBandage(itemData))
             return true;
         return false;

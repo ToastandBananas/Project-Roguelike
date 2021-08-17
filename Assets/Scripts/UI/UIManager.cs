@@ -84,7 +84,10 @@ public class UIManager : MonoBehaviour
 
                     if (gm.contextMenu.isActive == false)
                     {
-                        if (gm.healthDisplay.focusedInjuryTextButton != null && gm.healthDisplay.focusedInjuryTextButton.button.enabled)
+                        if (gm.tileInfoDisplay.focusedCharacter != null && (gm.tileInfoDisplay.focusedCharacter.isNPC == false
+                            || (gm.tileInfoDisplay.focusedCharacter.alliances.allies.Contains(gm.playerManager.alliances.myFaction) && gm.tileInfoDisplay.focusedCharacter.stateController.currentState != State.Fight)))
+                            gm.contextMenu.BuildContextMenu(gm.tileInfoDisplay.focusedCharacter);
+                        else if (gm.healthDisplay.focusedInjuryTextButton != null && gm.healthDisplay.focusedInjuryTextButton.button.enabled)
                             gm.contextMenu.BuildContextMenu(gm.healthDisplay.focusedInjuryTextButton);
                         else if (activeInvItem != null && activeInvItem.itemData != null)
                             gm.contextMenu.BuildContextMenu(activeInvItem);
@@ -471,7 +474,7 @@ public class UIManager : MonoBehaviour
         if (draggedInvItem.myEquipmentManager != null)
         {
             draggedInvItemsEquipSlot = draggedInvItem.myEquipmentManager.GetEquipmentSlotFromItemData(draggedInvItem.itemData);
-            equippedItemData = gm.objectPoolManager.GetItemDataFromPool(draggedInvItem.itemData.item);
+            equippedItemData = gm.objectPoolManager.GetItemDataFromPool(draggedInvItem.itemData.item, null);
             equippedItemData.gameObject.SetActive(true);
             equippedItemData.TransferData(draggedInvItem.itemData, equippedItemData);
             if (draggedInvItem.itemData.item.IsBag())
@@ -488,7 +491,7 @@ public class UIManager : MonoBehaviour
             MedicalSupply medSupply = (MedicalSupply)draggedInvItem.itemData.item;
             if (gm.healthDisplay.focusedBodyPart.bodyPart.injuries.Count == 1 && gm.healthDisplay.focusedBodyPart.bodyPart.injuries[0].CanApplyMedicalItem(draggedInvItem.itemData))
             {
-                StartCoroutine(gm.healthDisplay.focusedBodyPart.bodyPart.injuries[0].ApplyMedicalItem(draggedInvItem.itemData, draggedInvItem.myInventory, draggedInvItem));
+                StartCoroutine(gm.healthDisplay.focusedBodyPart.bodyPart.injuries[0].ApplyMedicalItem(gm.playerManager, draggedInvItem.itemData, draggedInvItem.myInventory, draggedInvItem));
             }
         }
         // If we drag and drop an item onto a container sidebar button, place the item in the corresponding inventory/ground space
@@ -510,7 +513,6 @@ public class UIManager : MonoBehaviour
                 // Try adding the item to the corresponding inventory
                 if (inv.AddItem(draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, true))
                 {
-
                     // If the item was added to the inventory:
                     // Update weight/volume
                     draggedInvItem.UpdateInventoryWeightAndVolume();
@@ -661,7 +663,7 @@ public class UIManager : MonoBehaviour
         }
         // If we try to drop it directly on the background of the container or player inventory menu
         else if (activeInvUI != null && draggedInvItem.myInvUI != activeInvUI // If we're not dropping the item onto the same invUI it came from
-            && (draggedInvItem.itemData.item.IsKey() || activeInvUI.activeInventory != gm.playerInvUI.keysInventory) // If the item is a key and we're dragging onto the keys inventory, or if the item is not a key
+            && (draggedInvItem.itemData.item.IsKey() || activeInvUI.activeInventory != gm.playerManager.keysInventory) // If the item is a key and we're dragging onto the keys inventory, or if the item is not a key
             && (activeInvUI == gm.containerInvUI || activeInvUI.activeInventory != null)) // If we're not dragging onto the equipment inventory
         {
             bool wasAddedToInventory = false;
@@ -1327,12 +1329,7 @@ public class UIManager : MonoBehaviour
     public ItemData CreateNewItemDataChild(ItemData newItemData, Inventory parentInventory, Transform itemsParent, bool shouldAddItemToParentInventory)
     {
         // Add new ItemData Objects to the items parent of the new bag and transfer data to them
-        ItemData newItemDataObject = null;
-        if (newItemData.item.IsBag() || newItemData.item.IsPortableContainer())
-            newItemDataObject = gm.objectPoolManager.itemDataContainerObjectPool.GetPooledItemData();
-        else
-            newItemDataObject = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData();
-
+        ItemData newItemDataObject = gm.objectPoolManager.GetItemDataFromPool(newItemData.item, parentInventory);
         newItemDataObject.transform.SetParent(itemsParent);
         newItemDataObject.gameObject.SetActive(true);
         newItemData.TransferData(newItemData, newItemDataObject);
@@ -1368,7 +1365,7 @@ public class UIManager : MonoBehaviour
         #if UNITY_EDITOR
             newItemDataObject.name = newItemDataObject.itemName;
         #endif
-
+        
         return newItemDataObject;
     }
 

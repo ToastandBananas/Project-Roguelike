@@ -46,14 +46,11 @@ public class ObjectPoolManager : MonoBehaviour
         return newItemPickup;
     }
 
-    public ItemData GetItemDataFromPool(Item item)
+    public ItemData GetItemDataFromPool(Item item, Inventory inventoryAddingTo)
     {
-        ItemData newItemData = null;
         if (item.IsBag() || item.IsPortableContainer())
-            newItemData = itemDataContainerObjectPool.GetPooledItemData();
+            return itemDataContainerObjectPool.GetPooledItemData(inventoryAddingTo);
         else
-            newItemData = itemDataObjectPool.GetPooledItemData();
-
-        return newItemData;
+            return itemDataObjectPool.GetPooledItemData(inventoryAddingTo);
     }
 }

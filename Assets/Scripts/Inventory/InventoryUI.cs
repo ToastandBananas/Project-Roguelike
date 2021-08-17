@@ -263,28 +263,6 @@ public class InventoryUI : MonoBehaviour
         return Mathf.RoundToInt(totalVolume * 100f) / 100f;
     }
 
-    public InventoryItem GetItemDatasInventoryItem(ItemData itemData)
-    {
-        if (this == gm.playerInvUI)
-        {
-            for (int i = 0; i < gm.objectPoolManager.playerInventoryItemObjectPool.activePooledInventoryItems.Count; i++)
-            {
-                if (gm.objectPoolManager.playerInventoryItemObjectPool.activePooledInventoryItems[i].itemData == itemData)
-                    return gm.objectPoolManager.playerInventoryItemObjectPool.activePooledInventoryItems[i];
-            }
-        }
-        else if (this == gm.containerInvUI)
-        {
-            for (int i = 0; i < gm.objectPoolManager.containerInventoryItemObjectPool.activePooledInventoryItems.Count; i++)
-            {
-                if (gm.objectPoolManager.containerInventoryItemObjectPool.activePooledInventoryItems[i].itemData == itemData)
-                    return gm.objectPoolManager.containerInventoryItemObjectPool.activePooledInventoryItems[i];
-            }
-        }
-
-        return null;
-    }
-
     public IEnumerator PlayAddItemEffect(Sprite itemSprite, ContainerSideBarButton containerSideBarButton, PlayerInventorySidebarButton playerInvSideBarButton)
     {
         addItemEffectsPlayCount++;
@@ -323,9 +301,6 @@ public class InventoryUI : MonoBehaviour
 
     public void EditInventoryItemsParentHeight(int amount)
     {
-        Debug.Log(amount);
-        Debug.Log(invItemsParentRectTransform.offsetMin.y + amount);
-        Debug.Log(invItemsParentRectTransform.offsetMin);
         invItemsParentRectTransform.offsetMin = new Vector2(0, invItemsParentRectTransform.offsetMin.y + amount);
     }
 

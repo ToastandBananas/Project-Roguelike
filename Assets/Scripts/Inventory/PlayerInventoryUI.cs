@@ -7,12 +7,6 @@ public class PlayerInventoryUI : InventoryUI
     public TextMeshProUGUI totalWeightText;
     public TextMeshProUGUI totalVolumeText;
 
-    [Header("Inventories")]
-    public Inventory personalInventory;
-    public Inventory backpackInventory, leftHipPouchInventory, rightHipPouchInventory, quiverInventory, keysInventory;
-    
-    public bool backpackEquipped, leftHipPouchEquipped, rightHipPouchEquipped, quiverEquipped;
-
     [Header("Side Bar Buttons")]
     public PlayerInventorySidebarButton personalInventorySideBarButton;
     public PlayerInventorySidebarButton backpackSidebarButton, leftHipPouchSidebarButton, rightHipPouchSidebarButton, quiverSidebarButton, keysSideBarButton, equipmentSideBarButton;
@@ -47,12 +41,7 @@ public class PlayerInventoryUI : InventoryUI
             inventoryItemObjectPool.pooledInventoryItems[i].myInvUI = this;
         }
 
-        InitInventories();
-
-        personalInventory.maxWeight = gm.playerManager.playerStats.maxPersonalInvWeight.GetValue();
-        personalInventory.maxVolume = gm.playerManager.playerStats.maxPersonalInvVolume.GetValue();
-
-        PopulateInventoryUI(personalInventory.items, PlayerInventoryType.Personal);
+        PopulateInventoryUI(gm.playerManager.personalInventory.items, PlayerInventoryType.Personal);
     }
 
     // This method runs when the user clicks on a container side bar icon
@@ -107,44 +96,44 @@ public class PlayerInventoryUI : InventoryUI
         {
             case PlayerInventoryType.Personal:
                 inventoryNameText.text = "Personal Inventory";
-                weightText.text = GetTotalWeight(personalInventory.items).ToString() + "/" + gm.playerManager.playerStats.maxPersonalInvWeight.GetValue().ToString();
-                volumeText.text = GetTotalVolume(personalInventory.items).ToString() + "/" + gm.playerManager.playerStats.maxPersonalInvVolume.GetValue().ToString();
-                activeInventory = personalInventory;
+                weightText.text = GetTotalWeight(gm.playerManager.personalInventory.items).ToString() + "/" + gm.playerManager.playerStats.maxPersonalInvWeight.GetValue().ToString();
+                volumeText.text = GetTotalVolume(gm.playerManager.personalInventory.items).ToString() + "/" + gm.playerManager.playerStats.maxPersonalInvVolume.GetValue().ToString();
+                activeInventory = gm.playerManager.personalInventory;
                 activePlayerInvSideBarButton = personalInventorySideBarButton;
                 break;
             case PlayerInventoryType.Backpack:
                 inventoryNameText.text = "Backpack Inventory";
-                weightText.text = GetTotalWeight(backpackInventory.items).ToString() + "/" + backpackInventory.maxWeight.ToString();
-                volumeText.text = GetTotalVolume(backpackInventory.items).ToString() + "/" + backpackInventory.maxVolume.ToString();
-                activeInventory = backpackInventory;
+                weightText.text = GetTotalWeight(gm.playerManager.backpackInventory.items).ToString() + "/" + gm.playerManager.backpackInventory.maxWeight.ToString();
+                volumeText.text = GetTotalVolume(gm.playerManager.backpackInventory.items).ToString() + "/" + gm.playerManager.backpackInventory.maxVolume.ToString();
+                activeInventory = gm.playerManager.backpackInventory;
                 activePlayerInvSideBarButton = backpackSidebarButton;
                 break;
             case PlayerInventoryType.LeftHipPouch:
                 inventoryNameText.text = "Left Hip Pouch Inventory";
-                weightText.text = GetTotalWeight(leftHipPouchInventory.items).ToString() + "/" + leftHipPouchInventory.maxWeight.ToString();
-                volumeText.text = GetTotalVolume(leftHipPouchInventory.items).ToString() + "/" + leftHipPouchInventory.maxVolume.ToString();
-                activeInventory = leftHipPouchInventory;
+                weightText.text = GetTotalWeight(gm.playerManager.leftHipPouchInventory.items).ToString() + "/" + gm.playerManager.leftHipPouchInventory.maxWeight.ToString();
+                volumeText.text = GetTotalVolume(gm.playerManager.leftHipPouchInventory.items).ToString() + "/" + gm.playerManager.leftHipPouchInventory.maxVolume.ToString();
+                activeInventory = gm.playerManager.leftHipPouchInventory;
                 activePlayerInvSideBarButton = leftHipPouchSidebarButton;
                 break;
             case PlayerInventoryType.RightHipPouch:
                 inventoryNameText.text = "Right Hip Pouch Inventory";
-                weightText.text = GetTotalWeight(rightHipPouchInventory.items).ToString() + "/" + rightHipPouchInventory.maxWeight.ToString();
-                volumeText.text = GetTotalVolume(rightHipPouchInventory.items).ToString() + "/" + rightHipPouchInventory.maxVolume.ToString();
-                activeInventory = rightHipPouchInventory;
+                weightText.text = GetTotalWeight(gm.playerManager.rightHipPouchInventory.items).ToString() + "/" + gm.playerManager.rightHipPouchInventory.maxWeight.ToString();
+                volumeText.text = GetTotalVolume(gm.playerManager.rightHipPouchInventory.items).ToString() + "/" + gm.playerManager.rightHipPouchInventory.maxVolume.ToString();
+                activeInventory = gm.playerManager.rightHipPouchInventory;
                 activePlayerInvSideBarButton = rightHipPouchSidebarButton;
                 break;
             case PlayerInventoryType.Quiver:
                 inventoryNameText.text = "Quiver Inventory";
-                weightText.text = GetTotalWeight(quiverInventory.items).ToString() + "/" + quiverInventory.maxWeight.ToString();
-                volumeText.text = GetTotalVolume(quiverInventory.items).ToString() + "/" + quiverInventory.maxVolume.ToString();
-                activeInventory = quiverInventory;
+                weightText.text = GetTotalWeight(gm.playerManager.quiverInventory.items).ToString() + "/" + gm.playerManager.quiverInventory.maxWeight.ToString();
+                volumeText.text = GetTotalVolume(gm.playerManager.quiverInventory.items).ToString() + "/" + gm.playerManager.quiverInventory.maxVolume.ToString();
+                activeInventory = gm.playerManager.quiverInventory;
                 activePlayerInvSideBarButton = quiverSidebarButton;
                 break;
             case PlayerInventoryType.Keys:
                 inventoryNameText.text = "Keys";
-                weightText.text = GetTotalWeight(keysInventory.items).ToString();
-                volumeText.text = GetTotalVolume(keysInventory.items).ToString();
-                activeInventory = keysInventory;
+                weightText.text = GetTotalWeight(gm.playerManager.keysInventory.items).ToString();
+                volumeText.text = GetTotalVolume(gm.playerManager.keysInventory.items).ToString();
+                activeInventory = gm.playerManager.keysInventory;
                 activePlayerInvSideBarButton = keysSideBarButton;
                 break;
             case PlayerInventoryType.EquippedItems:
@@ -171,13 +160,13 @@ public class PlayerInventoryUI : InventoryUI
 
     public PlayerInventorySidebarButton GetPlayerInvSidebarButtonFromActiveInv()
     {
-        if (activeInventory == personalInventory)
+        if (activeInventory == gm.playerManager.personalInventory)
             return personalInventorySideBarButton;
-        else if (activeInventory == backpackInventory)
+        else if (activeInventory == gm.playerManager.backpackInventory)
             return backpackSidebarButton;
-        else if (activeInventory == leftHipPouchInventory)
+        else if (activeInventory == gm.playerManager.leftHipPouchInventory)
             return leftHipPouchSidebarButton;
-        else if (activeInventory == rightHipPouchInventory)
+        else if (activeInventory == gm.playerManager.rightHipPouchInventory)
             return rightHipPouchSidebarButton;
         else
             return null;
@@ -189,27 +178,27 @@ public class PlayerInventoryUI : InventoryUI
         {
             case PlayerInventoryType.Personal:
                 invItem.myEquipmentManager = null;
-                invItem.myInventory = personalInventory;
+                invItem.myInventory = gm.playerManager.personalInventory;
                 break;
             case PlayerInventoryType.Backpack:
                 invItem.myEquipmentManager = null;
-                invItem.myInventory = backpackInventory;
+                invItem.myInventory = gm.playerManager.backpackInventory;
                 break;
             case PlayerInventoryType.LeftHipPouch:
                 invItem.myEquipmentManager = null;
-                invItem.myInventory = leftHipPouchInventory;
+                invItem.myInventory = gm.playerManager.leftHipPouchInventory;
                 break;
             case PlayerInventoryType.RightHipPouch:
                 invItem.myEquipmentManager = null;
-                invItem.myInventory = rightHipPouchInventory;
+                invItem.myInventory = gm.playerManager.rightHipPouchInventory;
                 break;
             case PlayerInventoryType.Quiver:
                 invItem.myEquipmentManager = null;
-                invItem.myInventory = quiverInventory;
+                invItem.myInventory = gm.playerManager.quiverInventory;
                 break;
             case PlayerInventoryType.Keys:
                 invItem.myEquipmentManager = null;
-                invItem.myInventory = keysInventory;
+                invItem.myInventory = gm.playerManager.keysInventory;
                 break;
             case PlayerInventoryType.EquippedItems:
                 invItem.myEquipmentManager = gm.playerManager.playerEquipmentManager;
@@ -226,13 +215,13 @@ public class PlayerInventoryUI : InventoryUI
         switch (bag.equipmentSlot)
         {
             case EquipmentSlot.Quiver:
-                return quiverInventory;
+                return gm.playerManager.quiverInventory;
             case EquipmentSlot.Backpack:
-                return backpackInventory;
+                return gm.playerManager.backpackInventory;
             case EquipmentSlot.LeftHipPouch:
-                return leftHipPouchInventory;
+                return gm.playerManager.leftHipPouchInventory;
             case EquipmentSlot.RightHipPouch:
-                return rightHipPouchInventory;
+                return gm.playerManager.rightHipPouchInventory;
             default:
                 return null;
         }
@@ -289,44 +278,44 @@ public class PlayerInventoryUI : InventoryUI
         bagInv.items.Clear();
     }
 
-    public void TemporarilyDisableBag(ItemData bagItemData)
+    public void TemporarilyDisableBag(CharacterManager characterManager, ItemData bagItemData)
     {
         Bag bag = (Bag)bagItemData.item;
         switch (bag.equipmentSlot)
         {
-            case EquipmentSlot.Quiver:
-                quiverEquipped = false;
-                break;
             case EquipmentSlot.Backpack:
-                backpackEquipped = false;
+                characterManager.backpackInventory = null;
                 break;
             case EquipmentSlot.LeftHipPouch:
-                leftHipPouchEquipped = false;
+                characterManager.leftHipPouchInventory = null;
                 break;
             case EquipmentSlot.RightHipPouch:
-                rightHipPouchEquipped = false;
+                characterManager.rightHipPouchInventory = null;
+                break;
+            case EquipmentSlot.Quiver:
+                characterManager.quiverInventory = null;
                 break;
             default:
                 break;
         }
     }
 
-    public void ReenableBag(ItemData bagItemData)
+    public void ReenableBag(CharacterManager characterManager, ItemData bagItemData)
     {
         Bag bag = (Bag)bagItemData.item;
         switch (bag.equipmentSlot)
         {
-            case EquipmentSlot.Quiver:
-                quiverEquipped = true;
-                break;
             case EquipmentSlot.Backpack:
-                backpackEquipped = true;
+                characterManager.backpackInventory = bagItemData.bagInventory;
                 break;
             case EquipmentSlot.LeftHipPouch:
-                leftHipPouchEquipped = true;
+                characterManager.leftHipPouchInventory = bagItemData.bagInventory;
                 break;
             case EquipmentSlot.RightHipPouch:
-                rightHipPouchEquipped = true;
+                characterManager.rightHipPouchInventory = bagItemData.bagInventory;
+                break;
+            case EquipmentSlot.Quiver:
+                characterManager.quiverInventory = bagItemData.bagInventory;
                 break;
             default:
                 break;
@@ -337,7 +326,7 @@ public class PlayerInventoryUI : InventoryUI
     {
         if (activeInventory != null)
         {
-            if (activeInventory == keysInventory)
+            if (activeInventory == gm.playerManager.keysInventory)
             {
                 weightText.text = (Mathf.RoundToInt(activeInventory.currentWeight * 100f) / 100f).ToString();
                 volumeText.text = (Mathf.RoundToInt(activeInventory.currentVolume * 100f) / 100f).ToString();
@@ -361,22 +350,22 @@ public class PlayerInventoryUI : InventoryUI
     float GetTotalCarriedWeight()
     {
         float totalWeight = 0;
-        totalWeight += personalInventory.currentWeight;
+        totalWeight += gm.playerManager.personalInventory.currentWeight;
 
-        if (backpackInventory != null)
-            totalWeight += backpackInventory.currentWeight;
+        if (gm.playerManager.backpackInventory != null)
+            totalWeight += gm.playerManager.backpackInventory.currentWeight;
 
-        if (leftHipPouchInventory != null)
-            totalWeight += leftHipPouchInventory.currentWeight;
+        if (gm.playerManager.leftHipPouchInventory != null)
+            totalWeight += gm.playerManager.leftHipPouchInventory.currentWeight;
 
-        if (rightHipPouchInventory != null)
-            totalWeight += rightHipPouchInventory.currentWeight;
+        if (gm.playerManager.rightHipPouchInventory != null)
+            totalWeight += gm.playerManager.rightHipPouchInventory.currentWeight;
 
-        if (quiverInventory != null)
-            totalWeight += quiverInventory.currentWeight;
+        if (gm.playerManager.quiverInventory != null)
+            totalWeight += gm.playerManager.quiverInventory.currentWeight;
 
-        if (keysInventory != null)
-            totalWeight += keysInventory.currentWeight;
+        if (gm.playerManager.keysInventory != null)
+            totalWeight += gm.playerManager.keysInventory.currentWeight;
         
         totalWeight += gm.playerManager.equipmentManager.currentWeight;
 
@@ -386,22 +375,22 @@ public class PlayerInventoryUI : InventoryUI
     float GetTotalCarriedVolume()
     {
         float totalVolume = 0;
-        totalVolume += personalInventory.currentVolume;
+        totalVolume += gm.playerManager.personalInventory.currentVolume;
 
-        if (backpackInventory != null)
-            totalVolume += backpackInventory.currentVolume;
+        if (gm.playerManager.backpackInventory != null)
+            totalVolume += gm.playerManager.backpackInventory.currentVolume;
 
-        if (leftHipPouchInventory != null)
-            totalVolume += leftHipPouchInventory.currentVolume;
+        if (gm.playerManager.leftHipPouchInventory != null)
+            totalVolume += gm.playerManager.leftHipPouchInventory.currentVolume;
 
-        if (rightHipPouchInventory != null)
-            totalVolume += rightHipPouchInventory.currentVolume;
+        if (gm.playerManager.rightHipPouchInventory != null)
+            totalVolume += gm.playerManager.rightHipPouchInventory.currentVolume;
 
-        if (quiverInventory != null)
-            totalVolume += quiverInventory.currentVolume;
+        if (gm.playerManager.quiverInventory != null)
+            totalVolume += gm.playerManager.quiverInventory.currentVolume;
 
-        if (keysInventory != null)
-            totalVolume += keysInventory.currentVolume;
+        if (gm.playerManager.keysInventory != null)
+            totalVolume += gm.playerManager.keysInventory.currentVolume;
 
         totalVolume += gm.playerManager.equipmentManager.currentVolume;
 
@@ -410,149 +399,9 @@ public class PlayerInventoryUI : InventoryUI
 
     public bool ItemIsInABag(ItemData itemData)
     {
-        if ((backpackEquipped && backpackInventory.items.Contains(itemData)) || (leftHipPouchEquipped && leftHipPouchInventory.items.Contains(itemData))
-            || (rightHipPouchEquipped && rightHipPouchInventory.items.Contains(itemData)) || (quiverEquipped && quiverInventory.items.Contains(itemData)))
+        if ((gm.playerManager.backpackInventory != null && gm.playerManager.backpackInventory.items.Contains(itemData)) || (gm.playerManager.leftHipPouchInventory != null && gm.playerManager.leftHipPouchInventory.items.Contains(itemData))
+            || (gm.playerManager.rightHipPouchInventory != null && gm.playerManager.rightHipPouchInventory.items.Contains(itemData)) || (gm.playerManager.quiverInventory != null && gm.playerManager.quiverInventory.items.Contains(itemData)))
             return true;
-
         return false;
-    }
-
-    public List<ItemData> GetMedicalSupplies(MedicalSupplyType medicalSupplyType)
-    {
-        List<ItemData> itemDatas = new List<ItemData>();
-        for (int i = 0; i < personalInventory.items.Count; i++)
-        {
-            if (personalInventory.items[i].item.IsMedicalSupply())
-            {
-                MedicalSupply medSupply = (MedicalSupply)personalInventory.items[i].item;
-                if (medSupply.medicalSupplyType == medicalSupplyType)
-                    itemDatas.Add(personalInventory.items[i]);
-            }
-        }
-
-        if (backpackEquipped)
-        {
-            for (int i = 0; i < backpackInventory.items.Count; i++)
-            {
-                if (backpackInventory.items[i].item.IsMedicalSupply())
-                {
-                    MedicalSupply medSupply = (MedicalSupply)backpackInventory.items[i].item;
-                    if (medSupply.medicalSupplyType == medicalSupplyType)
-                        itemDatas.Add(backpackInventory.items[i]);
-                }
-            }
-        }
-
-        if (leftHipPouchEquipped)
-        {
-            for (int i = 0; i < leftHipPouchInventory.items.Count; i++)
-            {
-                if (leftHipPouchInventory.items[i].item.IsMedicalSupply())
-                {
-                    MedicalSupply medSupply = (MedicalSupply)leftHipPouchInventory.items[i].item;
-                    if (medSupply.medicalSupplyType == medicalSupplyType)
-                        itemDatas.Add(leftHipPouchInventory.items[i]);
-                }
-            }
-        }
-
-        if (rightHipPouchEquipped)
-        {
-            for (int i = 0; i < rightHipPouchInventory.items.Count; i++)
-            {
-                if (rightHipPouchInventory.items[i].item.IsMedicalSupply())
-                {
-                    MedicalSupply medSupply = (MedicalSupply)rightHipPouchInventory.items[i].item;
-                    if (medSupply.medicalSupplyType == medicalSupplyType)
-                        itemDatas.Add(rightHipPouchInventory.items[i]);
-                }
-            }
-        }
-
-        if (quiverEquipped)
-        {
-            for (int i = 0; i < quiverInventory.items.Count; i++)
-            {
-                if (quiverInventory.items[i].item.IsMedicalSupply())
-                {
-                    MedicalSupply medSupply = (MedicalSupply)quiverInventory.items[i].item;
-                    if (medSupply.medicalSupplyType == medicalSupplyType)
-                        itemDatas.Add(quiverInventory.items[i]);
-                }
-            }
-        }
-
-        return itemDatas;
-    }
-
-    public bool TryAddingItemToPlayersInventory(ItemData itemData, Inventory itemDatasInventory, bool canAddToQuiver)
-    {
-        bool itemAdded = false;
-        if (itemData.item.IsKey())
-        {
-            keysInventory.AddItem(itemData, itemData.currentStackSize, itemDatasInventory, true);
-            gm.playerInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.keysSideBarButton);
-            return true;
-        }
-        else if (itemData.item.itemType == ItemType.Ammo)
-            itemAdded = quiverInventory.AddItem(itemData, itemData.currentStackSize, itemDatasInventory, true);
-
-        if (itemAdded)
-        {
-            gm.playerInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.quiverSidebarButton);
-            return true;
-        }
-        else
-            itemAdded = personalInventory.AddItem(itemData, itemData.currentStackSize, itemDatasInventory, true);
-
-        if (itemAdded)
-        {
-            gm.playerInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.personalInventorySideBarButton);
-            return true;
-        }
-        else if (backpackEquipped)
-            itemAdded = backpackInventory.AddItem(itemData, itemData.currentStackSize, itemDatasInventory, true);
-
-        if (itemAdded)
-        {
-            gm.playerInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.backpackSidebarButton);
-            return true;
-        }
-        else if (leftHipPouchEquipped)
-            itemAdded = leftHipPouchInventory.AddItem(itemData, itemData.currentStackSize, itemDatasInventory, true);
-
-        if (itemAdded)
-        {
-            gm.playerInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.leftHipPouchSidebarButton);
-            return true;
-        }
-        else if (rightHipPouchEquipped)
-            itemAdded = rightHipPouchInventory.AddItem(itemData, itemData.currentStackSize, itemDatasInventory, true);
-
-        if (itemAdded)
-        {
-            gm.playerInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.rightHipPouchSidebarButton);
-            return true;
-        }
-        else if (canAddToQuiver && quiverEquipped)
-            itemAdded = quiverInventory.AddItem(itemData, itemData.currentStackSize, itemDatasInventory, true);
-
-        if (itemAdded)
-        {
-            gm.playerInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.quiverSidebarButton);
-            return true;
-        }
-
-        return false;
-    }
-
-    void InitInventories()
-    {
-        personalInventory.Init();
-        backpackInventory.Init();
-        leftHipPouchInventory.Init();
-        rightHipPouchInventory.Init();
-        quiverInventory.Init();
-        keysInventory.Init();
     }
 }

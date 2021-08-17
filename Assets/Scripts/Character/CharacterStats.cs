@@ -99,6 +99,16 @@ public class CharacterStats : Stats
         }
     }
 
+    public void SetAPLossBuildup(int amount)
+    {
+        APLossBuildup = amount;
+    }
+
+    public int GetAPLossBuildup()
+    {
+        return APLossBuildup;
+    }
+
     public int GetWeaponSkill(Weapon weapon)
     {
         if (weapon.weaponType == WeaponType.Sword)

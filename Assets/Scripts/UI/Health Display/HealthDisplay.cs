@@ -7,7 +7,6 @@ public class HealthDisplay : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI tooltipHeader;
     [SerializeField] GameObject tooltipParent;
-    public Transform medicalItemsParent;
 
     [Header("Header Texts")]
     [SerializeField] TextMeshProUGUI headHeader;

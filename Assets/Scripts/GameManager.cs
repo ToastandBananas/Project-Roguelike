@@ -41,8 +41,13 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-            apManager.LoseAP(playerManager, 75);
+        #if UNITY_EDITOR
+        //if (Input.GetKeyDown(KeyCode.P))
+            //apManager.LoseAP(playerManager, 75);
+
+        //if (Input.GetKeyDown(KeyCode.O))
+        #endif
+
     }
 
     void Start()
