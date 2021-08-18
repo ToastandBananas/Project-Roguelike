@@ -541,6 +541,7 @@ public class ContainerInventoryUI : InventoryUI
 
         sideBarIcon.sprite = GetContainerIcon(inventory, true);
         activeInventory = inventory;
+        activeInventory.myInvUI = this;
 
         if (inventory.CompareTag("Dead Body"))
         {

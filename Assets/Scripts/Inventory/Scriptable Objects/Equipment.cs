@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum EquipmentSlot { Helmet, Shirt, Pants, Boots, Gloves, BodyArmor, LegArmor, LeftWeapon, RightWeapon, Ranged, Quiver, Backpack, LeftHipPouch, RightHipPouch, Cape }
+public enum EquipmentSlot { Helmet, Shirt, Pants, Boots, Gloves, BodyArmor, LegArmor, LeftHandItem, RightHandItem, Ranged, Quiver, Backpack, LeftHipPouch, RightHipPouch, Cape }
 
 [CreateAssetMenu(fileName = "New Equipment", menuName = "Inventory/Equipment")]
 public class Equipment : Item

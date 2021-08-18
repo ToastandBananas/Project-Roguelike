@@ -52,7 +52,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             if (gm.uiManager.selectedItems.Contains(this) == false)
                 RemoveHighlight();
 
-            gm.tooltipManager.HideInventoryTooltip();
+            gm.tooltipManager.HideAllTooltips();
 
             gm.uiManager.activeInvItem = null;
         }
@@ -626,7 +626,8 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                     gm.uiManager.StartCoroutine(gm.apManager.UseAP(gm.playerManager, gm.apManager.GetTransferItemCost(itemData.item, amountAdded, bagInvWeight, bagInvVolume, false)));
 
                 // Write some flavor text
-                gm.flavorText.WriteTakeItemLine(itemData, stackSize - itemData.currentStackSize, invComingFrom, invAddingTo);
+                if (someAdded)
+                    gm.flavorText.WriteTakeItemLine(itemData, stackSize - itemData.currentStackSize, invComingFrom, invAddingTo);
 
                 gm.containerInvUI.UpdateUI();
                 return someAdded;

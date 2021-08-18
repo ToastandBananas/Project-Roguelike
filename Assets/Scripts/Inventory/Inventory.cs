@@ -9,8 +9,8 @@ public class Inventory : MonoBehaviour
     public delegate void OnItemRemoved(ItemData itemData, int itemCount, InventoryItem invItem);
     public OnItemRemoved onItemRemovedCallback;
 
-    public float maxWeight = 20;
-    public float maxVolume = 20;
+    public float maxWeight = 20f;
+    public float maxVolume = 20f;
     public float singleItemVolumeLimit;
 
     public float currentWeight, currentVolume;
@@ -160,7 +160,7 @@ public class Inventory : MonoBehaviour
                 // Set the weight and volume of the "new" bag
                 itemDataToAdd.bagInventory.UpdateCurrentWeightAndVolume();
             }
-
+            Debug.Log(myInvUI);
             // If this Inventory is active in the menu, create a new InventoryItem
             if (myInvUI != null && myInvUI.activeInventory == this)
             {
@@ -276,7 +276,8 @@ public class Inventory : MonoBehaviour
     {
         if (singleItemVolumeLimit > 0 && itemData.item.volume > singleItemVolumeLimit)
         {
-            Debug.Log(itemData.itemName + " is too large to fit in this inventory.");
+            if (inventoryOwner.isNPC == false)
+                gm.flavorText.WriteItemTooLargeLine(inventoryOwner, itemData, this);
             return false;
         }
 
@@ -285,26 +286,14 @@ public class Inventory : MonoBehaviour
 
         if (itemData.item.IsBag() || itemData.item.IsPortableContainer())
         {
-            if (itemData.transform.parent.parent != null && itemData.transform.parent.parent.name == "Equipped Items") // If the bag is equipped
+            for (int i = 0; i < itemData.bagInventory.items.Count; i++)
             {
-                Inventory bagInv = gm.playerInvUI.GetInventoryFromBagEquipSlot(itemData);
-                for (int i = 0; i < bagInv.items.Count; i++)
-                {
-                    itemWeight += Mathf.RoundToInt(bagInv.items[i].item.weight * bagInv.items[i].currentStackSize * 100f) / 100f;
-                    itemVolume += Mathf.RoundToInt(bagInv.items[i].item.volume * bagInv.items[i].currentStackSize * 100f) / 100f;
-                }
-            }
-            else
-            {
-                for (int i = 0; i < itemData.bagInventory.items.Count; i++)
-                {
-                    itemWeight += Mathf.RoundToInt(itemData.bagInventory.items[i].item.weight * itemData.bagInventory.items[i].currentStackSize * 100f) / 100f;
-                    itemVolume += Mathf.RoundToInt(itemData.bagInventory.items[i].item.volume * itemData.bagInventory.items[i].currentStackSize * 100f) / 100f;
-                }
+                itemWeight += Mathf.RoundToInt(itemData.bagInventory.items[i].item.weight * itemData.bagInventory.items[i].currentStackSize * 100f) / 100f;
+                itemVolume += Mathf.RoundToInt(itemData.bagInventory.items[i].item.volume * itemData.bagInventory.items[i].currentStackSize * 100f) / 100f;
             }
         }
         
-        if (maxWeight - currentWeight >= itemWeight && maxVolume - currentVolume >= itemVolume)
+        if (((inventoryOwner != null && this == inventoryOwner.personalInventory) || maxWeight - currentWeight >= itemWeight) && maxVolume - currentVolume >= itemVolume)
             return true;
 
         Debug.Log("Not enough room in inventory.");

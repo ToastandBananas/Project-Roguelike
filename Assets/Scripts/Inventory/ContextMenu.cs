@@ -166,7 +166,7 @@ public class ContextMenu : MonoBehaviour
                 {
                     Weapon weapon = (Weapon)gm.uiManager.activeInvItem.itemData.item;
                     if (weapon.isTwoHanded == false)
-                        CreateEquipLeftWeaponButton();
+                        CreateEquipLeftHandItemButton();
                 }
 
                 CreateUseItemButton();
@@ -265,20 +265,20 @@ public class ContextMenu : MonoBehaviour
         DisableContextMenu();
     }
 
-    void CreateEquipLeftWeaponButton()
+    void CreateEquipLeftHandItemButton()
     {
         ContextMenuButton contextButton = GetNextInactiveButton();
         contextButton.gameObject.SetActive(true);
 
         contextButton.textMesh.text = "Equip Left";
 
-        contextButton.button.onClick.AddListener(EquipLeftWeapon);
+        contextButton.button.onClick.AddListener(EquipLeftHandItem);
     }
     
-    void EquipLeftWeapon()
+    void EquipLeftHandItem()
     {
         Weapon weapon = (Weapon)contextActiveInvItem.itemData.item;
-        weapon.Use(gm.playerManager, contextActiveInvItem.myInventory, contextActiveInvItem, contextActiveInvItem.itemData, 1, EquipmentSlot.LeftWeapon);
+        weapon.Use(gm.playerManager, contextActiveInvItem.myInventory, contextActiveInvItem, contextActiveInvItem.itemData, 1, EquipmentSlot.LeftHandItem);
         DisableContextMenu();
     }
 

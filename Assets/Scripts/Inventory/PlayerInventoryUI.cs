@@ -96,36 +96,24 @@ public class PlayerInventoryUI : InventoryUI
         {
             case PlayerInventoryType.Personal:
                 inventoryNameText.text = "Personal Inventory";
-                weightText.text = GetTotalWeight(gm.playerManager.personalInventory.items).ToString() + "/" + gm.playerManager.playerStats.maxPersonalInvWeight.GetValue().ToString();
-                volumeText.text = GetTotalVolume(gm.playerManager.personalInventory.items).ToString() + "/" + gm.playerManager.playerStats.maxPersonalInvVolume.GetValue().ToString();
+                weightText.text = GetTotalWeight(gm.playerManager.personalInventory.items).ToString();
+                volumeText.text = GetTotalVolume(gm.playerManager.personalInventory.items).ToString() + "/" + gm.playerManager.personalInventory.maxVolume.ToString();
                 activeInventory = gm.playerManager.personalInventory;
                 activePlayerInvSideBarButton = personalInventorySideBarButton;
                 break;
             case PlayerInventoryType.Backpack:
-                inventoryNameText.text = "Backpack Inventory";
-                weightText.text = GetTotalWeight(gm.playerManager.backpackInventory.items).ToString() + "/" + gm.playerManager.backpackInventory.maxWeight.ToString();
-                volumeText.text = GetTotalVolume(gm.playerManager.backpackInventory.items).ToString() + "/" + gm.playerManager.backpackInventory.maxVolume.ToString();
                 activeInventory = gm.playerManager.backpackInventory;
                 activePlayerInvSideBarButton = backpackSidebarButton;
                 break;
             case PlayerInventoryType.LeftHipPouch:
-                inventoryNameText.text = "Left Hip Pouch Inventory";
-                weightText.text = GetTotalWeight(gm.playerManager.leftHipPouchInventory.items).ToString() + "/" + gm.playerManager.leftHipPouchInventory.maxWeight.ToString();
-                volumeText.text = GetTotalVolume(gm.playerManager.leftHipPouchInventory.items).ToString() + "/" + gm.playerManager.leftHipPouchInventory.maxVolume.ToString();
                 activeInventory = gm.playerManager.leftHipPouchInventory;
                 activePlayerInvSideBarButton = leftHipPouchSidebarButton;
                 break;
             case PlayerInventoryType.RightHipPouch:
-                inventoryNameText.text = "Right Hip Pouch Inventory";
-                weightText.text = GetTotalWeight(gm.playerManager.rightHipPouchInventory.items).ToString() + "/" + gm.playerManager.rightHipPouchInventory.maxWeight.ToString();
-                volumeText.text = GetTotalVolume(gm.playerManager.rightHipPouchInventory.items).ToString() + "/" + gm.playerManager.rightHipPouchInventory.maxVolume.ToString();
                 activeInventory = gm.playerManager.rightHipPouchInventory;
                 activePlayerInvSideBarButton = rightHipPouchSidebarButton;
                 break;
             case PlayerInventoryType.Quiver:
-                inventoryNameText.text = "Quiver Inventory";
-                weightText.text = GetTotalWeight(gm.playerManager.quiverInventory.items).ToString() + "/" + gm.playerManager.quiverInventory.maxWeight.ToString();
-                volumeText.text = GetTotalVolume(gm.playerManager.quiverInventory.items).ToString() + "/" + gm.playerManager.quiverInventory.maxVolume.ToString();
                 activeInventory = gm.playerManager.quiverInventory;
                 activePlayerInvSideBarButton = quiverSidebarButton;
                 break;
@@ -145,6 +133,18 @@ public class PlayerInventoryUI : InventoryUI
                 break;
             default:
                 break;
+        }
+
+        if (activeInventory != null)
+        {
+            activeInventory.myInvUI = this;
+
+            if (playerInvType != PlayerInventoryType.Personal && playerInvType != PlayerInventoryType.Keys)
+            {
+                inventoryNameText.text = activeInventory.myItemData.itemName;
+                weightText.text = GetTotalWeight(activeInventory.items).ToString() + "/" + activeInventory.maxWeight.ToString();
+                volumeText.text = GetTotalVolume(activeInventory.items).ToString() + "/" + activeInventory.maxVolume.ToString();
+            }
         }
 
         totalWeightText.text = GetTotalCarriedWeight().ToString();

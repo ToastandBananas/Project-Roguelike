@@ -2533,7 +2533,7 @@ GameObject:
   - component: {fileID: 260916207}
   - component: {fileID: 260916208}
   m_Layer: 6
-  m_Name: Left Weapon/Shield
+  m_Name: Left Hand Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6808,6 +6808,131 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 520436280}
   m_CullTransparentMesh: 1
+--- !u!1001 &526662513
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1878754728}
+    m_Modifications:
+    - target: {fileID: 1135539086, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1135539086, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_ChildControlWidth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1135539086, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_ChildControlHeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 310
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 225
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763406, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_Name
+      value: InventoryItemTooltip (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+--- !u!224 &526662514 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+  m_PrefabInstance: {fileID: 526662513}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &526662515 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1479513063013503590, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+  m_PrefabInstance: {fileID: 526662513}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 409604e3f560d7742b496f5fac6b6a42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &533915670
 GameObject:
   m_ObjectHideFlags: 0
@@ -7484,27 +7609,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemsParent: {fileID: 594416887}
-  currentEquipment: []
+  currentEquipment:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  startingEquipment:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   currentWeight: 0
   currentVolume: 0
-  startingHelmet: {fileID: 0}
-  startingCape: {fileID: 0}
-  startingShirt: {fileID: 0}
-  startingPants: {fileID: 0}
-  startingBoots: {fileID: 0}
-  startingGloves: {fileID: 0}
-  startingBodyArmor: {fileID: 0}
-  startingLegArmor: {fileID: 0}
-  startingLeftWeapon: {fileID: 0}
-  startingRightWeapon: {fileID: 0}
-  startingRangedWeapon: {fileID: 0}
-  startingQuiver: {fileID: 0}
-  startingBackpack: {fileID: 0}
-  startingLeftHipPouch: {fileID: 0}
-  startingRightHipPouch: {fileID: 0}
+  isTwoHanding: 0
   gm: {fileID: 0}
   characterManager: {fileID: 0}
-  isTwoHanding: 0
 --- !u!114 &549636872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7545,12 +7686,9 @@ MonoBehaviour:
   maxAP:
     baseValue: 100
     modifiers: 
-  maxPersonalInvWeight:
-    baseValue: 20
-    modifiers: 
   maxPersonalInvVolume:
-    baseValue: 35
-    modifiers: 
+    baseValue: 2
+    modifiers: []
   swordSkill:
     baseValue: 20
     modifiers: 
@@ -7559,19 +7697,19 @@ MonoBehaviour:
     modifiers: 
   meleeAccuracy:
     baseValue: 50
-    modifiers: 
+    modifiers: []
   rangedAccuracy:
     baseValue: 50
-    modifiers: 
+    modifiers: []
   evasion:
     baseValue: 20
-    modifiers: 
+    modifiers: []
   shieldBlock:
     baseValue: 20
-    modifiers: 
+    modifiers: []
   weaponBlock:
     baseValue: 20
-    modifiers: 
+    modifiers: []
   characterManager: {fileID: 0}
   treeDamage:
     baseValue: 0
@@ -7818,8 +7956,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxWeight: 20
-  maxVolume: 35
-  singleItemVolumeLimit: 0
+  maxVolume: 2
+  singleItemVolumeLimit: 0.5
   currentWeight: 0
   currentVolume: 0
   itemsParent: {fileID: 624492078}
@@ -8379,7 +8517,7 @@ GameObject:
   - component: {fileID: 596432930}
   - component: {fileID: 596432931}
   m_Layer: 6
-  m_Name: Left Weapon/Shield
+  m_Name: Left Hand Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12611,8 +12749,8 @@ MonoBehaviour:
   hair: {fileID: 788545504}
   beard: {fileID: 482372238}
   hairColor: {r: 0.882353, g: 0.454902, b: 0.0627451, a: 1}
-  leftWeapon: {fileID: 260916208}
-  rightWeapon: {fileID: 2054815691}
+  leftHandItem: {fileID: 260916208}
+  rightHandItem: {fileID: 2054815691}
   helmet: {fileID: 1942553741}
   shirt: {fileID: 1053763793}
   bodyArmor: {fileID: 2056517707}
@@ -13216,27 +13354,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemsParent: {fileID: 1669298897}
-  currentEquipment: []
+  currentEquipment:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  startingEquipment:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 2e37977666137944aa61e368040529d7, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   currentWeight: 0
   currentVolume: 0
-  startingHelmet: {fileID: 0}
-  startingCape: {fileID: 11400000, guid: 2fb7207c417486743bc66a2925b9efe5, type: 2}
-  startingShirt: {fileID: 11400000, guid: e04b6a9d16a455547ac8532d05dddee7, type: 2}
-  startingPants: {fileID: 0}
-  startingBoots: {fileID: 0}
-  startingGloves: {fileID: 0}
-  startingBodyArmor: {fileID: 0}
-  startingLegArmor: {fileID: 0}
-  startingLeftWeapon: {fileID: 0}
-  startingRightWeapon: {fileID: 11400000, guid: 2e37977666137944aa61e368040529d7, type: 2}
-  startingRangedWeapon: {fileID: 0}
-  startingQuiver: {fileID: 0}
-  startingBackpack: {fileID: 0}
-  startingLeftHipPouch: {fileID: 0}
-  startingRightHipPouch: {fileID: 0}
+  isTwoHanding: 0
   gm: {fileID: 0}
   characterManager: {fileID: 0}
-  isTwoHanding: 0
 --- !u!114 &938806429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13250,8 +13404,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxWeight: 20
-  maxVolume: 10
-  singleItemVolumeLimit: 0
+  maxVolume: 2
+  singleItemVolumeLimit: 0.5
   currentWeight: 0
   currentVolume: 0
   itemsParent: {fileID: 499073746}
@@ -13588,12 +13742,9 @@ MonoBehaviour:
   maxAP:
     baseValue: 100
     modifiers: 
-  maxPersonalInvWeight:
-    baseValue: 20
-    modifiers: 
   maxPersonalInvVolume:
-    baseValue: 10
-    modifiers: 
+    baseValue: 2
+    modifiers: []
   swordSkill:
     baseValue: 20
     modifiers: 
@@ -13602,19 +13753,19 @@ MonoBehaviour:
     modifiers: 
   meleeAccuracy:
     baseValue: 50
-    modifiers: 
+    modifiers: []
   rangedAccuracy:
     baseValue: 50
-    modifiers: 
+    modifiers: []
   evasion:
     baseValue: 10
-    modifiers: 
+    modifiers: []
   shieldBlock:
     baseValue: 30
-    modifiers: 
+    modifiers: []
   weaponBlock:
     baseValue: 40
-    modifiers: 
+    modifiers: []
   characterManager: {fileID: 0}
 --- !u!114 &938806435
 MonoBehaviour:
@@ -20398,8 +20549,8 @@ MonoBehaviour:
   hair: {fileID: 0}
   beard: {fileID: 0}
   hairColor: {r: 0, g: 0, b: 0, a: 0}
-  leftWeapon: {fileID: 596432931}
-  rightWeapon: {fileID: 1380056825}
+  leftHandItem: {fileID: 596432931}
+  rightHandItem: {fileID: 1380056825}
   helmet: {fileID: 727044409}
   shirt: {fileID: 804957052}
   bodyArmor: {fileID: 2098139781}
@@ -21011,27 +21162,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemsParent: {fileID: 212394774}
-  currentEquipment: []
+  currentEquipment:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  startingEquipment:
+  - {fileID: 0}
+  - {fileID: 11400000, guid: e04b6a9d16a455547ac8532d05dddee7, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: d6f97f541b67b45468a1503beb004a57, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 2fb7207c417486743bc66a2925b9efe5, type: 2}
   currentWeight: 0
   currentVolume: 0
-  startingHelmet: {fileID: 0}
-  startingCape: {fileID: 11400000, guid: 2fb7207c417486743bc66a2925b9efe5, type: 2}
-  startingShirt: {fileID: 11400000, guid: e04b6a9d16a455547ac8532d05dddee7, type: 2}
-  startingPants: {fileID: 0}
-  startingBoots: {fileID: 0}
-  startingGloves: {fileID: 0}
-  startingBodyArmor: {fileID: 0}
-  startingLegArmor: {fileID: 0}
-  startingLeftWeapon: {fileID: 0}
-  startingRightWeapon: {fileID: 11400000, guid: d6f97f541b67b45468a1503beb004a57, type: 2}
-  startingRangedWeapon: {fileID: 0}
-  startingQuiver: {fileID: 0}
-  startingBackpack: {fileID: 0}
-  startingLeftHipPouch: {fileID: 0}
-  startingRightHipPouch: {fileID: 0}
+  isTwoHanding: 0
   gm: {fileID: 0}
   characterManager: {fileID: 0}
-  isTwoHanding: 0
 --- !u!114 &1347319902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21045,8 +21212,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxWeight: 20
-  maxVolume: 10
-  singleItemVolumeLimit: 0
+  maxVolume: 2
+  singleItemVolumeLimit: 0.5
   currentWeight: 0
   currentVolume: 0
   itemsParent: {fileID: 1843916194}
@@ -21096,12 +21263,9 @@ MonoBehaviour:
   maxAP:
     baseValue: 100
     modifiers: 
-  maxPersonalInvWeight:
-    baseValue: 20
-    modifiers: 
   maxPersonalInvVolume:
-    baseValue: 10
-    modifiers: 
+    baseValue: 2
+    modifiers: []
   swordSkill:
     baseValue: 20
     modifiers: 
@@ -21110,19 +21274,19 @@ MonoBehaviour:
     modifiers: 
   meleeAccuracy:
     baseValue: 50
-    modifiers: 
+    modifiers: []
   rangedAccuracy:
     baseValue: 50
-    modifiers: 
+    modifiers: []
   evasion:
     baseValue: 10
-    modifiers: 
+    modifiers: []
   shieldBlock:
     baseValue: 30
-    modifiers: 
+    modifiers: []
   weaponBlock:
     baseValue: 40
-    modifiers: 
+    modifiers: []
   characterManager: {fileID: 0}
 --- !u!114 &1347319904
 MonoBehaviour:
@@ -21612,7 +21776,7 @@ GameObject:
   - component: {fileID: 1380056824}
   - component: {fileID: 1380056825}
   m_Layer: 6
-  m_Name: Right Weapon/Shield
+  m_Name: Right Hand Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25875,7 +26039,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 7062943188304769678}
+  - {fileID: 1878754728}
   m_Father: {fileID: 1117274219}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -25896,7 +26060,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a60c2edf1672246a791d466c95384f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  invItemTooltip: {fileID: 1135539085}
+  invItemTooltips:
+  - {fileID: 1135539085}
+  - {fileID: 526662515}
+  - {fileID: 1678837383}
 --- !u!1 &1579774448
 GameObject:
   m_ObjectHideFlags: 0
@@ -93963,7 +94130,7 @@ GameObject:
   - component: {fileID: 1639515232}
   - component: {fileID: 1639515233}
   m_Layer: 6
-  m_Name: Right Weapon/Shield
+  m_Name: Right Hand Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94213,6 +94380,131 @@ Transform:
   m_Father: {fileID: 938806440}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1678837381
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1878754728}
+    m_Modifications:
+    - target: {fileID: 1135539086, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1135539086, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_ChildControlWidth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1135539086, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_ChildControlHeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 310
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 225
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024851859672763406, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+      propertyPath: m_Name
+      value: InventoryItemTooltip (2)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+--- !u!224 &1678837382 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+  m_PrefabInstance: {fileID: 1678837381}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1678837383 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1479513063013503590, guid: 70a73e195f003d542871d25da2e96444, type: 3}
+  m_PrefabInstance: {fileID: 1678837381}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 409604e3f560d7742b496f5fac6b6a42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1704723210
 GameObject:
   m_ObjectHideFlags: 0
@@ -95440,8 +95732,8 @@ MonoBehaviour:
   hair: {fileID: 0}
   beard: {fileID: 0}
   hairColor: {r: 0, g: 0, b: 0, a: 0}
-  leftWeapon: {fileID: 1917457866}
-  rightWeapon: {fileID: 1639515233}
+  leftHandItem: {fileID: 1917457866}
+  rightHandItem: {fileID: 1639515233}
   helmet: {fileID: 223936561}
   shirt: {fileID: 1194366750}
   bodyArmor: {fileID: 1159966799}
@@ -95804,6 +96096,44 @@ RectTransform:
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1878754727
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1878754728}
+  m_Layer: 5
+  m_Name: Inventory Item Tooltips
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1878754728
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1878754727}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 7062943188304769678}
+  - {fileID: 526662514}
+  - {fileID: 1678837382}
+  m_Father: {fileID: 1574032252}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1881867711
 GameObject:
@@ -96216,7 +96546,7 @@ GameObject:
   - component: {fileID: 1917457865}
   - component: {fileID: 1917457866}
   m_Layer: 6
-  m_Name: Left Weapon/Shield
+  m_Name: Left Hand Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -97528,7 +97858,7 @@ GameObject:
   - component: {fileID: 2054815690}
   - component: {fileID: 2054815691}
   m_Layer: 6
-  m_Name: Right Weapon/Shield
+  m_Name: Right Hand Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98882,7 +99212,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1574032252}
+    m_TransformParent: {fileID: 1878754728}
     m_Modifications:
     - target: {fileID: 1135539086, guid: 70a73e195f003d542871d25da2e96444, type: 3}
       propertyPath: m_Enabled
@@ -98898,7 +99228,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
       propertyPath: m_Pivot.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
       propertyPath: m_Pivot.y
@@ -98910,7 +99240,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
       propertyPath: m_AnchorMax.y
@@ -98918,7 +99248,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5024851859672763401, guid: 70a73e195f003d542871d25da2e96444, type: 3}
       propertyPath: m_AnchorMin.y

@@ -12,8 +12,8 @@ public class HumanoidSpriteManager : SpriteManager
     public Color hairColor;
 
     [Header("Equipment Sprites")]
-    public SpriteRenderer leftWeapon;
-    public SpriteRenderer rightWeapon, helmet, shirt, bodyArmor, pants, legArmor, boots, gloves, cape;
+    public SpriteRenderer leftHandItem;
+    public SpriteRenderer rightHandItem, helmet, shirt, bodyArmor, pants, legArmor, boots, gloves, cape;
 
     GameManager gm;
 
@@ -37,8 +37,8 @@ public class HumanoidSpriteManager : SpriteManager
             hair.sprite = null;
         if (beard != null)
             beard.sprite = null;
-        leftWeapon.sprite = null;
-        rightWeapon.sprite = null;
+        leftHandItem.sprite = null;
+        rightHandItem.sprite = null;
         helmet.sprite = null;
         shirt.sprite = null;
         bodyArmor.sprite = null;
@@ -166,14 +166,14 @@ public class HumanoidSpriteManager : SpriteManager
             case EquipmentSlot.LegArmor:
                 legArmor.sprite = equipment.primaryEquippedSprite;
                 break;
-            case EquipmentSlot.LeftWeapon:
-                leftWeapon.sprite = equipment.secondaryEquippedSprite;
+            case EquipmentSlot.LeftHandItem:
+                leftHandItem.sprite = equipment.secondaryEquippedSprite;
                 break;
-            case EquipmentSlot.RightWeapon:
-                rightWeapon.sprite = equipment.primaryEquippedSprite;
+            case EquipmentSlot.RightHandItem:
+                rightHandItem.sprite = equipment.primaryEquippedSprite;
                 break;
             case EquipmentSlot.Ranged:
-                rightWeapon.sprite = equipment.primaryEquippedSprite;
+                rightHandItem.sprite = equipment.primaryEquippedSprite;
                 break;
             case EquipmentSlot.Cape:
                 cape.sprite = equipment.primaryEquippedSprite;
@@ -208,14 +208,14 @@ public class HumanoidSpriteManager : SpriteManager
             case EquipmentSlot.LegArmor:
                 legArmor.sprite = null;
                 break;
-            case EquipmentSlot.LeftWeapon:
-                leftWeapon.sprite = null;
+            case EquipmentSlot.LeftHandItem:
+                leftHandItem.sprite = null;
                 break;
-            case EquipmentSlot.RightWeapon:
-                rightWeapon.sprite = null;
+            case EquipmentSlot.RightHandItem:
+                rightHandItem.sprite = null;
                 break;
             case EquipmentSlot.Ranged:
-                rightWeapon.sprite = null;
+                rightHandItem.sprite = null;
                 break;
             case EquipmentSlot.Cape:
                 cape.sprite = null;

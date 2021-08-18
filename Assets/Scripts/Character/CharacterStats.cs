@@ -3,32 +3,31 @@ using UnityEngine;
 public class CharacterStats : Stats
 {
     [Header("Main Stats")]
-    public Stat agility;
-    public Stat constitution;
-    public Stat dexterity;
-    public Stat endurance;
-    public Stat speed;
-    public Stat strength;
+    public IntStat agility;
+    public IntStat constitution;
+    public IntStat dexterity;
+    public IntStat endurance;
+    public IntStat speed;
+    public IntStat strength;
 
     [Header("AP")]
-    public Stat maxAP;
+    public IntStat maxAP;
     public int currentAP { get; private set; }
     int APLossBuildup;
 
-    [Header("Weight/Volume")]
-    public Stat maxPersonalInvWeight;
-    public Stat maxPersonalInvVolume;
+    [Header("Personal Inv. Volume")]
+    public FloatStat maxPersonalInvVolume;
 
     [Header("Skills")]
-    public Stat swordSkill;
+    public IntStat swordSkill;
 
     [Header("Combat")]
-    public Stat unarmedDamage;
-    public Stat meleeAccuracy;
-    public Stat rangedAccuracy;
-    public Stat evasion;
-    public Stat shieldBlock;
-    public Stat weaponBlock;
+    public IntStat unarmedDamage;
+    public FloatStat meleeAccuracy;
+    public FloatStat rangedAccuracy;
+    public FloatStat evasion;
+    public FloatStat shieldBlock;
+    public FloatStat weaponBlock;
 
     [HideInInspector] public CharacterManager characterManager;
 
@@ -46,7 +45,7 @@ public class CharacterStats : Stats
 
     public int UseAPAndGetRemainder(int amount)
     {
-        //Debug.Log("Current AP: " + currentAP);
+        // Debug.Log("Current AP: " + currentAP);
         int remainingAmount = amount;
         if (currentAP >= amount)
         {

@@ -32,7 +32,7 @@ public class NPCAttack : Attack
             if (distanceToTarget > combatRange)
             {
                 targetInCombatRange = false;
-                SwitchTarget(characterManager.alliances.GetClosestKnownEnemy());
+                SwitchTarget(characterManager.vision.GetClosestKnownEnemy());
 
                 characterManager.npcMovement.SetPathToCurrentTarget();
 
@@ -57,7 +57,7 @@ public class NPCAttack : Attack
         }
         else // If the NPC doesn't have a target, grab the nearest known enemy and pursue them. Otherwise, if there are no known enemies, go back to the default State
         {
-            SwitchTarget(characterManager.alliances.GetClosestKnownEnemy());
+            SwitchTarget(characterManager.vision.GetClosestKnownEnemy());
 
             if (characterManager.npcMovement.target == null)
                 StartCoroutine(gm.turnManager.FinishTurn(characterManager));
@@ -91,7 +91,7 @@ public class NPCAttack : Attack
 
     public void SwitchTarget_Nearest()
     {
-        SwitchTarget(characterManager.alliances.GetClosestKnownEnemy());
+        SwitchTarget(characterManager.vision.GetClosestKnownEnemy());
     }
 
     public void MoveInToAttack()

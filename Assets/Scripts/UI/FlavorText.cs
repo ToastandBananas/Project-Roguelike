@@ -73,12 +73,12 @@ public class FlavorText : MonoBehaviour
                 break;
             case GeneralAttackType.PrimaryWeapon:
                 WriteLine(Utilities.GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon(), meleeAttackType) + Utilities.GetPronoun(target, false, true) 
-                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName, false, true)
+                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightHandItem].itemName, false, true)
                     + attackFromBehindText + " for <b><color=red>" + damage + "</color></b> damage.");
                 break;
             case GeneralAttackType.SecondaryWeapon:
                 WriteLine(Utilities.GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetLeftWeapon(), meleeAttackType) + Utilities.GetPronoun(target, false, true) 
-                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon].itemName, false, true)
+                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftHandItem].itemName, false, true)
                     + attackFromBehindText + " for <b><color=red>" + damage + "</color></b> damage.");
                 break;
             default:
@@ -95,13 +95,13 @@ public class FlavorText : MonoBehaviour
         {
             case GeneralAttackType.PrimaryWeapon:
                 WriteLine(Utilities.GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon(), meleeAttackType) + Utilities.GetPronoun(target, false, true) 
-                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + attackFromBehindText + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName, false, true) 
+                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + attackFromBehindText + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightHandItem].itemName, false, true) 
                     + " and " + GetPenetrateArmorVerb(physicalDamageType, armor) + Utilities.GetPronoun(target, false, true) + "<b>" + armor.name + "</b> and <b>" + clothing.name 
                     + "</b>, ignoring defenses and causing <b><color=red>" + damage + "</color></b> damage.");
                 break;
             case GeneralAttackType.SecondaryWeapon:
                 WriteLine(Utilities.GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetLeftWeapon(), meleeAttackType) + Utilities.GetPronoun(target, false, true) 
-                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + attackFromBehindText + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon].itemName, false, true) 
+                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + attackFromBehindText + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftHandItem].itemName, false, true) 
                     + " and " + GetPenetrateArmorVerb(physicalDamageType, armor) + Utilities.GetPronoun(target, false, true) + "<b>" + armor.name + "</b> and <b>" + clothing.name 
                     + "</b>, ignoring defenses and causing <b><color=red>" + damage + "</color></b> damage.");
                 break;
@@ -119,13 +119,13 @@ public class FlavorText : MonoBehaviour
         {
             case GeneralAttackType.PrimaryWeapon:
                 WriteLine(Utilities.GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon(), meleeAttackType) + Utilities.GetPronoun(target, false, true) 
-                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + attackFromBehindText + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName, false, true) 
+                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + attackFromBehindText + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightHandItem].itemName, false, true) 
                     + " and " + GetPenetrateArmorVerb(physicalDamageType, wearable) + Utilities.GetPronoun(target, false, true) + "<b>" + wearable.name + "</b>, ignoring its defenses and causing <b><color=red>" 
                     + damage + "</color></b> damage.");
                 break;
             case GeneralAttackType.SecondaryWeapon:
                 WriteLine(Utilities.GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetLeftWeapon(), meleeAttackType) + Utilities.GetPronoun(target, false, true) 
-                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + attackFromBehindText + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon].itemName, false, true) + " and " 
+                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + attackFromBehindText + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftHandItem].itemName, false, true) + " and " 
                     + GetPenetrateArmorVerb(physicalDamageType, wearable) + Utilities.GetPronoun(target, false, true) + "<b>" + wearable.name + "</b>, ignoring its defenses and causing <b><color=red>" 
                     + damage + "</color></b> damage.");
                 break;
@@ -143,11 +143,11 @@ public class FlavorText : MonoBehaviour
                 break;
             case GeneralAttackType.PrimaryWeapon:
                 WriteLine(Utilities.GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon(), meleeAttackType) + "the " + targetsStats.name
-                    + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName, false, true) + " for <b><color=red>" + damage + "</color></b> damage.");
+                    + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightHandItem].itemName, false, true) + " for <b><color=red>" + damage + "</color></b> damage.");
                 break;
             case GeneralAttackType.SecondaryWeapon:
                 WriteLine(Utilities.GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetLeftWeapon(), meleeAttackType) + "the " + targetsStats.name
-                    + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon].itemName, false, true) + " for <b><color=red>" + damage + "</color></b> damage.");
+                    + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftHandItem].itemName, false, true) + " for <b><color=red>" + damage + "</color></b> damage.");
                 break;
             default:
                 break;
@@ -167,12 +167,12 @@ public class FlavorText : MonoBehaviour
                 break;
             case GeneralAttackType.PrimaryWeapon:
                 WriteLine(Utilities.GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetRightWeapon(), meleeAttackType) + Utilities.GetPronoun(target, false, true) 
-                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + attackFromBehindText + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon].itemName, false, true) 
+                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + attackFromBehindText + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.RightHandItem].itemName, false, true) 
                     + ", but the attack was absorbed by " + Utilities.GetPronoun(target, false, true) + "armor.");
                 break;
             case GeneralAttackType.SecondaryWeapon:
                 WriteLine(Utilities.GetPronoun(attacker, true, false) + GetMeleeWeaponAttackVerb(attacker.equipmentManager.GetLeftWeapon(), meleeAttackType) + Utilities.GetPronoun(target, false, true) 
-                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + attackFromBehindText + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon].itemName, false, true) 
+                    + Utilities.FormatEnumStringWithSpaces(bodyPartHit.ToString(), true) + attackFromBehindText + " with " + Utilities.GetIndefiniteArticle(attacker.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftHandItem].itemName, false, true) 
                     + ", but the attack was absorbed by " + Utilities.GetPronoun(target, false, true) + "armor.");
                 break;
             default:
@@ -524,6 +524,20 @@ public class FlavorText : MonoBehaviour
                 WriteLine(Utilities.GetPronoun(null, true, false) + "took " + amountTaking + " <b>" + itemTaking.itemName + "s</b> from your <b>" + inventoryTakingFrom.name 
                     + "</b> and put them in the <b>" + inventoryPuttingIn.name + "</b>.");
         }
+    }
+
+    public void WriteItemTooLargeLine(CharacterManager characterManager, ItemData itemData, Inventory inventory)
+    {
+        string inventoryName;
+        if (inventory.myItemData != null)
+            inventoryName = inventory.myItemData.itemName;
+        else if (inventory == characterManager.personalInventory)
+            inventoryName = "Personal Inventory";
+        else
+            inventoryName = inventory.name;
+
+        WriteLine(Utilities.GetPronoun(characterManager, true, false) + "try to put " + Utilities.GetIndefiniteArticle(itemData.itemName, false, true) + " in " + Utilities.GetPossessivePronoun(characterManager) 
+            + "<b>" + inventoryName + "</b>, but it is too large.");
     }
 
     public void WriteEquipLine(ItemData itemEquipping, CharacterManager characterManager)

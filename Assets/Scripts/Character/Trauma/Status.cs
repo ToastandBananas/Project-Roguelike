@@ -20,11 +20,11 @@ public class Status : MonoBehaviour
     public List<Buff> buffs = new List<Buff>();
 
     [Header("Healthiness")]
-    public Stat maxBloodAmount;
+    public IntStat maxBloodAmount;
     public float currentBloodAmount;
-    public Stat maxFullness;
+    public IntStat maxFullness;
     public float currentFullness;
-    public Stat maxWater;
+    public IntStat maxWater;
     public float currentWater;
 
     [HideInInspector] public bool isDead;
@@ -61,9 +61,6 @@ public class Status : MonoBehaviour
     void Start()
     {
         gm = GameManager.instance;
-
-        characterManager.equipmentManager.onWearableChanged += OnWearableChanged;
-        characterManager.equipmentManager.onWeaponChanged += OnWeaponChanged;
     }
 
     public float GetHealthiness()
@@ -123,19 +120,14 @@ public class Status : MonoBehaviour
                         bodyParts[i].injuries.Remove(bodyParts[i].injuries[j]);
 
                     // If this is an NPC and any of their injuries are untreated, check if they have the appropriate medical items and if so, treat the wound
-                    if (characterManager.isNPC && characterManager.actionsQueued == 0 && bodyParts[i].injuries[j].InjuryRemedied() == false && characterManager.stateController.currentState != State.Fight)
+                    if (characterManager.isNPC && characterManager.stateController.currentState != State.Fight && characterManager.humanoidSpriteManager != null && characterManager.actionsQueued == 0 
+                        && bodyParts[i].injuries[j].InjuryRemedied() == false)
                     {
-                        Debug.Log("Thinking about bandaging " + bodyParts[i].injuries[j].injury.name);
                         if (bodyParts[i].injuries[j].injury.CanBandage() && bodyParts[i].injuries[j].bandage == null)
                         {
-                            Debug.Log("Can bandage " + bodyParts[i].injuries[j].injury.name);
                             List<ItemData> bandages = characterManager.GetMedicalSupplies(MedicalSupplyType.Bandage);
                             if (bandages.Count > 0)
-                            {
-                                Debug.Log("Bandage Inv: " + bandages[0].parentInventory);
-                                Debug.Log("Bandaging " + bodyParts[i].injuries[j].injury.name);
                                 StartCoroutine(bodyParts[i].injuries[j].ApplyMedicalItem(characterManager, bandages[0], bandages[0].parentInventory, null));
-                            }
                         }
                     }
                 }
@@ -411,27 +403,6 @@ public class Status : MonoBehaviour
         if (characterManager.isNPC) // If an NPC dies
         {
             GameTiles.RemoveNPC(transform.position);
-            if (characterManager.equipmentManager != null)
-            {
-                for (int i = 0; i < characterManager.equipmentManager.currentEquipment.Length; i++)
-                {
-                    if (characterManager.equipmentManager.currentEquipment[i] != null)
-                    {
-                        characterManager.personalInventory.items.Add(characterManager.equipmentManager.currentEquipment[i]);
-                        characterManager.equipmentManager.currentEquipment[i] = null;
-                    }
-                }
-            }
-
-            if (characterManager.attack.isAttacking)
-                characterManager.attack.CancelAttack();
-            characterManager.attack.enabled = false;
-
-            gameObject.tag = "Dead Body";
-            gameObject.layer = 14;
-
-            characterManager.spriteRenderer.sortingLayerName = "Items";
-            characterManager.spriteRenderer.sortingOrder = -1;
 
             gm.turnManager.npcs.Remove(characterManager);
 
@@ -445,11 +416,46 @@ public class Status : MonoBehaviour
             if (characterManager.IsNextToPlayer())
                 gm.containerInvUI.GetItemsAroundPlayer();
         }
-        else // If the player dies
+
+        gameObject.tag = "Dead Body";
+        gameObject.layer = 14;
+
+        characterManager.spriteRenderer.sortingLayerName = "Items";
+        characterManager.spriteRenderer.sortingOrder = -1;
+
+        if (characterManager.attack.isAttacking)
+            characterManager.attack.CancelAttack();
+        characterManager.attack.enabled = false;
+
+        // Add equipped items to the body's inventory
+        if (characterManager.equipmentManager != null)
         {
-            
+            for (int i = 0; i < characterManager.equipmentManager.currentEquipment.Length; i++)
+            {
+                if (characterManager.equipmentManager.currentEquipment[i] != null)
+                {
+                    characterManager.personalInventory.items.Add(characterManager.equipmentManager.currentEquipment[i]);
+                    characterManager.equipmentManager.currentEquipment[i] = null;
+                }
+            }
         }
 
+        // Add applied items to the body's inventory
+        for (int i = 0; i < characterManager.status.bodyParts.Count; i++)
+        {
+            for (int j = 0; j < characterManager.status.bodyParts[i].injuries.Count; j++)
+            {
+                if (characterManager.status.bodyParts[i].injuries[j].bandageItemData != null)
+                {
+                    characterManager.status.bodyParts[i].injuries[j].bandageItemData.transform.SetParent(characterManager.personalInventory.itemsParent);
+                    characterManager.personalInventory.items.Add(characterManager.status.bodyParts[i].injuries[j].bandageItemData);
+                }
+            }
+
+            characterManager.status.bodyParts[i].injuries.Clear();
+        }
+
+        // Remove this character from other surrounding character's vision
         for (int i = 0; i < characterManager.vision.enemiesInRange.Count; i++)
         {
             if (characterManager.vision.enemiesInRange[i].vision.enemiesInRange.Contains(characterManager))
@@ -459,7 +465,7 @@ public class Status : MonoBehaviour
                 characterManager.vision.enemiesInRange[i].vision.knownEnemiesInRange.Remove(characterManager);
 
             if (characterManager.vision.enemiesInRange[i].isNPC && characterManager.vision.enemiesInRange[i].npcMovement.target == characterManager)
-                characterManager.vision.enemiesInRange[i].npcAttack.SwitchTarget(characterManager.vision.enemiesInRange[i].alliances.GetClosestKnownEnemy());
+                characterManager.vision.enemiesInRange[i].npcAttack.SwitchTarget(characterManager.vision.enemiesInRange[i].vision.GetClosestKnownEnemy());
         }
 
         characterManager.vision.visionCollider.enabled = false;
@@ -594,97 +600,5 @@ public class Status : MonoBehaviour
             return BodyPartType.LeftFoot;
         else
             return BodyPartType.RightFoot;
-    }
-
-    public virtual void OnWearableChanged(ItemData newItemData, ItemData oldItemData)
-    {
-        if (newItemData != null)
-        {
-            if (newItemData.item.IsShield() == false && newItemData.item.IsBag() == false)
-            {
-                Wearable wearable = (Wearable)newItemData.item;
-                if (wearable.isClothing)
-                {
-                    for (int i = 0; i < wearable.primaryBodyPartsCovered.Length; i++)
-                    {
-                        GetBodyPart(wearable.primaryBodyPartsCovered[i]).addedDefense_Clothing.AddModifier(newItemData.primaryDefense);
-                    }
-
-                    for (int i = 0; i < wearable.secondaryBodyPartsCovered.Length; i++)
-                    {
-                        GetBodyPart(wearable.secondaryBodyPartsCovered[i]).addedDefense_Clothing.AddModifier(newItemData.secondaryDefense);
-                    }
-
-                    for (int i = 0; i < wearable.tertiaryBodyPartsCovered.Length; i++)
-                    {
-                        GetBodyPart(wearable.tertiaryBodyPartsCovered[i]).addedDefense_Clothing.AddModifier(newItemData.tertiaryDefense);
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i < wearable.primaryBodyPartsCovered.Length; i++)
-                    {
-                        GetBodyPart(wearable.primaryBodyPartsCovered[i]).addedDefense_Armor.AddModifier(newItemData.primaryDefense);
-                    }
-
-                    for (int i = 0; i < wearable.secondaryBodyPartsCovered.Length; i++)
-                    {
-                        GetBodyPart(wearable.secondaryBodyPartsCovered[i]).addedDefense_Armor.AddModifier(newItemData.secondaryDefense);
-                    }
-
-                    for (int i = 0; i < wearable.tertiaryBodyPartsCovered.Length; i++)
-                    {
-                        GetBodyPart(wearable.tertiaryBodyPartsCovered[i]).addedDefense_Armor.AddModifier(newItemData.tertiaryDefense);
-                    }
-                }
-            }
-        }
-
-        if (oldItemData != null)
-        {
-            if (oldItemData.item.IsShield() == false && oldItemData.item.IsBag() == false)
-            {
-                Wearable wearable = (Wearable)oldItemData.item;
-                if (wearable.isClothing)
-                {
-                    for (int i = 0; i < wearable.primaryBodyPartsCovered.Length; i++)
-                    {
-                        GetBodyPart(wearable.primaryBodyPartsCovered[i]).addedDefense_Clothing.RemoveModifier(oldItemData.primaryDefense);
-                    }
-
-                    for (int i = 0; i < wearable.secondaryBodyPartsCovered.Length; i++)
-                    {
-                        GetBodyPart(wearable.secondaryBodyPartsCovered[i]).addedDefense_Clothing.RemoveModifier(oldItemData.secondaryDefense);
-                    }
-
-                    for (int i = 0; i < wearable.tertiaryBodyPartsCovered.Length; i++)
-                    {
-                        GetBodyPart(wearable.tertiaryBodyPartsCovered[i]).addedDefense_Clothing.RemoveModifier(oldItemData.tertiaryDefense);
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i < wearable.primaryBodyPartsCovered.Length; i++)
-                    {
-                        GetBodyPart(wearable.primaryBodyPartsCovered[i]).addedDefense_Armor.RemoveModifier(oldItemData.primaryDefense);
-                    }
-
-                    for (int i = 0; i < wearable.secondaryBodyPartsCovered.Length; i++)
-                    {
-                        GetBodyPart(wearable.secondaryBodyPartsCovered[i]).addedDefense_Armor.RemoveModifier(oldItemData.secondaryDefense);
-                    }
-
-                    for (int i = 0; i < wearable.tertiaryBodyPartsCovered.Length; i++)
-                    {
-                        GetBodyPart(wearable.tertiaryBodyPartsCovered[i]).addedDefense_Armor.RemoveModifier(oldItemData.tertiaryDefense);
-                    }
-                }
-            }
-        }
-    }
-
-    public virtual void OnWeaponChanged(ItemData newItemData, ItemData oldItemData)
-    {
-
     }
 }

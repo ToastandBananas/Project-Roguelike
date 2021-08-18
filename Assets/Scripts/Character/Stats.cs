@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Stats : MonoBehaviour
 {
-    public Stat maxHealth;
+    public IntStat maxHealth;
     [HideInInspector] public int currentHealth;
 
     [HideInInspector] public bool canTakeDamage = true;

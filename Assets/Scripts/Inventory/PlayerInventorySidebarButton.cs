@@ -79,24 +79,6 @@ public class PlayerInventorySidebarButton : MonoBehaviour, IPointerEnterHandler,
     public void HideSideBarButton()
     {
         gameObject.SetActive(false);
-
-        /*switch (playerInventoryType)
-        {
-            case PlayerInventoryType.Backpack:
-                gm.playerManager.backpackInventory = null;
-                break;
-            case PlayerInventoryType.LeftHipPouch:
-                gm.playerManager.leftHipPouchInventory = null;
-                break;
-            case PlayerInventoryType.RightHipPouch:
-                gm.playerManager.rightHipPouchInventory = null;
-                break;
-            case PlayerInventoryType.Quiver:
-                gm.playerManager.quiverInventory = null;
-                break;
-            default:
-                break;
-        }*/
     }
 
     public void ShowSideBarButton(Bag bag)

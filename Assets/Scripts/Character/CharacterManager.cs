@@ -65,15 +65,22 @@ public class CharacterManager : MonoBehaviour
         if (equipmentManager != null)
             equipmentManager.characterManager = this;
 
-        personalInventory.maxWeight = characterStats.maxPersonalInvWeight.GetValue();
-        personalInventory.maxVolume = characterStats.maxPersonalInvVolume.GetValue();
-
         ResetActionsQueue();
     }
 
     public virtual void Start()
     {
         gm = GameManager.instance;
+
+        if (personalInventory != null)
+        {
+            if (isNPC)
+                personalInventory.myInvUI = gm.containerInvUI;
+            else
+                personalInventory.myInvUI = gm.playerInvUI;
+            
+            personalInventory.maxVolume = characterStats.maxPersonalInvVolume.GetValue();
+        }
 
         if (isNPC)
             GameTiles.AddNPC(this, transform.position);

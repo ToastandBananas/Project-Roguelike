@@ -14,6 +14,9 @@ public class Wearable : Equipment
     public int coldResistance;
     public int heatResistance;
 
+    [Header("Pockets")]
+    public Vector2 pocketsVolume;
+
     public override bool IsWearable()
     {
         return true;

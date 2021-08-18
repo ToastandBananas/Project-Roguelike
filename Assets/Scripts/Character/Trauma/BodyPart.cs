@@ -7,7 +7,7 @@ public class BodyPart
     public BodyPartType bodyPartType;
 
     [Header("Health")]
-    public Stat maxHealth;
+    public IntStat maxHealth;
     public int currentHealth;
     public List<LocationalInjury> injuries = new List<LocationalInjury>();
 
@@ -16,8 +16,8 @@ public class BodyPart
     public float healingBuildup;
 
     [Header("Defense")]
-    public Stat naturalDefense;
-    public Stat addedDefense_Armor, addedDefense_Clothing;
+    public IntStat naturalDefense;
+    public IntStat addedDefense_Armor, addedDefense_Clothing;
 
     [HideInInspector] public CharacterManager characterManager;
 

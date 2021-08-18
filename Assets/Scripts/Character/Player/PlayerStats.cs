@@ -2,5 +2,5 @@
 
 public class PlayerStats : CharacterStats
 {
-    public Stat treeDamage;
+    public IntStat treeDamage;
 }

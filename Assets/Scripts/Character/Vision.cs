@@ -28,46 +28,59 @@ public class Vision : MonoBehaviour
 
     public void CheckEnemyVisibility()
     {
-        foreach (CharacterManager enemy in enemiesInRange)
+        for (int i = 0; i < enemiesInRange.Count; i++)
         {
-            Vector2 direction = (enemy.transform.position - transform.position).normalized;
-            float rayLength = Vector2.Distance(enemy.transform.position, transform.position);
+            if (enemiesInRange[i].status.isDead)
+            {
+                enemiesInRange.Remove(characterManager);
+
+                if (knownEnemiesInRange.Contains(characterManager))
+                    knownEnemiesInRange.Remove(characterManager);
+
+                if (characterManager.isNPC && characterManager.npcMovement.target == enemiesInRange[i])
+                    characterManager.npcAttack.SwitchTarget(GetClosestKnownEnemy());
+
+                continue;
+            }
+
+            Vector2 direction = (enemiesInRange[i].transform.position - transform.position).normalized;
+            float rayLength = Vector2.Distance(enemiesInRange[i].transform.position, transform.position);
 
             RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, rayLength, sightObstacleMask);
 
             // If the character has a direct line of sight (meaning no obstacles in the way) to the enemy in question and they weren't visible previously, add them to the knownEnemiesInRange list
-            if (hit.collider == null && knownEnemiesInRange.Contains(enemy) == false && IsFacingTransform(enemy.transform))
+            if (hit.collider == null && knownEnemiesInRange.Contains(enemiesInRange[i]) == false && IsFacingTransform(enemiesInRange[i].transform))
             {
-                knownEnemiesInRange.Add(enemy);
+                knownEnemiesInRange.Add(enemiesInRange[i]);
 
                 if (characterManager.npcMovement != null)
                 {
                     if (characterManager.npcMovement.shouldAlwaysFleeCombat)
                     {
-                        characterManager.npcMovement.targetFleeingFrom = enemy.transform;
+                        characterManager.npcMovement.targetFleeingFrom = enemiesInRange[i].transform;
                         characterManager.stateController.SetCurrentState(State.Flee);
                     }
                     else if (characterManager.npcMovement.target == null)
                     {
-                        characterManager.npcMovement.SetTarget(enemy);
+                        characterManager.npcMovement.SetTarget(enemiesInRange[i]);
                         characterManager.stateController.SetCurrentState(State.Fight);
                     }
                 }
             }
-            else if (hit.collider != null && knownEnemiesInRange.Contains(enemy)) // If there's an obstacle in the way and the enemy was visible previously
+            else if (hit.collider != null && knownEnemiesInRange.Contains(enemiesInRange[i])) // If there's an obstacle in the way and the enemy was visible previously
             {
-                knownEnemiesInRange.Remove(enemy);
+                knownEnemiesInRange.Remove(enemiesInRange[i]);
 
                 if (characterManager.npcMovement != null)
                 {
                     if (knownEnemiesInRange.Count > 0)
                     {
-                        characterManager.npcAttack.SwitchTarget(characterManager.alliances.GetClosestKnownEnemy());
+                        characterManager.npcAttack.SwitchTarget(GetClosestKnownEnemy());
                         characterManager.npcAttack.MoveInToAttack();
                     }
                     else
                     {
-                        Vector2 lastKnownEnemyPosition = enemy.transform.position;
+                        Vector2 lastKnownEnemyPosition = enemiesInRange[i].transform.position;
                         characterManager.npcMovement.SetTargetPosition(lastKnownEnemyPosition);
                         characterManager.stateController.SetCurrentState(State.MoveToTarget);
                     }
@@ -81,12 +94,76 @@ public class Vision : MonoBehaviour
         if ((transform.parent.position.x <= targetTransform.position.x && transform.parent.localScale.x == 1) || (transform.parent.position.x >= targetTransform.position.x && transform.parent.localScale.x == -1))
             return true;
         
-        return false;        
+        return false;
+    }
+
+    public CharacterManager GetClosestKnownEnemy()
+    {
+        if (characterManager.vision.knownEnemiesInRange.Count > 0)
+        {
+            CharacterManager closestEnemy = null;
+            float distanceToClosestEnemy = 0;
+
+            foreach (CharacterManager enemy in characterManager.vision.knownEnemiesInRange)
+            {
+                if (closestEnemy == null)
+                {
+                    closestEnemy = enemy;
+                    if (characterManager.vision.knownEnemiesInRange.Count > 1)
+                        distanceToClosestEnemy = Vector2.Distance(enemy.transform.position, transform.position);
+                }
+                else
+                {
+                    float distanceToEnemy = Vector2.Distance(enemy.transform.position, transform.position);
+                    if (distanceToEnemy < distanceToClosestEnemy)
+                    {
+                        closestEnemy = enemy;
+                        distanceToClosestEnemy = distanceToEnemy;
+                    }
+                }
+            }
+
+            return closestEnemy;
+        }
+
+        return null;
+    }
+
+    public CharacterManager GetClosestAlly()
+    {
+        if (characterManager.vision.alliesInRange.Count > 0)
+        {
+            CharacterManager closestAlly = null;
+            float distanceToClosestAlly = 0;
+
+            foreach (CharacterManager ally in characterManager.vision.alliesInRange)
+            {
+                if (closestAlly == null)
+                {
+                    closestAlly = ally;
+                    if (characterManager.vision.alliesInRange.Count > 1)
+                        distanceToClosestAlly = Vector2.Distance(ally.transform.position, transform.position);
+                }
+                else
+                {
+                    float distanceToAlly = Vector2.Distance(ally.transform.position, transform.position);
+                    if (distanceToAlly < distanceToClosestAlly)
+                    {
+                        closestAlly = ally;
+                        distanceToClosestAlly = distanceToAlly;
+                    }
+                }
+            }
+
+            return closestAlly;
+        }
+
+        return null;
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject != transform.parent.gameObject && (collision.CompareTag("NPC") || (collision.CompareTag("Player") && transform.parent.gameObject.CompareTag("Player") == false)))
+        if (collision.gameObject != transform.parent.gameObject && (collision.CompareTag("NPC") || collision.CompareTag("Player")))
         {
             CharacterManager charManager = collision.GetComponent<CharacterManager>();
             if (characterManager.alliances.IsEnemy(charManager.alliances.myFaction) && enemiesInRange.Contains(charManager) == false)
@@ -98,7 +175,7 @@ public class Vision : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject != transform.parent.gameObject && (collision.CompareTag("NPC") || (collision.CompareTag("Player") && transform.parent.gameObject.CompareTag("Player") == false)))
+        if (collision.gameObject != transform.parent.gameObject && (collision.CompareTag("NPC") || collision.CompareTag("Player")))
         {
             CharacterManager charManager = collision.GetComponent<CharacterManager>();
             if (characterManager.alliances.IsEnemy(charManager.alliances.myFaction))

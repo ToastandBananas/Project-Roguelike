@@ -9,6 +9,9 @@ public class InventoryTooltip : Tooltip
         // Item name
         stringBuilder.Append("<b><size=26>" + itemData.itemName + "</size></b>\n");
 
+        if (PlayerEquipmentManager.instance.ItemIsEquipped(itemData))
+            stringBuilder.Append("<i><size=23>(Equipped)</size></i>\n");
+
         // Item material
         stringBuilder.Append("<i>" + Utilities.FormatEnumStringWithSpaces(itemData.item.mainMaterial.ToString(), false) + "</i>");
 
@@ -68,6 +71,9 @@ public class InventoryTooltip : Tooltip
             if (itemData.tertiaryDefense > 0)
                 stringBuilder.Append(GetDefenseHeader(wearable, wearable.tertiaryBodyPartsCovered) + " Defense: " + itemData.tertiaryDefense + "\n");
 
+            if (itemData.primaryDefense > 0)
+                stringBuilder.Append("\n");
+
             // Cold resistance
             if (wearable.coldResistance > 0)
                 stringBuilder.Append("Cold Resistance: " + wearable.coldResistance + "° F\n");
@@ -76,7 +82,8 @@ public class InventoryTooltip : Tooltip
             if (wearable.heatResistance > 0)
                 stringBuilder.Append("Heat Resistance: " + wearable.heatResistance + "° F\n");
 
-            stringBuilder.Append("\n");
+            if (wearable.coldResistance > 0 || wearable.heatResistance > 0)
+                stringBuilder.Append("\n");
         }
         else if (itemData.item.IsConsumable())
         {
@@ -151,6 +158,9 @@ public class InventoryTooltip : Tooltip
             if (itemData.maxDurability > 0)
                 stringBuilder.Append("Condition: " + GetDurabilityText(itemData) + "\n\n");
         }
+        
+        if (itemData.item.IsWearable() && itemData.pocketsVolume > 0)
+            stringBuilder.Append("Pockets' Capacity: " + itemData.pocketsVolume + "\n\n");
 
         // Weight/volume
         stringBuilder.Append("Weight: " + itemData.item.weight + "\n");

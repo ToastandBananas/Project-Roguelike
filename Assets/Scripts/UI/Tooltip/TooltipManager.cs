@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TooltipManager : MonoBehaviour
 {
-    public InventoryTooltip invItemTooltip;
+    public InventoryTooltip[] invItemTooltips;
 
     PlayerEquipmentManager playerEquipmentManager;
 
@@ -34,80 +34,75 @@ public class TooltipManager : MonoBehaviour
     {
         if (invItem != null && invItem.itemData != null)
         {
-            invItemTooltip.BuildTooltip(invItem.itemData);
-            StartCoroutine(invItemTooltip.ShowTooltip(Input.mousePosition));
-            //ShowMatchingEquipmentTooltip(invItem);
+            Tooltip primaryTooltip = invItemTooltips[0];
+            primaryTooltip.BuildTooltip(invItem.itemData);
+            primaryTooltip.ShowTooltip(Input.mousePosition, false, true);
+
+            ShowMatchingEquipmentTooltips(invItem);
         }
     }
 
-    public void HideInventoryTooltip()
-    {
-        invItemTooltip.gameObject.SetActive(false);
-    }
-
-    /*void ShowMatchingEquipmentTooltip(InventoryItem invItem)
+    void ShowMatchingEquipmentTooltips(InventoryItem invItem)
     {
         if (invItem.itemData.item.IsEquipment())
         {
             Equipment equipment = (Equipment)invItem.itemData.item;
-            if (playerEquipmentManager.currentEquipment[(int)equipment.equipmentSlot] != null)
+            InventoryTooltip firsMatchingTooltip = invItemTooltips[1];
+                
+            if (playerEquipmentManager.currentEquipment[(int)equipment.equipmentSlot] != null && playerEquipmentManager.currentEquipment[(int)equipment.equipmentSlot] != invItem.itemData)
             {
-                InventoryTooltip tooltip = GetNextAvailableInventoryTooltip();
+                firsMatchingTooltip.BuildTooltip(playerEquipmentManager.currentEquipment[(int)equipment.equipmentSlot]);
+                firsMatchingTooltip.ShowTooltip(invItemTooltips[0].rectTransform.position + new Vector3(invItemTooltips[0].rectTransform.sizeDelta.x, invItemTooltips[0].rectTransform.sizeDelta.y), false, false);
+            }
 
-                if (tooltip != null)
+            // Weapons can potentially have two tooltips since the player can dual wield
+            if (equipment.IsWeapon() || equipment.IsShield())
+            {
+                InventoryTooltip secondMatchingTooltip = null;
+                if (equipment.equipmentSlot == EquipmentSlot.LeftHandItem)
                 {
-                    tooltip.BuildTooltip(playerEquipmentManager.currentEquipment[(int)equipment.equipmentSlot]);
-                    tooltip.rectTransform.localPosition = equipmentTooltipPosition;
-
-                    // Weapons can potentially have two tooltips since the player can dual wield
-                    if (equipment.IsWeapon())
+                    if (playerEquipmentManager.currentEquipment[(int)EquipmentSlot.RightHandItem] != invItem.itemData && playerEquipmentManager.currentEquipment[(int)EquipmentSlot.RightHandItem] != null)
                     {
-                        if (equipment.equipmentSlot == EquipmentSlot.LeftWeapon)
-                        {
-                            if (playerEquipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon] != null)
-                            {
-                                InventoryTooltip secondTooltip = GetNextAvailableInventoryTooltip();
+                        secondMatchingTooltip = invItemTooltips[2];
+                        secondMatchingTooltip.BuildTooltip(playerEquipmentManager.currentEquipment[(int)EquipmentSlot.RightHandItem]);
+                    }
+                }
+                else
+                {
+                    if (playerEquipmentManager.currentEquipment[(int)EquipmentSlot.LeftHandItem] != invItem.itemData && playerEquipmentManager.currentEquipment[(int)EquipmentSlot.LeftHandItem] != null)
+                    {
+                        secondMatchingTooltip = invItemTooltips[2];
+                        secondMatchingTooltip.BuildTooltip(playerEquipmentManager.currentEquipment[(int)EquipmentSlot.LeftHandItem]);
+                    }
+                }
 
-                                if (secondTooltip != null)
-                                {
-                                    secondTooltip.BuildTooltip(playerEquipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon]);
-                                    secondTooltip.rectTransform.localPosition = equipmentTooltipPosition;
-                                    tooltip.rectTransform.localPosition = secondaryEquipmentTooltipPosition;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (playerEquipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon] != null)
-                            {
-                                InventoryTooltip secondTooltip = GetNextAvailableInventoryTooltip();
-
-                                if (secondTooltip != null)
-                                {
-                                    secondTooltip.BuildTooltip(playerEquipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon]);
-                                    secondTooltip.rectTransform.localPosition = secondaryEquipmentTooltipPosition;
-                                }
-                            }
-                        }
+                if (secondMatchingTooltip != null)
+                {
+                    if (invItemTooltips[1].gameObject.activeSelf)
+                    {
+                        secondMatchingTooltip.ShowTooltip(invItemTooltips[0].rectTransform.position
+                            + new Vector3(invItemTooltips[0].rectTransform.sizeDelta.x + invItemTooltips[1].rectTransform.sizeDelta.x, invItemTooltips[0].rectTransform.sizeDelta.y), false, false);
+                    }
+                    else
+                    {
+                        secondMatchingTooltip.ShowTooltip(invItemTooltips[0].rectTransform.position
+                            + new Vector3(invItemTooltips[0].rectTransform.sizeDelta.x, invItemTooltips[0].rectTransform.sizeDelta.y), false, false);
                     }
                 }
             }
         }
     }
-
-    InventoryTooltip GetNextAvailableInventoryTooltip()
+    
+    public void HideInventoryTooltip(Tooltip tooltip)
     {
-        for (int i = 0; i < invTooltips.Length; i++)
-        {
-            if (invTooltips[i].gameObject.activeSelf == false)
-                return invTooltips[i];
-        }
-        
-        return null;
-    }*/
+        tooltip.gameObject.SetActive(false);
+    }
 
     public void HideAllTooltips()
     {
-        HideInventoryTooltip();
+        for (int i = 0; i < invItemTooltips.Length; i++)
+        {
+            HideInventoryTooltip(invItemTooltips[i]);
+        }
     }
 }

@@ -86,9 +86,9 @@ public class Attack : MonoBehaviour
     {
         if (characterManager.equipmentManager.IsDualWielding())
             StartCoroutine(DoAttack(targetsCharacterManager, targetsStats, characterManager.equipmentManager.GetRightWeapon(), GeneralAttackType.DualWield, meleeAttackType));
-        else if (characterManager.equipmentManager.RightWeaponEquipped())
+        else if (characterManager.equipmentManager.RightHandItemEquipped())
             StartCoroutine(DoAttack(targetsCharacterManager, targetsStats, characterManager.equipmentManager.GetRightWeapon(), GeneralAttackType.PrimaryWeapon, meleeAttackType));
-        else if (characterManager.equipmentManager.LeftWeaponEquipped())
+        else if (characterManager.equipmentManager.LeftHandItemEquipped())
             StartCoroutine(DoAttack(targetsCharacterManager, targetsStats, characterManager.equipmentManager.GetLeftWeapon(), GeneralAttackType.SecondaryWeapon, meleeAttackType));
         else // Punch, if no weapons equipped
             StartCoroutine(DoAttack(targetsCharacterManager, targetsStats, null, GeneralAttackType.Unarmed, meleeAttackType));
@@ -98,9 +98,9 @@ public class Attack : MonoBehaviour
     {
         if (characterManager.equipmentManager.IsDualWielding())
             StartMeleeAttack(targetsCharacterManager, targetsStats, GetRandomMeleeAttackType(characterManager.equipmentManager.GetRightWeapon().defaultMeleeAttackType));
-        else if (characterManager.equipmentManager.RightWeaponEquipped())
+        else if (characterManager.equipmentManager.RightHandItemEquipped())
             StartMeleeAttack(targetsCharacterManager, targetsStats, GetRandomMeleeAttackType(characterManager.equipmentManager.GetRightWeapon().defaultMeleeAttackType));
-        else if (characterManager.equipmentManager.LeftWeaponEquipped())
+        else if (characterManager.equipmentManager.LeftHandItemEquipped())
             StartMeleeAttack(targetsCharacterManager, targetsStats, GetRandomMeleeAttackType(characterManager.equipmentManager.GetLeftWeapon().defaultMeleeAttackType));
         else // Punch, if no weapons equipped
             StartMeleeAttack(targetsCharacterManager, targetsStats, MeleeAttackType.Unarmed);
@@ -364,23 +364,23 @@ public class Attack : MonoBehaviour
             float rightBlockChance = 0;
 
             // Get the left weapon/shield's block chance
-            if (targetsCharStats.characterManager.equipmentManager.LeftWeaponEquipped())
+            if (targetsCharStats.characterManager.equipmentManager.LeftHandItemEquipped())
             {
-                if (targetsCharStats.characterManager.equipmentManager.GetEquipment(EquipmentSlot.LeftWeapon).IsShield())
-                    leftBlockChance = (targetsCharStats.shieldBlock.GetValue() / 2.5f * targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.LeftWeapon).blockChanceMultiplier);
+                if (targetsCharStats.characterManager.equipmentManager.GetEquipment(EquipmentSlot.LeftHandItem).IsShield())
+                    leftBlockChance = (targetsCharStats.shieldBlock.GetValue() / 2.5f * targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.LeftHandItem).blockChanceMultiplier);
                 else
-                    leftBlockChance = (targetsCharStats.weaponBlock.GetValue() / 3 * targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.LeftWeapon).blockChanceMultiplier);
+                    leftBlockChance = (targetsCharStats.weaponBlock.GetValue() / 3 * targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.LeftHandItem).blockChanceMultiplier);
 
                 blockChance += leftBlockChance;
             }
 
             // Get the right weapon/shield's block chance
-            if (targetsCharStats.characterManager.equipmentManager.RightWeaponEquipped())
+            if (targetsCharStats.characterManager.equipmentManager.RightHandItemEquipped())
             {
-                if (targetsCharStats.characterManager.equipmentManager.GetEquipment(EquipmentSlot.RightWeapon).IsShield())
-                    rightBlockChance = (targetsCharStats.shieldBlock.GetValue() / 2.5f * targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.RightWeapon).blockChanceMultiplier);
+                if (targetsCharStats.characterManager.equipmentManager.GetEquipment(EquipmentSlot.RightHandItem).IsShield())
+                    rightBlockChance = (targetsCharStats.shieldBlock.GetValue() / 2.5f * targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.RightHandItem).blockChanceMultiplier);
                 else
-                    rightBlockChance = (targetsCharStats.weaponBlock.GetValue() / 3 * targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.RightWeapon).blockChanceMultiplier);
+                    rightBlockChance = (targetsCharStats.weaponBlock.GetValue() / 3 * targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.RightHandItem).blockChanceMultiplier);
 
                 blockChance += rightBlockChance;
             }
@@ -400,13 +400,13 @@ public class Attack : MonoBehaviour
                 random = Random.Range(0f, 1f);
                 if (leftBlockChance == 0 || random > leftBlockChance)
                 {
-                    gm.flavorText.WriteBlockedAttackLine(characterManager, targetsCharStats.characterManager, targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.RightWeapon));
-                    targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.RightWeapon).DamageDurability(damage, false);
+                    gm.flavorText.WriteBlockedAttackLine(characterManager, targetsCharStats.characterManager, targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.RightHandItem));
+                    targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.RightHandItem).DamageDurability(damage, false);
                 }
                 else
                 {
-                    gm.flavorText.WriteBlockedAttackLine(characterManager, targetsCharStats.characterManager, targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.LeftWeapon));
-                    targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.LeftWeapon).DamageDurability(damage, false);
+                    gm.flavorText.WriteBlockedAttackLine(characterManager, targetsCharStats.characterManager, targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.LeftHandItem));
+                    targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.LeftHandItem).DamageDurability(damage, false);
                 }
 
                 if (weaponUsedItemData != null)
@@ -612,9 +612,9 @@ public class Attack : MonoBehaviour
         switch (generalAttackType)
         {
             case GeneralAttackType.PrimaryWeapon:
-                return characterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.RightWeapon];
+                return characterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.RightHandItem];
             case GeneralAttackType.SecondaryWeapon:
-                return characterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftWeapon];
+                return characterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftHandItem];
             case GeneralAttackType.Ranged:
                 return characterManager.equipmentManager.currentEquipment[(int)EquipmentSlot.Ranged];
             case GeneralAttackType.Throwing:

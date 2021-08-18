@@ -37,3 +37,4 @@ MonoBehaviour:
   tertiaryDefense: {x: 0, y: 0}
   coldResistance: 0
   heatResistance: 0
+  pocketsVolume: {x: 0.5, y: 1}

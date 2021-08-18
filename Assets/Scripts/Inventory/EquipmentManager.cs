@@ -3,35 +3,37 @@ using UnityEngine;
 
 public class EquipmentManager : MonoBehaviour
 {
-    public delegate void OnWearableChanged(ItemData newItemData, ItemData oldItemData);
-    public OnWearableChanged onWearableChanged;
+    public delegate void OnWearableChangedDelegate(ItemData newItemData, ItemData oldItemData);
+    public OnWearableChangedDelegate onWearableChanged;
 
-    public delegate void OnWeaponChanged(ItemData newItemData, ItemData oldItemData);
-    public OnWeaponChanged onWeaponChanged;
+    public delegate void OnWeaponChangedDelegate(ItemData newItemData, ItemData oldItemData);
+    public OnWeaponChangedDelegate onWeaponChanged;
 
     public Transform itemsParent;
 
-    [NamedArray(new string[] { "Helmet", "Shirt", "Pants", "Boots", "Gloves", "BodyArmor", "LegArmor", "LeftWeapon", "RightWeapon", "Ranged", "Quiver", "Backpack", "LeftHipPouch", "RightHipPouch", "Cape" })]
-    public ItemData[] currentEquipment;
+    [NamedArray(new string[] { "Helmet", "Shirt", "Pants", "Boots", "Gloves", "Body Armor", "Leg Armor", "Left Hand Item", "Right Hand Item", "Ranged", "Quiver", "Backpack", "Left Hip Pouch", "Right Hip Pouch", "Cape" })]
+    public ItemData[] currentEquipment = new ItemData[System.Enum.GetNames(typeof(EquipmentSlot)).Length];
 
-    public float currentWeight, currentVolume;
-
-    [Header("Starting Equipment")]
-    public Equipment startingHelmet;
-    public Equipment startingCape, startingShirt, startingPants, startingBoots, startingGloves, startingBodyArmor, startingLegArmor, startingLeftWeapon, startingRightWeapon, startingRangedWeapon;
-    public Equipment startingQuiver, startingBackpack, startingLeftHipPouch, startingRightHipPouch;
+    [NamedArray(new string[] { "Helmet", "Shirt", "Pants", "Boots", "Gloves", "Body Armor", "Leg Armor", "Left Hand Item", "Right Hand Item", "Ranged", "Quiver", "Backpack", "Left Hip Pouch", "Right Hip Pouch", "Cape" })]
+    public Equipment[] startingEquipment = new Equipment[System.Enum.GetNames(typeof(EquipmentSlot)).Length];
+    
+    [HideInInspector] public float currentWeight, currentVolume;
+    [HideInInspector] public bool isTwoHanding;
 
     [HideInInspector] public GameManager gm;
     [HideInInspector] public CharacterManager characterManager;
-    [HideInInspector] public bool isTwoHanding;
 
     float twoHandedDamageMultiplier = 1.35f;
 
     public virtual void Start()
     {
         gm = GameManager.instance;
-        
-        currentEquipment = new ItemData[System.Enum.GetNames(typeof(EquipmentSlot)).Length];
+
+        if (currentEquipment.Length != System.Enum.GetNames(typeof(EquipmentSlot)).Length)
+            currentEquipment = new ItemData[System.Enum.GetNames(typeof(EquipmentSlot)).Length];
+
+        characterManager.equipmentManager.onWearableChanged += OnWearableChanged;
+        characterManager.equipmentManager.onWeaponChanged += OnWeaponChanged;
 
         SetupStartingEquipment();
     }
@@ -344,11 +346,11 @@ public class EquipmentManager : MonoBehaviour
                     weapon = (Weapon)newItemData.item;
                 
                 // If the weapon we're equipping is two-handed and there's a weapon equipped in our off-hand, unequip it
-                if (weapon != null && weapon.isTwoHanded && currentEquipment[(int)EquipmentSlot.LeftWeapon] != null)
-                    Unequip(EquipmentSlot.LeftWeapon, true, true, true);
+                if (weapon != null && weapon.isTwoHanded && currentEquipment[(int)EquipmentSlot.LeftHandItem] != null)
+                    Unequip(EquipmentSlot.LeftHandItem, true, true, true);
                 // If we're equipping a weapon to our left hand and we already have a two-handed weapon equipped, unequip it
-                else if (TwoHandedWeaponEquipped() && equipmentSlot == EquipmentSlot.LeftWeapon)
-                    Unequip(EquipmentSlot.RightWeapon, true, true, true);
+                else if (TwoHandedWeaponEquipped() && equipmentSlot == EquipmentSlot.LeftHandItem)
+                    Unequip(EquipmentSlot.RightHandItem, true, true, true);
             }
             else if (newItemData.item.IsBag())
             {
@@ -393,20 +395,6 @@ public class EquipmentManager : MonoBehaviour
             characterManager.quiverInventory = null;
     }
 
-    public void OnEquipmentChanged(ItemData oldItemData, ItemData newItemData)
-    {
-        Equipment equipment = null;
-        if (newItemData != null)
-            equipment = (Equipment)newItemData.item;
-        else
-            equipment = (Equipment)oldItemData.item;
-
-        if (onWearableChanged != null && equipment.IsWeapon() == false)
-            onWearableChanged.Invoke(newItemData, oldItemData);
-        else if (onWeaponChanged != null && equipment.IsWeapon())
-            onWeaponChanged.Invoke(newItemData, oldItemData);
-    }
-
     public void UnequipAll(bool shouldAddEquipmentToInventory)
     {
         for (int i = 0; i < currentEquipment.Length; i++)
@@ -437,21 +425,20 @@ public class EquipmentManager : MonoBehaviour
             if (currentEquipment[i] == itemDataInQuestion)
                 return true;
         }
-
         return false;
     }
 
     public bool TwoHandedWeaponEquipped()
     {
-        if (currentEquipment[(int)EquipmentSlot.RightWeapon] != null && currentEquipment[(int)EquipmentSlot.RightWeapon].item.IsWeapon())
+        if (currentEquipment[(int)EquipmentSlot.RightHandItem] != null && currentEquipment[(int)EquipmentSlot.RightHandItem].item.IsWeapon())
         {
-            Weapon weapon = (Weapon)currentEquipment[(int)EquipmentSlot.RightWeapon].item;
+            Weapon weapon = (Weapon)currentEquipment[(int)EquipmentSlot.RightHandItem].item;
             if (weapon.isTwoHanded)
                 return true;
         }
-        else if (currentEquipment[(int)EquipmentSlot.LeftWeapon] != null && currentEquipment[(int)EquipmentSlot.LeftWeapon].item.IsWeapon())
+        else if (currentEquipment[(int)EquipmentSlot.LeftHandItem] != null && currentEquipment[(int)EquipmentSlot.LeftHandItem].item.IsWeapon())
         {
-            Weapon weapon = (Weapon)currentEquipment[(int)EquipmentSlot.LeftWeapon].item;
+            Weapon weapon = (Weapon)currentEquipment[(int)EquipmentSlot.LeftHandItem].item;
             if (weapon.isTwoHanded)
                 return true;
         }
@@ -461,24 +448,24 @@ public class EquipmentManager : MonoBehaviour
 
     public bool IsDualWielding()
     {
-        if (currentEquipment[(int)EquipmentSlot.RightWeapon] != null && currentEquipment[(int)EquipmentSlot.RightWeapon].item.IsWeapon() 
-            && currentEquipment[(int)EquipmentSlot.LeftWeapon] != null && currentEquipment[(int)EquipmentSlot.LeftWeapon].item.IsWeapon())
+        if (currentEquipment[(int)EquipmentSlot.RightHandItem] != null && currentEquipment[(int)EquipmentSlot.RightHandItem].item.IsWeapon() 
+            && currentEquipment[(int)EquipmentSlot.LeftHandItem] != null && currentEquipment[(int)EquipmentSlot.LeftHandItem].item.IsWeapon())
             return true;
 
         return false;
     }
 
-    public bool RightWeaponEquipped()
+    public bool RightHandItemEquipped()
     {
-        if (currentEquipment[(int)EquipmentSlot.RightWeapon] != null)
+        if (currentEquipment[(int)EquipmentSlot.RightHandItem] != null)
             return true;
 
         return false;
     }
 
-    public bool LeftWeaponEquipped()
+    public bool LeftHandItemEquipped()
     {
-        if (currentEquipment[(int)EquipmentSlot.LeftWeapon] != null)
+        if (currentEquipment[(int)EquipmentSlot.LeftHandItem] != null)
             return true;
 
         return false;
@@ -486,7 +473,8 @@ public class EquipmentManager : MonoBehaviour
 
     public bool MeleeWeaponEquipped()
     {
-        if (currentEquipment[(int)EquipmentSlot.LeftWeapon] != null || currentEquipment[(int)EquipmentSlot.RightWeapon] != null)
+        if ((currentEquipment[(int)EquipmentSlot.LeftHandItem] != null && currentEquipment[(int)EquipmentSlot.LeftHandItem].item.IsWeapon())
+            || (currentEquipment[(int)EquipmentSlot.RightHandItem] != null && currentEquipment[(int)EquipmentSlot.RightHandItem].item.IsWeapon()))
             return true;
 
         return false;
@@ -494,8 +482,8 @@ public class EquipmentManager : MonoBehaviour
 
     public bool ShieldEquipped()
     {
-        if ((currentEquipment[(int)EquipmentSlot.LeftWeapon] != null && currentEquipment[(int)EquipmentSlot.LeftWeapon].item.IsShield())
-            || (currentEquipment[(int)EquipmentSlot.RightWeapon] != null && currentEquipment[(int)EquipmentSlot.RightWeapon].item.IsShield()))
+        if ((currentEquipment[(int)EquipmentSlot.LeftHandItem] != null && currentEquipment[(int)EquipmentSlot.LeftHandItem].item.IsShield())
+            || (currentEquipment[(int)EquipmentSlot.RightHandItem] != null && currentEquipment[(int)EquipmentSlot.RightHandItem].item.IsShield()))
             return true;
 
         return false;
@@ -560,30 +548,30 @@ public class EquipmentManager : MonoBehaviour
 
     public Weapon GetRightWeapon()
     {
-        if (currentEquipment[(int)EquipmentSlot.RightWeapon] == null)
+        if (currentEquipment[(int)EquipmentSlot.RightHandItem] == null)
             return null;
-        return (Weapon)currentEquipment[(int)EquipmentSlot.RightWeapon].item;
+        return (Weapon)currentEquipment[(int)EquipmentSlot.RightHandItem].item;
     }
 
     public Weapon GetLeftWeapon()
     {
-        if (currentEquipment[(int)EquipmentSlot.LeftWeapon] == null)
+        if (currentEquipment[(int)EquipmentSlot.LeftHandItem] == null)
             return null;
-        return (Weapon)currentEquipment[(int)EquipmentSlot.LeftWeapon].item;
+        return (Weapon)currentEquipment[(int)EquipmentSlot.LeftHandItem].item;
     }
 
     public Shield GetRightShield()
     {
-        if (currentEquipment[(int)EquipmentSlot.RightWeapon] == null)
+        if (currentEquipment[(int)EquipmentSlot.RightHandItem] == null)
             return null;
-        return (Shield)currentEquipment[(int)EquipmentSlot.RightWeapon].item;
+        return (Shield)currentEquipment[(int)EquipmentSlot.RightHandItem].item;
     }
 
     public Shield GetLeftShield()
     {
-        if (currentEquipment[(int)EquipmentSlot.LeftWeapon] == null)
+        if (currentEquipment[(int)EquipmentSlot.LeftHandItem] == null)
             return null;
-        return (Shield)currentEquipment[(int)EquipmentSlot.LeftWeapon].item;
+        return (Shield)currentEquipment[(int)EquipmentSlot.LeftHandItem].item;
     }
 
     public Weapon GetRangedWeapon()
@@ -622,13 +610,13 @@ public class EquipmentManager : MonoBehaviour
                 // If the new weapon is two-handed, remove our left weapon sprite if we have one and set our character's sprites to the two-handed stance
                 if (weapon != null && weapon.isTwoHanded)
                 {
-                    RemoveEquipmentSprite(EquipmentSlot.LeftWeapon);
+                    RemoveEquipmentSprite(EquipmentSlot.LeftHandItem);
                     characterManager.humanoidSpriteManager.SetupTwoHandedWeaponStance(this, characterManager);
                 }
                 // If the new weapon is one-handed and our right weapon is now null, remove our right weapon sprite and set our character's sprites to the one-handed stance
-                else if (equipSlot == EquipmentSlot.LeftWeapon && currentEquipment[(int)EquipmentSlot.RightWeapon] == null)
+                else if (equipSlot == EquipmentSlot.LeftHandItem && currentEquipment[(int)EquipmentSlot.RightHandItem] == null)
                 {
-                    RemoveEquipmentSprite(EquipmentSlot.RightWeapon);
+                    RemoveEquipmentSprite(EquipmentSlot.RightHandItem);
                     characterManager.humanoidSpriteManager.SetupOneHandedWeaponStance(this, characterManager);
                 }
                 // If the new weapon is one-handed, just set our character's sprites to the one-handed stance
@@ -680,25 +668,25 @@ public class EquipmentManager : MonoBehaviour
 
     void SetupStartingEquipment()
     {
-        EquipNewEquipment(startingHelmet, EquipmentSlot.Helmet);
-        EquipNewEquipment(startingCape, EquipmentSlot.Cape);
-        EquipNewEquipment(startingShirt, EquipmentSlot.Shirt);
-        EquipNewEquipment(startingPants, EquipmentSlot.Pants);
-        EquipNewEquipment(startingBoots, EquipmentSlot.Boots);
-        EquipNewEquipment(startingGloves, EquipmentSlot.Gloves);
-        EquipNewEquipment(startingBodyArmor, EquipmentSlot.BodyArmor);
-        EquipNewEquipment(startingLegArmor, EquipmentSlot.LegArmor);
-        EquipNewEquipment(startingLeftWeapon, EquipmentSlot.LeftWeapon);
-        EquipNewEquipment(startingRightWeapon, EquipmentSlot.RightWeapon);
-        EquipNewEquipment(startingRangedWeapon, EquipmentSlot.Ranged);
-        EquipNewEquipment(startingQuiver, EquipmentSlot.Quiver);
-        EquipNewEquipment(startingBackpack, EquipmentSlot.Backpack);
-        EquipNewEquipment(startingLeftHipPouch, EquipmentSlot.LeftHipPouch);
-        EquipNewEquipment(startingRightHipPouch, EquipmentSlot.RightHipPouch);
+        EquipNewEquipment(startingEquipment[(int)EquipmentSlot.Helmet], EquipmentSlot.Helmet);
+        EquipNewEquipment(startingEquipment[(int)EquipmentSlot.Shirt], EquipmentSlot.Shirt);
+        EquipNewEquipment(startingEquipment[(int)EquipmentSlot.Pants], EquipmentSlot.Pants);
+        EquipNewEquipment(startingEquipment[(int)EquipmentSlot.Boots], EquipmentSlot.Boots);
+        EquipNewEquipment(startingEquipment[(int)EquipmentSlot.Gloves], EquipmentSlot.Gloves);
+        EquipNewEquipment(startingEquipment[(int)EquipmentSlot.BodyArmor], EquipmentSlot.BodyArmor);
+        EquipNewEquipment(startingEquipment[(int)EquipmentSlot.LegArmor], EquipmentSlot.LegArmor);
+        EquipNewEquipment(startingEquipment[(int)EquipmentSlot.LeftHandItem], EquipmentSlot.LeftHandItem);
+        EquipNewEquipment(startingEquipment[(int)EquipmentSlot.RightHandItem], EquipmentSlot.RightHandItem);
+        EquipNewEquipment(startingEquipment[(int)EquipmentSlot.Ranged], EquipmentSlot.Ranged);
+        EquipNewEquipment(startingEquipment[(int)EquipmentSlot.Quiver], EquipmentSlot.Quiver);
+        EquipNewEquipment(startingEquipment[(int)EquipmentSlot.Backpack], EquipmentSlot.Backpack);
+        EquipNewEquipment(startingEquipment[(int)EquipmentSlot.LeftHipPouch], EquipmentSlot.LeftHipPouch);
+        EquipNewEquipment(startingEquipment[(int)EquipmentSlot.RightHipPouch], EquipmentSlot.RightHipPouch);
+        EquipNewEquipment(startingEquipment[(int)EquipmentSlot.Cape], EquipmentSlot.Cape);
 
-        if (startingRightWeapon != null)
+        if (startingEquipment[(int)EquipmentSlot.RightHandItem] != null)
         {
-            Weapon weapon = (Weapon)startingRightWeapon;
+            Weapon weapon = (Weapon)startingEquipment[(int)EquipmentSlot.RightHandItem];
             if (weapon.isTwoHanded)
                 characterManager.humanoidSpriteManager.SetupTwoHandedWeaponStance(this, characterManager);
         }
@@ -720,11 +708,140 @@ public class EquipmentManager : MonoBehaviour
             #if UNITY_EDITOR
                 newItemData.gameObject.name = newItemData.itemName;
             #endif
-
-            if (equipment.IsWeapon() && onWeaponChanged != null)
+            
+            if ((equipment.IsWeapon() || equipment.IsWeapon()) && onWeaponChanged != null)
                 onWeaponChanged.Invoke(newItemData, null);
             else if (equipment.IsWearable() && onWearableChanged != null)
                 onWearableChanged.Invoke(newItemData, null);
         }
+    }
+
+    public void OnEquipmentChanged(ItemData oldItemData, ItemData newItemData)
+    {
+        Equipment equipment = null;
+        if (newItemData != null)
+            equipment = (Equipment)newItemData.item;
+        else
+            equipment = (Equipment)oldItemData.item;
+
+        if (onWearableChanged != null && equipment.IsWeapon() == false && equipment.IsShield() == false)
+            onWearableChanged.Invoke(newItemData, oldItemData);
+        else if (onWeaponChanged != null && (equipment.IsWeapon() || equipment.IsShield()))
+            onWeaponChanged.Invoke(newItemData, oldItemData);
+    }
+
+    public virtual void OnWearableChanged(ItemData newItemData, ItemData oldItemData)
+    {
+        if (newItemData != null)
+        {
+            if (newItemData.item.IsBag() == false)
+            {
+                Wearable wearable = (Wearable)newItemData.item;
+
+                if (newItemData.pocketsVolume > 0)
+                {
+                    // Add to personal inventory volume
+                    characterManager.characterStats.maxPersonalInvVolume.AddModifier(newItemData.pocketsVolume);
+                    characterManager.personalInventory.maxVolume = characterManager.characterStats.maxPersonalInvVolume.GetValue();
+                }
+
+                // Add to clothing or armor defense
+                #region Defense
+                if (wearable.isClothing)
+                {
+                    for (int i = 0; i < wearable.primaryBodyPartsCovered.Length; i++)
+                    {
+                        characterManager.status.GetBodyPart(wearable.primaryBodyPartsCovered[i]).addedDefense_Clothing.AddModifier(newItemData.primaryDefense);
+                    }
+
+                    for (int i = 0; i < wearable.secondaryBodyPartsCovered.Length; i++)
+                    {
+                        characterManager.status.GetBodyPart(wearable.secondaryBodyPartsCovered[i]).addedDefense_Clothing.AddModifier(newItemData.secondaryDefense);
+                    }
+
+                    for (int i = 0; i < wearable.tertiaryBodyPartsCovered.Length; i++)
+                    {
+                        characterManager.status.GetBodyPart(wearable.tertiaryBodyPartsCovered[i]).addedDefense_Clothing.AddModifier(newItemData.tertiaryDefense);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < wearable.primaryBodyPartsCovered.Length; i++)
+                    {
+                        characterManager.status.GetBodyPart(wearable.primaryBodyPartsCovered[i]).addedDefense_Armor.AddModifier(newItemData.primaryDefense);
+                    }
+
+                    for (int i = 0; i < wearable.secondaryBodyPartsCovered.Length; i++)
+                    {
+                        characterManager.status.GetBodyPart(wearable.secondaryBodyPartsCovered[i]).addedDefense_Armor.AddModifier(newItemData.secondaryDefense);
+                    }
+
+                    for (int i = 0; i < wearable.tertiaryBodyPartsCovered.Length; i++)
+                    {
+                        characterManager.status.GetBodyPart(wearable.tertiaryBodyPartsCovered[i]).addedDefense_Armor.AddModifier(newItemData.tertiaryDefense);
+                    }
+                }
+                #endregion
+            }
+        }
+
+        if (oldItemData != null)
+        {
+            if (oldItemData.item.IsBag() == false)
+            {
+                Debug.Log(oldItemData.item.name);
+                Wearable wearable = (Wearable)oldItemData.item;
+
+                if (oldItemData.pocketsVolume > 0)
+                {
+                    // Subtract from personal inventory volume
+                    characterManager.characterStats.maxPersonalInvVolume.RemoveModifier(oldItemData.pocketsVolume);
+                    characterManager.personalInventory.maxVolume = characterManager.characterStats.maxPersonalInvVolume.GetValue();
+                }
+
+                // Subtract from clothing or armor defense
+                #region Defense
+                if (wearable.isClothing)
+                {
+                    for (int i = 0; i < wearable.primaryBodyPartsCovered.Length; i++)
+                    {
+                        characterManager.status.GetBodyPart(wearable.primaryBodyPartsCovered[i]).addedDefense_Clothing.RemoveModifier(oldItemData.primaryDefense);
+                    }
+
+                    for (int i = 0; i < wearable.secondaryBodyPartsCovered.Length; i++)
+                    {
+                        characterManager.status.GetBodyPart(wearable.secondaryBodyPartsCovered[i]).addedDefense_Clothing.RemoveModifier(oldItemData.secondaryDefense);
+                    }
+
+                    for (int i = 0; i < wearable.tertiaryBodyPartsCovered.Length; i++)
+                    {
+                        characterManager.status.GetBodyPart(wearable.tertiaryBodyPartsCovered[i]).addedDefense_Clothing.RemoveModifier(oldItemData.tertiaryDefense);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < wearable.primaryBodyPartsCovered.Length; i++)
+                    {
+                        characterManager.status.GetBodyPart(wearable.primaryBodyPartsCovered[i]).addedDefense_Armor.RemoveModifier(oldItemData.primaryDefense);
+                    }
+
+                    for (int i = 0; i < wearable.secondaryBodyPartsCovered.Length; i++)
+                    {
+                        characterManager.status.GetBodyPart(wearable.secondaryBodyPartsCovered[i]).addedDefense_Armor.RemoveModifier(oldItemData.secondaryDefense);
+                    }
+
+                    for (int i = 0; i < wearable.tertiaryBodyPartsCovered.Length; i++)
+                    {
+                        characterManager.status.GetBodyPart(wearable.tertiaryBodyPartsCovered[i]).addedDefense_Armor.RemoveModifier(oldItemData.tertiaryDefense);
+                    }
+                }
+                #endregion
+            }
+        }
+    }
+
+    public virtual void OnWeaponChanged(ItemData newItemData, ItemData oldItemData)
+    {
+
     }
 }

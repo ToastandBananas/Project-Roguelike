@@ -28,6 +28,7 @@ public class ItemData : MonoBehaviour
     [Header("Armor Data")]
     public int primaryDefense;
     public int secondaryDefense, tertiaryDefense;
+    public float pocketsVolume;
 
     [Header("Shield Data")]
     public int shieldBashDamage;
@@ -83,10 +84,11 @@ public class ItemData : MonoBehaviour
         dataReceiver.slashDamage_Overhead = dataGiver.slashDamage_Overhead;
         dataReceiver.cleaveDamage_Overhead = dataGiver.cleaveDamage_Overhead;
 
-        // Armor Data
+        // Wearable Data
         dataReceiver.primaryDefense = dataGiver.primaryDefense;
         dataReceiver.secondaryDefense = dataGiver.secondaryDefense;
         dataReceiver.tertiaryDefense = dataGiver.tertiaryDefense;
+        dataReceiver.pocketsVolume = dataGiver.pocketsVolume;
 
         // Shield Data
         dataReceiver.shieldBashDamage = dataGiver.shieldBashDamage;
@@ -151,6 +153,7 @@ public class ItemData : MonoBehaviour
                 primaryDefense = Random.Range(wearable.primaryDefense.x, wearable.primaryDefense.y + 1);
                 secondaryDefense = Random.Range(wearable.secondaryDefense.x, wearable.secondaryDefense.y + 1);
                 tertiaryDefense = Random.Range(wearable.tertiaryDefense.x, wearable.tertiaryDefense.y + 1);
+                pocketsVolume = Mathf.RoundToInt(Random.Range(wearable.pocketsVolume.x, wearable.pocketsVolume.y) * 100f) / 100f;
             }
             else if (item.IsShield())
             {
@@ -269,6 +272,7 @@ public class ItemData : MonoBehaviour
         primaryDefense = 0;
         secondaryDefense = 0;
         tertiaryDefense = 0;
+        pocketsVolume = 0;
 
         freshness = 0;
         uses = 0;
@@ -314,6 +318,7 @@ public class ItemData : MonoBehaviour
                 totalPointsPossible += (wearable.primaryDefense.y - wearable.primaryDefense.x) * 2;
                 totalPointsPossible += (wearable.secondaryDefense.y - wearable.secondaryDefense.x) * 2;
                 totalPointsPossible += (wearable.tertiaryDefense.y - wearable.tertiaryDefense.x) * 2;
+                totalPointsPossible += (wearable.pocketsVolume.y - wearable.pocketsVolume.x) * 2;
             }
             else if (item.IsShield())
             {
@@ -363,6 +368,7 @@ public class ItemData : MonoBehaviour
                 pointIncrease += (primaryDefense - wearable.primaryDefense.x) * 2; // Defense contributes to value twice as much
                 pointIncrease += (secondaryDefense - wearable.secondaryDefense.x) * 2;
                 pointIncrease += (tertiaryDefense - wearable.tertiaryDefense.x) * 2;
+                pointIncrease += (pocketsVolume - wearable.pocketsVolume.x) * 2;
             }
             else if (item.IsShield())
             {
@@ -485,6 +491,11 @@ public class ItemData : MonoBehaviour
                     tertiaryDefense = wearable.tertiaryDefense.y;
                 else if (tertiaryDefense < wearable.tertiaryDefense.x)
                     tertiaryDefense = wearable.tertiaryDefense.x;
+
+                if (pocketsVolume > wearable.pocketsVolume.y)
+                    pocketsVolume = wearable.pocketsVolume.y;
+                else if (pocketsVolume < wearable.pocketsVolume.x)
+                    pocketsVolume = wearable.pocketsVolume.x;
             }
             else if (item.IsShield())
             {
@@ -774,6 +785,7 @@ public class ItemData : MonoBehaviour
     {
         transform.SetParent(ObjectPoolManager.instance.itemDataContainerObjectPool.transform);
 
+        bagInventory.inventoryOwner = null;
         bagInventory.myInvUI = null;
         bagInventory.items.Clear();
         ClearData();

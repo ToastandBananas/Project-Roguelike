@@ -230,9 +230,9 @@ public class APManager : MonoBehaviour
                 return 220;
             case EquipmentSlot.LegArmor:
                 return 220;
-            case EquipmentSlot.LeftWeapon:
+            case EquipmentSlot.LeftHandItem:
                 return 50;
-            case EquipmentSlot.RightWeapon:
+            case EquipmentSlot.RightHandItem:
                 return 50;
             case EquipmentSlot.Ranged:
                 return 50;

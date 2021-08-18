@@ -2,32 +2,32 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Stat
+public class FloatStat
 {
-    [SerializeField] int baseValue = 20;
+    [SerializeField] float baseValue = 20f;
 
-    [SerializeField] List<int> modifiers = new List<int>();
+    [SerializeField] List<float> modifiers = new List<float>();
 
-    public int GetValue()
+    public float GetValue()
     {
-        int finalValue = baseValue;
+        float finalValue = baseValue;
         modifiers.ForEach(mod => finalValue += mod);
 
         return finalValue;
     }
 
-    public void SetBaseValue(int value)
+    public void SetBaseValue(float value)
     {
         baseValue = value;
     }
 
-    public void AddModifier(int modifier)
+    public void AddModifier(float modifier)
     {
         if (modifier != 0)
             modifiers.Add(modifier);
     }
 
-    public void RemoveModifier(int modifier)
+    public void RemoveModifier(float modifier)
     {
         if (modifier != 0)
             modifiers.Remove(modifier);
