@@ -592,7 +592,6 @@ namespace CodeMonkey.Utils {
             }, "CAMERA_SHAKE");
         }
 
-
         // Trigger an action next frame
         public static FunctionUpdater ActionNextFrame(Action action) {
             return FunctionUpdater.Create(() => {
@@ -620,7 +619,6 @@ namespace CodeMonkey.Utils {
             return ret;
         }
 
-
         // Return with milli dots and dollar sign
         public static string GetDollars(float n) {
             return GetDollars((long)n);
@@ -631,8 +629,6 @@ namespace CodeMonkey.Utils {
             else
                 return "$" + GetMilliDots(n);
         }
-
-
 
         [System.Serializable]
         private class JsonDictionary {
@@ -1493,27 +1489,24 @@ namespace CodeMonkey.Utils {
         public static string GetMonthName(int month) {
             switch (month) {
                 default:
-                case 0: return "January";
-                case 1: return "February";
-                case 2: return "March";
-                case 3: return "April";
-                case 4: return "May";
-                case 5: return "June";
-                case 6: return "July";
-                case 7: return "August";
-                case 8: return "September";
-                case 9: return "October";
-                case 10: return "November";
-                case 11: return "December";
+                case 1: return "January";
+                case 2: return "February";
+                case 3: return "March";
+                case 4: return "April";
+                case 5: return "May";
+                case 6: return "June";
+                case 7: return "July";
+                case 8: return "August";
+                case 9: return "September";
+                case 10: return "October";
+                case 11: return "November";
+                case 12: return "December";
             }
         }
 
         public static string GetMonthNameShort(int month) {
             return GetMonthName(month).Substring(0, 3);
         }
-
-
-
 
         public static class ReflectionTools {
 
@@ -1529,8 +1522,6 @@ namespace CodeMonkey.Utils {
             }
 
         }
-
-
 
         public static bool TestChance(int chance, int chanceMax = 100) {
             return UnityEngine.Random.Range(0, chanceMax) < chance;
@@ -1555,8 +1546,5 @@ namespace CodeMonkey.Utils {
             }
             return list;
         }
-
-
     }
-
 }

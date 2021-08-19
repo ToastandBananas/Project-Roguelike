@@ -121,13 +121,16 @@ public class LocationalInjury
 
         // Try to place the bandage in one of the player's inventories. If it won't fit, drop it
         if (characterRemoving.TryAddingItemToInventory(bandageItemData, null, false) == false)
-            DropItemController.instance.ForceDropNearest(bandageItemData, 1, null, null);
+            DropItemController.instance.ForceDropNearest(characterRemoving, bandageItemData, 1, null, null);
 
         FlavorText.instance.WriteRemoveBandageLine(characterRemoving, characterManager, bandageItemData, injuryLocation);
 
         bandageItemData.ReturnToItemDataObjectPool();
         bandageItemData = null;
         bandage = null;
+
+        if (injuryTimeRemaining <= 0)
+            TraumaSystem.RemoveInjury(characterManager, this);
     }
 
     public void SoilBandage(float amount)

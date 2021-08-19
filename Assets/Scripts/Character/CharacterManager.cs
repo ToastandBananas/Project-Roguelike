@@ -46,12 +46,16 @@ public class CharacterManager : MonoBehaviour
         attack = GetComponent<Attack>();
         characterStats = GetComponent<CharacterStats>();
         characterStats.characterManager = this;
-        spriteManager = transform.GetComponentInChildren<SpriteManager>();
-        humanoidSpriteManager = (HumanoidSpriteManager)spriteManager;
         movement = GetComponent<Movement>();
         status = GetComponent<Status>();
         status.characterManager = this;
         vision = GetComponentInChildren<Vision>();
+
+        humanoidSpriteManager = transform.GetComponentInChildren<HumanoidSpriteManager>();
+        if (humanoidSpriteManager != null)
+            spriteManager = humanoidSpriteManager;
+        else
+            spriteManager = transform.GetComponentInChildren<SpriteManager>();
 
         if (isNPC)
         {
@@ -59,7 +63,7 @@ public class CharacterManager : MonoBehaviour
             npcMovement = (NPCMovement)movement;
             stateController = GetComponent<StateController>();
         }
-
+        
         TryGetComponent(out equipmentManager);
         TryGetComponent(out personalInventory);
         if (equipmentManager != null)
@@ -131,7 +135,7 @@ public class CharacterManager : MonoBehaviour
             return true;
         }
         else if (backpackInventory != null)
-            itemAdded = gm.playerManager.backpackInventory.AddItem(itemData, itemData.currentStackSize, itemDatasInventory, true);
+            itemAdded = backpackInventory.AddItem(itemData, itemData.currentStackSize, itemDatasInventory, true);
 
         if (itemAdded)
         {
@@ -140,7 +144,7 @@ public class CharacterManager : MonoBehaviour
             return true;
         }
         else if (leftHipPouchInventory != null)
-            itemAdded = gm.playerManager.leftHipPouchInventory.AddItem(itemData, itemData.currentStackSize, itemDatasInventory, true);
+            itemAdded = leftHipPouchInventory.AddItem(itemData, itemData.currentStackSize, itemDatasInventory, true);
 
         if (itemAdded)
         {
@@ -149,7 +153,7 @@ public class CharacterManager : MonoBehaviour
             return true;
         }
         else if (rightHipPouchInventory != null)
-            itemAdded = gm.playerManager.rightHipPouchInventory.AddItem(itemData, itemData.currentStackSize, itemDatasInventory, true);
+            itemAdded = rightHipPouchInventory.AddItem(itemData, itemData.currentStackSize, itemDatasInventory, true);
 
         if (itemAdded)
         {
@@ -157,8 +161,17 @@ public class CharacterManager : MonoBehaviour
                 StartCoroutine(gm.playerInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.rightHipPouchSidebarButton));
             return true;
         }
+        else if (personalInventory != null)
+            itemAdded = personalInventory.AddItem(itemData, itemData.currentStackSize, itemDatasInventory, true);
+
+        if (itemAdded)
+        {
+            if (isNPC == false)
+                StartCoroutine(gm.playerInvUI.PlayAddItemEffect(itemData.item.pickupSprite, null, gm.playerInvUI.personalInventorySideBarButton));
+            return true;
+        }
         else if (canAddToQuiver && quiverInventory != null)
-            itemAdded = gm.playerManager.quiverInventory.AddItem(itemData, itemData.currentStackSize, itemDatasInventory, true);
+            itemAdded = quiverInventory.AddItem(itemData, itemData.currentStackSize, itemDatasInventory, true);
 
         if (itemAdded)
         {

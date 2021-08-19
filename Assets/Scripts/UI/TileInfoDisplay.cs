@@ -162,13 +162,15 @@ public class TileInfoDisplay : MonoBehaviour
             return blueHexColor;
         else if (npc.alliances.enemies.Contains(Factions.Player))
         {
-            if ((float)npc.characterStats.maxHealth.GetValue() / (float)gm.playerManager.playerStats.maxHealth.GetValue() < 0.2f)
+            float npcMaxTorsoHealth = npc.status.GetBodyPart(BodyPartType.Torso).maxHealth.GetValue();
+            float playerMaxTorsoHealth = gm.playerManager.status.GetBodyPart(BodyPartType.Torso).maxHealth.GetValue();
+            if (npcMaxTorsoHealth / playerMaxTorsoHealth < 0.2f)
                 return greenHexColor;
-            else if ((float)npc.characterStats.maxHealth.GetValue() / (float)gm.playerManager.playerStats.maxHealth.GetValue() < 0.55f)
+            else if (npcMaxTorsoHealth / playerMaxTorsoHealth < 0.55f)
                 return yellowHexColor;
-            else if ((float)npc.characterStats.maxHealth.GetValue() / (float)gm.playerManager.playerStats.maxHealth.GetValue() < 1f)
+            else if (npcMaxTorsoHealth / playerMaxTorsoHealth < 1f)
                 return orangeHexColor;
-            else if ((float)npc.characterStats.maxHealth.GetValue() / (float)gm.playerManager.playerStats.maxHealth.GetValue() < 1.55f)
+            else if (npcMaxTorsoHealth / playerMaxTorsoHealth < 1.55f)
                 return redHexColor;
             else
                 return darkRedHexColor;

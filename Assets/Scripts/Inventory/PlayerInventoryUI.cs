@@ -326,7 +326,12 @@ public class PlayerInventoryUI : InventoryUI
     {
         if (activeInventory != null)
         {
-            if (activeInventory == gm.playerManager.keysInventory)
+            if (activeInventory == gm.playerManager.personalInventory)
+            {
+                weightText.text = (Mathf.RoundToInt(activeInventory.currentWeight * 100f) / 100f).ToString();
+                volumeText.text = (Mathf.RoundToInt(activeInventory.currentVolume * 100f) / 100f).ToString() + "/" + activeInventory.maxVolume.ToString();
+            }
+            else if (activeInventory == gm.playerManager.keysInventory)
             {
                 weightText.text = (Mathf.RoundToInt(activeInventory.currentWeight * 100f) / 100f).ToString();
                 volumeText.text = (Mathf.RoundToInt(activeInventory.currentVolume * 100f) / 100f).ToString();

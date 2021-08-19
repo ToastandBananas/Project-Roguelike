@@ -176,8 +176,8 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
     {
         itemAmountText.text = itemData.currentStackSize.ToString();
 
-        float totalWeight = Mathf.RoundToInt(itemData.item.weight * itemData.currentStackSize * 100f) / 100f;
-        float totalVolume = Mathf.RoundToInt(itemData.item.volume * itemData.currentStackSize * 100f) / 100f;
+        float totalWeight = itemData.item.weight * itemData.currentStackSize;
+        float totalVolume = itemData.item.volume * itemData.currentStackSize;
 
         if (itemData.item.IsBag() || itemData.item.IsPortableContainer())
         {
@@ -185,21 +185,23 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             {
                 if (itemData.bagInventory.items[i].item != null)
                 {
-                    totalWeight += Mathf.RoundToInt(itemData.bagInventory.items[i].item.weight * itemData.bagInventory.items[i].currentStackSize * 100f) / 100f;
-                    totalVolume += Mathf.RoundToInt(itemData.bagInventory.items[i].item.volume * itemData.bagInventory.items[i].currentStackSize * 100f) / 100f;
+                    totalWeight += itemData.bagInventory.items[i].item.weight * itemData.bagInventory.items[i].currentStackSize;
+                    totalVolume += itemData.bagInventory.items[i].item.volume * itemData.bagInventory.items[i].currentStackSize;
 
                     if (itemData.bagInventory.items[i].item.IsBag() || itemData.bagInventory.items[i].item.IsPortableContainer())
                     {
                         for (int j = 0; j < itemData.bagInventory.items[i].bagInventory.items.Count; j++)
                         {
-                            totalWeight += Mathf.RoundToInt(itemData.bagInventory.items[i].bagInventory.items[j].item.weight * itemData.bagInventory.items[i].bagInventory.items[j].currentStackSize * 100f) / 100f;
-                            totalVolume += Mathf.RoundToInt(itemData.bagInventory.items[i].bagInventory.items[j].item.volume * itemData.bagInventory.items[i].bagInventory.items[j].currentStackSize * 100f) / 100f;
+                            totalWeight += itemData.bagInventory.items[i].bagInventory.items[j].item.weight * itemData.bagInventory.items[i].bagInventory.items[j].currentStackSize;
+                            totalVolume += itemData.bagInventory.items[i].bagInventory.items[j].item.volume * itemData.bagInventory.items[i].bagInventory.items[j].currentStackSize;
                         }
                     }
                 }
             }
         }
 
+        totalWeight = Mathf.RoundToInt(totalWeight * 100f) / 100f;
+        totalVolume = Mathf.RoundToInt(totalVolume * 100f) / 100f;
         itemWeightText.text = totalWeight.ToString();
         itemVolumeText.text = totalVolume.ToString();
     }

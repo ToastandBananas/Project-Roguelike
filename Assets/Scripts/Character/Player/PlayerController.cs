@@ -16,11 +16,6 @@ public class PlayerController : MonoBehaviour
         mainCamera = Camera.main;
         playerManager = PlayerManager.instance;
     }
-    
-    void Update()
-    {
-        
-    }
 
     void SetFocus(Interactable newFocus)
     {

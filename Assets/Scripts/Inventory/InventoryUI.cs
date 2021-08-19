@@ -183,21 +183,21 @@ public class InventoryUI : MonoBehaviour
         float totalWeight = 0f;
         for (int i = 0; i < itemsList.Count; i++)
         {
-            totalWeight += Mathf.RoundToInt(itemsList[i].item.weight * itemsList[i].currentStackSize * 100f) / 100f;
+            totalWeight += itemsList[i].item.weight * itemsList[i].currentStackSize;
             if (itemsList[i].item.IsBag() || itemsList[i].item.IsPortableContainer())
             {
                 if (itemsList[i].item.IsBag() && itemsList[i].IsPickup())
-                    totalWeight -= Mathf.RoundToInt(itemsList[i].item.weight * itemsList[i].currentStackSize * 100f) / 100f;
+                    totalWeight -= itemsList[i].item.weight * itemsList[i].currentStackSize;
 
                 for (int j = 0; j < itemsList[i].bagInventory.items.Count; j++)
                 {
-                    totalWeight += Mathf.RoundToInt(itemsList[i].bagInventory.items[j].item.weight * itemsList[i].bagInventory.items[j].currentStackSize * 100f) / 100f;
+                    totalWeight += itemsList[i].bagInventory.items[j].item.weight * itemsList[i].bagInventory.items[j].currentStackSize;
 
                     if (itemsList[i].bagInventory.items[j].item.IsBag() || itemsList[i].bagInventory.items[j].item.IsPortableContainer())
                     {
                         for (int k = 0; k < itemsList[i].bagInventory.items[j].bagInventory.items.Count; k++)
                         {
-                            totalWeight += Mathf.RoundToInt(itemsList[i].bagInventory.items[j].bagInventory.items[k].item.weight * itemsList[i].bagInventory.items[j].bagInventory.items[k].currentStackSize * 100f) / 100f;
+                            totalWeight += itemsList[i].bagInventory.items[j].bagInventory.items[k].item.weight * itemsList[i].bagInventory.items[j].bagInventory.items[k].currentStackSize;
                         }
                     }
                 }
@@ -213,7 +213,7 @@ public class InventoryUI : MonoBehaviour
         for (int i = 0; i < currentEquipment.Length; i++)
         {
             if (currentEquipment[i] != null)
-                totalWeight += Mathf.RoundToInt(currentEquipment[i].item.weight * currentEquipment[i].currentStackSize * 100f) / 100f;
+                totalWeight += currentEquipment[i].item.weight * currentEquipment[i].currentStackSize;
         }
 
         return Mathf.RoundToInt(totalWeight * 100f) / 100f;
@@ -224,21 +224,21 @@ public class InventoryUI : MonoBehaviour
         float totalVolume = 0f;
         for (int i = 0; i < itemsList.Count; i++)
         {
-            totalVolume += Mathf.RoundToInt(itemsList[i].item.volume * itemsList[i].currentStackSize * 100f) / 100f;
+            totalVolume += itemsList[i].item.volume * itemsList[i].currentStackSize;
             if (itemsList[i].item.IsBag() || itemsList[i].item.itemType == ItemType.Container)
             {
                 if (itemsList[i].item.IsBag() && itemsList[i].IsPickup())
-                    totalVolume -= Mathf.RoundToInt(itemsList[i].item.volume * itemsList[i].currentStackSize * 100f) / 100f;
+                    totalVolume -= itemsList[i].item.volume * itemsList[i].currentStackSize;
 
                 for (int j = 0; j < itemsList[i].bagInventory.items.Count; j++)
                 {
-                    totalVolume += Mathf.RoundToInt(itemsList[i].bagInventory.items[j].item.volume * itemsList[i].bagInventory.items[j].currentStackSize * 100f) / 100f;
+                    totalVolume += itemsList[i].bagInventory.items[j].item.volume * itemsList[i].bagInventory.items[j].currentStackSize;
 
                     if (itemsList[i].bagInventory.items[j].item.IsBag() || itemsList[i].bagInventory.items[j].item.IsPortableContainer())
                     {
                         for (int k = 0; k < itemsList[i].bagInventory.items[j].bagInventory.items.Count; k++)
                         {
-                            totalVolume += Mathf.RoundToInt(itemsList[i].bagInventory.items[j].bagInventory.items[k].item.volume * itemsList[i].bagInventory.items[j].bagInventory.items[k].currentStackSize * 100f) / 100f;
+                            totalVolume += itemsList[i].bagInventory.items[j].bagInventory.items[k].item.volume * itemsList[i].bagInventory.items[j].bagInventory.items[k].currentStackSize;
                         }
                     }
                 }
@@ -254,7 +254,7 @@ public class InventoryUI : MonoBehaviour
         for (int i = 0; i < currentEquipment.Length; i++)
         {
             if (currentEquipment[i] != null)
-                totalVolume += Mathf.RoundToInt(currentEquipment[i].item.volume * currentEquipment[i].currentStackSize * 100f) / 100f;
+                totalVolume += currentEquipment[i].item.volume * currentEquipment[i].currentStackSize;
         }
 
         return Mathf.RoundToInt(totalVolume * 100f) / 100f;

@@ -441,14 +441,22 @@ public class FlavorText : MonoBehaviour
 
     public void WriteApplyBandageLine(CharacterManager characterApplying, CharacterManager characterBeingBandaged, Injury injury, ItemData itemData, BodyPartType bodyPartType)
     {
-        WriteLine(Utilities.GetPronoun(characterApplying, true, false) + "wrapped up the <b>" + injury.name + "</b> on " + Utilities.GetPronoun(characterBeingBandaged, false, true)
-            + Utilities.FormatEnumStringWithSpaces(bodyPartType.ToString(), true) + " with " + Utilities.GetIndefiniteArticle(itemData.GetSoilageText() + " " + itemData.itemName, false, true) + ".");
+        if (characterApplying == characterBeingBandaged)
+            WriteLine(Utilities.GetPronoun(characterApplying, true, false) + "wrapped up the <b>" + injury.name + "</b> on " + Utilities.GetPossessivePronoun(characterBeingBandaged)
+                + Utilities.FormatEnumStringWithSpaces(bodyPartType.ToString(), true) + " with " + Utilities.GetIndefiniteArticle(itemData.GetSoilageText() + " " + itemData.itemName, false, true) + ".");
+        else
+            WriteLine(Utilities.GetPronoun(characterApplying, true, false) + "wrapped up the <b>" + injury.name + "</b> on " + Utilities.GetPronoun(characterBeingBandaged, false, true)
+                + Utilities.FormatEnumStringWithSpaces(bodyPartType.ToString(), true) + " with " + Utilities.GetIndefiniteArticle(itemData.GetSoilageText() + " " + itemData.itemName, false, true) + ".");
     }
 
     public void WriteRemoveBandageLine(CharacterManager characterRemoving, CharacterManager bandagedCharacter, ItemData itemData, BodyPartType bodyPartType)
     {
-        WriteLine(Utilities.GetPronoun(characterRemoving, true, false) + "removed the " + Utilities.GetIndefiniteArticle(itemData.GetSoilageText() + " " + itemData.itemName, false, true)
-            + " from " + Utilities.GetPronoun(bandagedCharacter, false, true) + Utilities.FormatEnumStringWithSpaces(bodyPartType.ToString(), true) + ".");
+        if (characterRemoving == bandagedCharacter)
+            WriteLine(Utilities.GetPronoun(characterRemoving, true, false) + "removed " + Utilities.GetIndefiniteArticle(itemData.GetSoilageText() + " " + itemData.itemName, false, true)
+                + " from " + Utilities.GetPossessivePronoun(bandagedCharacter) + Utilities.FormatEnumStringWithSpaces(bodyPartType.ToString(), true) + ".");
+        else
+            WriteLine(Utilities.GetPronoun(characterRemoving, true, false) + "removed " + Utilities.GetIndefiniteArticle(itemData.GetSoilageText() + " " + itemData.itemName, false, true)
+                + " from " + Utilities.GetPronoun(bandagedCharacter, false, true) + Utilities.FormatEnumStringWithSpaces(bodyPartType.ToString(), true) + ".");
     }
 
     /*string GetInjuryDescription(Injury injury)
@@ -479,28 +487,39 @@ public class FlavorText : MonoBehaviour
             WriteLine(Utilities.GetPronoun(null, true, false) + "dropped " + amountDropping + " <b>" + itemDropping.itemName + "s</b>.");
     }
 
+    public void WriteDroppingPersonalItemsLine()
+    {
+        WriteLine("<b>You</b> no longer have room for all of the items in your <b>Personal Inventory</b>. You will have to drop some items for now." );
+    }
+
     public void WriteTakeItemLine(ItemData itemTaking, int amountTaking, Inventory inventoryTakingFrom, Inventory inventoryPuttingIn)
     {
-        if (inventoryPuttingIn.name == "Keys")
+        string invPuttingInName;
+        if (inventoryPuttingIn == gm.playerManager.personalInventory)
+            invPuttingInName = "Personal Inventory";
+        else
+            invPuttingInName = inventoryPuttingIn.name;
+
+        if (inventoryPuttingIn == gm.playerManager.keysInventory)
         {
             if (inventoryTakingFrom != null)
-                WriteLine(Utilities.GetPronoun(null, true, false) + "took " + Utilities.GetIndefiniteArticle(itemTaking.itemName, false, true) + " from the <b>" + inventoryTakingFrom.name + "</b> and put it on your <b>key ring</b>.");
+                WriteLine("<b>You</b> took " + Utilities.GetIndefiniteArticle(itemTaking.itemName, false, true) + " from the <b>" + inventoryTakingFrom.name + "</b> and put it on your <b>key ring</b>.");
             else
-                WriteLine(Utilities.GetPronoun(null, true, false) + "picked up " + Utilities.GetIndefiniteArticle(itemTaking.itemName, false, true) + " and put it on your <b>key ring</b>.");
+                WriteLine("<b>You</b> picked up " + Utilities.GetIndefiniteArticle(itemTaking.itemName, false, true) + " and put it on your <b>key ring</b>.");
         }
         else if (amountTaking == 1)
         {
             if (inventoryTakingFrom != null)
-                WriteLine(Utilities.GetPronoun(null, true, false) + "took " + Utilities.GetIndefiniteArticle(itemTaking.itemName, false, true) + " from the <b>" + inventoryTakingFrom.name + "</b> and put it in your <b>" + inventoryPuttingIn.name + "</b>.");
+                WriteLine("<b>You</b> took " + Utilities.GetIndefiniteArticle(itemTaking.itemName, false, true) + " from the <b>" + inventoryTakingFrom.name + "</b> and put it in your <b>" + invPuttingInName + "</b>.");
             else
-                WriteLine(Utilities.GetPronoun(null, true, false) + "picked up " + Utilities.GetIndefiniteArticle(itemTaking.itemName, false, true) + " and put it in your <b>" + inventoryPuttingIn.name + "</b>.");
+                WriteLine("<b>You</b> picked up " + Utilities.GetIndefiniteArticle(itemTaking.itemName, false, true) + " and put it in your <b>" + invPuttingInName + "</b>.");
         }
         else
         {
             if (inventoryTakingFrom != null)
-                WriteLine(Utilities.GetPronoun(null, true, false) + "took " + amountTaking + " <b>" + itemTaking.itemName + "s</b> from the <b>" + inventoryTakingFrom.name + "</b> and put them in your <b>" + inventoryPuttingIn.name + "</b>.");
+                WriteLine("<b>You</b> took <b>" + amountTaking + " " + itemTaking.itemName + "s</b> from the <b>" + inventoryTakingFrom.name + "</b> and put them in your <b>" + invPuttingInName + "</b>.");
             else
-                WriteLine(Utilities.GetPronoun(null, true, false) + "picked up " + amountTaking + " <b>" + itemTaking.itemName + "s</b>" + " and put them in your <b>" + inventoryPuttingIn.name + "</b>.");
+                WriteLine("<b>You</b> picked up <b>" + amountTaking + " " + itemTaking.itemName + "s</b>" + " and put them in your <b>" + invPuttingInName + "</b>.");
         }
     }
 
@@ -542,12 +561,12 @@ public class FlavorText : MonoBehaviour
 
     public void WriteEquipLine(ItemData itemEquipping, CharacterManager characterManager)
     {
-        WriteLine(Utilities.GetPronoun(characterManager, true, false) + "equipped the <b>" + itemEquipping.itemName + "</b>.");
+        WriteLine(Utilities.GetPronoun(characterManager, true, false) + "equipped " + Utilities.GetIndefiniteArticle(itemEquipping.itemName, false, true) + ".");
     }
     
     public void WriteUnquipLine(ItemData itemUnequipping, CharacterManager characterManager)
     {
-        WriteLine(Utilities.GetPronoun(characterManager, true, false) + "unequipped the <b>" + itemUnequipping.itemName + "</b>.");
+        WriteLine(Utilities.GetPronoun(characterManager, true, false) + "unequipped " + Utilities.GetPossessivePronoun(characterManager) + "<b>" + itemUnequipping.itemName + "</b>.");
     }
 
     public void WriteTryEquipBrokenItemLine(ItemData itemTryingToEquip, CharacterManager characterManager)

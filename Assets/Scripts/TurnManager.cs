@@ -56,7 +56,7 @@ public class TurnManager : MonoBehaviour
 
     public void ReadyPlayersTurn()
     {
-        gm.playerManager.playerStats.ReplenishAP();
+        gm.playerManager.characterStats.ReplenishAP();
         gm.playerManager.isMyTurn = true;
 
         gm.tileInfoDisplay.DisplayTileInfo();

@@ -7,6 +7,7 @@ public class CharacterStats : Stats
     public IntStat constitution;
     public IntStat dexterity;
     public IntStat endurance;
+    public IntStat intelligence;
     public IntStat speed;
     public IntStat strength;
 
@@ -31,16 +32,11 @@ public class CharacterStats : Stats
 
     [HideInInspector] public CharacterManager characterManager;
 
-    public override void Awake()
-    {
-        base.Awake();
+    readonly float baseCarryWeight = 10;
 
+    void Awake()
+    {
         currentAP = maxAP.GetValue();
-    }
-
-    public override void Start()
-    {
-        base.Start();
     }
 
     public int UseAPAndGetRemainder(int amount)
@@ -108,6 +104,11 @@ public class CharacterStats : Stats
         return APLossBuildup;
     }
 
+    public float GetCriticalChance()
+    {
+        return (strength.GetValue() + dexterity.GetValue()) / 10f;
+    }
+
     public int GetWeaponSkill(Weapon weapon)
     {
         if (weapon.weaponType == WeaponType.Sword)
@@ -115,8 +116,14 @@ public class CharacterStats : Stats
         return 0;
     }
 
-    public float GetCriticalChance()
+    /// <summary>This is the amount that a character can carry before they become over-encumbered.</summary>
+    public float GetMaximumWeightCapacity()
     {
-        return (strength.GetValue() + dexterity.GetValue()) / 10f;
+        return baseCarryWeight + (strength.GetValue() * 2f);
+    }
+
+    public override bool IsDeadOrDestroyed()
+    {
+        return characterManager.status.isDead;
     }
 }

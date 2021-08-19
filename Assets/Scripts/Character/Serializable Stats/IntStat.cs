@@ -11,9 +11,16 @@ public class IntStat
     public int GetValue()
     {
         int finalValue = baseValue;
-        modifiers.ForEach(mod => finalValue += mod);
-
+        for (int i = 0; i < modifiers.Count; i++)
+        {
+            finalValue += modifiers[i];
+        }
         return finalValue;
+    }
+
+    public void EditBaseValue(int amount)
+    {
+        baseValue += amount;
     }
 
     public void SetBaseValue(int value)

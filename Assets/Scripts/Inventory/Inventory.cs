@@ -160,7 +160,7 @@ public class Inventory : MonoBehaviour
                 // Set the weight and volume of the "new" bag
                 itemDataToAdd.bagInventory.UpdateCurrentWeightAndVolume();
             }
-            Debug.Log(myInvUI);
+            
             // If this Inventory is active in the menu, create a new InventoryItem
             if (myInvUI != null && myInvUI.activeInventory == this)
             {
@@ -276,23 +276,27 @@ public class Inventory : MonoBehaviour
     {
         if (singleItemVolumeLimit > 0 && itemData.item.volume > singleItemVolumeLimit)
         {
+            Debug.Log("Here");
             if (inventoryOwner.isNPC == false)
                 gm.flavorText.WriteItemTooLargeLine(inventoryOwner, itemData, this);
             return false;
         }
 
-        float itemWeight = Mathf.RoundToInt(itemData.item.weight * itemCount * 100f) / 100f;
-        float itemVolume = Mathf.RoundToInt(itemData.item.volume * itemCount * 100f) / 100f;
+        float itemWeight = itemData.item.weight * itemCount;
+        float itemVolume = itemData.item.volume * itemCount;
 
         if (itemData.item.IsBag() || itemData.item.IsPortableContainer())
         {
             for (int i = 0; i < itemData.bagInventory.items.Count; i++)
             {
-                itemWeight += Mathf.RoundToInt(itemData.bagInventory.items[i].item.weight * itemData.bagInventory.items[i].currentStackSize * 100f) / 100f;
-                itemVolume += Mathf.RoundToInt(itemData.bagInventory.items[i].item.volume * itemData.bagInventory.items[i].currentStackSize * 100f) / 100f;
+                itemWeight += itemData.bagInventory.items[i].item.weight * itemData.bagInventory.items[i].currentStackSize;
+                itemVolume += itemData.bagInventory.items[i].item.volume * itemData.bagInventory.items[i].currentStackSize;
             }
         }
-        
+
+        itemWeight = Mathf.RoundToInt(itemWeight * 100f) / 100f;
+        itemVolume = Mathf.RoundToInt(itemVolume * 100f) / 100f;
+
         if (((inventoryOwner != null && this == inventoryOwner.personalInventory) || maxWeight - currentWeight >= itemWeight) && maxVolume - currentVolume >= itemVolume)
             return true;
 
@@ -317,6 +321,29 @@ public class Inventory : MonoBehaviour
         return false;
     }
 
+    public void DropExcessItems()
+    {
+        if (items.Count <= 0)
+        {
+            Debug.LogWarning("You reached this method, yet there are no items to drop. There must be an error in the volume and/or weight calculations for this inventory somewhere. Fix me!");
+            return;
+        }
+
+        // Organize items by weight first
+        List<ItemData> itemDatas = new List<ItemData>(items);
+        itemDatas.Sort((item1, item2) => (item1.item.volume * item1.currentStackSize).CompareTo(item2.item.volume * item2.currentStackSize));
+
+        for (int i = itemDatas.Count - 1; i >= 0; i--)
+        {
+            Debug.Log("Dropping: " + itemDatas[i].itemName);
+            gm.dropItemController.ForceDropNearest(inventoryOwner, itemDatas[i], itemDatas[i].currentStackSize, this, itemDatas[i].GetItemDatasInventoryItem());
+            items.Remove(itemDatas[i]);
+            UpdateCurrentWeightAndVolume();
+            if (currentVolume <= maxVolume && ((inventoryOwner != null && this == inventoryOwner.personalInventory) || currentWeight <= maxWeight))
+                return;
+        }
+    }
+
     public void UpdateCurrentWeightAndVolume()
     {
         ResetWeightAndVolume();
@@ -324,8 +351,8 @@ public class Inventory : MonoBehaviour
         {
             if (items[i].item != null)
             {
-                currentWeight += Mathf.RoundToInt(items[i].item.weight * items[i].currentStackSize * 100f) / 100f;
-                currentVolume += Mathf.RoundToInt(items[i].item.volume * items[i].currentStackSize * 100f) / 100f;
+                currentWeight += items[i].item.weight * items[i].currentStackSize;
+                currentVolume += items[i].item.volume * items[i].currentStackSize;
 
                 if (items[i].item.IsBag() || items[i].item.IsPortableContainer())
                 {
@@ -333,8 +360,8 @@ public class Inventory : MonoBehaviour
                     {
                         if (items[i].bagInventory.items[j].item != null)
                         {
-                            currentWeight += Mathf.RoundToInt(items[i].bagInventory.items[j].item.weight * items[i].bagInventory.items[j].currentStackSize * 100f) / 100f;
-                            currentVolume += Mathf.RoundToInt(items[i].bagInventory.items[j].item.volume * items[i].bagInventory.items[j].currentStackSize * 100f) / 100f;
+                            currentWeight += items[i].bagInventory.items[j].item.weight * items[i].bagInventory.items[j].currentStackSize;
+                            currentVolume += items[i].bagInventory.items[j].item.volume * items[i].bagInventory.items[j].currentStackSize;
 
                             if (items[i].bagInventory.items[j].item.IsBag() || items[i].bagInventory.items[j].item.IsPortableContainer())
                             {
@@ -342,8 +369,8 @@ public class Inventory : MonoBehaviour
                                 {
                                     if (items[i].bagInventory.items[j].bagInventory.items[k].item != null)
                                     {
-                                        currentWeight += Mathf.RoundToInt(items[i].bagInventory.items[j].bagInventory.items[k].item.weight * items[i].bagInventory.items[j].bagInventory.items[k].currentStackSize * 100f) / 100f;
-                                        currentVolume += Mathf.RoundToInt(items[i].bagInventory.items[j].bagInventory.items[k].item.volume * items[i].bagInventory.items[j].bagInventory.items[k].currentStackSize * 100f) / 100f;
+                                        currentWeight += items[i].bagInventory.items[j].bagInventory.items[k].item.weight * items[i].bagInventory.items[j].bagInventory.items[k].currentStackSize;
+                                        currentVolume += items[i].bagInventory.items[j].bagInventory.items[k].item.volume * items[i].bagInventory.items[j].bagInventory.items[k].currentStackSize;
                                     }
                                 }
                             }
@@ -352,6 +379,9 @@ public class Inventory : MonoBehaviour
                 }
             }
         }
+
+        currentWeight = Mathf.RoundToInt(currentWeight * 100f) / 100f;
+        currentVolume = Mathf.RoundToInt(currentVolume * 100f) / 100f;
     }
 
     public void ResetWeightAndVolume()

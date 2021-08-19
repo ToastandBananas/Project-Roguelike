@@ -11,9 +11,16 @@ public class FloatStat
     public float GetValue()
     {
         float finalValue = baseValue;
-        modifiers.ForEach(mod => finalValue += mod);
-
+        for (int i = 0; i < modifiers.Count; i++)
+        {
+            finalValue += modifiers[i];
+        }
         return finalValue;
+    }
+
+    public void EditBaseValue(float amount)
+    {
+        baseValue += amount;
     }
 
     public void SetBaseValue(float value)

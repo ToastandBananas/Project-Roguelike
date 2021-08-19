@@ -7592,7 +7592,6 @@ MonoBehaviour:
   playerController: {fileID: 0}
   playerEquipmentManager: {fileID: 0}
   playerMovement: {fileID: 0}
-  playerStats: {fileID: 0}
   interactionCollider: {fileID: 0}
   nearbyInteractables: []
   focusedInteractable: {fileID: 0}
@@ -7655,30 +7654,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 549636862}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d736b902204c96945a223b177122d373, type: 3}
+  m_Script: {fileID: 11500000, guid: d6433cf7fa4649649bc7bcf1e6911f0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth:
-    baseValue: 100
-    modifiers: 
-  currentHealth: 0
   canTakeDamage: 1
-  isDestroyed: 0
   gm: {fileID: 0}
   agility:
-    baseValue: 0
+    baseValue: 20
     modifiers: 
   constitution:
-    baseValue: 0
+    baseValue: 20
     modifiers: 
   dexterity:
     baseValue: 20
     modifiers: 
   endurance:
-    baseValue: 0
+    baseValue: 20
+    modifiers: 
+  intelligence:
+    baseValue: 20
     modifiers: 
   speed:
-    baseValue: 0
+    baseValue: 20
     modifiers: 
   strength:
     baseValue: 20
@@ -7696,10 +7693,10 @@ MonoBehaviour:
     baseValue: 1
     modifiers: 
   meleeAccuracy:
-    baseValue: 50
+    baseValue: 20
     modifiers: []
   rangedAccuracy:
-    baseValue: 50
+    baseValue: 20
     modifiers: []
   evasion:
     baseValue: 20
@@ -7711,9 +7708,6 @@ MonoBehaviour:
     baseValue: 20
     modifiers: []
   characterManager: {fileID: 0}
-  treeDamage:
-    baseValue: 0
-    modifiers: 
 --- !u!114 &549636873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12534,16 +12528,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 875541883}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59be7888ebfe1b8458c23ac1b0175524, type: 3}
+  m_Script: {fileID: 11500000, guid: e0d2495ed70235b48b85cb6b669770a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canTakeDamage: 1
+  gm: {fileID: 0}
   maxHealth:
-    baseValue: 25
+    baseValue: 100
     modifiers: 
   currentHealth: 0
-  canTakeDamage: 1
   isDestroyed: 0
-  gm: {fileID: 0}
 --- !u!1 &887206277
 GameObject:
   m_ObjectHideFlags: 0
@@ -13714,12 +13708,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6433cf7fa4649649bc7bcf1e6911f0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth:
-    baseValue: 70
-    modifiers: 
-  currentHealth: 0
   canTakeDamage: 1
-  isDestroyed: 0
   gm: {fileID: 0}
   agility:
     baseValue: 0
@@ -13732,6 +13721,9 @@ MonoBehaviour:
     modifiers: 
   endurance:
     baseValue: 0
+    modifiers: 
+  intelligence:
+    baseValue: 20
     modifiers: 
   speed:
     baseValue: 0
@@ -21235,12 +21227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6433cf7fa4649649bc7bcf1e6911f0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth:
-    baseValue: 70
-    modifiers: 
-  currentHealth: 0
   canTakeDamage: 1
-  isDestroyed: 0
   gm: {fileID: 0}
   agility:
     baseValue: 0
@@ -21253,6 +21240,9 @@ MonoBehaviour:
     modifiers: 
   endurance:
     baseValue: 0
+    modifiers: 
+  intelligence:
+    baseValue: 20
     modifiers: 
   speed:
     baseValue: 0

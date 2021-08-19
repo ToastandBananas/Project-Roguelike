@@ -32,28 +32,28 @@ public class DropItemController : MonoBehaviour
         gm = GameManager.instance;
     }
 
-    public void ForceDropNearest(ItemData itemData, int amountToDrop, Inventory invComingFrom, InventoryItem invItemComingFrom)
+    public void ForceDropNearest(CharacterManager characterManager, ItemData itemData, int amountToDrop, Inventory invComingFrom, InventoryItem invItemComingFrom)
     {
-        if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.Center), gm.playerManager.transform.position))
-            DropItem(gm.playerManager.transform.position, itemData, amountToDrop, invComingFrom, invItemComingFrom);
-        else if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.North), gm.playerManager.transform.position + new Vector3(0, 1)))
-            DropItem(gm.playerManager.transform.position + new Vector3(0, 1), itemData, amountToDrop, invComingFrom, invItemComingFrom);
-        else if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.East), gm.playerManager.transform.position + new Vector3(1, 0)))
-            DropItem(gm.playerManager.transform.position + new Vector3(1, 0), itemData, amountToDrop, invComingFrom, invItemComingFrom);
-        else if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.South), gm.playerManager.transform.position + new Vector3(0, -1)))
-            DropItem(gm.playerManager.transform.position + new Vector3(0, -1), itemData, amountToDrop, invComingFrom, invItemComingFrom);
-        else if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.West), gm.playerManager.transform.position + new Vector3(-1, 0)))
-            DropItem(gm.playerManager.transform.position + new Vector3(-1, 0), itemData, amountToDrop, invComingFrom, invItemComingFrom);
-        else if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.Northwest), gm.playerManager.transform.position + new Vector3(-1, 1)))
-            DropItem(gm.playerManager.transform.position + new Vector3(-1, 1), itemData, amountToDrop, invComingFrom, invItemComingFrom);
-        else if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.Northeast), gm.playerManager.transform.position + new Vector3(1, 1)))
-            DropItem(gm.playerManager.transform.position + new Vector3(1, 1), itemData, amountToDrop, invComingFrom, invItemComingFrom);
-        else if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.Southwest), gm.playerManager.transform.position + new Vector3(-1, -1)))
-            DropItem(gm.playerManager.transform.position + new Vector3(-1, -1), itemData, amountToDrop, invComingFrom, invItemComingFrom);
-        else if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.Southeast), gm.playerManager.transform.position + new Vector3(1, -1)))
-            DropItem(gm.playerManager.transform.position + new Vector3(1, -1), itemData, amountToDrop, invComingFrom, invItemComingFrom);
+        if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.Center), characterManager.transform.position))
+            DropItem(characterManager.transform.position, itemData, amountToDrop, invComingFrom, invItemComingFrom);
+        else if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.North), characterManager.transform.position + new Vector3(0, 1)))
+            DropItem(characterManager.transform.position + new Vector3(0, 1), itemData, amountToDrop, invComingFrom, invItemComingFrom);
+        else if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.East), characterManager.transform.position + new Vector3(1, 0)))
+            DropItem(characterManager.transform.position + new Vector3(1, 0), itemData, amountToDrop, invComingFrom, invItemComingFrom);
+        else if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.South), characterManager.transform.position + new Vector3(0, -1)))
+            DropItem(characterManager.transform.position + new Vector3(0, -1), itemData, amountToDrop, invComingFrom, invItemComingFrom);
+        else if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.West), characterManager.transform.position + new Vector3(-1, 0)))
+            DropItem(characterManager.transform.position + new Vector3(-1, 0), itemData, amountToDrop, invComingFrom, invItemComingFrom);
+        else if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.Northwest), characterManager.transform.position + new Vector3(-1, 1)))
+            DropItem(characterManager.transform.position + new Vector3(-1, 1), itemData, amountToDrop, invComingFrom, invItemComingFrom);
+        else if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.Northeast), characterManager.transform.position + new Vector3(1, 1)))
+            DropItem(characterManager.transform.position + new Vector3(1, 1), itemData, amountToDrop, invComingFrom, invItemComingFrom);
+        else if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.Southwest), characterManager.transform.position + new Vector3(-1, -1)))
+            DropItem(characterManager.transform.position + new Vector3(-1, -1), itemData, amountToDrop, invComingFrom, invItemComingFrom);
+        else if (gm.uiManager.IsRoomOnGround(itemData, gm.containerInvUI.GetItemsListFromDirection(Direction.Southeast), characterManager.transform.position + new Vector3(1, -1)))
+            DropItem(characterManager.transform.position + new Vector3(1, -1), itemData, amountToDrop, invComingFrom, invItemComingFrom);
         else
-            DropItem(gm.playerManager.transform.position, itemData, amountToDrop, invComingFrom, invItemComingFrom); // Drop at the player's position as a last resort
+            DropItem(characterManager.transform.position, itemData, amountToDrop, invComingFrom, invItemComingFrom); // Drop at the character's position as a last resort
     }
 
     public void DropItem(Vector3 dropPosition, ItemData itemData, int amountToDrop, Inventory invComingFrom, InventoryItem invItemComingFrom)
@@ -208,7 +208,6 @@ public class DropItemController : MonoBehaviour
 
         if (invComingFrom == null || invComingFrom.CompareTag("Object") == false)
             gm.flavorText.WriteDropItemLine(itemData, amountToDrop);
-
     }
 
     public void SetupItemPickup(ItemPickup newItemPickup, ItemData itemData, int amountToDrop, Vector3 dropPosition)

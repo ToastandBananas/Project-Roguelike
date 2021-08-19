@@ -52,7 +52,7 @@ public class PlayerMovement : Movement
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(0, 1));
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                         playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
-                    else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDestroyed == false)
+                    else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.IsDeadOrDestroyed() == false)
                         playerManager.playerAttack.DetermineAttack(null, stats);
                     else
                         StartCoroutine(Move(0, 1));
@@ -64,7 +64,7 @@ public class PlayerMovement : Movement
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(0, -1));
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                         playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
-                    else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDestroyed == false)
+                    else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.IsDeadOrDestroyed() == false)
                         playerManager.playerAttack.DetermineAttack(null, stats);
                     else
                         StartCoroutine(Move(0, -1));
@@ -79,7 +79,7 @@ public class PlayerMovement : Movement
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(-1, 0));
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                         playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
-                    else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDestroyed == false)
+                    else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.IsDeadOrDestroyed() == false)
                         playerManager.playerAttack.DetermineAttack(null, stats);
                     else
                         StartCoroutine(Move(-1, 0));
@@ -91,7 +91,7 @@ public class PlayerMovement : Movement
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(1, 0));
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                         playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
-                    else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDestroyed == false)
+                    else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.IsDeadOrDestroyed() == false)
                         playerManager.playerAttack.DetermineAttack(null, stats);
                     else
                         StartCoroutine(Move(1, 0));
@@ -106,7 +106,7 @@ public class PlayerMovement : Movement
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(-1, 1));
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                         playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
-                    else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDestroyed == false)
+                    else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.IsDeadOrDestroyed() == false)
                         playerManager.playerAttack.DetermineAttack(null, stats);
                     else
                         StartCoroutine(Move(-1, 1));
@@ -118,7 +118,7 @@ public class PlayerMovement : Movement
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(1, 1));
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                         playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
-                    else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDestroyed == false)
+                    else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.IsDeadOrDestroyed() == false)
                         playerManager.playerAttack.DetermineAttack(null, stats);
                     else
                         StartCoroutine(Move(1, 1));
@@ -133,7 +133,7 @@ public class PlayerMovement : Movement
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(-1, -1));
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                         playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
-                    else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDestroyed == false)
+                    else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.IsDeadOrDestroyed() == false)
                         playerManager.playerAttack.DetermineAttack(null, stats);
                     else
                         StartCoroutine(Move(-1, -1));
@@ -145,7 +145,7 @@ public class PlayerMovement : Movement
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(1, -1));
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                         playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
-                    else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDestroyed == false)
+                    else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.IsDeadOrDestroyed() == false)
                         playerManager.playerAttack.DetermineAttack(null, stats);
                     else
                         StartCoroutine(Move(1, -1));
@@ -163,7 +163,7 @@ public class PlayerMovement : Movement
             hit = RaycastMovePosition(transform.position, transform.position + new Vector3(-1, 1));
             if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                 playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
-            else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDestroyed == false)
+            else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.IsDeadOrDestroyed() == false)
                 playerManager.playerAttack.DetermineAttack(null, stats);
             else
                 StartCoroutine(Move(-1, 1));
@@ -179,7 +179,7 @@ public class PlayerMovement : Movement
             hit = RaycastMovePosition(transform.position, transform.position + new Vector3(1, 1));
             if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                 playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
-            else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDestroyed == false)
+            else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.IsDeadOrDestroyed() == false)
                 playerManager.playerAttack.DetermineAttack(null, stats);
             else
                 StartCoroutine(Move(1, 1));
@@ -195,7 +195,7 @@ public class PlayerMovement : Movement
             hit = RaycastMovePosition(transform.position, transform.position + new Vector3(-1, -1));
             if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                 playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
-            else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDestroyed == false)
+            else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.IsDeadOrDestroyed() == false)
                 playerManager.playerAttack.DetermineAttack(null, stats);
             else
                 StartCoroutine(Move(-1, -1));
@@ -211,7 +211,7 @@ public class PlayerMovement : Movement
             hit = RaycastMovePosition(transform.position, transform.position + new Vector3(1, -1));
             if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
                 playerManager.playerAttack.DetermineAttack(charManager, charManager.characterStats);
-            else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.isDestroyed == false)
+            else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.IsDeadOrDestroyed() == false)
                 playerManager.playerAttack.DetermineAttack(null, stats);
             else
                 StartCoroutine(Move(1, -1));

@@ -48,7 +48,7 @@ public class Attack : MonoBehaviour
             }
         }
 
-        if ((targetsCharacterManager != null && targetsCharacterManager.status.isDead) || targetsStats.isDestroyed || TargetInAttackRange(targetsStats.transform) == false)
+        if ((targetsCharacterManager != null && targetsCharacterManager.status.isDead) || targetsStats.IsDeadOrDestroyed() || TargetInAttackRange(targetsStats.transform) == false)
         {
             characterManager.TakeTurn();
             yield break;
@@ -223,15 +223,15 @@ public class Attack : MonoBehaviour
 
     bool TryGetWeaponStuck(Stats targetsStats, CharacterManager target, ItemData weaponUsedItemData, PhysicalDamageType mainPhysicalDamageType, int pierceDamage, int slashDamage, int cleaveDamage, BodyPartType bodyPartHit = BodyPartType.Torso)
     {
-        // A weapon should only get stuck in a character's head if they died from the hit, otherwise it would be unrealistic to have a weapon get lodged into their head and still have them live
-        if ((target != null && bodyPartHit == BodyPartType.Head && target.status.isDead == false) || (target == null && targetsStats.isDestroyed))
+        // A weapon should only get stuck in a character's head if they died from the hit, otherwise it would be unrealistic to have a weapon get lodged into their head and still have them live, so don't let it happen
+        if ((target != null && bodyPartHit == BodyPartType.Head && target.status.isDead == false) || (target == null && targetsStats.IsDeadOrDestroyed()))
             return false;
 
         int maxHealth = 0;
         if (target != null)
             maxHealth = target.status.GetBodyPart(bodyPartHit).maxHealth.GetValue();
         else
-            maxHealth = targetsStats.maxHealth.GetValue();
+            maxHealth = targetsStats.GetMaxHealth();
 
         float random = Random.Range(0f, 1f);
         float percentDamage = 0f;

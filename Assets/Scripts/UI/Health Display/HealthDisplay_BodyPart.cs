@@ -14,6 +14,7 @@ public class HealthDisplay_BodyPart : MonoBehaviour, IPointerEnterHandler, IPoin
     readonly string red = "#C81236";
     readonly string orange = "#FE6E00";
     readonly string blue = "#0055B3";
+    readonly string green = "#387532";
 
     StringBuilder stringBuilder = new StringBuilder();
     GameManager gm;
@@ -28,9 +29,7 @@ public class HealthDisplay_BodyPart : MonoBehaviour, IPointerEnterHandler, IPoin
     void Update()
     {
         if (GameControls.gamePlayActions.menuSelect.WasPressed && gm.healthDisplay.focusedBodyPart == this && gm.healthDisplay.selectedBodyPart != this)
-        {
             gm.healthDisplay.selectedBodyPart = this;
-        }
     }
 
     public void GenerateTooltipTexts()
@@ -51,14 +50,17 @@ public class HealthDisplay_BodyPart : MonoBehaviour, IPointerEnterHandler, IPoin
                 stringBuilder.Clear();
 
                 // Injury Name
-                stringBuilder.Append("<size=22>" + bodyPart.injuries[i].injury.name + "</size>\n");
+                stringBuilder.Append("<size=22>" + bodyPart.injuries[i].injury.name + "</size>\n"); // If not fully healed
+                
+                if (bodyPart.injuries[i].injuryTimeRemaining <= 0)
+                    stringBuilder.Append("- <color=" + green + ">Fully Healed</color>\n");
 
                 // Bandaged?
                 if (bodyPart.injuries[i].bandage != null)
                     stringBuilder.Append("- <color=" + blue + ">" + "Bandaged with " + bodyPart.injuries[i].bandage.name + " (Soilage: " + bodyPart.injuries[i].bandageItemData.GetSoilage().ToString("#0") + "%)</color>\n");
 
                 // If the wound can bleed...
-                if (bodyPart.injuries[i].injury.GetBleedTime().y > 0)
+                if (bodyPart.injuries[i].injury.GetBleedTime().y > 0 && bodyPart.injuries[i].injuryTimeRemaining > 0)
                 {
                     // Bleed Severity
                     if (bodyPart.injuries[i].bleedTimeRemaining > 0)

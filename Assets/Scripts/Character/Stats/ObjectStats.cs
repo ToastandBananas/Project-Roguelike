@@ -1,29 +1,17 @@
 using UnityEngine;
 
-public class Stats : MonoBehaviour
+public class ObjectStats : Stats
 {
     public IntStat maxHealth;
     [HideInInspector] public int currentHealth;
-
-    [HideInInspector] public bool canTakeDamage = true;
     [HideInInspector] public bool isDestroyed;
 
-    [HideInInspector] public GameManager gm;
-
-    SpriteManager spriteManager;
-
-    public virtual void Awake()
+    void Awake()
     {
         currentHealth = maxHealth.GetValue();
     }
 
-    public virtual void Start()
-    {
-        gm = GameManager.instance;
-        spriteManager = GetComponentInChildren<SpriteManager>();
-    }
-
-    public virtual int TakeDamage(int damage)
+    public override int TakeDamage(int damage)
     {
         if (canTakeDamage)
         {
@@ -40,7 +28,7 @@ public class Stats : MonoBehaviour
         return damage;
     }
 
-    public virtual int Heal(int healAmount)
+    public override int Heal(int healAmount)
     {
         if (currentHealth + healAmount > maxHealth.GetValue())
         {
@@ -55,7 +43,7 @@ public class Stats : MonoBehaviour
         return healAmount;
     }
 
-    public virtual void Destroy()
+    public void Destroy()
     {
         isDestroyed = true;
         GameTiles.RemoveObject(transform.position);
@@ -79,5 +67,15 @@ public class Stats : MonoBehaviour
             gm.flavorText.StartCoroutine(gm.flavorText.DelayWriteLine("The " + name + " was destroyed."));
 
         gameObject.SetActive(false);
+    }
+
+    public override int GetMaxHealth()
+    {
+        return maxHealth.GetValue();
+    }
+
+    public override bool IsDeadOrDestroyed()
+    {
+        return isDestroyed;
     }
 }

@@ -290,7 +290,7 @@ public class EquipmentManager : MonoBehaviour
                 if (forceUnequip && shouldDropItem)
                 {
                     gm.flavorText.WriteUnquipLine(oldItemData, characterManager);
-                    gm.dropItemController.ForceDropNearest(oldItemData, oldItemData.currentStackSize, invComingFrom, invItemComingFrom);
+                    gm.dropItemController.ForceDropNearest(characterManager, oldItemData, oldItemData.currentStackSize, invComingFrom, invItemComingFrom);
                 }
                 else if (shouldDropItem && canDropItem)
                 {
@@ -789,7 +789,6 @@ public class EquipmentManager : MonoBehaviour
         {
             if (oldItemData.item.IsBag() == false)
             {
-                Debug.Log(oldItemData.item.name);
                 Wearable wearable = (Wearable)oldItemData.item;
 
                 if (oldItemData.pocketsVolume > 0)
@@ -797,6 +796,15 @@ public class EquipmentManager : MonoBehaviour
                     // Subtract from personal inventory volume
                     characterManager.characterStats.maxPersonalInvVolume.RemoveModifier(oldItemData.pocketsVolume);
                     characterManager.personalInventory.maxVolume = characterManager.characterStats.maxPersonalInvVolume.GetValue();
+
+                    // If the personal inventory is now over its volume limit, drop items until the volume amount is fine
+                    if (characterManager.personalInventory.currentVolume > characterManager.personalInventory.maxVolume)
+                    {
+                        // Show some flavor text explaining why you're dropping the items
+                        gm.flavorText.WriteDroppingPersonalItemsLine();
+
+                        characterManager.personalInventory.DropExcessItems();
+                    }
                 }
 
                 // Subtract from clothing or armor defense

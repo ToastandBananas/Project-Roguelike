@@ -11,6 +11,8 @@ public class TraumaSystem : MonoBehaviour
     [Header("Blunt Trauma")]
     public Injury[] bruises;
 
+    static GameManager gm;
+
     #region Singleton
     public static TraumaSystem instance;
     void Awake()
@@ -28,6 +30,11 @@ public class TraumaSystem : MonoBehaviour
     }
     #endregion
 
+    void Start()
+    {
+        gm = GameManager.instance;
+    }
+
     public static void ApplyInjury(CharacterManager character, Injury injury, BodyPartType injuryLocation, bool onBackOfBodyPart)
     {
         character.status.GetBodyPart(injuryLocation).injuries.Add(new LocationalInjury(character, injury, injuryLocation, onBackOfBodyPart));
@@ -35,7 +42,14 @@ public class TraumaSystem : MonoBehaviour
 
     public static void RemoveInjury(CharacterManager character, LocationalInjury personalInjury)
     {
-        character.status.GetBodyPart(personalInjury.injuryLocation).injuries.Remove(personalInjury);
+        BodyPart bodyPart = character.status.GetBodyPart(personalInjury.injuryLocation);
+        bodyPart.injuries.Remove(personalInjury);
+        if (character.isNPC == false)
+        {
+            if ((gm.healthDisplay.focusedBodyPart != null && gm.healthDisplay.focusedBodyPart.bodyPart == bodyPart) || (gm.healthDisplay.selectedBodyPart != null && gm.healthDisplay.selectedBodyPart.bodyPart == bodyPart))
+                gm.healthDisplay.UpdateTooltip();
+            gm.healthDisplay.UpdateHealthHeaderColor(bodyPart.bodyPartType, bodyPart);
+        }
     }
 
     public static void ApplyBuff(CharacterManager character, Consumable consumable)

@@ -30,7 +30,7 @@ public class Status : MonoBehaviour
     [HideInInspector] public bool isDead;
     [HideInInspector] public CharacterManager characterManager;
 
-    readonly float naturalHealingPercentPerTurn = 0.0001f; // 60 minutes (100 turns) to heal entire body 1% if healthiness == 1
+    readonly float naturalHealingPercentPerTurn = 0.0001f; // 60 minutes (100 turns) to naturally heal entire body 1% if healthiness == 100f
     readonly float naturalBloodProductionPerTurn = 0.0164f; // 1 pint takes 48 hours IRL and 1 pint = 473 mL | (473mL / 48hr / 60min / 60sec) * 6sec/turn = 0.0164mL/turn
 
     // Healthiness signifies your overall bodily health, effecting your natural healing over time.
@@ -71,10 +71,10 @@ public class Status : MonoBehaviour
     public void AdjustHealthiness(float amount)
     {
         healthiness += amount;
-        if (healthiness > maxHealthiness)
-            healthiness = maxHealthiness;
         if (healthiness < minHealthiness)
             healthiness = minHealthiness;
+        else if (healthiness > maxHealthiness)
+            healthiness = maxHealthiness;
     }
 
     public void UpdateBuffs(int timePassed = TimeSystem.defaultTimeTickInSeconds)
@@ -116,13 +116,25 @@ public class Status : MonoBehaviour
 
                     // Update injury time remaining
                     bodyParts[i].injuries[j].injuryTimeRemaining -= Mathf.RoundToInt(timePassed * bodyParts[i].injuries[j].injuryHealMultiplier);
-                    if (bodyParts[i].injuries[j].injuryTimeRemaining <= 0)
+                    if (bodyParts[i].injuries[j].injuryTimeRemaining <= 0 && bodyParts[i].injuries[j].bandageItemData == null)
+                    {
                         bodyParts[i].injuries.Remove(bodyParts[i].injuries[j]);
+                        gm.healthDisplay.UpdateHealthHeaderColor(bodyParts[i].bodyPartType, bodyParts[i]);
+                    }
+                    // If this is an NPC and the injury is finished healing, but it still has an applied medical item
+                    else if (characterManager.isNPC && bodyParts[i].injuries[j].injuryTimeRemaining <= 0 && characterManager.stateController.currentState != State.Fight 
+                        && characterManager.humanoidSpriteManager != null && characterManager.actionsQueued == 0)
+                    {
+                        // If the applied medical item is a bandage
+                        if (bodyParts[i].injuries[j].bandageItemData != null)
+                            StartCoroutine(bodyParts[i].injuries[j].RemoveMedicalItem(characterManager, MedicalSupplyType.Bandage));
+                    }
 
                     // If this is an NPC and any of their injuries are untreated, check if they have the appropriate medical items and if so, treat the wound
                     if (characterManager.isNPC && characterManager.stateController.currentState != State.Fight && characterManager.humanoidSpriteManager != null && characterManager.actionsQueued == 0 
-                        && bodyParts[i].injuries[j].InjuryRemedied() == false)
+                        && bodyParts[i].injuries[j].InjuryRemedied() == false && (bodyParts[i].injuries[j].injuryTimeRemaining > 240 || bodyParts[i].injuries[j].bleedTimeRemaining > 0))
                     {
+                        // Bandage the injury?
                         if (bodyParts[i].injuries[j].injury.CanBandage() && bodyParts[i].injuries[j].bandage == null)
                         {
                             List<ItemData> bandages = characterManager.GetMedicalSupplies(MedicalSupplyType.Bandage);
@@ -148,7 +160,7 @@ public class Status : MonoBehaviour
                 // If the injury is still bleeding
                 if (bodyParts[i].injuries[k].bleedTimeRemaining > 0)
                 {
-                    //if (characterManager.isNPC) Debug.Log(bodyParts[i].bodyPartType + " bleeds from " + bodyParts[i].injuries[k].injury.name);
+                    // if (characterManager.isNPC) Debug.Log(bodyParts[i].bodyPartType + " bleeds from " + bodyParts[i].injuries[k].injury.name);
 
                     // Add to the damage buildup
                     bodyParts[i].damageBuildup += bodyParts[i].injuries[k].damagePerTurn;
