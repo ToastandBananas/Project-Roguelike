@@ -249,6 +249,21 @@ public class APManager : MonoBehaviour
         }
     }
 
+    public int GetSheatheWeaponAPCost(ItemData leftWeapon, ItemData rightWeapon)
+    {
+        float cost = 0;
+        if (leftWeapon != null)
+            cost += leftWeapon.item.weight + leftWeapon.item.volume;
+        if (rightWeapon != null)
+            cost += rightWeapon.item.weight + rightWeapon.item.volume;
+        return Mathf.RoundToInt(cost);
+    }
+
+    public int GetUnheatheWeaponAPCost(ItemData leftWeapon, ItemData rightWeapon)
+    {
+        return Mathf.RoundToInt(GetSheatheWeaponAPCost(leftWeapon, rightWeapon) / 2);
+    }
+
     public int GetConsumeAPCost(Consumable consumable)
     {
         return Mathf.RoundToInt((consumable.volume * 100) + (consumable.weight * 100));

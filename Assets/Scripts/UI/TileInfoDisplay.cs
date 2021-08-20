@@ -58,9 +58,9 @@ public class TileInfoDisplay : MonoBehaviour
     {
         lastPositionChecked = mouseWorldPos;
 
-        GameTiles.itemDatas.TryGetValue(mouseWorldPos, out List<ItemData> list);
-        if (list != null)
-            focusedItems = new List<ItemData>(list);
+        GameTiles.itemDatas.TryGetValue(mouseWorldPos, out List<ItemData> itemsList);
+        if (itemsList != null)
+            focusedItems = new List<ItemData>(itemsList);
         else
             focusedItems.Clear();
 
@@ -74,7 +74,7 @@ public class TileInfoDisplay : MonoBehaviour
 
         if (Vector2.Distance(mouseWorldPos, gm.playerManager.transform.position) > gm.playerManager.vision.lookRadius)
             stringBuilder.Append("You can't see that far...");
-        else if (focusedCharacter == null && focusedObject == null && (list == null || list.Count == 0))
+        else if (focusedCharacter == null && focusedObject == null && (itemsList == null || itemsList.Count == 0))
             stringBuilder.Append("You don't see anything here...");
         else
         {
@@ -98,14 +98,14 @@ public class TileInfoDisplay : MonoBehaviour
             }
 
             // If there are any items at this position, show their names
-            if (list != null)
+            if (itemsList != null)
             {
-                if (list.Count > 1)
+                if (itemsList.Count > 1)
                     stringBuilder.Append("You see some items on the ground:\n");
-                else
+                else if (itemsList.Count == 1)
                     stringBuilder.Append("You see ");
 
-                for (int i = 0; i < list.Count; i++)
+                for (int i = 0; i < itemsList.Count; i++)
                 {
                     if ((focusedCharacter != null && i >= 5) || i >= 7)
                     {
@@ -113,42 +113,42 @@ public class TileInfoDisplay : MonoBehaviour
                         break;
                     }
 
-                    if (list.Count > 1)
+                    if (itemsList.Count > 1)
                         stringBuilder.Append("- ");
                     else
                     {
-                        if (list[i].item.IsWearable())
+                        if (itemsList[i].item.IsWearable())
                         {
-                            Wearable wearable = (Wearable)list[i].item;
+                            Wearable wearable = (Wearable)itemsList[i].item;
                             if (wearable.equipmentSlot == EquipmentSlot.BodyArmor || wearable.equipmentSlot == EquipmentSlot.LegArmor 
                                 || wearable.equipmentSlot == EquipmentSlot.Gloves || wearable.equipmentSlot == EquipmentSlot.Boots)
                                 stringBuilder.Append("<b>");
                             else
-                                stringBuilder.Append(Utilities.GetIndefiniteArticle(list[i].itemName, false, false) + "<b>");
+                                stringBuilder.Append(Utilities.GetIndefiniteArticle(itemsList[i].itemName, false, false) + "<b>");
                         }
-                        else if (list[i].currentStackSize == 1)
-                            stringBuilder.Append(Utilities.GetIndefiniteArticle(list[i].itemName, false, false) + "<b>");
+                        else if (itemsList[i].currentStackSize == 1)
+                            stringBuilder.Append(Utilities.GetIndefiniteArticle(itemsList[i].itemName, false, false) + "<b>");
                         else
                             stringBuilder.Append("<b>");
                     }
 
-                    if (list[i].currentStackSize > 1)
+                    if (itemsList[i].currentStackSize > 1)
                     {
-                        stringBuilder.Append(list[i].currentStackSize + " ");
+                        stringBuilder.Append(itemsList[i].currentStackSize + " ");
 
-                        if (list[i].item.pluralName != "")
-                            stringBuilder.Append(list[i].item.pluralName);
+                        if (itemsList[i].item.pluralName != "")
+                            stringBuilder.Append(itemsList[i].item.pluralName);
                         else
-                            stringBuilder.Append(list[i].itemName + "s");
+                            stringBuilder.Append(itemsList[i].itemName + "s");
                     }
                     else
-                        stringBuilder.Append(list[i].itemName);
+                        stringBuilder.Append(itemsList[i].itemName);
 
-                    if (list.Count > 1)
+                    if (itemsList.Count > 1)
                         stringBuilder.Append("\n");
                 }
 
-                if (list.Count == 1)
+                if (itemsList.Count == 1)
                     stringBuilder.Append("</b> here.");
             }
         }

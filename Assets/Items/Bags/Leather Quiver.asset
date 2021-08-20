@@ -16,6 +16,7 @@ MonoBehaviour:
   pluralName: 
   itemType: 12
   mainMaterial: 23
+  itemSize: 4
   description: Holds your arrows.
   maxStackSize: 1
   weight: 0.3

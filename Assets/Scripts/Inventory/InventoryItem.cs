@@ -96,7 +96,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             myInventory.items.Remove(itemData);
 
         // If the item being cleared is a bag or portable container, contract the disclosure widget (if it's expanded)
-        if (itemData != null && (itemData.item.IsBag() || itemData.item.itemType == ItemType.Container) && disclosureWidget.isExpanded)
+        if (itemData != null && disclosureWidget != null && disclosureWidget.isExpanded)
             disclosureWidget.ContractDisclosureWidget();
 
         // Return the itemData on this InventoryItem back to the appropriate object pool
@@ -167,8 +167,19 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
     public void UpdateAllItemTexts()
     {
-        itemNameText.text = itemData.itemName;
-        itemTypeText.text = itemData.item.itemType.ToString();
+        if (gm.playerManager.carriedItems.Contains(itemData))
+            itemNameText.text = "<b>(Carried)</b> ";
+        else if (gm.playerManager.personalInventory.items.Contains(itemData))
+            itemNameText.text = "<b>(Pockets)</b> ";
+        else
+            itemNameText.text = "";
+
+        if (itemData.currentStackSize > 1)
+            itemNameText.text += itemData.GetPluralName();
+        else
+            itemNameText.text += itemData.itemName;
+
+        itemTypeText.text = Utilities.FormatEnumStringWithSpaces(itemData.item.itemType.ToString(), false);
         UpdateItemNumberTexts();
     }
 
@@ -430,7 +441,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
                     if (gm.uiManager.IsRoomOnGround(itemData, itemsListAddingTo, dropPos))
                     {
-                        gm.dropItemController.DropItem(dropPos, itemData, itemData.currentStackSize, gm.playerInvUI.activeInventory, this);
+                        gm.dropItemController.DropItem(gm.playerManager, dropPos, itemData, itemData.currentStackSize, gm.playerInvUI.activeInventory, this);
 
                         if (gm.playerInvUI.activeInventory != null)
                             gm.playerInvUI.activeInventory.items.Remove(itemData);

@@ -492,6 +492,30 @@ public class FlavorText : MonoBehaviour
         WriteLine("<b>You</b> no longer have room for all of the items in your <b>Personal Inventory</b>. You will have to drop some items for now." );
     }
 
+    public void WriteCarryItemLine(ItemData itemData)
+    {
+        if (itemData.currentStackSize > 1)
+            WriteLine("<b>You</b> pick up and carry <b>" + itemData.currentStackSize + itemData.GetPluralName() + "</b>.");
+        else
+            WriteLine("<b>You</b> pick up and carry the <b>" + itemData.itemName + "</b>.");
+    }
+
+    public void WriteCantCarryItemLine(ItemData itemData, int itemCount)
+    {
+        BodyPart leftHand = gm.playerManager.status.GetBodyPart(BodyPartType.LeftHand);
+        BodyPart rightHand = gm.playerManager.status.GetBodyPart(BodyPartType.RightHand);
+        string itemName;
+        if (itemCount > 1)
+            itemName = itemData.GetPluralName();
+        else
+            itemName = itemData.itemName;
+
+        if ((leftHand.isIncapacitated || leftHand.isSevered) && (rightHand.isIncapacitated || rightHand.isSevered))
+            WriteLine("<b>You</b> want to pick up and carry the <b>" + itemName + "</b>, but you no longer have use of your hands.");
+        else
+            WriteLine("<b>You</b> try to pick up and carry the <b>" + itemName + "</b>, but you don't have enough room in your hands.");
+    }
+
     public void WriteTakeItemLine(ItemData itemTaking, int amountTaking, Inventory inventoryTakingFrom, Inventory inventoryPuttingIn)
     {
         string invPuttingInName;
@@ -567,6 +591,58 @@ public class FlavorText : MonoBehaviour
     public void WriteUnquipLine(ItemData itemUnequipping, CharacterManager characterManager)
     {
         WriteLine(Utilities.GetPronoun(characterManager, true, false) + "unequipped " + Utilities.GetPossessivePronoun(characterManager) + "<b>" + itemUnequipping.itemName + "</b>.");
+    }
+
+    public void WriteSheatheWeaponLine(ItemData leftWeapon, ItemData rightWeapon)
+    {
+        if (leftWeapon != null && rightWeapon != null)
+        {
+            if (GetSheatheVerb(leftWeapon) == GetSheatheVerb(rightWeapon))
+                WriteLine("<b>You</b> " + GetSheatheVerb(rightWeapon) + " your <b>" + rightWeapon.itemName + "</b> and your <b>" + leftWeapon.itemName + "</b>.");
+            else
+                WriteLine("<b>You</b> " + GetSheatheVerb(rightWeapon) + " your <b>" + rightWeapon.itemName + "</b> and " + GetSheatheVerb(leftWeapon) + " your <b>" + leftWeapon.itemName + "</b>.");
+        }
+        else if (rightWeapon != null)
+            WriteLine("<b>You</b> " + GetSheatheVerb(rightWeapon) + " your <b>" + rightWeapon.itemName + "</b>.");
+        else if (leftWeapon != null)
+            WriteLine("<b>You</b> " + GetSheatheVerb(leftWeapon) + " your <b>" + leftWeapon.itemName + "</b>.");
+    }
+
+    public void WriteUnheatheWeaponLine(ItemData leftWeapon, ItemData rightWeapon)
+    {
+        if (leftWeapon != null && rightWeapon != null)
+        {
+            if (GetUnheatheVerb(leftWeapon) == GetUnheatheVerb(rightWeapon))
+                WriteLine("<b>You</b> " + GetUnheatheVerb(rightWeapon) + " your <b>" + rightWeapon.itemName + "</b> and your <b>" + leftWeapon.itemName + "</b>.");
+            else
+                WriteLine("<b>You</b> " + GetUnheatheVerb(rightWeapon) + " your <b>" + rightWeapon.itemName + "</b> and " + GetUnheatheVerb(leftWeapon) + " your <b>" + leftWeapon.itemName + "</b>.");
+        }
+        else if (rightWeapon != null)
+            WriteLine("<b>You</b> " + GetUnheatheVerb(rightWeapon) + " your <b>" + rightWeapon.itemName + "</b>.");
+        else if (leftWeapon != null)
+            WriteLine("<b>You</b> " + GetUnheatheVerb(leftWeapon) + " your <b>" + leftWeapon.itemName + "</b>.");
+    }
+
+    string GetSheatheVerb(ItemData itemData)
+    {
+        if (itemData.item.IsWeapon())
+        {
+            Weapon weapon = (Weapon)itemData.item;
+            if (weapon.weaponType == WeaponType.Sword || weapon.weaponType == WeaponType.Dagger)
+                return "sheathe";
+        }
+        return "stow away";
+    }
+
+    string GetUnheatheVerb(ItemData itemData)
+    {
+        if (itemData.item.IsWeapon())
+        {
+            Weapon weapon = (Weapon)itemData.item;
+            if (weapon.weaponType == WeaponType.Sword || weapon.weaponType == WeaponType.Dagger)
+                return "unheathe";
+        }
+        return "pull out";
     }
 
     public void WriteTryEquipBrokenItemLine(ItemData itemTryingToEquip, CharacterManager characterManager)

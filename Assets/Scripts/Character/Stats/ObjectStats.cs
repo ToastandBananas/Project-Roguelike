@@ -57,7 +57,7 @@ public class ObjectStats : Stats
 
             for (int i = 0; i < inv.items.Count; i++)
             {
-                gm.dropItemController.DropItem(transform.position, inv.items[i], inv.items[i].currentStackSize, inv, null);
+                gm.dropItemController.DropItem(null, transform.position, inv.items[i], inv.items[i].currentStackSize, inv, null);
                 inv.items[i].ReturnToObjectPool();
             }
 

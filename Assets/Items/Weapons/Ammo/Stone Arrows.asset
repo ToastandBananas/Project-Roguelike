@@ -13,14 +13,15 @@ MonoBehaviour:
   m_Name: Stone Arrows
   m_EditorClassIdentifier: 
   name: Stone Arrow
+  pluralName: 
   itemType: 2
   mainMaterial: 9
+  itemSize: 1
   description: A simple wooden arrow with an arrowhead made of stone.
   maxStackSize: 50
   weight: 0.08
   volume: 0.25
   isUsable: 0
-  minBaseValue: 0
-  maxBaseValue: 0
+  value: {x: 0, y: 0}
   staticValue: 1
   pickupSprite: {fileID: 3695201799222929562, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}

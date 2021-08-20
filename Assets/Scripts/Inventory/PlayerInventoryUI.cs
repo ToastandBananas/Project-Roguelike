@@ -44,7 +44,7 @@ public class PlayerInventoryUI : InventoryUI
         PopulateInventoryUI(gm.playerManager.personalInventory.items, PlayerInventoryType.Personal);
     }
 
-    // This method runs when the user clicks on a container side bar icon
+    // This method runs when the user clicks on an inventory side bar icon
     public void PopulateInventoryUI(List<ItemData> itemsList, PlayerInventoryType playerInvType)
     {
         ClearInventoryUI();
@@ -55,10 +55,19 @@ public class PlayerInventoryUI : InventoryUI
             AssignInventoryOrEquipmentManagerToInventoryItem(invItem, playerInvType);
         }
 
+        if (playerInvType == PlayerInventoryType.Personal)
+        {
+            for (int i = 0; i < gm.playerManager.carriedItems.Count; i++)
+            {
+                InventoryItem invItem = ShowNewInventoryItem(gm.playerManager.carriedItems[i]);
+            }
+        }
+
         // Set header/volume/weight text
         SetUpInventoryUI(playerInvType);
     }
 
+    // This method runs when the user clicks on the equipment manager side bar icon
     public void PopulateInventoryUI(ItemData[] currentEquipment, PlayerInventoryType playerInvType)
     {
         ClearInventoryUI();
@@ -96,8 +105,17 @@ public class PlayerInventoryUI : InventoryUI
         {
             case PlayerInventoryType.Personal:
                 inventoryNameText.text = "Personal Inventory";
-                weightText.text = GetTotalWeight(gm.playerManager.personalInventory.items).ToString();
-                volumeText.text = GetTotalVolume(gm.playerManager.personalInventory.items).ToString() + "/" + gm.playerManager.personalInventory.maxVolume.ToString();
+                if (gm.playerManager.carriedItems.Count == 0)
+                    weightText.text = GetTotalWeight(gm.playerManager.personalInventory.items).ToString();
+                else
+                    weightText.text = GetTotalWeight(gm.playerManager.personalInventory.items).ToString() + " (+" + GetTotalWeight(gm.playerManager.carriedItems) + ")";
+
+                if (gm.playerManager.carriedItems.Count == 0)
+                    volumeText.text = GetTotalVolume(gm.playerManager.personalInventory.items).ToString() + "/" + gm.playerManager.personalInventory.maxVolume.ToString();
+                else
+                    volumeText.text = GetTotalVolume(gm.playerManager.personalInventory.items).ToString() + "/" + gm.playerManager.personalInventory.maxVolume.ToString() 
+                        + " (+" + GetTotalVolume(gm.playerManager.carriedItems) + ")";
+
                 activeInventory = gm.playerManager.personalInventory;
                 activePlayerInvSideBarButton = personalInventorySideBarButton;
                 break;
@@ -328,8 +346,16 @@ public class PlayerInventoryUI : InventoryUI
         {
             if (activeInventory == gm.playerManager.personalInventory)
             {
-                weightText.text = (Mathf.RoundToInt(activeInventory.currentWeight * 100f) / 100f).ToString();
-                volumeText.text = (Mathf.RoundToInt(activeInventory.currentVolume * 100f) / 100f).ToString() + "/" + activeInventory.maxVolume.ToString();
+                if (gm.playerManager.carriedItems.Count == 0)
+                    weightText.text = (Mathf.RoundToInt(activeInventory.currentWeight * 100f) / 100f).ToString();
+                else
+                    weightText.text = (Mathf.RoundToInt(activeInventory.currentWeight * 100f) / 100f).ToString() + " (" + GetTotalWeight(gm.playerManager.carriedItems) + ")";
+
+                if (gm.playerManager.carriedItems.Count == 0)
+                    volumeText.text = (Mathf.RoundToInt(activeInventory.currentVolume * 100f) / 100f).ToString() + "/" + activeInventory.maxVolume.ToString();
+                else
+                    volumeText.text = (Mathf.RoundToInt(activeInventory.currentVolume * 100f) / 100f).ToString() + "/" + activeInventory.maxVolume.ToString()
+                        + " (" + GetTotalVolume(gm.playerManager.carriedItems) + ")";
             }
             else if (activeInventory == gm.playerManager.keysInventory)
             {

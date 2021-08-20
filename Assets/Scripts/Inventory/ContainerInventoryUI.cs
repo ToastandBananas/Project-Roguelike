@@ -26,7 +26,7 @@ public class ContainerInventoryUI : InventoryUI
     [HideInInspector] public List<ItemData> southwestItems = new List<ItemData>();
     [HideInInspector] public List<ItemData> southeastItems = new List<ItemData>();
 
-    [HideInInspector] public List<ItemData> playerPositionGroundItems = new List<ItemData>();
+    public List<ItemData> playerPositionGroundItems = new List<ItemData>();
     [HideInInspector] public List<ItemData> northGroundItems = new List<ItemData>();
     [HideInInspector] public List<ItemData> southGroundItems = new List<ItemData>();
     [HideInInspector] public List<ItemData> westGroundItems = new List<ItemData>();

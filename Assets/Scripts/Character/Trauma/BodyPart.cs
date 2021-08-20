@@ -19,6 +19,10 @@ public class BodyPart
     public IntStat naturalDefense;
     public IntStat addedDefense_Armor, addedDefense_Clothing;
 
+    [Header("Other")]
+    public bool isIncapacitated;
+    public bool isSevered;
+
     [HideInInspector] public CharacterManager characterManager;
 
     public BodyPart(CharacterManager characterManager, BodyPartType bodyPartType, int baseMaxHealth)

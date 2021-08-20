@@ -16,6 +16,7 @@ MonoBehaviour:
   pluralName: 
   itemType: 1
   mainMaterial: 37
+  itemSize: 4
   description: At four and a half feet long, this sword delivers death at a distance.
   maxStackSize: 1
   weight: 5.55

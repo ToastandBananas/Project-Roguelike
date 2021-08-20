@@ -16,6 +16,7 @@ MonoBehaviour:
   pluralName: 
   itemType: 3
   mainMaterial: 20
+  itemSize: 3
   description: A simple cape made of deer hide. Helps keep your upper body warm.
   maxStackSize: 1
   weight: 3.55
@@ -37,3 +38,4 @@ MonoBehaviour:
   tertiaryDefense: {x: 0, y: 0}
   coldResistance: 0
   heatResistance: 0
+  pocketsVolume: {x: 0, y: 0}

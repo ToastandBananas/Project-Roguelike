@@ -16,6 +16,7 @@ MonoBehaviour:
   pluralName: 
   itemType: 1
   mainMaterial: 35
+  itemSize: 4
   description: The sword...it's long.
   maxStackSize: 1
   weight: 3.15

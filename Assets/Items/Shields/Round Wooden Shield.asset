@@ -16,6 +16,7 @@ MonoBehaviour:
   pluralName: 
   itemType: 14
   mainMaterial: 9
+  itemSize: 4
   description: The shield is well-made, but still, wood will break more easily than
     steel.
   maxStackSize: 1

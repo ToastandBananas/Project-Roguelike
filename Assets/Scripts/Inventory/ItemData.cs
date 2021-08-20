@@ -759,6 +759,14 @@ public class ItemData : MonoBehaviour
             return "Filthy";
     }
 
+    public string GetPluralName()
+    {
+        if (item.pluralName != "")
+            return item.pluralName;
+        else
+            return itemName + "s";
+    }
+
     public IEnumerator DelayReturnToObjectPool()
     {
         yield return null;

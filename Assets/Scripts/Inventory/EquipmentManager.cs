@@ -295,7 +295,7 @@ public class EquipmentManager : MonoBehaviour
                 else if (shouldDropItem && canDropItem)
                 {
                     gm.flavorText.WriteUnquipLine(oldItemData, characterManager);
-                    gm.dropItemController.DropItem(characterManager.transform.position, oldItemData, oldItemData.currentStackSize, invComingFrom, invItemComingFrom);
+                    gm.dropItemController.DropItem(characterManager, characterManager.transform.position, oldItemData, oldItemData.currentStackSize, invComingFrom, invItemComingFrom);
                 }
 
                 // If the item was a bag, be sure to subtract the weight/volume of the bag's contents
@@ -654,16 +654,73 @@ public class EquipmentManager : MonoBehaviour
         characterManager.humanoidSpriteManager.RemoveSprite(equipSlot);
     }
 
-    public void SheathWeapon(EquipmentSlot weaponSlot)
+    public IEnumerator SheatheWeapons()
     {
-        // TODO
-        Debug.Log("Sheathing weapon");
+        if (WeaponsSheathed() == false && (currentEquipment[(int)EquipmentSlot.RightHandItem] != null || currentEquipment[(int)EquipmentSlot.LeftHandItem] != null))
+        {
+            StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetSheatheWeaponAPCost(currentEquipment[(int)EquipmentSlot.LeftHandItem], currentEquipment[(int)EquipmentSlot.RightHandItem])));
+
+            int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
+            while (queueNumber != characterManager.currentQueueNumber)
+            {
+                yield return null;
+                if (characterManager.status.isDead) yield break;
+            }
+
+            if (currentEquipment[(int)EquipmentSlot.RightHandItem] != null)
+            {
+                Weapon weapon = (Weapon)currentEquipment[(int)EquipmentSlot.RightHandItem].item;
+                if (isTwoHanding || weapon.isTwoHanded)
+                    characterManager.humanoidSpriteManager.SetupOneHandedWeaponStance(this, characterManager);
+                characterManager.humanoidSpriteManager.RemoveSprite(EquipmentSlot.RightHandItem);
+            }
+
+            if (currentEquipment[(int)EquipmentSlot.LeftHandItem] != null)
+                characterManager.humanoidSpriteManager.RemoveSprite(EquipmentSlot.LeftHandItem);
+            
+            gm.flavorText.WriteSheatheWeaponLine(currentEquipment[(int)EquipmentSlot.LeftHandItem], currentEquipment[(int)EquipmentSlot.RightHandItem]);
+        }
     }
 
-    public void UnsheathWeapon(EquipmentSlot weaponSlot)
+    public IEnumerator UnsheatheWeapons()
     {
-        // TODO
-        Debug.Log("Unsheathing weapon");
+        if (WeaponsSheathed() && (currentEquipment[(int)EquipmentSlot.RightHandItem] != null || currentEquipment[(int)EquipmentSlot.LeftHandItem] != null))
+        {
+            characterManager.DropAllCarriedItems();
+
+            StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetUnheatheWeaponAPCost(currentEquipment[(int)EquipmentSlot.LeftHandItem], currentEquipment[(int)EquipmentSlot.RightHandItem])));
+
+            int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
+            while (queueNumber != characterManager.currentQueueNumber)
+            {
+                yield return null;
+                if (characterManager.status.isDead) yield break;
+            }
+
+            if (currentEquipment[(int)EquipmentSlot.RightHandItem] != null)
+            {
+                Weapon weapon = (Weapon)currentEquipment[(int)EquipmentSlot.RightHandItem].item;
+                if (weapon.isTwoHanded)
+                    characterManager.humanoidSpriteManager.SetupTwoHandedWeaponStance(this, characterManager);
+                characterManager.humanoidSpriteManager.AssignSprite(EquipmentSlot.RightHandItem, weapon, this);
+            }
+
+            if (currentEquipment[(int)EquipmentSlot.LeftHandItem] != null)
+            {
+                characterManager.humanoidSpriteManager.SetupOneHandedWeaponStance(this, characterManager);
+                characterManager.humanoidSpriteManager.AssignSprite(EquipmentSlot.LeftHandItem, (Equipment)currentEquipment[(int)EquipmentSlot.LeftHandItem].item, this);
+            }
+            
+            gm.flavorText.WriteUnheatheWeaponLine(currentEquipment[(int)EquipmentSlot.LeftHandItem], currentEquipment[(int)EquipmentSlot.RightHandItem]);
+        }
+    }
+
+    public bool WeaponsSheathed()
+    {
+        if (((currentEquipment[(int)EquipmentSlot.RightHandItem] != null || currentEquipment[(int)EquipmentSlot.Ranged] != null) && characterManager.humanoidSpriteManager.rightHandItem.sprite == null)
+            || (currentEquipment[(int)EquipmentSlot.LeftHandItem] != null && characterManager.humanoidSpriteManager.leftHandItem.sprite == null))
+            return true;
+        return false;
     }
 
     void SetupStartingEquipment()

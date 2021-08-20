@@ -198,17 +198,18 @@ public class Inventory : MonoBehaviour
 
     public void RemoveItem(ItemData itemData, int itemCount, InventoryItem invItem)
     {
-        // Update InventoryUI
-        if (invItem != null && invItem.myInvUI.activeInventory == this)
-            invItem.myInvUI.UpdateUI();
-
         // Subtract itemCount from the item's currentStackSize
         itemData.currentStackSize -= itemCount;
         if (itemData.currentStackSize < 0)
             itemData.currentStackSize = 0;
 
         if (invItem != null)
+        {
+            // Update InventoryUI and the InvItem's UI
             invItem.UpdateInventoryWeightAndVolume();
+            if (invItem.myInvUI.activeInventory == this)
+                invItem.myInvUI.UpdateUI();
+        }
 
         // If there's none left:
         if (itemData.currentStackSize <= 0)

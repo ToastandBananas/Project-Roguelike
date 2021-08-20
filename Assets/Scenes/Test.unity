@@ -7579,6 +7579,7 @@ MonoBehaviour:
   leftHipPouchInventory: {fileID: 0}
   rightHipPouchInventory: {fileID: 0}
   quiverInventory: {fileID: 0}
+  carriedItems: []
   circleCollider: {fileID: 0}
   rigidBody: {fileID: 0}
   spriteRenderer: {fileID: 0}
@@ -13789,6 +13790,7 @@ MonoBehaviour:
   leftHipPouchInventory: {fileID: 0}
   rightHipPouchInventory: {fileID: 0}
   quiverInventory: {fileID: 0}
+  carriedItems: []
   circleCollider: {fileID: 0}
   rigidBody: {fileID: 0}
   spriteRenderer: {fileID: 0}
@@ -21120,6 +21122,7 @@ MonoBehaviour:
   leftHipPouchInventory: {fileID: 0}
   rightHipPouchInventory: {fileID: 0}
   quiverInventory: {fileID: 0}
+  carriedItems: []
   circleCollider: {fileID: 0}
   rigidBody: {fileID: 0}
   spriteRenderer: {fileID: 0}

@@ -16,6 +16,7 @@ MonoBehaviour:
   pluralName: 
   itemType: 15
   mainMaterial: 13
+  itemSize: 1
   description: Helps protect wounds and slow bleeding.
   maxStackSize: 10
   weight: 0.05

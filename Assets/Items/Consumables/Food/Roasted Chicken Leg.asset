@@ -16,6 +16,7 @@ MonoBehaviour:
   pluralName: Roasted Chicken Legs
   itemType: 5
   mainMaterial: 2
+  itemSize: 2
   description: The roasted flesh of a chicken's leg. How delectable.
   maxStackSize: 5
   weight: 0.25

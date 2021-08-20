@@ -3,9 +3,7 @@
 public class GamePlayActions : PlayerActionSet
 {
     public PlayerAction playerInteract;
-    public PlayerAction playerSwapWeapon;
-    public PlayerAction playerAttack;
-    public PlayerAction playerSwitchStance;
+    public PlayerAction playerSwapWeapon, playerSheatheWeapon, playerAttack, playerSwitchStance;
 
     public PlayerAction playerMoveUp, playerMoveDown, playerMoveLeft, playerMoveRight;
     public PlayerAction playerMoveUpLeft, playerMoveUpRight, playerMoveDownLeft, playerMoveDownRight;
@@ -32,6 +30,7 @@ public class GamePlayActions : PlayerActionSet
         // Actions
         playerInteract = CreatePlayerAction("PlayerInteract");
         playerSwapWeapon = CreatePlayerAction("PlayerSwapWeapon");
+        playerSheatheWeapon = CreatePlayerAction("PlayerSheatheWeapon");
         playerAttack = CreatePlayerAction("PlayerAttack");
         playerSwitchStance = CreatePlayerAction("PlayerSwitchStance");
 

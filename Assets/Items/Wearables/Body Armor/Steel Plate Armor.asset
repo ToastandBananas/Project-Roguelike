@@ -16,6 +16,7 @@ MonoBehaviour:
   pluralName: 
   itemType: 4
   mainMaterial: 37
+  itemSize: 5
   description: Body armor made of thick steel plates. Provides great protection in
     combat.
   maxStackSize: 1
@@ -38,3 +39,4 @@ MonoBehaviour:
   tertiaryDefense: {x: 8, y: 13}
   coldResistance: 0
   heatResistance: 0
+  pocketsVolume: {x: 0, y: 0}

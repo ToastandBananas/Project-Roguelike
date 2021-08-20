@@ -31,5 +31,13 @@ public class PlayerEquipmentManager : EquipmentManager
             if (IsDualWielding() == false && RightHandItemEquipped() && GetRightWeapon().isTwoHanded == false)
                 StartCoroutine(characterManager.humanoidSpriteManager.SwapStance(this, characterManager));
         }
+
+        if (GameControls.gamePlayActions.playerSheatheWeapon.WasPressed)
+        {
+            if (WeaponsSheathed())
+                StartCoroutine(UnsheatheWeapons());
+            else
+                StartCoroutine(SheatheWeapons());
+        }
     }
 }

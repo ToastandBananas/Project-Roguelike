@@ -16,6 +16,7 @@ MonoBehaviour:
   pluralName: 
   itemType: 12
   mainMaterial: 23
+  itemSize: 4
   description: A lightweight leather bag, generally used for short term travel.
   maxStackSize: 1
   weight: 1

@@ -16,6 +16,7 @@ MonoBehaviour:
   pluralName: 
   itemType: 13
   mainMaterial: 23
+  itemSize: 2
   description: A small sack to store small items.
   maxStackSize: 1
   weight: 0.03

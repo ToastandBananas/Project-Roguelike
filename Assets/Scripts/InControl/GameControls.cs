@@ -20,6 +20,9 @@ public class GameControls : MonoBehaviour
         gamePlayActions.playerSwapWeapon.AddDefaultBinding(InputControlType.Action4); // Swap Weapon
         gamePlayActions.playerSwapWeapon.AddDefaultBinding(Key.LeftAlt);
 
+        gamePlayActions.playerSheatheWeapon.AddDefaultBinding(InputControlType.Action3); // Sheathe/Unsheathe Weapons
+        gamePlayActions.playerSheatheWeapon.AddDefaultBinding(Key.V);
+
         gamePlayActions.playerAttack.AddDefaultBinding(InputControlType.LeftTrigger); // Attack
         gamePlayActions.playerAttack.AddDefaultBinding(Key.Space);
 

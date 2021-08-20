@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,6 +20,8 @@ public class CharacterManager : MonoBehaviour
     [HideInInspector] public Vision vision;
 
     [HideInInspector] public Inventory personalInventory, backpackInventory, leftHipPouchInventory, rightHipPouchInventory, quiverInventory;
+    [HideInInspector] public List<ItemData> carriedItems = new List<ItemData>();
+    float handCarryPercent;
 
     [HideInInspector] public CircleCollider2D circleCollider;
     [HideInInspector] public Rigidbody2D rigidBody;
@@ -114,6 +117,104 @@ public class CharacterManager : MonoBehaviour
     {
         actionsQueued = 0;
         currentQueueNumber = 0;
+    }
+
+    public IEnumerator CarryItem(ItemData itemData, InventoryItem invItem)
+    {
+        // Make sure we have room in our hands to carry the item, otherwise yield break out of this method and show some flavor text
+        if (HaveRoomInHandsToCarryItem(itemData, itemData.currentStackSize) == false)
+        {
+            gm.flavorText.WriteCantCarryItemLine(itemData, itemData.currentStackSize);
+            yield break;
+        }
+
+        // Sheathe/stow away any weapons or shields
+        StartCoroutine(equipmentManager.SheatheWeapons());
+
+        if (itemData.bagInventory != null)
+            StartCoroutine(gm.apManager.UseAP(this, gm.apManager.GetTransferItemCost(itemData.item, itemData.currentStackSize, itemData.bagInventory.currentWeight, itemData.bagInventory.currentVolume, false)));
+        else
+            StartCoroutine(gm.apManager.UseAP(this, gm.apManager.GetTransferItemCost(itemData.item, itemData.currentStackSize, 0, 0, false)));
+
+        int queueNumber = currentQueueNumber + actionsQueued;
+        while (queueNumber != currentQueueNumber)
+        {
+            yield return null;
+            if (status.isDead) yield break;
+        }
+
+        // If we can carry the item, add to the handCarryPercent value based off of item size
+        handCarryPercent += itemData.item.GetSizeFactor() * itemData.currentStackSize;
+
+        // Add the item to our carriedItems list
+        ItemData carriedItemData = gm.uiManager.CreateNewItemDataChild(itemData, null, gm.playerManager.personalInventory.itemsParent, false);
+        carriedItems.Add(carriedItemData);
+
+        // Remove the old itemData from its inventory or from the ground
+        if (itemData.parentInventory != null)
+            itemData.parentInventory.RemoveItem(itemData, itemData.currentStackSize, invItem);
+        else
+            GameTiles.RemoveItemData(itemData, itemData.transform.position);
+
+        // Clear out the item and its InventoryItem
+        if (invItem != null)
+            invItem.ClearItem();
+        else
+            itemData.ReturnToObjectPool();
+
+        // If our Personal Inventory is active in the UI, update it to show the new carried item
+        if (gm.playerInvUI.activeInventory == gm.playerManager.personalInventory)
+        {
+            gm.playerInvUI.ShowNewInventoryItem(carriedItemData);
+            gm.playerInvUI.UpdateUI();
+        }
+
+        // Show flavor text for picking up and carrying the item
+        gm.flavorText.WriteCarryItemLine(carriedItemData);
+    }
+
+    public bool HaveRoomInHandsToCarryItem(ItemData itemData, int itemCount)
+    {
+        BodyPart leftHand = status.GetBodyPart(BodyPartType.LeftHand);
+        BodyPart rightHand = status.GetBodyPart(BodyPartType.RightHand);
+        if ((leftHand.isIncapacitated || leftHand.isSevered) && (rightHand.isIncapacitated || rightHand.isSevered))
+            return false;
+        else if (leftHand.isSevered || leftHand.isIncapacitated || rightHand.isSevered || rightHand.isIncapacitated)
+        {
+            if (itemData.item.GetSizeFactor() * itemCount <= 1f - handCarryPercent)
+                return true;
+        }
+        else if (itemData.item.GetSizeFactor() * itemCount <= 2f - handCarryPercent)
+            return true;
+        return false;
+    }
+
+    public void RemoveCarriedItem(ItemData itemData)
+    {
+        if (carriedItems.Contains(itemData))
+        {
+            carriedItems.Remove(itemData);
+            handCarryPercent -= itemData.item.GetSizeFactor() * itemData.currentStackSize;
+        }
+    }
+
+    public void DropAllCarriedItems()
+    {
+        if (carriedItems.Count > 0)
+        {
+            for (int i = carriedItems.Count - 1; i >= 0; i--)
+            {
+                ItemData carriedItem = carriedItems[i];
+                gm.dropItemController.ForceDropNearest(this, carriedItem, carriedItem.currentStackSize, null, carriedItem.GetItemDatasInventoryItem());
+                RemoveCarriedItem(carriedItem);
+                InventoryItem invItem = carriedItem.GetItemDatasInventoryItem();
+                if (invItem != null)
+                    invItem.ClearItem();
+                else
+                    carriedItem.ReturnToObjectPool();
+                gm.containerInvUI.UpdateUI();
+            }
+        }
     }
 
     public bool TryAddingItemToInventory(ItemData itemData, Inventory itemDatasInventory, bool canAddToQuiver)

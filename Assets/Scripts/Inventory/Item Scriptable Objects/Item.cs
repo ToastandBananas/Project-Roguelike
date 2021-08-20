@@ -1,5 +1,6 @@
 using UnityEngine;
 
+public enum ItemSize { ExtraSmall, VerySmall, Small, Medium, Large, VeryLarge }
 public enum ItemType { Item, Weapon, Ammo, Clothing, Armor, Food, Drink, Ingredient, Seed, Readable, Key, QuestItem, Bag, Container, Shield, Medical }
 public enum ItemMaterial { Liquid, ViscousLiquid, Meat, Bone, Food, Fat, Bug, Leaf, Charcoal, Wood, Bark, Paper, Hair, Linen, QuiltedLinen, Cotton, Wool, QuiltedWool, Silk, Hemp, Fur,
                             UncuredHide, Rawhide, SoftLeather, HardLeather, Keratin, Chitin, Glass, Obsidian, Stone, Gemstone, Silver, Gold, Copper, Bronze, Iron, Brass, Steel, Mithril, Dragonscale }
@@ -12,6 +13,7 @@ public class Item : ScriptableObject
     public string pluralName;
     public ItemType itemType;
     public ItemMaterial mainMaterial;
+    public ItemSize itemSize;
     public string description;
     public int maxStackSize = 1;
     public float weight = 0.1f;
@@ -65,6 +67,28 @@ public class Item : ScriptableObject
     public void RemoveFromInventory(Inventory inventory, InventoryItem invItem, ItemData itemData, int itemCount)
     {
         inventory.RemoveItem(itemData, itemCount, invItem);
+    }
+
+    /// <summary>Used to determine how much a character can carry in their hands, based off of ItemSize.</summary>
+    public float GetSizeFactor()
+    {
+        switch (itemSize)
+        {
+            case ItemSize.ExtraSmall:
+                return 0.05f;
+            case ItemSize.VerySmall:
+                return 0.1f;
+            case ItemSize.Small:
+                return 0.25f;
+            case ItemSize.Medium:
+                return 0.5f;
+            case ItemSize.Large:
+                return 1f;
+            case ItemSize.VeryLarge:
+                return 2f;
+            default:
+                return 1f;
+        }
     }
 
     public virtual bool IsEquipment() { return false; }

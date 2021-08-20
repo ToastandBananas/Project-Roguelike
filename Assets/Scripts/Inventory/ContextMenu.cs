@@ -158,26 +158,27 @@ public class ContextMenu : MonoBehaviour
             else
                 CreateDropItemButton();
         }
-        else if (gm.uiManager.activeInvItem != null)
+        else
         {
-            if (gm.uiManager.activeInvItem.itemData.item.isUsable)
+            if (contextActiveInvItem.itemData.item.isUsable)
             {
-                if (gm.uiManager.activeInvItem.itemData.item.IsWeapon())
+                if (contextActiveInvItem.itemData.item.IsWeapon())
                 {
-                    Weapon weapon = (Weapon)gm.uiManager.activeInvItem.itemData.item;
+                    Weapon weapon = (Weapon)contextActiveInvItem.itemData.item;
                     if (weapon.isTwoHanded == false)
                         CreateEquipLeftHandItemButton();
                 }
 
                 CreateUseItemButton();
             }
-            else if (gm.uiManager.activeInvItem.itemData.item.IsMedicalSupply())
-            {
+            else if (contextActiveInvItem.itemData.item.IsMedicalSupply())
                 CreateApplyMedicalSupplyButtons();
-            }
 
-            if (gm.uiManager.activeInvItem.itemData.currentStackSize > 1)
+            if (contextActiveInvItem.itemData.currentStackSize > 1)
                 CreateSplitStackButton();
+
+            if (gm.playerManager.carriedItems.Contains(contextActiveInvItem.itemData) == false)
+                CreateCarryItemButton();
 
             // If selecting the player's inventory or equipment menu
             if ((contextActiveInvItem.myInventory != null && contextActiveInvItem.myInventory.myInvUI == gm.playerInvUI) || contextActiveInvItem.myEquipmentManager != null
@@ -197,7 +198,7 @@ public class ContextMenu : MonoBehaviour
 
     void CreateApplyMedicalSupplyButtons()
     {
-        MedicalSupply medSupply = (MedicalSupply)gm.uiManager.activeInvItem.itemData.item;
+        MedicalSupply medSupply = (MedicalSupply)contextActiveInvItem.itemData.item;
         for (int i = 0; i < gm.playerManager.status.bodyParts.Count; i++)
         {
             for (int j = 0; j < gm.playerManager.status.bodyParts[i].injuries.Count; j++)
@@ -207,7 +208,7 @@ public class ContextMenu : MonoBehaviour
                 bool canApplyItem = false;
 
                 // If this is a bandage and the wound is something that can be remedied with a bandage (and it's not already bandaged)
-                if (locationalInjury.CanApplyBandage(gm.uiManager.activeInvItem.itemData))
+                if (locationalInjury.CanApplyBandage(contextActiveInvItem.itemData))
                 {
                     canApplyItem = true;
                     contextButton.textMesh.text = "Bandage " + locationalInjury.injury.name + " - " + Utilities.FormatEnumStringWithSpaces(gm.playerManager.status.bodyParts[i].bodyPartType.ToString(), false);
@@ -235,19 +236,19 @@ public class ContextMenu : MonoBehaviour
         ContextMenuButton contextButton = GetNextInactiveButton();
         contextButton.gameObject.SetActive(true);
 
-        if (gm.uiManager.activeInvItem.itemData.item.IsEquipment() == false && gm.uiManager.activeInvItem.itemData.item.IsConsumable() == false)
+        if (contextActiveInvItem.itemData.item.IsEquipment() == false && contextActiveInvItem.itemData.item.IsConsumable() == false)
             contextButton.textMesh.text = "Use";
-        else if (gm.uiManager.activeInvItem.itemData.item.IsConsumable())
+        else if (contextActiveInvItem.itemData.item.IsConsumable())
         {
-            Consumable consumable = (Consumable)gm.uiManager.activeInvItem.itemData.item;
+            Consumable consumable = (Consumable)contextActiveInvItem.itemData.item;
             if (consumable.consumableType == ConsumableType.Food)
                 contextButton.textMesh.text = "Eat";
             else
                 contextButton.textMesh.text = "Drink";
         }
-        else if (gm.uiManager.activeInvItem.itemData.item.IsWeapon())
+        else if (contextActiveInvItem.itemData.item.IsWeapon())
         {
-            Weapon weapon = (Weapon)gm.uiManager.activeInvItem.itemData.item;
+            Weapon weapon = (Weapon)contextActiveInvItem.itemData.item;
             if (weapon.isTwoHanded == false)
                 contextButton.textMesh.text = "Equip Right";
             else
@@ -325,6 +326,22 @@ public class ContextMenu : MonoBehaviour
     void SplitStack()
     {
         gm.stackSizeSelector.ShowStackSizeSelector(contextActiveInvItem);
+        DisableContextMenu();
+    }
+
+    void CreateCarryItemButton()
+    {
+        ContextMenuButton contextButton = GetNextInactiveButton();
+        contextButton.gameObject.SetActive(true);
+
+        contextButton.textMesh.text = "Carry Item";
+
+        contextButton.button.onClick.AddListener(CarryItem);
+    }
+
+    void CarryItem()
+    {
+        StartCoroutine(gm.playerManager.CarryItem(contextActiveInvItem.itemData, contextActiveInvItem));
         DisableContextMenu();
     }
 

@@ -84,13 +84,16 @@ public class UIManager : MonoBehaviour
 
                     if (gm.contextMenu.isActive == false)
                     {
-                        if (gm.tileInfoDisplay.focusedCharacter != null && (gm.tileInfoDisplay.focusedCharacter.isNPC == false
-                            || (gm.tileInfoDisplay.focusedCharacter.alliances.allies.Contains(gm.playerManager.alliances.myFaction) && gm.tileInfoDisplay.focusedCharacter.stateController.currentState != State.Fight)))
-                            gm.contextMenu.BuildContextMenu(gm.tileInfoDisplay.focusedCharacter);
-                        else if (gm.healthDisplay.focusedInjuryTextButton != null && gm.healthDisplay.focusedInjuryTextButton.button.enabled)
-                            gm.contextMenu.BuildContextMenu(gm.healthDisplay.focusedInjuryTextButton);
-                        else if (activeInvItem != null && activeInvItem.itemData != null)
-                            gm.contextMenu.BuildContextMenu(activeInvItem);
+                        if (gm.playerManager.actionsQueued <= 0)
+                        {
+                            if (gm.tileInfoDisplay.focusedCharacter != null && (gm.tileInfoDisplay.focusedCharacter.isNPC == false
+                                || (gm.tileInfoDisplay.focusedCharacter.alliances.allies.Contains(gm.playerManager.alliances.myFaction) && gm.tileInfoDisplay.focusedCharacter.stateController.currentState != State.Fight)))
+                                gm.contextMenu.BuildContextMenu(gm.tileInfoDisplay.focusedCharacter);
+                            else if (gm.healthDisplay.focusedInjuryTextButton != null && gm.healthDisplay.focusedInjuryTextButton.button.enabled)
+                                gm.contextMenu.BuildContextMenu(gm.healthDisplay.focusedInjuryTextButton);
+                            else if (activeInvItem != null && activeInvItem.itemData != null)
+                                gm.contextMenu.BuildContextMenu(activeInvItem);
+                        }
                     }
                     else
                         gm.contextMenu.DisableContextMenu();
@@ -567,7 +570,7 @@ public class UIManager : MonoBehaviour
                 if (IsRoomOnGround(draggedInvItem.itemData, itemsListAddingTo, dropPos))
                 {
                     // Drop the item
-                    gm.dropItemController.DropItem(dropPos, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, draggedInvItem);
+                    gm.dropItemController.DropItem(gm.playerManager, dropPos, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, draggedInvItem);
 
                     // Update weight/volume
                     draggedInvItem.UpdateInventoryWeightAndVolume();
@@ -693,7 +696,7 @@ public class UIManager : MonoBehaviour
                 // Drop the item if there's room on the ground
                 if (IsRoomOnGround(draggedInvItem.itemData, itemsListAddingTo, dropPos))
                 {
-                    gm.dropItemController.DropItem(dropPos, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, draggedInvItem);
+                    gm.dropItemController.DropItem(gm.playerManager, dropPos, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, draggedInvItem);
 
                     // Update weight/volume
                     draggedInvItem.UpdateInventoryWeightAndVolume();
@@ -775,7 +778,7 @@ public class UIManager : MonoBehaviour
             if (IsRoomOnGround(draggedInvItem.itemData, gm.containerInvUI.playerPositionItems, dropPos))
             {
                 // Drop the item
-                gm.dropItemController.DropItem(dropPos, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, draggedInvItem);
+                gm.dropItemController.DropItem(gm.playerManager, dropPos, draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize, draggedInvItem.myInventory, draggedInvItem);
 
                 // Update weight/volume
                 draggedInvItem.UpdateInventoryWeightAndVolume();
@@ -1326,6 +1329,13 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    /// <summary>Creates an active ItemData object, sets it as a child of the itemsParent, transfers data to it from the newItemData, adds the item to the parent inventory if necessary 
+    /// and if the item is a bag, sets up the bag's weight/volume and its contents.</summary>
+    /// <param name="newItemData">The ItemData we're getting data from.</param>
+    /// <param name="parentInventory">Inventory the ItemData will be in.</param>
+    /// <param name="itemsParent">Parent transform for the ItemData object.</param>
+    /// <param name="shouldAddItemToParentInventory">Should we add the item to the inventory's items list?</param>
+    /// <returns>Returns the new ItemData child.</returns>
     public ItemData CreateNewItemDataChild(ItemData newItemData, Inventory parentInventory, Transform itemsParent, bool shouldAddItemToParentInventory)
     {
         // Add new ItemData Objects to the items parent of the new bag and transfer data to them
