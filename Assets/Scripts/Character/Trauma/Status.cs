@@ -411,11 +411,10 @@ public class Status : MonoBehaviour
     public virtual void Die()
     {
         isDead = true;
+        GameTiles.RemoveCharacter(transform.position);
 
         if (characterManager.isNPC) // If an NPC dies
         {
-            GameTiles.RemoveNPC(transform.position);
-
             gm.turnManager.npcs.Remove(characterManager);
 
             if (gm.turnManager.npcsFinishedTakingTurnCount >= gm.turnManager.npcs.Count)

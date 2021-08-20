@@ -94,8 +94,7 @@ public class Movement : MonoBehaviour
             yield return null;
         }
 
-        if (characterManager.isNPC)
-            GameTiles.AddNPC(characterManager, transform.position);
+        GameTiles.AddCharacter(characterManager, transform.position);
 
         isMoving = false;
         OnFinishedMoving();
@@ -126,8 +125,7 @@ public class Movement : MonoBehaviour
             yield return null;
         }
 
-        if (characterManager.isNPC)
-            GameTiles.AddNPC(characterManager, transform.position);
+        GameTiles.AddCharacter(characterManager, transform.position);
 
         isMoving = false;
         OnFinishedMoving();
@@ -168,8 +166,7 @@ public class Movement : MonoBehaviour
     public void TeleportToPosition(Vector2 endPos)
     {
         transform.position = endPos;
-        if (characterManager.isNPC)
-            GameTiles.AddNPC(characterManager, transform.position);
+        GameTiles.AddCharacter(characterManager, transform.position);
 
         OnFinishedMoving();
     }

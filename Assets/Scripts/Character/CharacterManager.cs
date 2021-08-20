@@ -89,8 +89,7 @@ public class CharacterManager : MonoBehaviour
             personalInventory.maxVolume = characterStats.maxPersonalInvVolume.GetValue();
         }
 
-        if (isNPC)
-            GameTiles.AddNPC(this, transform.position);
+        GameTiles.AddCharacter(this, transform.position);
     }
 
     public void TakeTurn()
@@ -402,17 +401,5 @@ public class CharacterManager : MonoBehaviour
         actionsQueued += amount;
         if (actionsQueued < 0)
             actionsQueued = 0;
-    }
-
-    void OnMouseEnter()
-    {
-        if (status.isDead == false)
-            gm.tileInfoDisplay.focusedCharacter = this;
-    }
-
-    void OnMouseExit()
-    {
-        if (gm.tileInfoDisplay.focusedCharacter == this && status.isDead == false)
-            gm.tileInfoDisplay.focusedCharacter = null;
     }
 }

@@ -239,6 +239,7 @@ public class PlayerMovement : Movement
         // If the target tile is a walkable tile, the player moves here
         if (hit.collider == null)
         {
+            GameTiles.RemoveCharacter(transform.position);
             if (targetCell.y == startCell.y)
                 StartCoroutine(ArcMovement(targetCell));
             else

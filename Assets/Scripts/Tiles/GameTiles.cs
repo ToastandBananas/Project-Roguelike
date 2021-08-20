@@ -21,7 +21,7 @@ public class GameTiles : MonoBehaviour
     //public Dictionary<Vector2, Tile> roadTiles       = new Dictionary<Vector2, Tile>();
     //public Dictionary<Vector2, Tile> closedDoorTiles = new Dictionary<Vector2, Tile>();
 
-    public static Dictionary<Vector2, CharacterManager> npcs = new Dictionary<Vector2, CharacterManager>();
+    public static Dictionary<Vector2, CharacterManager> characters = new Dictionary<Vector2, CharacterManager>();
     public static Dictionary<Vector2, List<ItemData>> itemDatas = new Dictionary<Vector2, List<ItemData>>();
     public static Dictionary<Vector2, GameObject> objects = new Dictionary<Vector2, GameObject>();
 
@@ -138,17 +138,17 @@ public class GameTiles : MonoBehaviour
         return tilemap.HasTile(tilemap.WorldToCell(cellWorldPos));
     }
 
-    public static void AddNPC(CharacterManager characterManager, Vector2 position)
+    public static void AddCharacter(CharacterManager characterManager, Vector2 position)
     {
         position = Utilities.ClampedPosition(position);
-        if (npcs.ContainsKey(position) == false)
-            npcs.Add(position, characterManager);
+        if (characters.ContainsKey(position) == false)
+            characters.Add(position, characterManager);
     }
 
-    public static void RemoveNPC(Vector2 position)
+    public static void RemoveCharacter(Vector2 position)
     {
         position = Utilities.ClampedPosition(position);
-        npcs.Remove(position);
+        characters.Remove(position);
     }
 
     public static void AddObject(GameObject gameObject, Vector2 position)

@@ -58,6 +58,19 @@ public class TileInfoDisplay : MonoBehaviour
     {
         lastPositionChecked = mouseWorldPos;
 
+        // Get the tile's info
+        GameTiles.characters.TryGetValue(mouseWorldPos, out CharacterManager character);
+        if (character != null)
+            focusedCharacter = character;
+        else
+            focusedCharacter = null;
+
+        GameTiles.objects.TryGetValue(mouseWorldPos, out GameObject worldObject);
+        if (worldObject != null)
+            focusedObject = worldObject;
+        else
+            focusedObject = null;
+
         GameTiles.itemDatas.TryGetValue(mouseWorldPos, out List<ItemData> itemsList);
         if (itemsList != null)
             focusedItems = new List<ItemData>(itemsList);
@@ -80,9 +93,7 @@ public class TileInfoDisplay : MonoBehaviour
         {
             // If there's an object on this tile, show its name
             if (focusedObject != null)
-            {
                 stringBuilder.Append("You see " + Utilities.GetIndefiniteArticle(focusedObject.name, false, true) + ".\n\n");
-            }
 
             // If there's a character on this tile, show their name
             if (focusedCharacter != null)
@@ -90,7 +101,7 @@ public class TileInfoDisplay : MonoBehaviour
                 stringBuilder.Append("You see ");
 
                 if (focusedCharacter.isNPC == false) // If this is the player
-                    stringBuilder.Append("yourself.");
+                    stringBuilder.Append("yourself.\n\n");
                 else if (focusedCharacter.isNamed)
                     stringBuilder.Append("<b><color=" + GetNameColor(focusedCharacter) + ">" + focusedCharacter.name + " </color></b>.\n\n");
                 else

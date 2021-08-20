@@ -1630,6 +1630,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 20
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
 --- !u!1 &167861813
 GameObject:
@@ -2443,7 +2445,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectToPool: {fileID: 7845070733247297723, guid: f28f077ef6a03a249a26793ba4c5b99b, type: 3}
-  amountToPool: 15
+  amountToPool: 60
   pooledObjects: []
   hasBeenInitialized: 0
   pooledTextPopups: []
@@ -3483,6 +3485,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 20
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
 --- !u!1 &305025489
 GameObject:
@@ -3731,6 +3735,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 20
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
 --- !u!1001 &324236857
 PrefabInstance:
@@ -4898,6 +4904,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 20
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
 --- !u!1 &407343483
 GameObject:
@@ -5557,7 +5565,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &439429785
 GameObject:
@@ -6694,7 +6702,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &519420034
 MonoBehaviour:
@@ -7760,6 +7768,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 1
     maxHealth:
@@ -7778,6 +7788,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 2
     maxHealth:
@@ -7796,6 +7808,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 3
     maxHealth:
@@ -7814,6 +7828,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 6
     maxHealth:
@@ -7832,6 +7848,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 7
     maxHealth:
@@ -7850,6 +7868,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 4
     maxHealth:
@@ -7868,6 +7888,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 5
     maxHealth:
@@ -7886,6 +7908,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 8
     maxHealth:
@@ -7904,6 +7928,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 9
     maxHealth:
@@ -7922,6 +7948,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   buffs: []
   maxBloodAmount:
@@ -8338,6 +8366,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 20
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
 --- !u!1 &592220390
 GameObject:
@@ -10731,6 +10761,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 20
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
 --- !u!1 &778039913
 GameObject:
@@ -11460,7 +11492,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1543548611}
   m_HandleRect: {fileID: 1543548610}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -11645,7 +11677,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &840856817
 MonoBehaviour:
@@ -13519,6 +13551,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 1
     maxHealth:
@@ -13537,6 +13571,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 2
     maxHealth:
@@ -13555,6 +13591,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 3
     maxHealth:
@@ -13573,6 +13611,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 6
     maxHealth:
@@ -13591,6 +13631,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 7
     maxHealth:
@@ -13609,6 +13651,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 4
     maxHealth:
@@ -13627,6 +13671,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 5
     maxHealth:
@@ -13645,6 +13691,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 8
     maxHealth:
@@ -13663,6 +13711,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 9
     maxHealth:
@@ -13681,6 +13731,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   buffs: []
   maxBloodAmount:
@@ -15821,6 +15873,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 20
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
 --- !u!1001 &1027435609
 PrefabInstance:
@@ -16145,6 +16199,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 20
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
 --- !u!1 &1053763791
 GameObject:
@@ -16821,7 +16877,7 @@ Transform:
   - {fileID: 861536276}
   - {fileID: 288634252}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1099067817 stripped
 Transform:
@@ -16841,7 +16897,7 @@ GameObject:
   - component: {fileID: 1117274217}
   - component: {fileID: 1117274216}
   m_Layer: 5
-  m_Name: Menus
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16929,7 +16985,7 @@ RectTransform:
   - {fileID: 1164145249}
   - {fileID: 1574032252}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -17516,6 +17572,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 20
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
 --- !u!4 &1157064175 stripped
 Transform:
@@ -19974,7 +20032,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1293677294
 MonoBehaviour:
@@ -20661,6 +20719,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 20
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
 --- !u!1 &1346205781
 GameObject:
@@ -21312,6 +21372,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 1
     maxHealth:
@@ -21330,6 +21392,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 2
     maxHealth:
@@ -21348,6 +21412,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 3
     maxHealth:
@@ -21366,6 +21432,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 6
     maxHealth:
@@ -21384,6 +21452,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 7
     maxHealth:
@@ -21402,6 +21472,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 4
     maxHealth:
@@ -21420,6 +21492,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 5
     maxHealth:
@@ -21438,6 +21512,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 8
     maxHealth:
@@ -21456,6 +21532,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   - bodyPartType: 9
     maxHealth:
@@ -21474,6 +21552,8 @@ MonoBehaviour:
     addedDefense_Clothing:
       baseValue: 0
       modifiers: 
+    isIncapacitated: 0
+    isSevered: 0
     characterManager: {fileID: 0}
   buffs: []
   maxBloodAmount:
@@ -95614,7 +95694,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1067181842}
   m_HandleRect: {fileID: 1067181841}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
