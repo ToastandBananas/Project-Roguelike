@@ -91,9 +91,9 @@ public class Inventory : MonoBehaviour
 
         // Subtract the amount we added to existing stacks from our itemCount
         itemCount -= amountAddedToExistingStacks;
-
+        
         // If there's still some left to add
-        if ((itemCount == 1 && amountAddedToExistingStacks == 0) || (itemCount > 1 && itemDataComingFrom.currentStackSize > 0))
+        if ((itemCount == 1 && amountAddedToExistingStacks == 0) || (itemCount > 0 && itemDataComingFrom.currentStackSize > 0))
         {
             // Create a new ItemData Object
             ItemData itemDataToAdd = gm.objectPoolManager.GetItemDataFromPool(itemDataComingFrom.item, this);
@@ -182,8 +182,10 @@ public class Inventory : MonoBehaviour
             #if UNITY_EDITOR
                 itemDataToAdd.gameObject.name = itemDataToAdd.itemName;
             #endif
+            
+            if (itemDataComingFrom.parentInventory != null && itemDataComingFrom.parentInventory.inventoryOwner != null)
+                itemDataComingFrom.parentInventory.inventoryOwner.RemoveCarriedItem(itemDataComingFrom, itemCount);
 
-            // CurrentStackSize should now be 0
             itemDataComingFrom.currentStackSize = 0;
         }
 
@@ -206,7 +208,8 @@ public class Inventory : MonoBehaviour
         if (invItem != null)
         {
             // Update InventoryUI and the InvItem's UI
-            invItem.UpdateInventoryWeightAndVolume();
+            if (invItem.itemData != null && invItem.itemData.currentStackSize > 0)
+                invItem.UpdateInventoryWeightAndVolume();
             if (invItem.myInvUI.activeInventory == this)
                 invItem.myInvUI.UpdateUI();
         }
@@ -225,14 +228,14 @@ public class Inventory : MonoBehaviour
 
     public int AddToExistingStacks(ItemData itemDataComingFrom, int itemCount, Inventory invComingFrom, bool shouldUpdateWeightAndVolume)
     {
+        // Get the InventoryItem using the ItemData we're adding to (and make sure it has an InventoryUI)
+        InventoryItem itemDatasInvItem = itemDataComingFrom.GetItemDatasInventoryItem();
         int amountAdded = 0;
         for (int i = 0; i < items.Count; i++) // The "items" list refers to our ItemData GameObjects
         {
             if (itemDataComingFrom.StackableItemsDataIsEqual(items[i], itemDataComingFrom) && items[i].currentStackSize < items[i].item.maxStackSize)
             {
-                // Get the InventoryItem using the ItemData we're adding to (and make sure it has an InventoryUI)
-                InventoryItem itemDatasInvItem = itemDataComingFrom.GetItemDatasInventoryItem();
-
+                InventoryItem invItem = items[i].GetItemDatasInventoryItem();
                 for (int j = 0; j < itemCount; j++)
                 {
                     if (items[i].currentStackSize < items[i].item.maxStackSize)
@@ -247,18 +250,24 @@ public class Inventory : MonoBehaviour
                             invComingFrom.currentVolume -= Mathf.RoundToInt(itemDataComingFrom.item.volume * 100f) / 100f;
                         }
 
-                        if (itemDatasInvItem != null)
-                            itemDatasInvItem.UpdateItemNumberTexts();
-
                         if (itemDataComingFrom.currentStackSize == 0)
                             return amountAdded;
                     }
                     else
                         break;
                 }
+
+                if (invItem != null)
+                    invItem.UpdateItemNumberTexts();
             }
+
+            if (amountAdded == itemCount)
+                break;
         }
 
+        if (itemDatasInvItem != null)
+            itemDatasInvItem.UpdateItemNumberTexts();
+        
         return amountAdded;
     }
 
@@ -277,9 +286,8 @@ public class Inventory : MonoBehaviour
     {
         if (singleItemVolumeLimit > 0 && itemData.item.volume > singleItemVolumeLimit)
         {
-            Debug.Log("Here");
             if (inventoryOwner.isNPC == false)
-                gm.flavorText.WriteItemTooLargeLine(inventoryOwner, itemData, this);
+                gm.flavorText.WriteLine_ItemTooLarge(inventoryOwner, itemData, this);
             return false;
         }
 

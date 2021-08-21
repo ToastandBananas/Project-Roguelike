@@ -50,6 +50,14 @@ public class EquipmentManager : MonoBehaviour
         SetEquippedSprite(equipSlot, equipment, droppingEquipment);
         OnEquipmentChanged(oldItemData, newItemData);
 
+        if (gm.playerInvUI.activePlayerInvSideBarButton.playerInventoryType == PlayerInventoryType.EquippedItems)
+        {
+            if (currentEquipment[(int)EquipmentSlot.RightHandItem] != null)
+                currentEquipment[(int)EquipmentSlot.RightHandItem].GetItemDatasInventoryItem().UpdateAllItemTexts();
+            if (currentEquipment[(int)EquipmentSlot.LeftHandItem] != null)
+                currentEquipment[(int)EquipmentSlot.LeftHandItem].GetItemDatasInventoryItem().UpdateAllItemTexts();
+        }
+
         if (newItemData != null)
             newItemData.ReturnToObjectPool();
         if (oldItemData != null)
@@ -148,7 +156,7 @@ public class EquipmentManager : MonoBehaviour
             gm.containerInvUI.GetInventoriesListFromDirection(gm.containerInvUI.activeDirection).Remove(newItemData.bagInventory);
         }
 
-        gm.flavorText.WriteEquipLine(newItemData, characterManager);
+        gm.flavorText.WriteLine_Equip(newItemData, characterManager);
 
         return true;
     }
@@ -227,7 +235,7 @@ public class EquipmentManager : MonoBehaviour
                     characterManager.backpackInventory.UpdateCurrentWeightAndVolume();
                     StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.backpackSidebarButton));
                     addItemEffectPlayed = true;
-                    gm.flavorText.WriteUnquipLine(oldItemData, characterManager);
+                    gm.flavorText.WriteLine_Unequip(oldItemData, characterManager);
                 }
                 else if (characterManager.leftHipPouchInventory != null && characterManager.leftHipPouchInventory != invComingFrom)
                     itemWasAddedToInv = characterManager.leftHipPouchInventory.AddItem(oldItemData, oldItemData.currentStackSize, invComingFrom, true);
@@ -240,7 +248,7 @@ public class EquipmentManager : MonoBehaviour
                     characterManager.leftHipPouchInventory.UpdateCurrentWeightAndVolume();
                     StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.leftHipPouchSidebarButton));
                     addItemEffectPlayed = true;
-                    gm.flavorText.WriteUnquipLine(oldItemData, characterManager);
+                    gm.flavorText.WriteLine_Unequip(oldItemData, characterManager);
                 }
                 else if (itemWasAddedToInv == false && characterManager.rightHipPouchInventory != null && characterManager.rightHipPouchInventory != invComingFrom)
                     itemWasAddedToInv = characterManager.rightHipPouchInventory.AddItem(oldItemData, oldItemData.currentStackSize, invComingFrom, true);
@@ -253,7 +261,7 @@ public class EquipmentManager : MonoBehaviour
                     characterManager.rightHipPouchInventory.UpdateCurrentWeightAndVolume();
                     StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.rightHipPouchSidebarButton));
                     addItemEffectPlayed = true;
-                    gm.flavorText.WriteUnquipLine(oldItemData, characterManager);
+                    gm.flavorText.WriteLine_Unequip(oldItemData, characterManager);
                 }
                 else if (itemWasAddedToInv == false)
                     itemWasAddedToInv = characterManager.personalInventory.AddItem(oldItemData, oldItemData.currentStackSize, invComingFrom, true);
@@ -265,7 +273,7 @@ public class EquipmentManager : MonoBehaviour
 
                     characterManager.personalInventory.UpdateCurrentWeightAndVolume();
                     StartCoroutine(gm.playerInvUI.PlayAddItemEffect(oldItemData.item.pickupSprite, null, gm.playerInvUI.personalInventorySideBarButton));
-                    gm.flavorText.WriteUnquipLine(oldItemData, characterManager);
+                    gm.flavorText.WriteLine_Unequip(oldItemData, characterManager);
                 }
                 else if (itemWasAddedToInv == false) // If we can't add it to the Inventory, drop it, but first we need to run the rest of the code in this method, so we'll just set a bool for now
                     shouldDropItem = true;
@@ -289,12 +297,12 @@ public class EquipmentManager : MonoBehaviour
                 // If we determined we should drop the item, then drop it
                 if (forceUnequip && shouldDropItem)
                 {
-                    gm.flavorText.WriteUnquipLine(oldItemData, characterManager);
+                    gm.flavorText.WriteLine_Unequip(oldItemData, characterManager);
                     gm.dropItemController.ForceDropNearest(characterManager, oldItemData, oldItemData.currentStackSize, invComingFrom, invItemComingFrom);
                 }
                 else if (shouldDropItem && canDropItem)
                 {
-                    gm.flavorText.WriteUnquipLine(oldItemData, characterManager);
+                    gm.flavorText.WriteLine_Unequip(oldItemData, characterManager);
                     gm.dropItemController.DropItem(characterManager, characterManager.transform.position, oldItemData, oldItemData.currentStackSize, invComingFrom, invItemComingFrom);
                 }
 
@@ -654,11 +662,23 @@ public class EquipmentManager : MonoBehaviour
         characterManager.humanoidSpriteManager.RemoveSprite(equipSlot);
     }
 
-    public IEnumerator SheatheWeapons()
+    public IEnumerator SheatheWeapons(bool sheatheLeft, bool sheatheRight)
     {
-        if (WeaponsSheathed() == false && (currentEquipment[(int)EquipmentSlot.RightHandItem] != null || currentEquipment[(int)EquipmentSlot.LeftHandItem] != null))
+        bool canSheatheLeft = false;
+        if (sheatheLeft && LeftWeaponSheathed() == false && currentEquipment[(int)EquipmentSlot.LeftHandItem] != null)
+            canSheatheLeft = true;
+        bool canSheatheRight = false;
+        if (sheatheRight && RightWeaponSheathed() == false && currentEquipment[(int)EquipmentSlot.RightHandItem] != null)
+            canSheatheRight = true;
+
+        if (canSheatheLeft || canSheatheRight)
         {
-            StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetSheatheWeaponAPCost(currentEquipment[(int)EquipmentSlot.LeftHandItem], currentEquipment[(int)EquipmentSlot.RightHandItem])));
+            if (canSheatheLeft && canSheatheRight)
+                StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetSheatheWeaponAPCost(currentEquipment[(int)EquipmentSlot.LeftHandItem], currentEquipment[(int)EquipmentSlot.RightHandItem])));
+            else if (canSheatheLeft)
+                StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetSheatheWeaponAPCost(currentEquipment[(int)EquipmentSlot.LeftHandItem])));
+            else if (canSheatheRight)
+                StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetSheatheWeaponAPCost(currentEquipment[(int)EquipmentSlot.RightHandItem])));
 
             int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
             while (queueNumber != characterManager.currentQueueNumber)
@@ -666,25 +686,36 @@ public class EquipmentManager : MonoBehaviour
                 yield return null;
                 if (characterManager.status.isDead) yield break;
             }
-
-            if (currentEquipment[(int)EquipmentSlot.RightHandItem] != null)
+            
+            if (canSheatheRight)
             {
                 Weapon weapon = (Weapon)currentEquipment[(int)EquipmentSlot.RightHandItem].item;
                 if (isTwoHanding || weapon.isTwoHanded)
                     characterManager.humanoidSpriteManager.SetupOneHandedWeaponStance(this, characterManager);
                 characterManager.humanoidSpriteManager.RemoveSprite(EquipmentSlot.RightHandItem);
+                if (gm.playerInvUI.activePlayerInvSideBarButton.playerInventoryType == PlayerInventoryType.EquippedItems)
+                    currentEquipment[(int)EquipmentSlot.RightHandItem].GetItemDatasInventoryItem().UpdateAllItemTexts();
             }
 
-            if (currentEquipment[(int)EquipmentSlot.LeftHandItem] != null)
+            if (canSheatheLeft)
+            {
                 characterManager.humanoidSpriteManager.RemoveSprite(EquipmentSlot.LeftHandItem);
-            
-            gm.flavorText.WriteSheatheWeaponLine(currentEquipment[(int)EquipmentSlot.LeftHandItem], currentEquipment[(int)EquipmentSlot.RightHandItem]);
+                if (gm.playerInvUI.activePlayerInvSideBarButton.playerInventoryType == PlayerInventoryType.EquippedItems)
+                    currentEquipment[(int)EquipmentSlot.LeftHandItem].GetItemDatasInventoryItem().UpdateAllItemTexts();
+            }
+
+            if (canSheatheLeft && canSheatheRight)
+                gm.flavorText.WriteLine_SheatheWeapon(currentEquipment[(int)EquipmentSlot.LeftHandItem], currentEquipment[(int)EquipmentSlot.RightHandItem]);
+            else if (canSheatheLeft)
+                gm.flavorText.WriteLine_SheatheWeapon(currentEquipment[(int)EquipmentSlot.LeftHandItem], null);
+            else if (canSheatheRight)
+                gm.flavorText.WriteLine_SheatheWeapon(currentEquipment[(int)EquipmentSlot.RightHandItem], null);
         }
     }
 
     public IEnumerator UnsheatheWeapons()
     {
-        if (WeaponsSheathed() && (currentEquipment[(int)EquipmentSlot.RightHandItem] != null || currentEquipment[(int)EquipmentSlot.LeftHandItem] != null))
+        if (BothWeaponsSheathed() && (currentEquipment[(int)EquipmentSlot.RightHandItem] != null || currentEquipment[(int)EquipmentSlot.LeftHandItem] != null))
         {
             characterManager.DropAllCarriedItems();
 
@@ -703,22 +734,40 @@ public class EquipmentManager : MonoBehaviour
                 if (weapon.isTwoHanded)
                     characterManager.humanoidSpriteManager.SetupTwoHandedWeaponStance(this, characterManager);
                 characterManager.humanoidSpriteManager.AssignSprite(EquipmentSlot.RightHandItem, weapon, this);
+                if (gm.playerInvUI.activePlayerInvSideBarButton.playerInventoryType == PlayerInventoryType.EquippedItems)
+                    currentEquipment[(int)EquipmentSlot.RightHandItem].GetItemDatasInventoryItem().UpdateAllItemTexts();
             }
 
             if (currentEquipment[(int)EquipmentSlot.LeftHandItem] != null)
             {
                 characterManager.humanoidSpriteManager.SetupOneHandedWeaponStance(this, characterManager);
                 characterManager.humanoidSpriteManager.AssignSprite(EquipmentSlot.LeftHandItem, (Equipment)currentEquipment[(int)EquipmentSlot.LeftHandItem].item, this);
+                if (gm.playerInvUI.activePlayerInvSideBarButton.playerInventoryType == PlayerInventoryType.EquippedItems)
+                    currentEquipment[(int)EquipmentSlot.LeftHandItem].GetItemDatasInventoryItem().UpdateAllItemTexts();
             }
             
-            gm.flavorText.WriteUnheatheWeaponLine(currentEquipment[(int)EquipmentSlot.LeftHandItem], currentEquipment[(int)EquipmentSlot.RightHandItem]);
+            gm.flavorText.WriteLine_UnheatheWeapon(currentEquipment[(int)EquipmentSlot.LeftHandItem], currentEquipment[(int)EquipmentSlot.RightHandItem]);
         }
     }
 
-    public bool WeaponsSheathed()
+    public bool LeftWeaponSheathed()
     {
-        if (((currentEquipment[(int)EquipmentSlot.RightHandItem] != null || currentEquipment[(int)EquipmentSlot.Ranged] != null) && characterManager.humanoidSpriteManager.rightHandItem.sprite == null)
-            || (currentEquipment[(int)EquipmentSlot.LeftHandItem] != null && characterManager.humanoidSpriteManager.leftHandItem.sprite == null))
+        if (currentEquipment[(int)EquipmentSlot.LeftHandItem] != null && characterManager.humanoidSpriteManager.leftHandItem.sprite == null)
+            return true;
+        return false;
+    }
+
+    public bool RightWeaponSheathed()
+    {
+        if ((currentEquipment[(int)EquipmentSlot.RightHandItem] != null || currentEquipment[(int)EquipmentSlot.Ranged] != null) && characterManager.humanoidSpriteManager.rightHandItem.sprite == null)
+            return true;
+        return false;
+    }
+
+    public bool BothWeaponsSheathed()
+    {
+        if ((currentEquipment[(int)EquipmentSlot.LeftHandItem] == null || LeftWeaponSheathed()) 
+            && ((currentEquipment[(int)EquipmentSlot.RightHandItem] == null && currentEquipment[(int)EquipmentSlot.Ranged] == null) || RightWeaponSheathed()))
             return true;
         return false;
     }
@@ -858,7 +907,7 @@ public class EquipmentManager : MonoBehaviour
                     if (characterManager.personalInventory.currentVolume > characterManager.personalInventory.maxVolume)
                     {
                         // Show some flavor text explaining why you're dropping the items
-                        gm.flavorText.WriteDroppingPersonalItemsLine();
+                        gm.flavorText.WriteLine_DroppingPersonalItems();
 
                         characterManager.personalInventory.DropExcessItems();
                     }

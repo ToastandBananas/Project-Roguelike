@@ -63,7 +63,7 @@ public class DropItemController : MonoBehaviour
 
         // If this item is carried, remove it from the character's carried items
         if (characterDropping != null)
-            characterDropping.RemoveCarriedItem(itemData);
+            characterDropping.RemoveCarriedItem(itemData, itemData.currentStackSize);
 
         if (itemData.item.IsBag())
         {
@@ -211,7 +211,7 @@ public class DropItemController : MonoBehaviour
             invItemComingFrom.UpdateInventoryWeightAndVolume();
 
         if (invComingFrom == null || invComingFrom.CompareTag("Object") == false)
-            gm.flavorText.WriteDropItemLine(itemData, amountToDrop);
+            gm.flavorText.WriteLine_DropItem(itemData, amountToDrop);
     }
 
     public void SetupItemPickup(ItemPickup newItemPickup, ItemData itemData, int amountToDrop, Vector3 dropPosition)

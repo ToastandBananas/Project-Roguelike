@@ -21,8 +21,8 @@ public class InventoryUI : MonoBehaviour
     [HideInInspector] public Inventory activeInventory;
     [HideInInspector] public bool isActive, isMinimized, scrollbarSelected;
 
-    [HideInInspector] public int maxInvItems = 15;
-    [HideInInspector] public int invItemHeight = 32;
+    readonly int maxInvItems = 14;
+    readonly int invItemHeight = 32;
 
     int addItemEffectsPlayCount;
 
@@ -315,5 +315,15 @@ public class InventoryUI : MonoBehaviour
     public void DeselectScrollbar()
     {
         scrollbarSelected = false;
+    }
+
+    public int MaxInvItems()
+    {
+        return maxInvItems;
+    }
+
+    public int InvItemHeight()
+    {
+        return invItemHeight;
     }
 }

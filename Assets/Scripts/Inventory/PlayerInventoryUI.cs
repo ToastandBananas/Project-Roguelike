@@ -60,6 +60,7 @@ public class PlayerInventoryUI : InventoryUI
             for (int i = 0; i < gm.playerManager.carriedItems.Count; i++)
             {
                 InventoryItem invItem = ShowNewInventoryItem(gm.playerManager.carriedItems[i]);
+                AssignInventoryOrEquipmentManagerToInventoryItem(invItem, playerInvType);
             }
         }
 
@@ -169,10 +170,10 @@ public class PlayerInventoryUI : InventoryUI
         totalVolumeText.text = GetTotalCarriedVolume().ToString();
 
         // Setup the scrollbar
-        if (inventoryItemObjectPool.activePooledInventoryItems.Count > maxInvItems)
+        if (inventoryItemObjectPool.activePooledInventoryItems.Count > MaxInvItems())
         {
             scrollbar.value = 1;
-            invItemsParentRectTransform.offsetMin = new Vector2(invItemsParentRectTransform.offsetMin.x, (inventoryItemObjectPool.activePooledInventoryItems.Count - maxInvItems) * -invItemHeight);
+            invItemsParentRectTransform.offsetMin = new Vector2(invItemsParentRectTransform.offsetMin.x, (inventoryItemObjectPool.activePooledInventoryItems.Count - MaxInvItems()) * -InvItemHeight());
         }
     }
 

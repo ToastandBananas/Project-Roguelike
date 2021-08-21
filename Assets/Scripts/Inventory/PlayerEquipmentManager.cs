@@ -34,10 +34,10 @@ public class PlayerEquipmentManager : EquipmentManager
 
         if (GameControls.gamePlayActions.playerSheatheWeapon.WasPressed)
         {
-            if (WeaponsSheathed())
+            if (BothWeaponsSheathed())
                 StartCoroutine(UnsheatheWeapons());
             else
-                StartCoroutine(SheatheWeapons());
+                StartCoroutine(SheatheWeapons(true, true));
         }
     }
 }

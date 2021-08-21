@@ -186,7 +186,7 @@ public class Status : MonoBehaviour
 
             // Show some flavor text if the injury is bleeding
             if (bodyParts[i].damageBuildup >= 1f && characterManager.isNPC == false)
-                gm.flavorText.WriteBleedLine(characterManager, bodyParts[i].bodyPartType, Mathf.FloorToInt(bodyParts[i].damageBuildup));
+                gm.flavorText.WriteLine_Bleed(characterManager, bodyParts[i].bodyPartType, Mathf.FloorToInt(bodyParts[i].damageBuildup));
         }
     }
 
@@ -378,7 +378,7 @@ public class Status : MonoBehaviour
                     if (applicableInjuries[random].bandage == null || random2 < 50 / applicableInjuries[random].bandage.quality)
                     {
                         applicableInjuries[random].Reinjure();
-                        gm.flavorText.WriteReinjureLine(characterManager, applicableInjuries[random].injury, bodyPart.bodyPartType);
+                        gm.flavorText.WriteLine_Reinjure(characterManager, applicableInjuries[random].injury, bodyPart.bodyPartType);
                     }
                 }
             }
@@ -400,7 +400,7 @@ public class Status : MonoBehaviour
         {
             Injury laceration = gm.traumaSystem.GetLaceration(characterManager, bodyPart.bodyPartType, slashDamage);
             TraumaSystem.ApplyInjury(characterManager, laceration, bodyPart.bodyPartType, attackedFromBehind);
-            gm.flavorText.WriteInjuryLine(characterManager, laceration, bodyPart.bodyPartType);
+            gm.flavorText.WriteLine_Injury(characterManager, laceration, bodyPart.bodyPartType);
         }
         else if (cleaveDamage > 0)
         {
@@ -575,7 +575,7 @@ public class Status : MonoBehaviour
             TraumaSystem.ApplyBuff(characterManager, consumable);
 
         // Show some flavor text
-        gm.flavorText.WriteConsumeLine(consumable, characterManager);
+        gm.flavorText.WriteLine_Consume(consumable, characterManager);
     }
 
     public virtual BodyPart GetBodyPart(BodyPartType bodyPartType)

@@ -554,9 +554,9 @@ public class UIManager : MonoBehaviour
 
                     // Write some flavor text
                     if (draggedInvItem.myInventory == draggedInvItem.itemData.bagInventory)
-                        gm.flavorText.WriteTakeItemLine(draggedInvItem.itemData, startingItemCount, null, inv);
+                        gm.flavorText.WriteLine_TakeItem(draggedInvItem.itemData, startingItemCount, null, inv);
                     else
-                        gm.flavorText.WriteTakeItemLine(draggedInvItem.itemData, startingItemCount, draggedInvItem.myInventory, inv);
+                        gm.flavorText.WriteLine_TakeItem(draggedInvItem.itemData, startingItemCount, draggedInvItem.myInventory, inv);
 
                     // If we took the item from an inventory, remove the item
                     RemoveDraggedItem(draggedInvItem, startingItemCount);
@@ -656,9 +656,9 @@ public class UIManager : MonoBehaviour
 
                 // Write some flavor text
                 if (draggedInvItem.myInventory == draggedInvItem.itemData.bagInventory)
-                    gm.flavorText.WriteTakeItemLine(draggedInvItem.itemData, startingItemCount, null, inv);
+                    gm.flavorText.WriteLine_TakeItem(draggedInvItem.itemData, startingItemCount, null, inv);
                 else
-                    gm.flavorText.WriteTakeItemLine(draggedInvItem.itemData, startingItemCount, draggedInvItem.myInventory, inv);
+                    gm.flavorText.WriteLine_TakeItem(draggedInvItem.itemData, startingItemCount, draggedInvItem.myInventory, inv);
 
                 // Remove, unequip or clear the item we were dragging, depending where it's coming from
                 RemoveDraggedItem(draggedInvItem, startingItemCount);
@@ -763,9 +763,9 @@ public class UIManager : MonoBehaviour
 
                 // Write some flavor text
                 if (activeInvUI == gm.containerInvUI)
-                    gm.flavorText.WriteTransferItemLine(draggedInvItem.itemData, startingItemCount, draggedInvItem.myEquipmentManager, draggedInvItem.myInventory, activeInvUI.activeInventory);
+                    gm.flavorText.WriteLine_TransferItem(draggedInvItem.itemData, startingItemCount, draggedInvItem.myEquipmentManager, draggedInvItem.myInventory, activeInvUI.activeInventory);
                 else
-                    gm.flavorText.WriteTakeItemLine(draggedInvItem.itemData, startingItemCount, draggedInvItem.myInventory, activeInvUI.activeInventory);
+                    gm.flavorText.WriteLine_TakeItem(draggedInvItem.itemData, startingItemCount, draggedInvItem.myInventory, activeInvUI.activeInventory);
 
                 // Remove, unequip or clear the item we were dragging, depending where it's coming from
                 RemoveDraggedItem(draggedInvItem, startingItemCount);

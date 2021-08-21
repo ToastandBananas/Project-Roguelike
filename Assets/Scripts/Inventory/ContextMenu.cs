@@ -417,7 +417,7 @@ public class ContextMenu : MonoBehaviour
         // Get the desired position:
         // If the mouse position is too close to the bottom of the screen
         if (Input.mousePosition.y <= 190f)
-            yPosAddon = GetActiveButtonCount() * gm.playerInvUI.invItemHeight;
+            yPosAddon = GetActiveButtonCount() * gm.playerInvUI.InvItemHeight();
 
         // If the mouse position is too far to the right of the screen
         if (Input.mousePosition.x >= 1680f)

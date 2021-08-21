@@ -95,6 +95,7 @@ public class StackSizeSelector : MonoBehaviour
         }
     }
     
+    // Split the stack based off of the currentValue shown in the stack size selector's in game UI
     public void Submit()
     {
         if (selectedInvItem != null && currentValue > 0)
@@ -105,17 +106,22 @@ public class StackSizeSelector : MonoBehaviour
             ItemData newItemData = null;
             if (selectedInvItem.myInventory != null) // If the item is in an inventory
             {
-                newItemData = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData(selectedInvItem.myInventory);
-                newItemData.transform.SetParent(selectedInvItem.myInventory.itemsParent);
-                newItemData.gameObject.SetActive(true);
+                newItemData = gm.uiManager.CreateNewItemDataChild(selectedInvItem.itemData, selectedInvItem.myInventory, selectedInvItem.myInventory.itemsParent, false); 
+                // gm.objectPoolManager.itemDataObjectPool.GetPooledItemData(selectedInvItem.myInventory);
+                // newItemData.transform.SetParent(selectedInvItem.myInventory.itemsParent);
+                // newItemData.gameObject.SetActive(true);
 
-                selectedInvItem.myInventory.items.Add(newItemData);
+                if (gm.playerManager.carriedItems.Contains(selectedInvItem.itemData))
+                    gm.playerManager.carriedItems.Add(newItemData);
+                else
+                    selectedInvItem.myInventory.items.Add(newItemData);
+
                 if (selectedInvItem.myInventory.myInvUI == gm.containerInvUI && selectedInvItem.parentInvItem == null)
                     gm.containerInvUI.AddItemToActiveDirectionList(newItemData);
 
-                #if UNITY_EDITOR
-                    newItemData.name = selectedInvItem.itemData.itemName;
-                #endif
+                //#if UNITY_EDITOR
+                    //newItemData.name = selectedInvItem.itemData.itemName;
+                //#endif
             }
             else // If the item is on the ground
             {
@@ -124,9 +130,9 @@ public class StackSizeSelector : MonoBehaviour
                 newItemData = newItemPickup.itemData;
                 gm.dropItemController.SetupItemPickup(newItemPickup, selectedInvItem.itemData, currentValue, gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromActiveDirection());
                 gm.containerInvUI.AddItemToActiveDirectionList(newItemData);
+                selectedInvItem.itemData.TransferData(selectedInvItem.itemData, newItemData);
             }
 
-            selectedInvItem.itemData.TransferData(selectedInvItem.itemData, newItemData);
             newItemData.currentStackSize = currentValue;
 
             InventoryItem newInvItem = null;
@@ -155,8 +161,11 @@ public class StackSizeSelector : MonoBehaviour
             if (selectedInvItem.myInventory != null)
             {
                 newInvItem.transform.SetSiblingIndex(selectedInvItem.transform.GetSiblingIndex());
-                selectedInvItem.myInventory.items.RemoveAt(selectedInvItem.myInventory.items.IndexOf(newInvItem.itemData));
-                selectedInvItem.myInventory.items.Insert(selectedInvItem.myInventory.items.IndexOf(selectedInvItem.itemData) + 1, newInvItem.itemData);
+                if (gm.playerManager.carriedItems.Contains(selectedInvItem.itemData) == false)
+                {
+                    selectedInvItem.myInventory.items.RemoveAt(selectedInvItem.myInventory.items.IndexOf(newInvItem.itemData));
+                    selectedInvItem.myInventory.items.Insert(selectedInvItem.myInventory.items.IndexOf(selectedInvItem.itemData) + 1, newInvItem.itemData);
+                }
             }
             else
                 newInvItem.transform.SetSiblingIndex(selectedInvItem.transform.GetSiblingIndex() + 1);

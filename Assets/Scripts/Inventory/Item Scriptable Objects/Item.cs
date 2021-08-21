@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum ItemSize { ExtraSmall, VerySmall, Small, Medium, Large, VeryLarge }
+public enum ItemSize { ExtraSmall, VerySmall, Small, Medium, Large, VeryLarge, ExtraLarge }
 public enum ItemType { Item, Weapon, Ammo, Clothing, Armor, Food, Drink, Ingredient, Seed, Readable, Key, QuestItem, Bag, Container, Shield, Medical }
 public enum ItemMaterial { Liquid, ViscousLiquid, Meat, Bone, Food, Fat, Bug, Leaf, Charcoal, Wood, Bark, Paper, Hair, Linen, QuiltedLinen, Cotton, Wool, QuiltedWool, Silk, Hemp, Fur,
                             UncuredHide, Rawhide, SoftLeather, HardLeather, Keratin, Chitin, Glass, Obsidian, Stone, Gemstone, Silver, Gold, Copper, Bronze, Iron, Brass, Steel, Mithril, Dragonscale }
@@ -31,6 +31,7 @@ public class Item : ScriptableObject
     {
         if (itemData != null)
         {
+            characterManager.RemoveCarriedItem(itemData, itemCount); // This will only run if the character is carrying this Item
             itemData.currentStackSize -= itemCount;
 
             // If there's none left, remove the item
@@ -85,6 +86,8 @@ public class Item : ScriptableObject
             case ItemSize.Large:
                 return 1f;
             case ItemSize.VeryLarge:
+                return 1.5f;
+            case ItemSize.ExtraLarge:
                 return 2f;
             default:
                 return 1f;

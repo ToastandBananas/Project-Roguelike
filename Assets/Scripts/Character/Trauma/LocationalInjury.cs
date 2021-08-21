@@ -84,7 +84,7 @@ public class LocationalInjury
         bandage = (MedicalSupply)newItemData.item;
         injuryHealMultiplier += bandage.quality;
 
-        FlavorText.instance.WriteApplyBandageLine(characterApplying, characterManager, injury, newItemData, injuryLocation);
+        FlavorText.instance.WriteLine_ApplyBandage(characterApplying, characterManager, injury, newItemData, injuryLocation);
     }
 
     public IEnumerator RemoveMedicalItem(CharacterManager characterRemoving, MedicalSupplyType medicalSupplyType)
@@ -123,7 +123,7 @@ public class LocationalInjury
         if (characterRemoving.TryAddingItemToInventory(bandageItemData, null, false) == false)
             DropItemController.instance.ForceDropNearest(characterRemoving, bandageItemData, 1, null, null);
 
-        FlavorText.instance.WriteRemoveBandageLine(characterRemoving, characterManager, bandageItemData, injuryLocation);
+        FlavorText.instance.WriteLine_RemoveBandage(characterRemoving, characterManager, bandageItemData, injuryLocation);
 
         bandageItemData.ReturnToItemDataObjectPool();
         bandageItemData = null;

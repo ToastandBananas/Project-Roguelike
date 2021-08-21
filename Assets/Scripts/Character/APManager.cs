@@ -249,13 +249,13 @@ public class APManager : MonoBehaviour
         }
     }
 
-    public int GetSheatheWeaponAPCost(ItemData leftWeapon, ItemData rightWeapon)
+    public int GetSheatheWeaponAPCost(ItemData weaponOne, ItemData weaponTwo = null)
     {
         float cost = 0;
-        if (leftWeapon != null)
-            cost += leftWeapon.item.weight + leftWeapon.item.volume;
-        if (rightWeapon != null)
-            cost += rightWeapon.item.weight + rightWeapon.item.volume;
+        if (weaponOne != null)
+            cost += weaponOne.item.weight + weaponOne.item.volume;
+        if (weaponTwo != null)
+            cost += weaponTwo.item.weight + weaponTwo.item.volume;
         return Mathf.RoundToInt(cost);
     }
 

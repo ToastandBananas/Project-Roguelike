@@ -17,7 +17,7 @@ public class Equipment : Item
     {
         if (itemData.durability <= 0)
         {
-            GameManager.instance.flavorText.WriteTryEquipBrokenItemLine(itemData, characterManager);
+            GameManager.instance.flavorText.WriteLine_TryEquipBrokenItem(itemData, characterManager);
             return;
         }
 
@@ -62,7 +62,7 @@ public class Equipment : Item
             // Equip the item
             itemUsed = characterManager.equipmentManager.Equip(itemData, invItem, equipSlot);
             itemEquipped = true;
-            characterManager.DropAllCarriedItems();
+            characterManager.DropAllCarriedItems(itemData);
         }
 
         if (itemUsed)

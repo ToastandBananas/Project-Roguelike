@@ -66,6 +66,8 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         backgroundImage.sprite = defaultSprite;
         parentInvItem = null;
         canDragToCurrentLocation = true;
+        myInventory = null;
+        myEquipmentManager = null;
 
         if (disclosureWidget != null && disclosureWidget.isEnabled)
             disclosureWidget.DisableDisclosureWidget();
@@ -79,9 +81,9 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         myInvUI.inventoryItemObjectPool.activePooledInventoryItems.Remove(this);
 
         // Update the scrollbar if necessary
-        if (myInvUI.inventoryItemObjectPool.activePooledInventoryItems.Count > myInvUI.maxInvItems)
-            myInvUI.EditInventoryItemsParentHeight(myInvUI.invItemHeight);
-        else if (myInvUI.inventoryItemObjectPool.activePooledInventoryItems.Count == myInvUI.maxInvItems)
+        if (myInvUI.inventoryItemObjectPool.activePooledInventoryItems.Count > myInvUI.MaxInvItems())
+            myInvUI.EditInventoryItemsParentHeight(myInvUI.InvItemHeight());
+        else if (myInvUI.inventoryItemObjectPool.activePooledInventoryItems.Count == myInvUI.MaxInvItems())
             myInvUI.ResetInventoryItemsParentHeight();
 
         if (gm.uiManager.activeInvItem == this)
@@ -100,14 +102,17 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             disclosureWidget.ContractDisclosureWidget();
 
         // Return the itemData on this InventoryItem back to the appropriate object pool
-        if (itemData.CompareTag("Item Data Object"))
-            itemData.ReturnToItemDataObjectPool();
-        else if (itemData.CompareTag("Item Data Container Object"))
-            itemData.ReturnToItemDataContainerObjectPool();
-        else
+        if (itemData != null)
         {
-            itemData.ClearData();
-            itemData.gameObject.SetActive(false);
+            if (itemData.CompareTag("Item Data Object"))
+                itemData.ReturnToItemDataObjectPool();
+            else if (itemData.CompareTag("Item Data Container Object"))
+                itemData.ReturnToItemDataContainerObjectPool();
+            else
+            {
+                itemData.ClearData();
+                itemData.gameObject.SetActive(false);
+            }
         }
 
         // If this item was inside a bag or portable container's inventory and it was the last item inside of it, contract the disclosure widget (if it's expanded)
@@ -171,6 +176,8 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             itemNameText.text = "<b>(Carried)</b> ";
         else if (gm.playerManager.personalInventory.items.Contains(itemData))
             itemNameText.text = "<b>(Pockets)</b> ";
+        else if (gm.playerManager.equipmentManager.ItemIsEquipped(itemData) && (itemData.item.IsWeapon() || itemData.item.IsShield()))
+            itemNameText.text = GetSheathedVerb(itemData);
         else
             itemNameText.text = "";
 
@@ -181,6 +188,22 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
         itemTypeText.text = Utilities.FormatEnumStringWithSpaces(itemData.item.itemType.ToString(), false);
         UpdateItemNumberTexts();
+    }
+
+    string GetSheathedVerb(ItemData weaponItemData)
+    {
+        if ((itemData == gm.playerManager.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftHandItem] && gm.playerManager.equipmentManager.LeftWeaponSheathed())
+            || (itemData == gm.playerManager.equipmentManager.currentEquipment[(int)EquipmentSlot.RightHandItem] && gm.playerManager.equipmentManager.RightWeaponSheathed()))
+        {
+            if (itemData.item.IsWeapon())
+            {
+                Weapon weapon = (Weapon)itemData.item;
+                if (weapon.weaponType == WeaponType.Sword || weapon.weaponType == WeaponType.Dagger)
+                    return "<b>(Sheathed)</b> ";
+            }
+            return "<b>(Stowed)</b> ";
+        }
+        return "";
     }
 
     public void UpdateItemNumberTexts()
@@ -268,7 +291,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                         gm.containerInvUI.RemoveBagFromGround(itemData.bagInventory);
 
                     // Write some flavor text
-                    gm.flavorText.WriteTakeItemLine(itemData, startingItemCount, myInventory, gm.playerInvUI.activeInventory);
+                    gm.flavorText.WriteLine_TakeItem(itemData, startingItemCount, myInventory, gm.playerInvUI.activeInventory);
 
                     ClearItem();
                 }
@@ -292,7 +315,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 }
 
                 // Write some flavor text
-                gm.flavorText.WriteTakeItemLine(itemData, startingItemCount, myInventory, gm.playerManager.keysInventory);
+                gm.flavorText.WriteLine_TakeItem(itemData, startingItemCount, myInventory, gm.playerManager.keysInventory);
 
                 ClearItem();
             }
@@ -318,7 +341,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                         }
 
                         // Write some flavor text
-                        gm.flavorText.WriteTakeItemLine(itemData, startingItemCount, myInventory, gm.playerManager.quiverInventory);
+                        gm.flavorText.WriteLine_TakeItem(itemData, startingItemCount, myInventory, gm.playerManager.quiverInventory);
 
                         ClearItem();
                     }
@@ -363,7 +386,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                         myEquipmentManager.Unequip(equipmentSlot, false, false, false);
 
                         // Write some flavor text
-                        gm.flavorText.WriteTransferItemLine(itemData, startingItemCount, myEquipmentManager, myInventory, gm.containerInvUI.activeInventory);
+                        gm.flavorText.WriteLine_TransferItem(itemData, startingItemCount, myEquipmentManager, myInventory, gm.containerInvUI.activeInventory);
 
                         // Calculate and use AP
                         float bagWeight = 0;
@@ -382,7 +405,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                             gm.uiManager.StartCoroutine(gm.apManager.UseAP(gm.playerManager, gm.apManager.GetTransferItemCost(itemData.item, startingItemCount, bagInvWeight, bagInvVolume, false)));
 
                         // Write some flavor text
-                        gm.flavorText.WriteTransferItemLine(itemData, startingItemCount, myEquipmentManager, myInventory, gm.containerInvUI.activeInventory);
+                        gm.flavorText.WriteLine_TransferItem(itemData, startingItemCount, myEquipmentManager, myInventory, gm.containerInvUI.activeInventory);
 
                         ClearItem();
                     }
@@ -397,7 +420,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                         myInvUI.StartCoroutine(myInvUI.PlayAddItemEffect(itemData.item.pickupSprite, gm.containerInvUI.activeContainerSideBarButton, null));
 
                         // Write some flavor text
-                        gm.flavorText.WriteTransferItemLine(itemData, startingItemCount - itemData.currentStackSize, myEquipmentManager, myInventory, gm.containerInvUI.activeInventory);
+                        gm.flavorText.WriteLine_TransferItem(itemData, startingItemCount - itemData.currentStackSize, myEquipmentManager, myInventory, gm.containerInvUI.activeInventory);
                     }
                 }
             }
@@ -451,6 +474,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                         if (myEquipmentManager != null)
                         {
                             EquipmentSlot equipmentSlot = myEquipmentManager.GetEquipmentSlotFromItemData(itemData);
+                            EquipmentManager equipmentManager = myEquipmentManager;
                             myEquipmentManager.Unequip(equipmentSlot, false, false, false);
 
                             // Calculate and use AP
@@ -458,7 +482,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                             if (tempItemData.bagInventory != null)
                                 bagWeight += tempItemData.bagInventory.currentWeight;
                             gm.StartCoroutine(gm.apManager.UseAP(gm.playerManager, gm.apManager.GetEquipAPCost((Equipment)tempItemData.item, bagWeight)));
-                            myEquipmentManager.StartCoroutine(myEquipmentManager.SetUpEquipment(null, tempItemData, (Equipment)tempItemData.item, equipmentSlot, false));
+                            equipmentManager.StartCoroutine(equipmentManager.SetUpEquipment(null, tempItemData, (Equipment)tempItemData.item, equipmentSlot, false));
                         }
                         else
                         {
@@ -620,7 +644,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                     }
 
                     // Write some flavor text
-                    gm.flavorText.WriteTakeItemLine(itemData, stackSize, invComingFrom, invAddingTo);
+                    gm.flavorText.WriteLine_TakeItem(itemData, stackSize, invComingFrom, invAddingTo);
 
                     ClearItem();
                     return someAdded;
@@ -640,7 +664,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
 
                 // Write some flavor text
                 if (someAdded)
-                    gm.flavorText.WriteTakeItemLine(itemData, stackSize - itemData.currentStackSize, invComingFrom, invAddingTo);
+                    gm.flavorText.WriteLine_TakeItem(itemData, stackSize - itemData.currentStackSize, invComingFrom, invAddingTo);
 
                 gm.containerInvUI.UpdateUI();
                 return someAdded;
@@ -681,14 +705,14 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                             if (itemDataComingFrom.currentStackSize == 0)
                             {
                                 // Write some flavor text
-                                gm.flavorText.WriteDropItemLine(itemDataComingFrom, itemCount);
+                                gm.flavorText.WriteLine_DropItem(itemDataComingFrom, itemCount);
                                 return;
                             }
                         }
                         else
                         {
                             // Write some flavor text
-                            gm.flavorText.WriteDropItemLine(itemDataComingFrom, itemCount - itemDataComingFrom.currentStackSize);
+                            gm.flavorText.WriteLine_DropItem(itemDataComingFrom, itemCount - itemDataComingFrom.currentStackSize);
                             return;
                         }
                     }
