@@ -81,7 +81,7 @@ public class ContextMenu : MonoBehaviour
 
             // Determine the button's text based off of thes medical supply type
             if (medSupply.medicalSupplyType == MedicalSupplyType.Bandage)
-                contextButton.textMesh.text = "Apply " + medicalItems[i].GetSoilageText() + " " + medicalItems[i].itemName;
+                contextButton.textMesh.text = "Apply " + medicalItems[i].GetSoilageText() + " " + medicalItems[i].GetItemName(1);
 
             if (includeInjury)
                 contextButton.textMesh.text += " - " + Utilities.FormatEnumStringWithSpaces(locationalInjury.injuryLocation.ToString(), false) + " - " + locationalInjury.injury.name;
@@ -101,7 +101,7 @@ public class ContextMenu : MonoBehaviour
         ContextMenuButton contextButton = GetNextInactiveButton();
         contextButton.gameObject.SetActive(true);
 
-        contextButton.textMesh.text = "Remove " + medicalItemData.itemName;
+        contextButton.textMesh.text = "Remove " + medicalItemData.GetItemName(1);
         if (includeInjury)
             contextButton.textMesh.text += " - " + Utilities.FormatEnumStringWithSpaces(locationalInjury.injuryLocation.ToString(), false) + " - " + locationalInjury.injury.name;
 
@@ -169,7 +169,40 @@ public class ContextMenu : MonoBehaviour
                         CreateEquipLeftHandItemButton();
                 }
 
-                CreateUseItemButton();
+                CreateUseItemButton(1);
+
+                if (contextActiveInvItem.itemData.item.canUsePartial)
+                {
+                    if (contextActiveInvItem.itemData.percentRemaining >= 60)
+                        CreateUseItemButton(1, PartialAmount.Half);
+                    if (contextActiveInvItem.itemData.percentRemaining >= 35)
+                        CreateUseItemButton(1, PartialAmount.Quarter);
+                    if (contextActiveInvItem.itemData.percentRemaining >= 15)
+                        CreateUseItemButton(1, PartialAmount.Tenth);
+                }
+
+                if (contextActiveInvItem.itemData.item.IsConsumable())
+                {
+                    if (contextActiveInvItem.itemData.item.itemSize == ItemSize.VerySmall)
+                    {
+                        if (contextActiveInvItem.itemData.currentStackSize >= 5)
+                            CreateUseItemButton(5);
+                        else if (contextActiveInvItem.itemData.currentStackSize > 1)
+                            CreateUseItemButton(contextActiveInvItem.itemData.currentStackSize);
+                    }
+                    else if (contextActiveInvItem.itemData.item.itemSize == ItemSize.ExtraSmall)
+                    {
+                        if (contextActiveInvItem.itemData.currentStackSize >= 5)
+                            CreateUseItemButton(5);
+                        else if (contextActiveInvItem.itemData.currentStackSize > 1)
+                            CreateUseItemButton(contextActiveInvItem.itemData.currentStackSize);
+
+                        if (contextActiveInvItem.itemData.currentStackSize >= 10)
+                            CreateUseItemButton(10);
+                        else if (contextActiveInvItem.itemData.currentStackSize > 5)
+                            CreateUseItemButton(contextActiveInvItem.itemData.currentStackSize);
+                    }
+                }
             }
             else if (contextActiveInvItem.itemData.item.IsMedicalSupply())
                 CreateApplyMedicalSupplyButtons();
@@ -231,7 +264,7 @@ public class ContextMenu : MonoBehaviour
         DisableContextMenu();
     }
 
-    void CreateUseItemButton()
+    void CreateUseItemButton(int itemCount, PartialAmount partialAmount = PartialAmount.Whole)
     {
         ContextMenuButton contextButton = GetNextInactiveButton();
         contextButton.gameObject.SetActive(true);
@@ -242,9 +275,25 @@ public class ContextMenu : MonoBehaviour
         {
             Consumable consumable = (Consumable)contextActiveInvItem.itemData.item;
             if (consumable.consumableType == ConsumableType.Food)
+            {
                 contextButton.textMesh.text = "Eat";
+                if (itemCount > 1)
+                    contextButton.textMesh.text += " " + itemCount;
+            }
             else
                 contextButton.textMesh.text = "Drink";
+
+            if (consumable.canUsePartial)
+            {
+                if (partialAmount == PartialAmount.Tenth)
+                    contextButton.textMesh.text += " a Little Bit";
+                else if (partialAmount == PartialAmount.Half)
+                    contextButton.textMesh.text += " Half";
+                else if (partialAmount == PartialAmount.Quarter)
+                    contextButton.textMesh.text += " a Quarter";
+                else if (contextActiveInvItem.itemData.percentRemaining < 100)
+                    contextButton.textMesh.text += " Remainder";
+            }
         }
         else if (contextActiveInvItem.itemData.item.IsWeapon())
         {
@@ -256,13 +305,13 @@ public class ContextMenu : MonoBehaviour
         }
         else
             contextButton.textMesh.text = "Equip";
-
-        contextButton.button.onClick.AddListener(UseItem);
+        
+        contextButton.button.onClick.AddListener(delegate { UseItem(itemCount, partialAmount); });
     }
 
-    void UseItem()
+    void UseItem(int itemCount, PartialAmount partialAmount)
     {
-        contextActiveInvItem.UseItem();
+        contextActiveInvItem.UseItem(itemCount, partialAmount);
         DisableContextMenu();
     }
 
@@ -279,7 +328,7 @@ public class ContextMenu : MonoBehaviour
     void EquipLeftHandItem()
     {
         Weapon weapon = (Weapon)contextActiveInvItem.itemData.item;
-        weapon.Use(gm.playerManager, contextActiveInvItem.myInventory, contextActiveInvItem, contextActiveInvItem.itemData, 1, EquipmentSlot.LeftHandItem);
+        weapon.Use(gm.playerManager, contextActiveInvItem.myInventory, contextActiveInvItem, contextActiveInvItem.itemData, 1, PartialAmount.Whole, EquipmentSlot.LeftHandItem);
         DisableContextMenu();
     }
 
@@ -290,7 +339,7 @@ public class ContextMenu : MonoBehaviour
 
         contextButton.textMesh.text = "Unequip";
 
-        contextButton.button.onClick.AddListener(UseItem);
+        contextButton.button.onClick.AddListener(delegate { UseItem(1, PartialAmount.Whole); });
     }
 
     void CreateTransferButton()

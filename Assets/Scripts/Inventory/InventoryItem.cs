@@ -149,7 +149,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         return false;
     }
 
-    public void UseItem(int amountToUse = 1)
+    public void UseItem(int amountToUse = 1, PartialAmount partialAmountToUse = PartialAmount.Whole)
     {
         if (itemData.item.isUsable)
         {
@@ -166,7 +166,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             }
 
             if (itemData != null && gm.playerManager.isMyTurn && gm.playerManager.actionsQueued == 0)
-                itemData.item.Use(gm.playerManager, myInventory, this, itemData, amountToUse, equipSlot);
+                itemData.item.Use(gm.playerManager, myInventory, this, itemData, amountToUse, partialAmountToUse, equipSlot);
         }
     }
 
@@ -181,29 +181,10 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         else
             itemNameText.text = "";
 
-        if (itemData.currentStackSize > 1)
-            itemNameText.text += itemData.GetPluralName();
-        else
-            itemNameText.text += itemData.itemName;
+        itemNameText.text += itemData.GetItemName(itemData.currentStackSize);
 
         itemTypeText.text = Utilities.FormatEnumStringWithSpaces(itemData.item.itemType.ToString(), false);
         UpdateItemNumberTexts();
-    }
-
-    string GetSheathedVerb(ItemData weaponItemData)
-    {
-        if ((itemData == gm.playerManager.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftHandItem] && gm.playerManager.equipmentManager.LeftWeaponSheathed())
-            || (itemData == gm.playerManager.equipmentManager.currentEquipment[(int)EquipmentSlot.RightHandItem] && gm.playerManager.equipmentManager.RightWeaponSheathed()))
-        {
-            if (itemData.item.IsWeapon())
-            {
-                Weapon weapon = (Weapon)itemData.item;
-                if (weapon.weaponType == WeaponType.Sword || weapon.weaponType == WeaponType.Dagger)
-                    return "<b>(Sheathed)</b> ";
-            }
-            return "<b>(Stowed)</b> ";
-        }
-        return "";
     }
 
     public void UpdateItemNumberTexts()
@@ -238,6 +219,22 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
         totalVolume = Mathf.RoundToInt(totalVolume * 100f) / 100f;
         itemWeightText.text = totalWeight.ToString();
         itemVolumeText.text = totalVolume.ToString();
+    }
+
+    string GetSheathedVerb(ItemData weaponItemData)
+    {
+        if ((itemData == gm.playerManager.equipmentManager.currentEquipment[(int)EquipmentSlot.LeftHandItem] && gm.playerManager.equipmentManager.LeftWeaponSheathed())
+            || (itemData == gm.playerManager.equipmentManager.currentEquipment[(int)EquipmentSlot.RightHandItem] && gm.playerManager.equipmentManager.RightWeaponSheathed()))
+        {
+            if (itemData.item.IsWeapon())
+            {
+                Weapon weapon = (Weapon)itemData.item;
+                if (weapon.weaponType == WeaponType.Sword || weapon.weaponType == WeaponType.Dagger)
+                    return "<b>(Sheathed)</b> ";
+            }
+            return "<b>(Stowed)</b> ";
+        }
+        return "";
     }
 
     public void Highlight()

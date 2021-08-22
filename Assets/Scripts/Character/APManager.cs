@@ -264,9 +264,9 @@ public class APManager : MonoBehaviour
         return Mathf.RoundToInt(GetSheatheWeaponAPCost(leftWeapon, rightWeapon) / 2);
     }
 
-    public int GetConsumeAPCost(Consumable consumable)
+    public int GetConsumeAPCost(Consumable consumable, float itemCount, float percentUsed)
     {
-        return Mathf.RoundToInt((consumable.volume * 100) + (consumable.weight * 100));
+        return Mathf.RoundToInt(((consumable.volume * 100) + (consumable.weight * 100)) * itemCount * percentUsed);
     }
 
     public int GetApplyMedicalItemAPCost(MedicalSupply medSupply)

@@ -9,16 +9,16 @@ public class Buff
     public float healPercentPerTurn;
     public int healTimeRemaining;
 
-    public Buff(Consumable consumable)
+    public Buff(Consumable consumable, int itemCount, float percentUsed)
     {
         this.consumable = consumable;
-        SetupBuffVariables(consumable);
+        SetupBuffVariables(consumable, itemCount, percentUsed);
     }
 
-    void SetupBuffVariables(Consumable consumable)
+    void SetupBuffVariables(Consumable consumable, int itemCount, float percentUsed)
     {
         healTimeRemaining = Random.Range(TimeSystem.GetTotalSeconds(consumable.minGradualHealTime), TimeSystem.GetTotalSeconds(consumable.maxGradualHealTime) + 1);
         buffTimeRemaining = healTimeRemaining;
-        healPercentPerTurn = consumable.gradualHealPercent / buffTimeRemaining;
+        healPercentPerTurn = (consumable.gradualHealPercent / buffTimeRemaining) * itemCount * percentUsed;
     }
 }

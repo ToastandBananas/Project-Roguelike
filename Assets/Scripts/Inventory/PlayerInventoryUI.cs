@@ -160,7 +160,7 @@ public class PlayerInventoryUI : InventoryUI
 
             if (playerInvType != PlayerInventoryType.Personal && playerInvType != PlayerInventoryType.Keys)
             {
-                inventoryNameText.text = activeInventory.myItemData.itemName;
+                inventoryNameText.text = activeInventory.myItemData.GetItemName(1);
                 weightText.text = GetTotalWeight(activeInventory.items).ToString() + "/" + activeInventory.maxWeight.ToString();
                 volumeText.text = GetTotalVolume(activeInventory.items).ToString() + "/" + activeInventory.maxVolume.ToString();
             }

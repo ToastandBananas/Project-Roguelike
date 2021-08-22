@@ -69,7 +69,7 @@ public class EquipmentManager : MonoBehaviour
         // If the item we're equipping is a bag, make sure it's not inside of another bag. If it is, the player will need to remove it from the bag it's inside before they can equip it. 
         if (newItemData.item.IsBag() && gm.playerInvUI.ItemIsInABag(newItemData))
         {
-            Debug.Log("You must remove " + newItemData.itemName + " from your bag before you can equip it.");
+            Debug.Log("You must remove " + newItemData.GetItemName(1) + " from your bag before you can equip it.");
             return false;
         }
 
@@ -94,7 +94,7 @@ public class EquipmentManager : MonoBehaviour
         }
 
         #if UNITY_EDITOR
-            equipmentItemData.gameObject.name = equipmentItemData.itemName;
+            equipmentItemData.gameObject.name = equipmentItemData.GetItemName(1);
         #endif
 
         if (AssignEquipment(equipmentItemData, equipmentSlot) == false)
@@ -812,7 +812,7 @@ public class EquipmentManager : MonoBehaviour
             SetEquipmentSprite(equipSlot, equipment);
 
             #if UNITY_EDITOR
-                newItemData.gameObject.name = newItemData.itemName;
+                newItemData.gameObject.name = newItemData.GetItemName(newItemData.currentStackSize);
             #endif
             
             if ((equipment.IsWeapon() || equipment.IsWeapon()) && onWeaponChanged != null)

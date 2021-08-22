@@ -549,11 +549,17 @@ public class Status : MonoBehaviour
         }
     }
 
-    public IEnumerator Consume(ItemData consumableItemData)
+    public IEnumerator Consume(ItemData consumableItemData, int itemCount, PartialAmount partialAmount)
     {
         Consumable consumable = (Consumable)consumableItemData.item;
+        string itemName = consumableItemData.GetItemName(itemCount);
+        float percentUsed = 1;
+        if (consumableItemData.percentRemaining - consumable.GetPartialAmountsPercentage(partialAmount) > 0)
+            percentUsed = consumable.GetPartialAmountsPercentage(partialAmount) / 100f;
+        else
+            percentUsed = consumableItemData.percentRemaining / 100f;
 
-        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetConsumeAPCost(consumable)));
+        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetConsumeAPCost(consumable, itemCount, percentUsed)));
 
         int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
         while (queueNumber != characterManager.currentQueueNumber)
@@ -564,18 +570,21 @@ public class Status : MonoBehaviour
 
         // Adjust overall bodily healthiness
         if (consumable.healthinessAdjustment != 0)
-            characterManager.status.AdjustHealthiness(consumable.healthinessAdjustment);
+            characterManager.status.AdjustHealthiness(consumable.healthinessAdjustment * itemCount * percentUsed);
 
         // Instantly heal entire body
         if (consumable.instantHealPercent > 0)
-            characterManager.status.HealAllBodyParts_Percent(consumable.instantHealPercent);
+            characterManager.status.HealAllBodyParts_Percent(consumable.instantHealPercent * itemCount * percentUsed);
 
         // Apply heal over time buff
         if (consumable.gradualHealPercent > 0)
-            TraumaSystem.ApplyBuff(characterManager, consumable);
+            TraumaSystem.ApplyBuff(characterManager, consumable, itemCount, percentUsed);
 
         // Show some flavor text
-        gm.flavorText.WriteLine_Consume(consumable, characterManager);
+        if (consumableItemData.percentRemaining - (percentUsed * 100) > 0)
+            gm.flavorText.WriteLine_Consume(characterManager, consumable, itemName, percentUsed);
+        else
+            gm.flavorText.WriteLine_Consume(characterManager, consumable, itemName, 1);
     }
 
     public virtual BodyPart GetBodyPart(BodyPartType bodyPartType)

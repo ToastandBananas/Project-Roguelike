@@ -52,9 +52,9 @@ public class TraumaSystem : MonoBehaviour
         }
     }
 
-    public static void ApplyBuff(CharacterManager character, Consumable consumable)
+    public static void ApplyBuff(CharacterManager character, Consumable consumable, int itemCount, float percentUsed)
     {
-        character.status.buffs.Add(new Buff(consumable));
+        character.status.buffs.Add(new Buff(consumable, itemCount, percentUsed));
     }
 
     public static void RemoveBuff(CharacterManager character, Buff buff)

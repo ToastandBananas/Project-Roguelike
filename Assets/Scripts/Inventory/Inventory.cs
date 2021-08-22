@@ -180,7 +180,7 @@ public class Inventory : MonoBehaviour
             }
 
             #if UNITY_EDITOR
-                itemDataToAdd.gameObject.name = itemDataToAdd.itemName;
+                itemDataToAdd.gameObject.name = itemDataToAdd.GetItemName(itemDataToAdd.currentStackSize);
             #endif
             
             if (itemDataComingFrom.parentInventory != null && itemDataComingFrom.parentInventory.inventoryOwner != null)
@@ -344,7 +344,7 @@ public class Inventory : MonoBehaviour
 
         for (int i = itemDatas.Count - 1; i >= 0; i--)
         {
-            Debug.Log("Dropping: " + itemDatas[i].itemName);
+            Debug.Log("Dropping: " + itemDatas[i].GetItemName(itemDatas[i].currentStackSize));
             gm.dropItemController.ForceDropNearest(inventoryOwner, itemDatas[i], itemDatas[i].currentStackSize, this, itemDatas[i].GetItemDatasInventoryItem());
             items.Remove(itemDatas[i]);
             UpdateCurrentWeightAndVolume();

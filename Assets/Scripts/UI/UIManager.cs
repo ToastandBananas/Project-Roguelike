@@ -126,7 +126,18 @@ public class UIManager : MonoBehaviour
                     ClearSelectedItems(false);
 
                     if (activeInvItem != null)
-                        activeInvItem.UseItem();
+                    {
+                        // If the item is a consumable that is small enough to eat 5 at a time
+                        if (activeInvItem.itemData.item.IsConsumable() && (activeInvItem.itemData.item.itemSize == ItemSize.VerySmall || activeInvItem.itemData.item.itemSize == ItemSize.ExtraSmall))
+                        {
+                            if (activeInvItem.itemData.currentStackSize >= 5)
+                                activeInvItem.UseItem(5);
+                            else
+                                activeInvItem.UseItem(activeInvItem.itemData.currentStackSize);
+                        }
+                        else
+                            activeInvItem.UseItem();
+                    }
 
                     DisableInventoryUIComponents();
                 }
@@ -806,7 +817,7 @@ public class UIManager : MonoBehaviour
             if (activeInvItem.itemData.item.IsBag()) // If it's a bag, try adding the item
             {
                 if (activeInvItem.disclosureWidget.expandedItems.Contains(draggedInvItem))
-                    gm.flavorText.WriteLine("<i>This item is already in the " + activeInvItem.itemData.itemName + ".</i>");
+                    gm.flavorText.WriteLine("<i>This item is already in the " + activeInvItem.itemData.GetItemName(1) + ".</i>");
                 else if (draggedInvItem.itemData.item.IsBag() == false)
                 {
                     bool hasRoom = activeInvItem.itemData.bagInventory.HasRoomInInventory(draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize);
@@ -866,12 +877,12 @@ public class UIManager : MonoBehaviour
                     }
                 }
                 else
-                    gm.flavorText.WriteLine("<i>You can't put that in the " + activeInvItem.itemData.itemName + ".</i>");
+                    gm.flavorText.WriteLine("<i>You can't put that in the " + activeInvItem.itemData.GetItemName(1) + ".</i>");
             }
             else if (activeInvItem.itemData.item.IsPortableContainer()) // If it's a portable container, try adding the item
             {
                 if (activeInvItem.disclosureWidget.expandedItems.Contains(draggedInvItem))
-                    gm.flavorText.WriteLine("<i>This item is already in the " + activeInvItem.itemData.itemName + ".</i>");
+                    gm.flavorText.WriteLine("<i>This item is already in the " + activeInvItem.itemData.GetItemName(1) + ".</i>");
                 else if (draggedInvItem.itemData.item.IsBag() == false && draggedInvItem.itemData.item.IsPortableContainer() == false)
                 {
                     bool hasRoom = activeInvItem.itemData.bagInventory.HasRoomInInventory(draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize);
@@ -928,7 +939,7 @@ public class UIManager : MonoBehaviour
                     }
                 }
                 else
-                    gm.flavorText.WriteLine("<i>You can't put that in the " + activeInvItem.itemData.itemName + ".</i>");
+                    gm.flavorText.WriteLine("<i>You can't put that in the " + activeInvItem.itemData.GetItemName(1) + ".</i>");
             }
             // If we the item we're dragging and dropping is the same as the active item and they have equal values, add to the active item's stack size
             else if (activeInvItem.itemData.item.maxStackSize > 1 && activeInvItem.itemData.currentStackSize < activeInvItem.itemData.item.maxStackSize 
@@ -945,7 +956,7 @@ public class UIManager : MonoBehaviour
                     RemoveDraggedItem(draggedInvItem, startingItemCount);
                 }
 
-                gm.flavorText.WriteLine("You combined two stacks of " + activeInvItem.itemData.itemName + "s.");
+                gm.flavorText.WriteLine("You combined two stacks of " + activeInvItem.itemData.GetItemName(2) + ".");
 
                 activeInvItem.UpdateInventoryWeightAndVolume();
             }
@@ -1373,7 +1384,7 @@ public class UIManager : MonoBehaviour
             parentInventory.items.Add(newItemDataObject);
 
         #if UNITY_EDITOR
-            newItemDataObject.name = newItemDataObject.itemName;
+            newItemDataObject.name = newItemDataObject.GetItemName(newItemDataObject.currentStackSize);
         #endif
         
         return newItemDataObject;
@@ -1436,10 +1447,7 @@ public class UIManager : MonoBehaviour
         else if (gm.containerInvUI.emptyTileMaxVolume - gm.containerInvUI.GetTotalVolumeForTile(gm.dropItemController.GetDirectionFromDropPosition(groundPosition)) - itemDataComingFrom.item.volume >= 0)
             return true;
 
-        if (itemDataComingFrom.currentStackSize == 1)
-            gm.flavorText.WriteLine("<i>There's not enough room on the ground to drop the " + itemDataComingFrom.itemName + ".</i>");
-        else
-            gm.flavorText.WriteLine("<i>There's not enough room on the ground to drop the " + itemDataComingFrom.itemName + "s.</i>");
+        gm.flavorText.WriteLine("<i>There's not enough room on the ground to drop the " + itemDataComingFrom.GetItemName(itemDataComingFrom.currentStackSize) + ".</i>");
 
         return false;
     }

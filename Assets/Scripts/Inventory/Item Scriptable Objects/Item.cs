@@ -1,6 +1,7 @@
 using UnityEngine;
 
 public enum ItemSize { ExtraSmall, VerySmall, Small, Medium, Large, VeryLarge, ExtraLarge }
+public enum PartialAmount { Whole, Half, Quarter, Tenth }
 public enum ItemType { Item, Weapon, Ammo, Clothing, Armor, Food, Drink, Ingredient, Seed, Readable, Key, QuestItem, Bag, Container, Shield, Medical }
 public enum ItemMaterial { Liquid, ViscousLiquid, Meat, Bone, Food, Fat, Bug, Leaf, Charcoal, Wood, Bark, Paper, Hair, Linen, QuiltedLinen, Cotton, Wool, QuiltedWool, Silk, Hemp, Fur,
                             UncuredHide, Rawhide, SoftLeather, HardLeather, Keratin, Chitin, Glass, Obsidian, Stone, Gemstone, Silver, Gold, Copper, Bronze, Iron, Brass, Steel, Mithril, Dragonscale }
@@ -19,6 +20,7 @@ public class Item : ScriptableObject
     public float weight = 0.1f;
     public float volume = 0.1f;
     public bool isUsable = true;
+    public bool canUsePartial;
 
     [Header("Value")]
     public Vector2Int value;
@@ -27,33 +29,24 @@ public class Item : ScriptableObject
     [Header("Pickup Sprite")]
     public Sprite pickupSprite;
 
-    public virtual void Use(CharacterManager characterManager, Inventory inventory, InventoryItem invItem, ItemData itemData, int itemCount, EquipmentSlot equipSlot = EquipmentSlot.Shirt)
+    public virtual void Use(CharacterManager characterManager, Inventory inventory, InventoryItem invItem, ItemData itemData, int itemCount, PartialAmount partialAmountToUse = PartialAmount.Whole, EquipmentSlot equipSlot = EquipmentSlot.Shirt)
     {
         if (itemData != null)
         {
             characterManager.RemoveCarriedItem(itemData, itemCount); // This will only run if the character is carrying this Item
-            itemData.currentStackSize -= itemCount;
+
+            if (canUsePartial && partialAmountToUse != PartialAmount.Whole)
+            {
+                InventoryItem newInvItem = StackSizeSelector.instance.SplitStack(invItem, 1);
+                newInvItem.itemData.UsePartial(partialAmountToUse);
+                newInvItem.UpdateAllItemTexts();
+            }
+            else
+                itemData.currentStackSize -= itemCount;
 
             // If there's none left, remove the item
             if (itemData.currentStackSize <= 0)
-            {
-                // Remove the item from the ItemDatas dictionary if it was on the ground
-                if (itemData.IsPickup())
-                    GameTiles.RemoveItemData(itemData, itemData.transform.position);
-
-                if (inventory != null) // If using an item that's inside and inventory
-                {
-                    // Remove it from the inventory
-                    RemoveFromInventory(inventory, invItem, itemData, itemCount);
-                }
-                else if (invItem != null && invItem.myEquipmentManager == null) // If using an item that was on the ground
-                {
-                    invItem.gm.containerInvUI.GetItemsListFromActiveDirection().Remove(invItem.itemData);
-                    invItem.ClearItem();
-                }
-
-                GameManager.instance.StartCoroutine(itemData.DelayReturnToObjectPool());
-            }
+                itemData.RemoveItemData();
             else if (invItem != null)
                 invItem.UpdateInventoryWeightAndVolume();
 
@@ -68,6 +61,24 @@ public class Item : ScriptableObject
     public void RemoveFromInventory(Inventory inventory, InventoryItem invItem, ItemData itemData, int itemCount)
     {
         inventory.RemoveItem(itemData, itemCount, invItem);
+    }
+
+    /// <summary>Returns partialAmount as a whole number percent.</summary>
+    public int GetPartialAmountsPercentage(PartialAmount partialAmount)
+    {
+        switch (partialAmount)
+        {
+            case PartialAmount.Whole:
+                return 100;
+            case PartialAmount.Half:
+                return 50;
+            case PartialAmount.Quarter:
+                return 25;
+            case PartialAmount.Tenth:
+                return 10;
+            default:
+                return 100;
+        }
     }
 
     /// <summary>Used to determine how much a character can carry in their hands, based off of ItemSize.</summary>

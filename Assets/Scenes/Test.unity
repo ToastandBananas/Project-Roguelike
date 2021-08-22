@@ -2812,8 +2812,6 @@ MonoBehaviour:
   isActive: 0
   isMinimized: 0
   scrollbarSelected: 0
-  maxInvItems: 15
-  invItemHeight: 32
   floorIconSprite: {fileID: 21300000, guid: 628175b38f4350c44823cf75aedd0b32, type: 3}
   inventoryCycler: {fileID: 651116684}
   playerPositionSideBarButton: {fileID: 855631854}
@@ -22544,8 +22542,6 @@ MonoBehaviour:
   isActive: 0
   isMinimized: 0
   scrollbarSelected: 0
-  maxInvItems: 15
-  invItemHeight: 32
   totalWeightText: {fileID: 656325478}
   totalVolumeText: {fileID: 1235667295}
   personalInventorySideBarButton: {fileID: 46217353}
@@ -26042,7 +26038,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 2265886045262541840, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_LocalPosition.y
@@ -26083,10 +26079,14 @@ PrefabInstance:
     - target: {fileID: 2265886045262541842, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: item
       value: 
-      objectReference: {fileID: 11400000, guid: d6f97f541b67b45468a1503beb004a57, type: 2}
+      objectReference: {fileID: 11400000, guid: e2fd4f0ea05a6d849968315df6f023d0, type: 2}
+    - target: {fileID: 2265886045262541843, guid: e66d4629242da794c9b4736e32961800, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
     - target: {fileID: 2265886045262541845, guid: e66d4629242da794c9b4736e32961800, type: 3}
       propertyPath: m_Name
-      value: Long Sword (20)
+      value: Raspberry
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e66d4629242da794c9b4736e32961800, type: 3}

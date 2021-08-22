@@ -7,7 +7,7 @@ public class InventoryTooltip : Tooltip
         stringBuilder.Clear();
 
         // Item name
-        stringBuilder.Append("<b><size=26>" + itemData.itemName + "</size></b>\n");
+        stringBuilder.Append("<b><size=26>" + Utilities.FormatStringIntoParagraph(itemData.GetItemName(itemData.currentStackSize), 18) + "</size></b>\n");
 
         if (PlayerEquipmentManager.instance.ItemIsEquipped(itemData))
             stringBuilder.Append("<i><size=23>(Equipped)</size></i>\n");
@@ -35,6 +35,9 @@ public class InventoryTooltip : Tooltip
         // Description
         if (itemData.item.description != "")
             stringBuilder.Append(Utilities.FormatStringIntoParagraph(itemData.item.description, 30) + "\n\n");
+
+        if (itemData.item.canUsePartial)
+            stringBuilder.Append("Remaining: " + itemData.percentRemaining + "%\n\n");
         
         if (itemData.item.IsWeapon()) 
         {

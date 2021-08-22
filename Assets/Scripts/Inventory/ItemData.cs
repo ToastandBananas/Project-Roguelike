@@ -12,7 +12,7 @@ public class ItemData : MonoBehaviour
     public Item item;
 
     [Header("General Data")]
-    public string itemName;
+    public string namePrefix;
     public int value;
     public int currentStackSize = 1;
     public int maxDurability;
@@ -36,7 +36,7 @@ public class ItemData : MonoBehaviour
 
     [Header("Consumable Data")]
     public float freshness = 100f;
-    public int uses = 1;
+    public int percentRemaining = 100;
     
     [HideInInspector] public Inventory bagInventory;
     [HideInInspector] public Inventory parentInventory;
@@ -44,7 +44,10 @@ public class ItemData : MonoBehaviour
     void Awake()
     {
         if (hasBeenRandomized)
+        {
             value = CalculateItemValue();
+            SetNamePrefix();
+        }
         else if (item != null)
             RandomizeData();
 
@@ -60,7 +63,7 @@ public class ItemData : MonoBehaviour
         dataReceiver.item = dataGiver.item;
 
         // General Data
-        dataReceiver.itemName = dataGiver.itemName;
+        dataReceiver.namePrefix = dataGiver.namePrefix;
         dataReceiver.value = dataGiver.value;
         dataReceiver.currentStackSize = dataGiver.currentStackSize;
         dataReceiver.maxDurability = dataGiver.maxDurability;
@@ -68,7 +71,7 @@ public class ItemData : MonoBehaviour
 
         // Consumable Data
         dataReceiver.freshness = dataGiver.freshness;
-        dataReceiver.uses = dataGiver.uses;
+        dataReceiver.percentRemaining = dataGiver.percentRemaining;
 
         // Weapon Data
         dataReceiver.bluntDamage_Swipe = dataGiver.bluntDamage_Swipe;
@@ -115,9 +118,6 @@ public class ItemData : MonoBehaviour
 
     public void RandomizeData()
     {
-        // Item class data
-        itemName = item.name;
-
         // Equipment class data
         if (item.IsEquipment())
         {
@@ -166,25 +166,26 @@ public class ItemData : MonoBehaviour
         else if (item.IsConsumable())
         {
             Consumable consumable = (Consumable)item;
-
             freshness = Random.Range(consumable.minBaseFreshness, consumable.maxBaseFreshness + 1);
-
-            if (consumable.maxUses > 1)
-            {
-                int randomNum = Random.Range(1, 3);
-                if (randomNum == 1)
-                    uses = consumable.maxUses;
-                else
-                {
-                    // Choose a random use amount
-                    randomNum = Random.Range(1, consumable.maxUses + 1);
-                    uses = randomNum;
-                }
-            }
         }
 
         if (item.maxStackSize > 1)
             currentStackSize = Random.Range(1, item.maxStackSize + 1);
+
+        if (item.canUsePartial && currentStackSize == 1)
+        {
+            int randomNum = Random.Range(1, 3);
+            if (randomNum == 1)
+                percentRemaining = 100;
+            else
+            {
+                // Choose a random use amount
+                randomNum = Random.Range(1, 100 + 1);
+                percentRemaining = Mathf.RoundToInt(randomNum / 10) * 10;
+            }
+        }
+
+        SetNamePrefix();
 
         value = CalculateItemValue();
 
@@ -240,6 +241,41 @@ public class ItemData : MonoBehaviour
         return false;
     }
 
+    public void UsePartial(PartialAmount partialAmount)
+    {
+        percentRemaining -= item.GetPartialAmountsPercentage(partialAmount);
+        if (percentRemaining <= 0)
+        {
+            if (currentStackSize > 1)
+                currentStackSize--;
+            else
+                RemoveItemData();
+        }
+        else
+            SetNamePrefix();
+    }
+
+    public void RemoveItemData()
+    {
+        // Remove the item from the ItemDatas dictionary if it was on the ground
+        if (IsPickup())
+            GameTiles.RemoveItemData(this, transform.position);
+
+        InventoryItem itemDatasInvItem = GetItemDatasInventoryItem();
+        if (parentInventory != null) // If using an item that's inside and inventory
+        {
+            // Remove it from the inventory
+            item.RemoveFromInventory(parentInventory, itemDatasInvItem, this, currentStackSize);
+        }
+        else if (itemDatasInvItem != null && itemDatasInvItem.myEquipmentManager == null) // If using an item that was on the ground
+        {
+            itemDatasInvItem.gm.containerInvUI.GetItemsListFromActiveDirection().Remove(itemDatasInvItem.itemData);
+            itemDatasInvItem.ClearItem();
+        }
+        else
+            GameManager.instance.StartCoroutine(DelayReturnToObjectPool());
+    }
+
     public void ClearData()
     {
         hasBeenRandomized = false;
@@ -247,7 +283,7 @@ public class ItemData : MonoBehaviour
         
         item = null;
         
-        itemName = "";
+        namePrefix = "";
         value = 0;
         currentStackSize = 0;
         maxDurability = 0;
@@ -275,7 +311,7 @@ public class ItemData : MonoBehaviour
         pocketsVolume = 0;
 
         freshness = 0;
-        uses = 0;
+        percentRemaining = 100;
 }
 
     int CalculateItemValue()
@@ -332,9 +368,6 @@ public class ItemData : MonoBehaviour
             Consumable consumable = (Consumable)item;
             if (consumable.consumableType == ConsumableType.Food)
                 totalPointsPossible += (consumable.maxBaseFreshness - consumable.minBaseFreshness);
-
-            if (consumable.maxUses > 1)
-                totalPointsPossible += (consumable.maxUses);
         }
         
         return totalPointsPossible;
@@ -382,9 +415,6 @@ public class ItemData : MonoBehaviour
             Consumable consumable = (Consumable)item;
             if (consumable.consumableType == ConsumableType.Food)
                 pointIncrease += (freshness - consumable.minBaseFreshness);
-
-            if (consumable.maxUses > 1)
-                pointIncrease += (uses);
         }
 
         percent = pointIncrease / GetTotalPointValue();
@@ -520,12 +550,15 @@ public class ItemData : MonoBehaviour
                     freshness = consumable.maxBaseFreshness;
                 else if (freshness < consumable.minBaseFreshness)
                     freshness = consumable.minBaseFreshness;
-
-                if (uses > consumable.maxUses)
-                    uses = consumable.maxUses;
-                else if (uses < 0)
-                    uses = 0;
             }
+        }
+
+        if (item.canUsePartial)
+        {
+            if (percentRemaining > 100)
+                percentRemaining = 100;
+            else if (percentRemaining < 10)
+                percentRemaining = 10;
         }
     }
 
@@ -542,7 +575,7 @@ public class ItemData : MonoBehaviour
         if (durability <= 0)
         {
             durability = 0;
-            BreakItem();
+            SetNamePrefix();
         }
     }
 
@@ -558,13 +591,8 @@ public class ItemData : MonoBehaviour
         if (durability <= 0)
         {
             durability = 0;
-            BreakItem();
+            SetNamePrefix();
         }
-    }
-
-    public void BreakItem()
-    {
-        itemName = "Broken " + itemName;
     }
 
     void SetMeleeAttackPhysicalDamageTypes()
@@ -759,12 +787,43 @@ public class ItemData : MonoBehaviour
             return "Filthy";
     }
 
+    public string GetItemName(float amount)
+    {
+        string itemName = namePrefix;
+        if (amount > 1)
+            itemName += GetPluralName();
+        else
+            itemName += item.name;
+        return itemName;
+    }
+
     public string GetPluralName()
     {
         if (item.pluralName != "")
             return item.pluralName;
         else
-            return itemName + "s";
+            return item.name + "s";
+    }
+
+    public void SetNamePrefix()
+    {
+        if (item.IsEquipment() && durability == 0)
+            namePrefix = "Broken ";
+        else if (item.canUsePartial)
+        {
+            if (percentRemaining == 75)
+                namePrefix = "Three Quarters ";
+            else if (percentRemaining == 50)
+                namePrefix = "Half ";
+            else if (percentRemaining == 25)
+                namePrefix = "Quarter ";
+            else if (percentRemaining < 100)
+                namePrefix = "Partial ";
+            else
+                namePrefix = "";
+        }
+        else
+            namePrefix = "";
     }
 
     public IEnumerator DelayReturnToObjectPool()

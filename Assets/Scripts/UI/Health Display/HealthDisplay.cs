@@ -27,7 +27,7 @@ public class HealthDisplay : MonoBehaviour
     readonly string red = "#C81236";
     readonly string orange = "#FE6E00";
     readonly string blue = "#0055B3";
-    readonly string green = "#387532";
+    // readonly string green = "#387532";
 
     #region Singleton
     public static HealthDisplay instance;

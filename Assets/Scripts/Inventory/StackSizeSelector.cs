@@ -99,95 +99,93 @@ public class StackSizeSelector : MonoBehaviour
     public void Submit()
     {
         if (selectedInvItem != null && currentValue > 0)
-        {
-            selectedInvItem.itemData.currentStackSize -= currentValue;
-            selectedInvItem.UpdateItemNumberTexts();
-
-            ItemData newItemData = null;
-            if (selectedInvItem.myInventory != null) // If the item is in an inventory
-            {
-                newItemData = gm.uiManager.CreateNewItemDataChild(selectedInvItem.itemData, selectedInvItem.myInventory, selectedInvItem.myInventory.itemsParent, false); 
-                // gm.objectPoolManager.itemDataObjectPool.GetPooledItemData(selectedInvItem.myInventory);
-                // newItemData.transform.SetParent(selectedInvItem.myInventory.itemsParent);
-                // newItemData.gameObject.SetActive(true);
-
-                if (gm.playerManager.carriedItems.Contains(selectedInvItem.itemData))
-                    gm.playerManager.carriedItems.Add(newItemData);
-                else
-                    selectedInvItem.myInventory.items.Add(newItemData);
-
-                if (selectedInvItem.myInventory.myInvUI == gm.containerInvUI && selectedInvItem.parentInvItem == null)
-                    gm.containerInvUI.AddItemToActiveDirectionList(newItemData);
-
-                //#if UNITY_EDITOR
-                    //newItemData.name = selectedInvItem.itemData.itemName;
-                //#endif
-            }
-            else // If the item is on the ground
-            {
-                ItemPickup newItemPickup = gm.objectPoolManager.itemPickupsPool.GetPooledItemPickup();
-
-                newItemData = newItemPickup.itemData;
-                gm.dropItemController.SetupItemPickup(newItemPickup, selectedInvItem.itemData, currentValue, gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromActiveDirection());
-                gm.containerInvUI.AddItemToActiveDirectionList(newItemData);
-                selectedInvItem.itemData.TransferData(selectedInvItem.itemData, newItemData);
-            }
-
-            newItemData.currentStackSize = currentValue;
-
-            InventoryItem newInvItem = null;
-            if ((selectedInvItem.myInventory != null && selectedInvItem.myInventory.myInvUI == gm.containerInvUI) || (selectedInvItem.myInventory == null && selectedInvItem.myEquipmentManager == null))
-            {
-                if (selectedInvItem.parentInvItem != null)
-                    newInvItem = gm.containerInvUI.ShowNewBagItem(newItemData, selectedInvItem.parentInvItem);
-                else
-                    newInvItem = gm.containerInvUI.ShowNewInventoryItem(newItemData);
-
-                List<ItemData> directionalItemsList = gm.containerInvUI.GetItemsListFromActiveDirection();
-                if (directionalItemsList.Contains(newInvItem.itemData))
-                {
-                    directionalItemsList.RemoveAt(directionalItemsList.IndexOf(newInvItem.itemData));
-                    directionalItemsList.Insert(directionalItemsList.IndexOf(selectedInvItem.itemData) + 1, newInvItem.itemData);
-                }
-            }
-            else
-            {
-                if (selectedInvItem.parentInvItem != null)
-                    newInvItem = gm.playerInvUI.ShowNewBagItem(newItemData, selectedInvItem.parentInvItem);
-                else
-                    newInvItem = gm.playerInvUI.ShowNewInventoryItem(newItemData);
-            }
-            
-            if (selectedInvItem.myInventory != null)
-            {
-                newInvItem.transform.SetSiblingIndex(selectedInvItem.transform.GetSiblingIndex());
-                if (gm.playerManager.carriedItems.Contains(selectedInvItem.itemData) == false)
-                {
-                    selectedInvItem.myInventory.items.RemoveAt(selectedInvItem.myInventory.items.IndexOf(newInvItem.itemData));
-                    selectedInvItem.myInventory.items.Insert(selectedInvItem.myInventory.items.IndexOf(selectedInvItem.itemData) + 1, newInvItem.itemData);
-                }
-            }
-            else
-                newInvItem.transform.SetSiblingIndex(selectedInvItem.transform.GetSiblingIndex() + 1);
-
-            if (selectedInvItem.itemData.currentStackSize > 0)
-                selectedInvItem.UpdateItemNumberTexts();
-            else
-                selectedInvItem.ClearItem();
-        }
+            SplitStack(selectedInvItem, currentValue);
 
         HideStackSizeSelector();
     }
 
-    public void ShowStackSizeSelector(InventoryItem inventorySlot)
+    public InventoryItem SplitStack(InventoryItem invItem, int newStackSize)
+    {
+        invItem.itemData.currentStackSize -= newStackSize;
+        invItem.UpdateItemNumberTexts();
+
+        ItemData newItemData = null;
+        if (invItem.myInventory != null) // If the item is in an inventory
+        {
+            newItemData = gm.uiManager.CreateNewItemDataChild(invItem.itemData, invItem.myInventory, invItem.myInventory.itemsParent, false);
+
+            if (gm.playerManager.carriedItems.Contains(invItem.itemData))
+                gm.playerManager.carriedItems.Add(newItemData);
+            else
+                invItem.myInventory.items.Add(newItemData);
+
+            if (invItem.myInventory.myInvUI == gm.containerInvUI && invItem.parentInvItem == null)
+                gm.containerInvUI.AddItemToActiveDirectionList(newItemData);
+        }
+        else // If the item is on the ground
+        {
+            ItemPickup newItemPickup = gm.objectPoolManager.itemPickupsPool.GetPooledItemPickup();
+
+            newItemData = newItemPickup.itemData;
+            gm.dropItemController.SetupItemPickup(newItemPickup, invItem.itemData, newStackSize, gm.playerManager.transform.position + gm.dropItemController.GetDropPositionFromActiveDirection());
+            gm.containerInvUI.AddItemToActiveDirectionList(newItemData);
+            invItem.itemData.TransferData(invItem.itemData, newItemData);
+        }
+
+        newItemData.currentStackSize = newStackSize;
+
+        InventoryItem newInvItem = null;
+        if ((invItem.myInventory != null && invItem.myInventory.myInvUI == gm.containerInvUI) || (invItem.myInventory == null && invItem.myEquipmentManager == null))
+        {
+            if (invItem.parentInvItem != null)
+                newInvItem = gm.containerInvUI.ShowNewBagItem(newItemData, invItem.parentInvItem);
+            else
+                newInvItem = gm.containerInvUI.ShowNewInventoryItem(newItemData);
+
+            List<ItemData> directionalItemsList = gm.containerInvUI.GetItemsListFromActiveDirection();
+            if (directionalItemsList.Contains(newInvItem.itemData))
+            {
+                directionalItemsList.RemoveAt(directionalItemsList.IndexOf(newInvItem.itemData));
+                directionalItemsList.Insert(directionalItemsList.IndexOf(invItem.itemData) + 1, newInvItem.itemData);
+            }
+        }
+        else
+        {
+            if (invItem.parentInvItem != null)
+                newInvItem = gm.playerInvUI.ShowNewBagItem(newItemData, invItem.parentInvItem);
+            else
+                newInvItem = gm.playerInvUI.ShowNewInventoryItem(newItemData);
+        }
+
+        if (invItem.myInventory != null)
+        {
+            newInvItem.transform.SetSiblingIndex(invItem.transform.GetSiblingIndex());
+            if (gm.playerManager.carriedItems.Contains(invItem.itemData) == false)
+            {
+                invItem.myInventory.items.RemoveAt(invItem.myInventory.items.IndexOf(newInvItem.itemData));
+                invItem.myInventory.items.Insert(invItem.myInventory.items.IndexOf(invItem.itemData) + 1, newInvItem.itemData);
+            }
+        }
+        else
+            newInvItem.transform.SetSiblingIndex(invItem.transform.GetSiblingIndex() + 1);
+
+        if (invItem.itemData.currentStackSize > 0)
+            invItem.UpdateItemNumberTexts();
+        else
+            invItem.ClearItem();
+
+        return newInvItem;
+    }
+
+    public void ShowStackSizeSelector(InventoryItem invItem)
     {
         uiParent.SetActive(true);
         isActive = true;
 
         inputField.Select();
 
-        selectedInvItem = inventorySlot;
-        maxValue = inventorySlot.itemData.currentStackSize - 1;
+        selectedInvItem = invItem;
+        maxValue = invItem.itemData.currentStackSize - 1;
         currentValue = 1;
         inputField.text = currentValue.ToString();
 
@@ -202,7 +200,7 @@ public class StackSizeSelector : MonoBehaviour
         else if (Input.mousePosition.x >= 1830)
             xPosAddon = -100f;
 
-        transform.position = new Vector2(Input.mousePosition.x + xPosAddon, inventorySlot.transform.position.y + yPosAddon);
+        transform.position = new Vector2(Input.mousePosition.x + xPosAddon, invItem.transform.position.y + yPosAddon);
     }
 
     public void HideStackSizeSelector()

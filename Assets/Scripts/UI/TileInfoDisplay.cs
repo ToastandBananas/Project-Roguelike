@@ -135,25 +135,18 @@ public class TileInfoDisplay : MonoBehaviour
                                 || wearable.equipmentSlot == EquipmentSlot.Gloves || wearable.equipmentSlot == EquipmentSlot.Boots)
                                 stringBuilder.Append("<b>");
                             else
-                                stringBuilder.Append(Utilities.GetIndefiniteArticle(itemsList[i].itemName, false, false) + "<b>");
+                                stringBuilder.Append(Utilities.GetIndefiniteArticle(itemsList[i].GetItemName(1), false, false) + "<b>");
                         }
                         else if (itemsList[i].currentStackSize == 1)
-                            stringBuilder.Append(Utilities.GetIndefiniteArticle(itemsList[i].itemName, false, false) + "<b>");
+                            stringBuilder.Append(Utilities.GetIndefiniteArticle(itemsList[i].GetItemName(1), false, false) + "<b>");
                         else
                             stringBuilder.Append("<b>");
                     }
 
                     if (itemsList[i].currentStackSize > 1)
-                    {
                         stringBuilder.Append(itemsList[i].currentStackSize + " ");
 
-                        if (itemsList[i].item.pluralName != "")
-                            stringBuilder.Append(itemsList[i].item.pluralName);
-                        else
-                            stringBuilder.Append(itemsList[i].itemName + "s");
-                    }
-                    else
-                        stringBuilder.Append(itemsList[i].itemName);
+                    stringBuilder.Append(itemsList[i].GetItemName(itemsList[i].currentStackSize));
 
                     if (itemsList.Count > 1)
                         stringBuilder.Append("\n");

@@ -36,7 +36,7 @@ public class DisclosureWidget : MonoBehaviour, IPointerEnterHandler, IPointerExi
             }
         }
         else
-            Debug.Log("You look inside the " + myInvItem.itemData.itemName + " and it's empty.");
+            Debug.Log("You look inside the " + myInvItem.itemData.GetItemName(1) + " and it's empty.");
     }
 
     public void ContractDisclosureWidget()

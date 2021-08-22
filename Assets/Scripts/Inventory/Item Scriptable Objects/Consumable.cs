@@ -10,7 +10,6 @@ public class Consumable : Item
 
     [Header("Consumable Stats")]
     public ConsumableType consumableType;
-    public int maxUses = 1;
     public int nourishment;
     public int thirstQuench;
     public int energyRestoration;
@@ -24,11 +23,11 @@ public class Consumable : Item
     public Vector3Int minGradualHealTime;
     public Vector3Int maxGradualHealTime;
 
-    public override void Use(CharacterManager characterManager, Inventory inventory, InventoryItem invItem, ItemData itemData, int itemCount, EquipmentSlot equipSlot = EquipmentSlot.Shirt)
+    public override void Use(CharacterManager characterManager, Inventory inventory, InventoryItem invItem, ItemData itemData, int itemCount, PartialAmount partialAmountToUse = PartialAmount.Whole, EquipmentSlot equipSlot = EquipmentSlot.Shirt)
     {
-        characterManager.StartCoroutine(characterManager.status.Consume(itemData));
+        characterManager.StartCoroutine(characterManager.status.Consume(itemData, itemCount, partialAmountToUse));
 
-        base.Use(characterManager, inventory, invItem, itemData, itemCount, equipSlot);
+        base.Use(characterManager, inventory, invItem, itemData, itemCount, partialAmountToUse, equipSlot);
     }
 
     public override bool IsConsumable()

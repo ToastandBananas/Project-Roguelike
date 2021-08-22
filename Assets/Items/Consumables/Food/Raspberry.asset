@@ -10,32 +10,33 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8c8e4e00d5587e74093eaeea017605f2, type: 3}
-  m_Name: Roasted Chicken Leg
+  m_Name: Raspberry
   m_EditorClassIdentifier: 
-  name: Roasted Chicken Leg
-  pluralName: Roasted Chicken Legs
+  name: Raspberry
+  pluralName: Raspberries
   itemType: 5
-  mainMaterial: 2
-  itemSize: 2
-  description: The roasted flesh of a chicken's leg. How delectable.
-  maxStackSize: 5
-  weight: 0.25
-  volume: 0.15
+  mainMaterial: 4
+  itemSize: 1
+  description: The seeds always seem to get stuck in your teeth, but they are too
+    sweet to resist.
+  maxStackSize: 100
+  weight: 0.01
+  volume: 0.01
   isUsable: 1
-  canUsePartial: 1
-  value: {x: 3, y: 6}
+  canUsePartial: 0
+  value: {x: 0, y: 0}
   staticValue: 1
   pickupSprite: {fileID: -4261047623482395726, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
   minBaseFreshness: 25
   maxBaseFreshness: 100
   consumableType: 0
-  nourishment: 20
-  thirstQuench: 0
-  energyRestoration: 20
-  staminaRecoveryAmount: 10
+  nourishment: 1
+  thirstQuench: 1
+  energyRestoration: 0
+  staminaRecoveryAmount: 0
   manaRecoveryAmount: 0
-  healthinessAdjustment: 0.75
+  healthinessAdjustment: 0.01
   instantHealPercent: 0
-  gradualHealPercent: 0.05
-  minGradualHealTime: {x: 0, y: 45, z: 0}
-  maxGradualHealTime: {x: 1, y: 0, z: 0}
+  gradualHealPercent: 0.005
+  minGradualHealTime: {x: 0, y: 30, z: 0}
+  maxGradualHealTime: {x: 0, y: 45, z: 0}

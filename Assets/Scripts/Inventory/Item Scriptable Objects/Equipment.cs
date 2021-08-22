@@ -13,7 +13,7 @@ public class Equipment : Item
     public Sprite primaryEquippedSprite;
     public Sprite secondaryEquippedSprite;
 
-    public override void Use(CharacterManager characterManager, Inventory inventory, InventoryItem invItem, ItemData itemData, int itemCount, EquipmentSlot equipSlot)
+    public override void Use(CharacterManager characterManager, Inventory inventory, InventoryItem invItem, ItemData itemData, int itemCount, PartialAmount partialAmountToUse = PartialAmount.Whole, EquipmentSlot equipSlot = EquipmentSlot.Shirt)
     {
         if (itemData.durability <= 0)
         {
@@ -95,7 +95,7 @@ public class Equipment : Item
                 characterManager.equipmentManager.StartCoroutine(characterManager.equipmentManager.SetUpEquipment(null, oldItemData, newEquipment, equipSlot, false));
             }
 
-            base.Use(characterManager, inventory, invItem, itemData, itemCount, equipSlot);
+            base.Use(characterManager, inventory, invItem, itemData, itemCount, partialAmountToUse, equipSlot);
 
             GameManager.instance.playerInvUI.UpdateUI();
             GameManager.instance.containerInvUI.UpdateUI();
