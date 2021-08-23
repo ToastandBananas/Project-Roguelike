@@ -113,8 +113,8 @@ public class Inventory : MonoBehaviour
             }
 
             // Since we transferred data from the old ItemData, we need to make sure to set the currentStackSize to 1 if we were only adding one of the item
-            if (itemCount == 1)
-                itemDataToAdd.currentStackSize = 1;
+            //if (itemCount == 1)
+                itemDataToAdd.currentStackSize = itemCount;
 
             // Add the new ItemData to this Inventory's items list
             items.Add(itemDataToAdd);
@@ -185,8 +185,8 @@ public class Inventory : MonoBehaviour
             
             if (itemDataComingFrom.parentInventory != null && itemDataComingFrom.parentInventory.inventoryOwner != null)
                 itemDataComingFrom.parentInventory.inventoryOwner.RemoveCarriedItem(itemDataComingFrom, itemCount);
-
-            itemDataComingFrom.currentStackSize = 0;
+            else
+                itemDataComingFrom.currentStackSize -= itemCount;
         }
 
         UpdateCurrentWeightAndVolume();
@@ -226,6 +226,73 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    public bool AddItemToInventory_OneAtATime(Inventory invComingFrom, ItemData itemData, InventoryItem invItem)
+    {
+        int stackSize = itemData.currentStackSize;
+        float bagInvWeight = 0;
+        float bagInvVolume = 0;
+
+        if (itemData.item.IsBag() || itemData.item.IsPortableContainer())
+        {
+            bagInvWeight = itemData.bagInventory.currentWeight;
+            bagInvVolume = itemData.bagInventory.currentVolume;
+        }
+
+        bool someAdded = false;
+        for (int i = 0; i < stackSize; i++)
+        {
+            // Try to add a single item to the inventory
+            if (AddItem(itemData, 1, invComingFrom, true))
+            {
+                // If we were able to add one, set someAdded to true
+                someAdded = true;
+                if (itemData.currentStackSize == 0) // If the entire stack was added
+                {
+                    if (itemData.item.IsBag())
+                        gm.containerInvUI.RemoveBagFromGround(itemData.bagInventory);
+
+                    // Calculate and use AP
+                    if (invComingFrom != null)
+                        gm.uiManager.StartCoroutine(gm.apManager.UseAP(gm.playerManager, gm.apManager.GetTransferItemCost(itemData.item, stackSize, bagInvWeight, bagInvVolume, true)));
+                    else
+                    {
+                        GameTiles.RemoveItemData(itemData, itemData.transform.position);
+                        gm.uiManager.StartCoroutine(gm.apManager.UseAP(gm.playerManager, gm.apManager.GetTransferItemCost(itemData.item, stackSize, bagInvWeight, bagInvVolume, false)));
+                    }
+
+                    // Write some flavor text
+                    gm.flavorText.WriteLine_TakeItem(itemData, stackSize, invComingFrom, this);
+
+                    if (invItem != null)
+                        invItem.ClearItem();
+
+                    return someAdded;
+                }
+            }
+            else // If there's no longer any room, break out of the loop & update the UI numbers
+            {
+                if (itemData.item.IsBag())
+                    gm.containerInvUI.RemoveBagFromGround(itemData.bagInventory);
+
+                // Calculate and use AP
+                int amountAdded = stackSize - itemData.currentStackSize;
+                if (invComingFrom != null)
+                    gm.uiManager.StartCoroutine(gm.apManager.UseAP(gm.playerManager, gm.apManager.GetTransferItemCost(itemData.item, amountAdded, bagInvWeight, bagInvVolume, true)));
+                else
+                    gm.uiManager.StartCoroutine(gm.apManager.UseAP(gm.playerManager, gm.apManager.GetTransferItemCost(itemData.item, amountAdded, bagInvWeight, bagInvVolume, false)));
+
+                // Write some flavor text
+                if (someAdded)
+                    gm.flavorText.WriteLine_TakeItem(itemData, stackSize - itemData.currentStackSize, invComingFrom, this);
+
+                gm.containerInvUI.UpdateUI();
+                return someAdded;
+            }
+        }
+
+        return someAdded;
+    }
+
     public int AddToExistingStacks(ItemData itemDataComingFrom, int itemCount, Inventory invComingFrom, bool shouldUpdateWeightAndVolume)
     {
         // Get the InventoryItem using the ItemData we're adding to (and make sure it has an InventoryUI)
@@ -251,7 +318,11 @@ public class Inventory : MonoBehaviour
                         }
 
                         if (itemDataComingFrom.currentStackSize == 0)
+                        {
+                            if (invItem != null)
+                                invItem.UpdateItemNumberTexts();
                             return amountAdded;
+                        }
                     }
                     else
                         break;
@@ -296,11 +367,8 @@ public class Inventory : MonoBehaviour
 
         if (itemData.item.IsBag() || itemData.item.IsPortableContainer())
         {
-            for (int i = 0; i < itemData.bagInventory.items.Count; i++)
-            {
-                itemWeight += itemData.bagInventory.items[i].item.weight * itemData.bagInventory.items[i].currentStackSize;
-                itemVolume += itemData.bagInventory.items[i].item.volume * itemData.bagInventory.items[i].currentStackSize;
-            }
+            itemWeight += itemData.bagInventory.currentWeight;
+            itemVolume += itemData.bagInventory.currentVolume;
         }
 
         itemWeight = Mathf.RoundToInt(itemWeight * 100f) / 100f;
@@ -309,7 +377,7 @@ public class Inventory : MonoBehaviour
         if (((inventoryOwner != null && this == inventoryOwner.personalInventory) || maxWeight - currentWeight >= itemWeight) && maxVolume - currentVolume >= itemVolume)
             return true;
 
-        Debug.Log("Not enough room in inventory.");
+        Debug.Log("Not enough room in " + name + " inventory for " + itemCount + " " + itemData.GetItemName(itemCount));
         return false;
     }
 

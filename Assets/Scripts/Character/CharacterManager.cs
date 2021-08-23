@@ -123,7 +123,7 @@ public class CharacterManager : MonoBehaviour
         // Make sure we have room in our hands to carry the item, otherwise yield break out of this method and show some flavor text
         if (HaveRoomInHandsToCarryItem(itemData, itemData.currentStackSize) == false)
         {
-            gm.flavorText.WriteLine_CantCarryItem(itemData, itemData.currentStackSize);
+            gm.flavorText.WriteLine_CantCarryItem(this, itemData, itemData.currentStackSize);
             yield break;
         }
 
@@ -195,7 +195,7 @@ public class CharacterManager : MonoBehaviour
         }
 
         // Show flavor text for picking up and carrying the item
-        gm.flavorText.WriteLine_CarryItem(carriedItemData);
+        gm.flavorText.WriteLine_CarryItem(this, carriedItemData);
     }
 
     public bool HaveRoomInHandsToCarryItem(ItemData itemData, int itemCount)
@@ -334,6 +334,86 @@ public class CharacterManager : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void AddItemToOtherBags(ItemData itemToAdd, InventoryItem invItem)
+    {
+        if (itemToAdd != null)
+        {
+            if (invItem == null)
+                invItem = itemToAdd.GetItemDatasInventoryItem();
+
+            // Cache the item in case the itemData gets cleared out before we can do the add item effect
+            Item itemAdding = itemToAdd.item;
+
+            // If the item is ammunition, try adding here first
+            if (itemAdding.itemType == ItemType.Ammo && quiverInventory != null && itemToAdd.currentStackSize > 0)
+            {
+                if (quiverInventory.AddItemToInventory_OneAtATime(itemToAdd.parentInventory, itemToAdd, invItem))
+                {
+                    quiverInventory.UpdateCurrentWeightAndVolume();
+                    if (isNPC == false)
+                        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.quiverSidebarButton));
+                }
+            }
+
+            // Try adding to the active inventory first, if this is the player
+            if (isNPC == false && itemToAdd.currentStackSize > 0 && gm.playerInvUI.activeInventory != null && (gm.playerInvUI.activeInventory != gm.playerManager.keysInventory || itemToAdd.item.itemType == ItemType.Key)
+                && itemToAdd.item.maxStackSize > 1 && gm.playerInvUI.activeInventory != gm.playerManager.quiverInventory)
+            {
+                if (gm.playerInvUI.activeInventory.AddItemToInventory_OneAtATime(itemToAdd.parentInventory, itemToAdd, invItem))
+                {
+                    gm.playerInvUI.activeInventory.UpdateCurrentWeightAndVolume();
+                    StartCoroutine(gm.playerInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.activePlayerInvSideBarButton));
+                }
+            }
+
+            // Now try to fit the item in other equipped bags
+            if (itemToAdd.currentStackSize > 0 && backpackInventory != null && gm.playerInvUI.activeInventory != backpackInventory)
+            {
+                if (backpackInventory.AddItemToInventory_OneAtATime(itemToAdd.parentInventory, itemToAdd, invItem))
+                {
+                    backpackInventory.UpdateCurrentWeightAndVolume();
+                    if (isNPC == false)
+                        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.backpackSidebarButton));
+                }
+            }
+
+            if (itemToAdd.currentStackSize > 0 && leftHipPouchInventory != null && gm.playerInvUI.activeInventory != leftHipPouchInventory)
+            {
+                if (leftHipPouchInventory.AddItemToInventory_OneAtATime(itemToAdd.parentInventory, itemToAdd, invItem))
+                {
+                    leftHipPouchInventory.UpdateCurrentWeightAndVolume();
+                    if (isNPC == false)
+                        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.leftHipPouchSidebarButton));
+                }
+            }
+
+            if (itemToAdd.currentStackSize > 0 && rightHipPouchInventory != null && gm.playerInvUI.activeInventory != rightHipPouchInventory)
+            {
+                if (rightHipPouchInventory.AddItemToInventory_OneAtATime(itemToAdd.parentInventory, itemToAdd, invItem))
+                {
+                    rightHipPouchInventory.UpdateCurrentWeightAndVolume();
+                    if (isNPC == false)
+                        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.rightHipPouchSidebarButton));
+                }
+            }
+
+            // Now try to fit the item in the player's personal inventory
+            if (itemToAdd.currentStackSize > 0 && personalInventory != null && gm.playerInvUI.activeInventory != personalInventory)
+            {
+                if (personalInventory.AddItemToInventory_OneAtATime(itemToAdd.parentInventory, itemToAdd, invItem))
+                {
+                    gm.playerManager.personalInventory.UpdateCurrentWeightAndVolume();
+                    if (isNPC == false)
+                        StartCoroutine(gm.playerInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.personalInventorySideBarButton));
+                }
+            }
+
+            // If the item is an equippable bag that was on the ground, set the container menu's active inventory to null and setup the sidebar icon
+            if (itemToAdd.currentStackSize == 0 && itemAdding.IsBag() && gm.containerInvUI.activeInventory == itemToAdd.bagInventory)
+                gm.containerInvUI.RemoveBagFromGround(itemToAdd.bagInventory);
+        }
     }
 
     public List<ItemData> GetMedicalSupplies(MedicalSupplyType medicalSupplyType)

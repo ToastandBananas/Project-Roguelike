@@ -26,7 +26,7 @@ public class Item : ScriptableObject
     public Vector2Int value;
     public int staticValue = 1;
 
-    [Header("Pickup Sprite")]
+    [Header("Sprites")]
     public Sprite pickupSprite;
 
     public virtual void Use(CharacterManager characterManager, Inventory inventory, InventoryItem invItem, ItemData itemData, int itemCount, PartialAmount partialAmountToUse = PartialAmount.Whole, EquipmentSlot equipSlot = EquipmentSlot.Shirt)

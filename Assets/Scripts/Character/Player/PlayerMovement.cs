@@ -222,7 +222,7 @@ public class PlayerMovement : Movement
 
     public IEnumerator Move(int xDir, int yDir)
     {
-        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
+        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost(IsDiagonal(new Vector2(xDir, yDir)))));
 
         int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
         while (queueNumber != characterManager.currentQueueNumber)

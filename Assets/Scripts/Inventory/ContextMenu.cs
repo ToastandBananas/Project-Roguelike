@@ -165,7 +165,7 @@ public class ContextMenu : MonoBehaviour
                 if (contextActiveInvItem.itemData.item.IsWeapon())
                 {
                     Weapon weapon = (Weapon)contextActiveInvItem.itemData.item;
-                    if (weapon.isTwoHanded == false)
+                    if (weapon.CanOneHand(gm.playerManager))
                         CreateEquipLeftHandItemButton();
                 }
 
@@ -298,7 +298,7 @@ public class ContextMenu : MonoBehaviour
         else if (contextActiveInvItem.itemData.item.IsWeapon())
         {
             Weapon weapon = (Weapon)contextActiveInvItem.itemData.item;
-            if (weapon.isTwoHanded == false)
+            if (weapon.CanOneHand(gm.playerManager))
                 contextButton.textMesh.text = "Equip Right";
             else
                 contextButton.textMesh.text = "Equip";

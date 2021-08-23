@@ -620,7 +620,7 @@ public class Movement : MonoBehaviour
         return false;
     }
 
-    bool IsDiagonal(Vector2 endPos)
+    public bool IsDiagonal(Vector2 endPos)
     {
         if (transform.position.x != endPos.x && transform.position.y != endPos.y) 
             return true;

@@ -82,7 +82,8 @@ public class NPCMovement : Movement
 
     IEnumerator MoveToNextPointOnPath()
     {
-        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost()));
+        Vector2 nextPos = GetNextPosition();
+        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost(IsDiagonal(nextPos))));
 
         int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
         while (queueNumber != characterManager.currentQueueNumber)
@@ -102,11 +103,11 @@ public class NPCMovement : Movement
         // Remove the NPC from the tile they were on
         GameTiles.RemoveCharacter(transform.position);
 
-        // Possible move count will determine the speed of the character's movement, to prevent gameplay delays
-        int possibleMoveCount = Mathf.FloorToInt(characterManager.characterStats.maxAP.GetValue() / gm.apManager.GetMovementAPCost());
-
         // Get the next position and the direction the character needs to face
-        Vector2 nextPos = GetNextPosition();
+        nextPos = GetNextPosition();
+
+        // Possible move count will determine the speed of the character's movement, to prevent gameplay delays
+        int possibleMoveCount = Mathf.FloorToInt(characterManager.characterStats.maxAP.GetValue() / gm.apManager.GetMovementAPCost(false));
 
         // Move
         if (characterManager.spriteRenderer.isVisible == false)

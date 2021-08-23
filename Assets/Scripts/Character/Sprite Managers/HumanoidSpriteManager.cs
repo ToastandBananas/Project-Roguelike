@@ -115,7 +115,7 @@ public class HumanoidSpriteManager : SpriteManager
         characterManager.equipmentManager.isTwoHanding = true;
     }
 
-    public IEnumerator SwapStance(EquipmentManager equipmentManager, CharacterManager characterManager)
+    public IEnumerator SwapStance(EquipmentManager equipmentManager, CharacterManager characterManager, ItemData weaponItemData)
     {
         StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetSwapStanceAPCost(characterManager)));
 
@@ -130,6 +130,8 @@ public class HumanoidSpriteManager : SpriteManager
             SetupOneHandedWeaponStance(equipmentManager, characterManager);
         else
             SetupTwoHandedWeaponStance(equipmentManager, characterManager);
+
+        gm.flavorText.WriteLine_SwitchStance(characterManager, weaponItemData, (Weapon)weaponItemData.item);
     }
 
     public void AssignSprite(EquipmentSlot equipSlot, Equipment equipment, EquipmentManager equipmentManager)

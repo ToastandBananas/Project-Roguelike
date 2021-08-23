@@ -9,6 +9,7 @@ public class TileInfoDisplay : MonoBehaviour
     public TextMeshProUGUI displayText;
 
     public CharacterManager focusedCharacter;
+    public List<CharacterManager> focusedDeadCharacters = new List<CharacterManager>();
     public GameObject focusedObject;
     public List<ItemData> focusedItems = new List<ItemData>();
 
@@ -65,6 +66,12 @@ public class TileInfoDisplay : MonoBehaviour
         else
             focusedCharacter = null;
 
+        GameTiles.deadCharacters.TryGetValue(mouseWorldPos, out List<CharacterManager> deadCharacters);
+        if (deadCharacters != null)
+            focusedDeadCharacters = new List<CharacterManager>(deadCharacters);
+        else
+            focusedDeadCharacters.Clear();
+
         GameTiles.objects.TryGetValue(mouseWorldPos, out GameObject worldObject);
         if (worldObject != null)
             focusedObject = worldObject;
@@ -87,7 +94,7 @@ public class TileInfoDisplay : MonoBehaviour
 
         if (Vector2.Distance(mouseWorldPos, gm.playerManager.transform.position) > gm.playerManager.vision.lookRadius)
             stringBuilder.Append("You can't see that far...");
-        else if (focusedCharacter == null && focusedObject == null && (itemsList == null || itemsList.Count == 0))
+        else if (focusedCharacter == null && focusedObject == null && (itemsList == null || itemsList.Count == 0) && (deadCharacters == null || deadCharacters.Count == 0))
             stringBuilder.Append("You don't see anything here...");
         else
         {
@@ -108,6 +115,15 @@ public class TileInfoDisplay : MonoBehaviour
                     stringBuilder.Append(Utilities.GetIndefiniteArticle(focusedCharacter.name, false, true, GetNameColor(focusedCharacter)) + ".\n\n");
             }
 
+            // If there are any dead characters on the ground, show their names
+            if (deadCharacters != null)
+            {
+                if (deadCharacters.Count > 1)
+                    stringBuilder.Append("You see multiple lifeless bodies here...\n\n");
+                else if (deadCharacters.Count == 1)
+                    stringBuilder.Append("You see a <b>" + deadCharacters[0].name + "</b>.\n\n");
+            }
+
             // If there are any items at this position, show their names
             if (itemsList != null)
             {
@@ -118,7 +134,8 @@ public class TileInfoDisplay : MonoBehaviour
 
                 for (int i = 0; i < itemsList.Count; i++)
                 {
-                    if ((focusedCharacter != null && i >= 5) || i >= 7)
+                    if ((focusedCharacter != null && deadCharacters != null && deadCharacters.Count > 0 && i >= 3) 
+                        || ((focusedCharacter != null || (deadCharacters != null && deadCharacters.Count > 0)) && i >= 5) || i >= 7)
                     {
                         stringBuilder.Append("And more...");
                         break;

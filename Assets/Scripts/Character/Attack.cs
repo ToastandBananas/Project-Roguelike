@@ -142,6 +142,28 @@ public class Attack : MonoBehaviour
         int pierceDamage = characterManager.equipmentManager.GetPhysicalMeleeDamage(weaponUsedItemData, meleeAttackType, PhysicalDamageType.Pierce);
         int slashDamage = characterManager.equipmentManager.GetPhysicalMeleeDamage(weaponUsedItemData, meleeAttackType, PhysicalDamageType.Slash);
         int cleaveDamage = characterManager.equipmentManager.GetPhysicalMeleeDamage(weaponUsedItemData, meleeAttackType, PhysicalDamageType.Cleave);
+        
+        // Check if there are any damage penalties to apply
+        if (weaponUsed != null)
+        {
+            float damagePenaltyMultiplier = 1f;
+
+            // If the character is two-handing their weapon, but they don't have the proper strength to do so, apply a damage penalty
+            if (characterManager.equipmentManager.isTwoHanding && characterManager.characterStats.strength.GetValue() < weaponUsed.StrengthRequired_TwoHand())
+                damagePenaltyMultiplier = (float)characterManager.characterStats.strength.GetValue() / (float)weaponUsed.StrengthRequired_TwoHand();
+            // If the character is one-handing their weapon, but they don't have the proper strength to do so, apply a damage penalty
+            else if (characterManager.equipmentManager.isTwoHanding == false && weaponUsed.CanOneHand(characterManager) == false)
+                damagePenaltyMultiplier = (float)characterManager.characterStats.strength.GetValue() / (float)weaponUsed.strengthRequirement_OneHand;
+
+            if (damagePenaltyMultiplier < 1f)
+            {
+                bluntDamage = Mathf.RoundToInt(bluntDamage * damagePenaltyMultiplier);
+                pierceDamage = Mathf.RoundToInt(pierceDamage * damagePenaltyMultiplier);
+                slashDamage = Mathf.RoundToInt(slashDamage * damagePenaltyMultiplier);
+                cleaveDamage = Mathf.RoundToInt(cleaveDamage * damagePenaltyMultiplier);
+            }
+        }
+
         int totalDamage = bluntDamage + pierceDamage + slashDamage + cleaveDamage;
 
         if (targetsCharacterManager != null) // If the character is attacking another character
@@ -187,9 +209,9 @@ public class Attack : MonoBehaviour
                     if (weaponUsedItemData != null)
                         weaponUsedItemData.DamageDurability();
 
-                    // Show some flavor text
                     if (finalDamage > 0)
                     {
+                        // Show some flavor text
                         if (armorPenetrated == false && clothingPenetrated == false)
                             gm.flavorText.WriteLine_MeleeAttackCharacter(characterManager, targetCharStats.characterManager, generalAttackType, meleeAttackType, bodyPartToHit, finalDamage, behindTarget);
                         else if (armorPenetrated && clothingPenetrated)
@@ -207,7 +229,7 @@ public class Attack : MonoBehaviour
                                 TryGetWeaponStuck(targetsStats, targetsCharacterManager, weaponUsedItemData, mainPhysicalDamageType, pierceDamage, slashDamage, cleaveDamage, bodyPartToHit);
                         }
                     }
-                    else
+                    else // Show some flavor text
                         gm.flavorText.WriteLine_AbsorbedMeleeAttack(characterManager, targetCharStats.characterManager, generalAttackType, meleeAttackType, bodyPartToHit, behindTarget);
                 }
             }

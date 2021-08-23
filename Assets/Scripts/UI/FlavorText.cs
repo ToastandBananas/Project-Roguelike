@@ -221,6 +221,28 @@ public class FlavorText : MonoBehaviour
         WriteLine(Utilities.GetPronoun(attacker, true, false) + "pulled the <b>" + weaponUsedItemData.GetItemName(1) + "</b> out of the <b>" + targetsStats.name + "</b>.");
     }
 
+    public void WriteLine_SwitchStance(CharacterManager character, ItemData weaponItemData, Weapon weapon)
+    {
+        if (character.equipmentManager.isTwoHanding)
+        {
+            // If the character doesn't have the required strength to use the weapon effectively, even two-handed
+            if (character.characterStats.strength.GetValue() <= weapon.StrengthRequired_TwoHand())
+                WriteLine(Utilities.GetPronoun(character, true, false) + "grip " + Utilities.GetPossessivePronoun(character) + "<b>" + weaponItemData.GetItemName(1) 
+                    + "</b> with both hands, yet the weapon still feels too heavy for you to wield it effectively.");
+            else
+                WriteLine(Utilities.GetPronoun(character, true, false) + "firmly grip " + Utilities.GetPossessivePronoun(character) + "<b>" + weaponItemData.GetItemName(1) + "</b> with both hands.");
+        }
+        else // If one-handing
+        {
+            // If the character doesn't have the required strength to effectively wield the weapon with one hand
+            if (weapon.IsTwoHanded(character))
+                WriteLine(Utilities.GetPronoun(character, true, false) + "hold " + Utilities.GetPossessivePronoun(character) + "<b>" + weaponItemData.GetItemName(1)
+                    + "</b> in one hand. Your muscles start to tremble under the weight of the weapon.");
+            else
+                WriteLine(Utilities.GetPronoun(character, true, false) + "firmly grip " + Utilities.GetPossessivePronoun(character) + "<b>" + weaponItemData.GetItemName(1) + "</b> with one hand.");
+        }
+    }
+
     string GetPenetrateArmorVerb(PhysicalDamageType physicalDamageType, Wearable wearable)
     {
         if (physicalDamageType == PhysicalDamageType.Blunt)
@@ -480,36 +502,39 @@ public class FlavorText : MonoBehaviour
     #endregion
 
     #region Inventory
-    public void WriteLine_DropItem(ItemData itemDropping, int amountDropping)
+    public void WriteLine_DropItem(CharacterManager character, ItemData itemDropping, int amountDropping)
     {
         if (amountDropping == 1)
-            WriteLine(Utilities.GetPronoun(null, true, false) + "dropped " + Utilities.GetIndefiniteArticle(itemDropping.GetItemName(amountDropping), false, true) + ".");
+            WriteLine(Utilities.GetPronoun(character, true, false) + "dropped " + Utilities.GetPossessivePronoun(character) + "<b>" + itemDropping.GetItemName(1) + "</b>.");
         else
-            WriteLine(Utilities.GetPronoun(null, true, false) + "dropped " + amountDropping + " <b>" + itemDropping.GetItemName(amountDropping) + "s</b>.");
+            WriteLine(Utilities.GetPronoun(character, true, false) + "dropped " + amountDropping + " <b>" + itemDropping.GetItemName(amountDropping) + "</b>.");
     }
 
-    public void WriteLine_DroppingPersonalItems()
+    public void WriteLine_DroppingPersonalItems(CharacterManager character)
     {
-        WriteLine("<b>You</b> no longer have room for all of the items in your <b>Personal Inventory</b>. You will have to drop some items for now." );
+        WriteLine(Utilities.GetPronoun(character, true, false) + "no longer have room for all of the items in " + Utilities.GetPossessivePronoun(character) 
+            + "<b>Personal Inventory</b>. " + Utilities.GetPronoun(character, true, false) + "will have to drop some items for now.");
     }
 
-    public void WriteLine_CarryItem(ItemData itemData)
+    public void WriteLine_CarryItem(CharacterManager character, ItemData itemData)
     {
         if (itemData.currentStackSize > 1)
-            WriteLine("<b>You</b> pick up and carry <b>" + itemData.currentStackSize + " " + itemData.GetItemName(itemData.currentStackSize) + "</b>.");
+            WriteLine(Utilities.GetPronoun(character, true, false) + "picked up and started carrying <b>" + itemData.currentStackSize + " " + itemData.GetItemName(itemData.currentStackSize) + "</b>.");
         else
-            WriteLine("<b>You</b> pick up and carry the <b>" + itemData.GetItemName(itemData.currentStackSize) + "</b>.");
+            WriteLine(Utilities.GetPronoun(character, true, false) + "picked up and starting carrying the <b>" + itemData.GetItemName(itemData.currentStackSize) + "</b>.");
     }
 
-    public void WriteLine_CantCarryItem(ItemData itemData, int itemCount)
+    public void WriteLine_CantCarryItem(CharacterManager character, ItemData itemData, int itemCount)
     {
-        BodyPart leftHand = gm.playerManager.status.GetBodyPart(BodyPartType.LeftHand);
-        BodyPart rightHand = gm.playerManager.status.GetBodyPart(BodyPartType.RightHand);
+        BodyPart leftHand = character.status.GetBodyPart(BodyPartType.LeftHand);
+        BodyPart rightHand = character.status.GetBodyPart(BodyPartType.RightHand);
 
         if ((leftHand.isIncapacitated || leftHand.isSevered) && (rightHand.isIncapacitated || rightHand.isSevered))
-            WriteLine("<b>You</b> want to pick up and carry the <b>" + itemData.GetItemName(itemCount) + "</b>, but you no longer have use of your hands.");
+            WriteLine(Utilities.GetPronoun(character, true, false) + "want to pick up and carry the <b>" + itemData.GetItemName(itemCount) + "</b>, but " + Utilities.GetPronoun(character, false, false) 
+                + "no longer have use of either of " + Utilities.GetPossessivePronoun(character) + "hands.");
         else
-            WriteLine("<b>You</b> try to pick up and carry the <b>" + itemData.GetItemName(itemCount) + "</b>, but you don't have enough room in your hands.");
+            WriteLine(Utilities.GetPronoun(character, true, false) + "try to pick up and carry the <b>" + itemData.GetItemName(itemCount) + "</b>, but " + Utilities.GetPronoun(character, false, false) 
+                + "don't have enough room in " + Utilities.GetPossessivePronoun(character) + "hands.");
     }
 
     public void WriteLine_TakeItem(ItemData itemTaking, int amountTaking, Inventory inventoryTakingFrom, Inventory inventoryPuttingIn)

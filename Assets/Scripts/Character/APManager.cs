@@ -103,9 +103,12 @@ public class APManager : MonoBehaviour
         }
     }
 
-    public int GetMovementAPCost()
+    public int GetMovementAPCost(bool diaganol)
     {
-        return baseMovementCost;
+        if (diaganol)
+            return Mathf.RoundToInt(baseMovementCost * 1.414214f);
+        else
+            return baseMovementCost;
     }
 
     public int GetRotateAPCost()

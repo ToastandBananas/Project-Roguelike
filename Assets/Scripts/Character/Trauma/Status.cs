@@ -412,6 +412,7 @@ public class Status : MonoBehaviour
     {
         isDead = true;
         GameTiles.RemoveCharacter(transform.position);
+        GameTiles.AddDeadCharacter(characterManager, transform.position);
 
         if (characterManager.isNPC) // If an NPC dies
         {
@@ -428,6 +429,7 @@ public class Status : MonoBehaviour
                 gm.containerInvUI.GetItemsAroundPlayer();
         }
 
+        name = "Dead " + name;
         gameObject.tag = "Dead Body";
         gameObject.layer = 14;
 

@@ -211,7 +211,7 @@ public class DropItemController : MonoBehaviour
             invItemComingFrom.UpdateInventoryWeightAndVolume();
 
         if (invComingFrom == null || invComingFrom.CompareTag("Object") == false)
-            gm.flavorText.WriteLine_DropItem(itemData, amountToDrop);
+            gm.flavorText.WriteLine_DropItem(characterDropping, itemData, amountToDrop);
     }
 
     public void SetupItemPickup(ItemPickup newItemPickup, ItemData itemData, int amountToDrop, Vector3 dropPosition)

@@ -58,6 +58,10 @@ public class EquipmentManager : MonoBehaviour
                 currentEquipment[(int)EquipmentSlot.LeftHandItem].GetItemDatasInventoryItem().UpdateAllItemTexts();
         }
 
+        gm.flavorText.WriteLine_Equip(newItemData, characterManager);
+        if (equipSlot == EquipmentSlot.LeftHandItem || equipSlot == EquipmentSlot.RightHandItem)
+            gm.flavorText.WriteLine_SwitchStance(characterManager, newItemData, (Weapon)newItemData.item);
+
         if (newItemData != null)
             newItemData.ReturnToObjectPool();
         if (oldItemData != null)
@@ -73,38 +77,14 @@ public class EquipmentManager : MonoBehaviour
             return false;
         }
 
-        ItemData equipmentItemData = null;
-        if (newItemData.item.IsBag())
-        {
-            equipmentItemData = gm.objectPoolManager.itemDataContainerObjectPool.GetPooledItemData(null);
-            equipmentItemData.bagInventory.items.Clear();
-        }
-        else
-            equipmentItemData = gm.objectPoolManager.itemDataObjectPool.GetPooledItemData(null);
-
-        newItemData.TransferData(newItemData, equipmentItemData);
-        equipmentItemData.currentStackSize = 1;
-        equipmentItemData.transform.SetParent(itemsParent);
-        equipmentItemData.gameObject.SetActive(true);
-
-        if (newItemData.item.IsBag())
-        {
-            Bag bag = (Bag)newItemData.item;
-            bag.SetupBagInventory(equipmentItemData.bagInventory);
-        }
-
-        #if UNITY_EDITOR
-            equipmentItemData.gameObject.name = equipmentItemData.GetItemName(1);
-        #endif
+        ItemData equipmentItemData = gm.uiManager.CreateNewItemDataChild(newItemData, null, itemsParent, false);
 
         if (AssignEquipment(equipmentItemData, equipmentSlot) == false)
         {
-            if (newItemData.item.IsBag())
-                equipmentItemData.ReturnToItemDataContainerObjectPool();
-            else
-                equipmentItemData.ReturnToItemDataObjectPool();
+            equipmentItemData.ReturnToObjectPool();
 
-            Debug.Log("Can't equip item because there's nowhere to put your currently equipped item.");
+            if (characterManager.isNPC == false)
+                gm.flavorText.WriteLine("You can't equip the <b>" + equipmentItemData.GetItemName(1) + "</b> because there's nowhere to put your currently equipped item.");
             return false;
         }
 
@@ -155,8 +135,6 @@ public class EquipmentManager : MonoBehaviour
             gm.containerInvUI.SetSideBarIcon_Floor(gm.containerInvUI.activeDirection);
             gm.containerInvUI.GetInventoriesListFromDirection(gm.containerInvUI.activeDirection).Remove(newItemData.bagInventory);
         }
-
-        gm.flavorText.WriteLine_Equip(newItemData, characterManager);
 
         return true;
     }
@@ -354,7 +332,7 @@ public class EquipmentManager : MonoBehaviour
                     weapon = (Weapon)newItemData.item;
                 
                 // If the weapon we're equipping is two-handed and there's a weapon equipped in our off-hand, unequip it
-                if (weapon != null && weapon.isTwoHanded && currentEquipment[(int)EquipmentSlot.LeftHandItem] != null)
+                if (weapon != null && weapon.IsTwoHanded(characterManager) && currentEquipment[(int)EquipmentSlot.LeftHandItem] != null)
                     Unequip(EquipmentSlot.LeftHandItem, true, true, true);
                 // If we're equipping a weapon to our left hand and we already have a two-handed weapon equipped, unequip it
                 else if (TwoHandedWeaponEquipped() && equipmentSlot == EquipmentSlot.LeftHandItem)
@@ -441,13 +419,13 @@ public class EquipmentManager : MonoBehaviour
         if (currentEquipment[(int)EquipmentSlot.RightHandItem] != null && currentEquipment[(int)EquipmentSlot.RightHandItem].item.IsWeapon())
         {
             Weapon weapon = (Weapon)currentEquipment[(int)EquipmentSlot.RightHandItem].item;
-            if (weapon.isTwoHanded)
+            if (weapon.IsTwoHanded(characterManager))
                 return true;
         }
         else if (currentEquipment[(int)EquipmentSlot.LeftHandItem] != null && currentEquipment[(int)EquipmentSlot.LeftHandItem].item.IsWeapon())
         {
             Weapon weapon = (Weapon)currentEquipment[(int)EquipmentSlot.LeftHandItem].item;
-            if (weapon.isTwoHanded)
+            if (weapon.IsTwoHanded(characterManager))
                 return true;
         }
 
@@ -616,7 +594,7 @@ public class EquipmentManager : MonoBehaviour
                     weapon = (Weapon)equipment;
 
                 // If the new weapon is two-handed, remove our left weapon sprite if we have one and set our character's sprites to the two-handed stance
-                if (weapon != null && weapon.isTwoHanded)
+                if (weapon != null && weapon.IsTwoHanded(characterManager))
                 {
                     RemoveEquipmentSprite(EquipmentSlot.LeftHandItem);
                     characterManager.humanoidSpriteManager.SetupTwoHandedWeaponStance(this, characterManager);
@@ -628,7 +606,7 @@ public class EquipmentManager : MonoBehaviour
                     characterManager.humanoidSpriteManager.SetupOneHandedWeaponStance(this, characterManager);
                 }
                 // If the new weapon is one-handed, just set our character's sprites to the one-handed stance
-                else if (weapon != null && weapon.isTwoHanded == false)
+                else if (weapon != null && weapon.IsTwoHanded(characterManager) == false)
                     characterManager.humanoidSpriteManager.SetupOneHandedWeaponStance(this, characterManager);
             }
         }
@@ -646,7 +624,7 @@ public class EquipmentManager : MonoBehaviour
                 RemoveEquipmentSprite(equipSlot);
 
                 // If the weapon we're unequipping is two-handed, set our character's sprites back to the one-handed stance
-                if (weapon != null && weapon.isTwoHanded)
+                if (weapon != null && weapon.IsTwoHanded(characterManager))
                     characterManager.humanoidSpriteManager.SetupOneHandedWeaponStance(this, characterManager);
             }
         }
@@ -690,7 +668,7 @@ public class EquipmentManager : MonoBehaviour
             if (canSheatheRight)
             {
                 Weapon weapon = (Weapon)currentEquipment[(int)EquipmentSlot.RightHandItem].item;
-                if (isTwoHanding || weapon.isTwoHanded)
+                if (isTwoHanding || weapon.IsTwoHanded(characterManager))
                     characterManager.humanoidSpriteManager.SetupOneHandedWeaponStance(this, characterManager);
                 characterManager.humanoidSpriteManager.RemoveSprite(EquipmentSlot.RightHandItem);
                 if (gm.playerInvUI.activePlayerInvSideBarButton.playerInventoryType == PlayerInventoryType.EquippedItems)
@@ -731,7 +709,7 @@ public class EquipmentManager : MonoBehaviour
             if (currentEquipment[(int)EquipmentSlot.RightHandItem] != null)
             {
                 Weapon weapon = (Weapon)currentEquipment[(int)EquipmentSlot.RightHandItem].item;
-                if (weapon.isTwoHanded)
+                if (weapon.IsTwoHanded(characterManager))
                     characterManager.humanoidSpriteManager.SetupTwoHandedWeaponStance(this, characterManager);
                 characterManager.humanoidSpriteManager.AssignSprite(EquipmentSlot.RightHandItem, weapon, this);
                 if (gm.playerInvUI.activePlayerInvSideBarButton.playerInventoryType == PlayerInventoryType.EquippedItems)
@@ -793,7 +771,7 @@ public class EquipmentManager : MonoBehaviour
         if (startingEquipment[(int)EquipmentSlot.RightHandItem] != null)
         {
             Weapon weapon = (Weapon)startingEquipment[(int)EquipmentSlot.RightHandItem];
-            if (weapon.isTwoHanded)
+            if (weapon.IsTwoHanded(characterManager))
                 characterManager.humanoidSpriteManager.SetupTwoHandedWeaponStance(this, characterManager);
         }
     }
@@ -907,7 +885,7 @@ public class EquipmentManager : MonoBehaviour
                     if (characterManager.personalInventory.currentVolume > characterManager.personalInventory.maxVolume)
                     {
                         // Show some flavor text explaining why you're dropping the items
-                        gm.flavorText.WriteLine_DroppingPersonalItems();
+                        gm.flavorText.WriteLine_DroppingPersonalItems(characterManager);
 
                         characterManager.personalInventory.DropExcessItems();
                     }

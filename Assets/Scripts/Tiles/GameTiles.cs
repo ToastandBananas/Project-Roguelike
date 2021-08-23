@@ -22,6 +22,7 @@ public class GameTiles : MonoBehaviour
     //public Dictionary<Vector2, Tile> closedDoorTiles = new Dictionary<Vector2, Tile>();
 
     public static Dictionary<Vector2, CharacterManager> characters = new Dictionary<Vector2, CharacterManager>();
+    public static Dictionary<Vector2, List<CharacterManager>> deadCharacters = new Dictionary<Vector2, List<CharacterManager>>();
     public static Dictionary<Vector2, List<ItemData>> itemDatas = new Dictionary<Vector2, List<ItemData>>();
     public static Dictionary<Vector2, GameObject> objects = new Dictionary<Vector2, GameObject>();
 
@@ -161,6 +162,34 @@ public class GameTiles : MonoBehaviour
     {
         position = Utilities.ClampedPosition(position);
         objects.Remove(position);
+    }
+
+    public static void AddDeadCharacter(CharacterManager character, Vector2 position)
+    {
+        position = Utilities.ClampedPosition(position);
+        if (deadCharacters.ContainsKey(position) == false)
+        {
+            deadCharacters.Add(position, new List<CharacterManager>());
+            deadCharacters.TryGetValue(position, out List<CharacterManager> list);
+            if (list.Contains(character) == false)
+                list.Add(character);
+        }
+        else
+        {
+            deadCharacters.TryGetValue(position, out List<CharacterManager> list);
+            if (list.Contains(character) == false)
+                list.Add(character);
+        }
+    }
+
+    public static void RemoveDeadCharacter(CharacterManager character, Vector2 position)
+    {
+        position = Utilities.ClampedPosition(position);
+        if (itemDatas.ContainsKey(position))
+        {
+            deadCharacters.TryGetValue(position, out List<CharacterManager> list);
+            list.Remove(character);
+        }
     }
 
     public static void AddItemData(ItemData itemData, Vector2 position)

@@ -20,7 +20,7 @@ public class InventoryTooltip : Tooltip
             Weapon weapon = (Weapon)itemData.item;
             
             // One/two handed
-            if (weapon.isTwoHanded)
+            if (weapon.IsTwoHanded(PlayerManager.instance))
                 stringBuilder.Append(" <i>Two-Handed ");
             else
                 stringBuilder.Append(" <i>One-Handed ");

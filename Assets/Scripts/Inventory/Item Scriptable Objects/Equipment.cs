@@ -5,13 +5,12 @@ public enum EquipmentSlot { Helmet, Shirt, Pants, Boots, Gloves, BodyArmor, LegA
 [CreateAssetMenu(fileName = "New Equipment", menuName = "Inventory/Equipment")]
 public class Equipment : Item
 {
+    public Sprite primaryEquippedSprite;
+    public Sprite secondaryEquippedSprite;
+
     [Header("General Equipment Stats")]
     public EquipmentSlot equipmentSlot;
     public Vector2Int baseDurability;
-
-    [Header("Sprites")]
-    public Sprite primaryEquippedSprite;
-    public Sprite secondaryEquippedSprite;
 
     public override void Use(CharacterManager characterManager, Inventory inventory, InventoryItem invItem, ItemData itemData, int itemCount, PartialAmount partialAmountToUse = PartialAmount.Whole, EquipmentSlot equipSlot = EquipmentSlot.Shirt)
     {

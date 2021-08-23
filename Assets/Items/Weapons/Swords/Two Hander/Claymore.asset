@@ -22,17 +22,18 @@ MonoBehaviour:
   weight: 5.55
   volume: 22.68
   isUsable: 1
+  canUsePartial: 0
   value: {x: 74, y: 136}
   staticValue: 1
   pickupSprite: {fileID: 2451652252212011429, guid: 10130e9df8ebccd44a6337d73aca4f0f, type: 3}
-  equipmentSlot: 8
-  baseDurability: {x: 100, y: 175}
   primaryEquippedSprite: {fileID: 8453804762826023649, guid: f20a51d4e8c99fb4b989b0d8c061c05f, type: 3}
   secondaryEquippedSprite: {fileID: -1978866322423140336, guid: 8577904861824ce49815bed093713a61, type: 3}
+  equipmentSlot: 8
+  baseDurability: {x: 100, y: 175}
   weaponType: 0
   defaultMeleeAttackType: 2
-  isTwoHanded: 1
   attackRange: 2
+  strengthRequirement_OneHand: 80
   bluntDamage_Swipe: {x: 0, y: 0}
   pierceDamage_Swipe: {x: 0, y: 0}
   slashDamage_Swipe: {x: 12, y: 18}
