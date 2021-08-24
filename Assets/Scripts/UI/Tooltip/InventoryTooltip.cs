@@ -166,8 +166,8 @@ public class InventoryTooltip : Tooltip
             stringBuilder.Append("Pockets' Capacity: " + itemData.pocketsVolume + "\n\n");
 
         // Weight/volume
-        stringBuilder.Append("Weight: " + itemData.item.weight + "\n");
-        stringBuilder.Append("Volume: " + itemData.item.volume + "\n\n");
+        stringBuilder.Append("Weight: " + itemData.item.weight * itemData.GetPercentRemaining_Decimal() + "\n");
+        stringBuilder.Append("Volume: " + itemData.item.volume * itemData.GetPercentRemaining_Decimal() + "\n\n");
 
         // Value
         stringBuilder.Append("Estimated Value: " + itemData.value + " gold");

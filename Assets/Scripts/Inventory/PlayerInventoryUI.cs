@@ -166,8 +166,8 @@ public class PlayerInventoryUI : InventoryUI
             }
         }
 
-        totalWeightText.text = GetTotalCarriedWeight().ToString();
-        totalVolumeText.text = GetTotalCarriedVolume().ToString();
+        totalWeightText.text = gm.playerManager.totalCarryWeight + "/" + gm.playerManager.characterStats.GetMaximumWeightCapacity();
+        totalVolumeText.text = gm.playerManager.totalCarryVolume.ToString();
 
         // Setup the scrollbar
         if (inventoryItemObjectPool.activePooledInventoryItems.Count > MaxInvItems())
@@ -375,58 +375,8 @@ public class PlayerInventoryUI : InventoryUI
             volumeText.text = GetTotalVolume(gm.playerManager.playerEquipmentManager.currentEquipment).ToString();
         }
 
-        totalWeightText.text = GetTotalCarriedWeight().ToString();
-        totalVolumeText.text = GetTotalCarriedVolume().ToString();
-    }
-
-    float GetTotalCarriedWeight()
-    {
-        float totalWeight = 0;
-        totalWeight += gm.playerManager.personalInventory.currentWeight;
-
-        if (gm.playerManager.backpackInventory != null)
-            totalWeight += gm.playerManager.backpackInventory.currentWeight;
-
-        if (gm.playerManager.leftHipPouchInventory != null)
-            totalWeight += gm.playerManager.leftHipPouchInventory.currentWeight;
-
-        if (gm.playerManager.rightHipPouchInventory != null)
-            totalWeight += gm.playerManager.rightHipPouchInventory.currentWeight;
-
-        if (gm.playerManager.quiverInventory != null)
-            totalWeight += gm.playerManager.quiverInventory.currentWeight;
-
-        if (gm.playerManager.keysInventory != null)
-            totalWeight += gm.playerManager.keysInventory.currentWeight;
-        
-        totalWeight += gm.playerManager.equipmentManager.currentWeight;
-
-        return Mathf.RoundToInt(totalWeight * 100f) / 100f;
-    }
-
-    float GetTotalCarriedVolume()
-    {
-        float totalVolume = 0;
-        totalVolume += gm.playerManager.personalInventory.currentVolume;
-
-        if (gm.playerManager.backpackInventory != null)
-            totalVolume += gm.playerManager.backpackInventory.currentVolume;
-
-        if (gm.playerManager.leftHipPouchInventory != null)
-            totalVolume += gm.playerManager.leftHipPouchInventory.currentVolume;
-
-        if (gm.playerManager.rightHipPouchInventory != null)
-            totalVolume += gm.playerManager.rightHipPouchInventory.currentVolume;
-
-        if (gm.playerManager.quiverInventory != null)
-            totalVolume += gm.playerManager.quiverInventory.currentVolume;
-
-        if (gm.playerManager.keysInventory != null)
-            totalVolume += gm.playerManager.keysInventory.currentVolume;
-
-        totalVolume += gm.playerManager.equipmentManager.currentVolume;
-
-        return Mathf.RoundToInt(totalVolume * 100f) / 100f;
+        totalWeightText.text = gm.playerManager.totalCarryWeight + "/" + gm.playerManager.characterStats.GetMaximumWeightCapacity();
+        totalVolumeText.text = gm.playerManager.totalCarryVolume.ToString();
     }
 
     public bool ItemIsInABag(ItemData itemData)

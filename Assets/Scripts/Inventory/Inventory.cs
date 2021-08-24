@@ -182,12 +182,17 @@ public class Inventory : MonoBehaviour
             #if UNITY_EDITOR
                 itemDataToAdd.gameObject.name = itemDataToAdd.GetItemName(itemDataToAdd.currentStackSize);
             #endif
+
+            itemDataToAdd.parentInventory = this;
             
             if (itemDataComingFrom.parentInventory != null && itemDataComingFrom.parentInventory.inventoryOwner != null)
                 itemDataComingFrom.parentInventory.inventoryOwner.RemoveCarriedItem(itemDataComingFrom, itemCount);
             else
                 itemDataComingFrom.currentStackSize -= itemCount;
         }
+
+        if (inventoryOwner != null)
+            inventoryOwner.SetTotalCarriedWeightAndVolume();
 
         UpdateCurrentWeightAndVolume();
         if (myInvUI == gm.containerInvUI && gm.containerInvUI.activeInventory == this)
@@ -224,6 +229,11 @@ public class Inventory : MonoBehaviour
             if (invItem != null)
                 invItem.ClearItem();
         }
+
+        UpdateCurrentWeightAndVolume();
+
+        if (inventoryOwner != null)
+            inventoryOwner.SetTotalCarriedWeightAndVolume();
     }
 
     public bool AddItemToInventory_OneAtATime(Inventory invComingFrom, ItemData itemData, InventoryItem invItem)
@@ -313,14 +323,18 @@ public class Inventory : MonoBehaviour
 
                         if (invComingFrom != null && shouldUpdateWeightAndVolume)
                         {
-                            invComingFrom.currentWeight -= Mathf.RoundToInt(itemDataComingFrom.item.weight * 100f) / 100f;
-                            invComingFrom.currentVolume -= Mathf.RoundToInt(itemDataComingFrom.item.volume * 100f) / 100f;
+                            invComingFrom.currentWeight -= Mathf.RoundToInt(itemDataComingFrom.item.weight * itemDataComingFrom.GetPercentRemaining_Decimal() * 100f) / 100f;
+                            invComingFrom.currentVolume -= Mathf.RoundToInt(itemDataComingFrom.item.volume * itemDataComingFrom.GetPercentRemaining_Decimal() * 100f) / 100f;
                         }
 
                         if (itemDataComingFrom.currentStackSize == 0)
                         {
                             if (invItem != null)
                                 invItem.UpdateItemNumberTexts();
+
+                            if (invComingFrom != null && invComingFrom.inventoryOwner != null)
+                                invComingFrom.inventoryOwner.SetTotalCarriedWeightAndVolume();
+
                             return amountAdded;
                         }
                     }
@@ -330,6 +344,9 @@ public class Inventory : MonoBehaviour
 
                 if (invItem != null)
                     invItem.UpdateItemNumberTexts();
+
+                if (invComingFrom != null && invComingFrom.inventoryOwner != null)
+                    invComingFrom.inventoryOwner.SetTotalCarriedWeightAndVolume();
             }
 
             if (amountAdded == itemCount)
@@ -355,15 +372,15 @@ public class Inventory : MonoBehaviour
 
     public bool HasRoomInInventory(ItemData itemData, int itemCount)
     {
-        if (singleItemVolumeLimit > 0 && itemData.item.volume > singleItemVolumeLimit)
+        if (singleItemVolumeLimit > 0 && itemData.item.volume * itemData.GetPercentRemaining_Decimal() > singleItemVolumeLimit)
         {
             if (inventoryOwner.isNPC == false)
                 gm.flavorText.WriteLine_ItemTooLarge(inventoryOwner, itemData, this);
             return false;
         }
 
-        float itemWeight = itemData.item.weight * itemCount;
-        float itemVolume = itemData.item.volume * itemCount;
+        float itemWeight = itemData.item.weight * itemData.GetPercentRemaining_Decimal() * itemCount;
+        float itemVolume = itemData.item.volume * itemData.GetPercentRemaining_Decimal() * itemCount;
 
         if (itemData.item.IsBag() || itemData.item.IsPortableContainer())
         {
@@ -408,7 +425,7 @@ public class Inventory : MonoBehaviour
 
         // Organize items by weight first
         List<ItemData> itemDatas = new List<ItemData>(items);
-        itemDatas.Sort((item1, item2) => (item1.item.volume * item1.currentStackSize).CompareTo(item2.item.volume * item2.currentStackSize));
+        itemDatas.Sort((item1, item2) => (item1.item.volume * item1.GetPercentRemaining_Decimal() * item1.currentStackSize).CompareTo(item2.item.volume * item2.GetPercentRemaining_Decimal() * item2.currentStackSize));
 
         for (int i = itemDatas.Count - 1; i >= 0; i--)
         {
@@ -428,8 +445,8 @@ public class Inventory : MonoBehaviour
         {
             if (items[i].item != null)
             {
-                currentWeight += items[i].item.weight * items[i].currentStackSize;
-                currentVolume += items[i].item.volume * items[i].currentStackSize;
+                currentWeight += items[i].item.weight * items[i].GetPercentRemaining_Decimal() * items[i].currentStackSize;
+                currentVolume += items[i].item.volume * items[i].GetPercentRemaining_Decimal() * items[i].currentStackSize;
 
                 if (items[i].item.IsBag() || items[i].item.IsPortableContainer())
                 {
@@ -437,8 +454,8 @@ public class Inventory : MonoBehaviour
                     {
                         if (items[i].bagInventory.items[j].item != null)
                         {
-                            currentWeight += items[i].bagInventory.items[j].item.weight * items[i].bagInventory.items[j].currentStackSize;
-                            currentVolume += items[i].bagInventory.items[j].item.volume * items[i].bagInventory.items[j].currentStackSize;
+                            currentWeight += items[i].bagInventory.items[j].item.weight * items[i].bagInventory.items[j].GetPercentRemaining_Decimal() * items[i].bagInventory.items[j].currentStackSize;
+                            currentVolume += items[i].bagInventory.items[j].item.volume * items[i].bagInventory.items[j].GetPercentRemaining_Decimal() * items[i].bagInventory.items[j].currentStackSize;
 
                             if (items[i].bagInventory.items[j].item.IsBag() || items[i].bagInventory.items[j].item.IsPortableContainer())
                             {
@@ -446,8 +463,8 @@ public class Inventory : MonoBehaviour
                                 {
                                     if (items[i].bagInventory.items[j].bagInventory.items[k].item != null)
                                     {
-                                        currentWeight += items[i].bagInventory.items[j].bagInventory.items[k].item.weight * items[i].bagInventory.items[j].bagInventory.items[k].currentStackSize;
-                                        currentVolume += items[i].bagInventory.items[j].bagInventory.items[k].item.volume * items[i].bagInventory.items[j].bagInventory.items[k].currentStackSize;
+                                        currentWeight += items[i].bagInventory.items[j].bagInventory.items[k].item.weight * items[i].bagInventory.items[j].bagInventory.items[k].GetPercentRemaining_Decimal() * items[i].bagInventory.items[j].bagInventory.items[k].currentStackSize;
+                                        currentVolume += items[i].bagInventory.items[j].bagInventory.items[k].item.volume * items[i].bagInventory.items[j].bagInventory.items[k].GetPercentRemaining_Decimal() * items[i].bagInventory.items[j].bagInventory.items[k].currentStackSize;
                                     }
                                 }
                             }

@@ -96,6 +96,7 @@ public class Equipment : Item
 
             base.Use(characterManager, inventory, invItem, itemData, itemCount, partialAmountToUse, equipSlot);
 
+            characterManager.SetTotalCarriedWeightAndVolume();
             GameManager.instance.playerInvUI.UpdateUI();
             GameManager.instance.containerInvUI.UpdateUI();
         }

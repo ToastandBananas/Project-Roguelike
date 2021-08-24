@@ -235,7 +235,7 @@ public class ItemData : MonoBehaviour
 
     public bool StackableItemsDataIsEqual(ItemData itemData1, ItemData itemData2)
     {
-        if (itemData1.item == itemData2.item && itemData1.value == itemData2.value && itemData1.freshness == itemData2.freshness)
+        if (itemData1.item == itemData2.item && itemData1.value == itemData2.value && itemData1.freshness == itemData2.freshness && itemData1.percentRemaining == itemData2.percentRemaining)
             return true;
 
         return false;
@@ -667,8 +667,8 @@ public class ItemData : MonoBehaviour
                 if (bagInventory.items[i].currentStackSize > 1)
                 {
                     bagInventory.items[i].currentStackSize--;
-                    bagInventory.currentWeight -= Mathf.RoundToInt(bagInventory.items[i].item.weight * 100f) / 100f;
-                    bagInventory.currentVolume -= Mathf.RoundToInt(bagInventory.items[i].item.volume * 100f) / 100f;
+                    bagInventory.currentWeight -= Mathf.RoundToInt(bagInventory.items[i].item.weight * bagInventory.items[i].GetPercentRemaining_Decimal() * 100f) / 100f;
+                    bagInventory.currentVolume -= Mathf.RoundToInt(bagInventory.items[i].item.volume * bagInventory.items[i].GetPercentRemaining_Decimal() * 100f) / 100f;
                 }
 
                 if (bagInventory.currentWeight <= bagInventory.maxWeight && bagInventory.currentVolume <= bagInventory.maxVolume)
@@ -824,6 +824,11 @@ public class ItemData : MonoBehaviour
         }
         else
             namePrefix = "";
+    }
+
+    public float GetPercentRemaining_Decimal()
+    {
+        return percentRemaining / 100f;
     }
 
     public IEnumerator DelayReturnToObjectPool()

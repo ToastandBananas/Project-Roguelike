@@ -191,8 +191,8 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
     {
         itemAmountText.text = itemData.currentStackSize.ToString();
 
-        float totalWeight = itemData.item.weight * itemData.currentStackSize;
-        float totalVolume = itemData.item.volume * itemData.currentStackSize;
+        float totalWeight = itemData.item.weight * itemData.currentStackSize * itemData.GetPercentRemaining_Decimal();
+        float totalVolume = itemData.item.volume * itemData.currentStackSize * itemData.GetPercentRemaining_Decimal();
 
         if (itemData.item.IsBag() || itemData.item.IsPortableContainer())
         {
@@ -200,15 +200,15 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             {
                 if (itemData.bagInventory.items[i].item != null)
                 {
-                    totalWeight += itemData.bagInventory.items[i].item.weight * itemData.bagInventory.items[i].currentStackSize;
-                    totalVolume += itemData.bagInventory.items[i].item.volume * itemData.bagInventory.items[i].currentStackSize;
+                    totalWeight += itemData.bagInventory.items[i].item.weight * itemData.bagInventory.items[i].currentStackSize * itemData.bagInventory.items[i].GetPercentRemaining_Decimal();
+                    totalVolume += itemData.bagInventory.items[i].item.volume * itemData.bagInventory.items[i].currentStackSize * itemData.bagInventory.items[i].GetPercentRemaining_Decimal();
 
                     if (itemData.bagInventory.items[i].item.IsBag() || itemData.bagInventory.items[i].item.IsPortableContainer())
                     {
                         for (int j = 0; j < itemData.bagInventory.items[i].bagInventory.items.Count; j++)
                         {
-                            totalWeight += itemData.bagInventory.items[i].bagInventory.items[j].item.weight * itemData.bagInventory.items[i].bagInventory.items[j].currentStackSize;
-                            totalVolume += itemData.bagInventory.items[i].bagInventory.items[j].item.volume * itemData.bagInventory.items[i].bagInventory.items[j].currentStackSize;
+                            totalWeight += itemData.bagInventory.items[i].bagInventory.items[j].item.weight * itemData.bagInventory.items[i].bagInventory.items[j].currentStackSize * itemData.bagInventory.items[i].bagInventory.items[j].GetPercentRemaining_Decimal();
+                            totalVolume += itemData.bagInventory.items[i].bagInventory.items[j].item.volume * itemData.bagInventory.items[i].bagInventory.items[j].currentStackSize * itemData.bagInventory.items[i].bagInventory.items[j].GetPercentRemaining_Decimal();
                         }
                     }
                 }
@@ -349,6 +349,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
             else // Otherwise, add the item to the first available bag, or the personal inventory if there's no bag or no room in any of the bags
                 gm.playerManager.AddItemToOtherBags(itemData, this);
 
+            gm.playerManager.SetTotalCarriedWeightAndVolume();
             gm.playerInvUI.UpdateUI();
         }
         else // If we're taking this item from the player's inventory
@@ -499,6 +500,7 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                 }
             }
 
+            gm.playerManager.SetTotalCarriedWeightAndVolume();
             gm.playerInvUI.UpdateUI();
         }
     }
@@ -522,10 +524,13 @@ public class InventoryItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHan
                             itemsListAddingTo[i].currentStackSize++;
                             itemDataComingFrom.currentStackSize--;
 
+                            if (invComingFrom.inventoryOwner != null)
+                                invComingFrom.inventoryOwner.RemoveCarriedItem(itemDataComingFrom, itemDataComingFrom.currentStackSize);
+
                             if (invComingFrom != null)
                             {
-                                invComingFrom.currentWeight -= Mathf.RoundToInt(itemDataComingFrom.item.weight * 100f) / 100f;
-                                invComingFrom.currentVolume -= Mathf.RoundToInt(itemDataComingFrom.item.volume * 100f) / 100f;
+                                invComingFrom.currentWeight -= Mathf.RoundToInt(itemDataComingFrom.item.weight * itemDataComingFrom.GetPercentRemaining_Decimal() * 100f) / 100f;
+                                invComingFrom.currentVolume -= Mathf.RoundToInt(itemDataComingFrom.item.volume * itemDataComingFrom.GetPercentRemaining_Decimal() * 100f) / 100f;
                             }
 
                             if (itemDatasInvItem != null)

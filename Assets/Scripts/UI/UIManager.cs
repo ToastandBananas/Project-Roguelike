@@ -565,9 +565,9 @@ public class UIManager : MonoBehaviour
 
                     // Write some flavor text
                     if (draggedInvItem.myInventory == draggedInvItem.itemData.bagInventory)
-                        gm.flavorText.WriteLine_TakeItem(draggedInvItem.itemData, startingItemCount, null, inv);
+                        gm.flavorText.WriteLine_TransferItem(draggedInvItem.itemData, startingItemCount, null, null, inv);
                     else
-                        gm.flavorText.WriteLine_TakeItem(draggedInvItem.itemData, startingItemCount, draggedInvItem.myInventory, inv);
+                        gm.flavorText.WriteLine_TransferItem(draggedInvItem.itemData, startingItemCount, draggedInvItem.myEquipmentManager, draggedInvItem.myInventory, inv);
 
                     // If we took the item from an inventory, remove the item
                     RemoveDraggedItem(draggedInvItem, startingItemCount);
@@ -1318,7 +1318,7 @@ public class UIManager : MonoBehaviour
                 if (draggedInvItem.myInventory != null)
                 {
                     int index = draggedInvItem.myInventory.items.IndexOf(draggedInvItem.itemData);
-                    if (index != draggedInvItem.myInventory.items.Count - 1)
+                    if (index != draggedInvItem.myInventory.items.Count - 1 && draggedInvItem.myInventory.items.Contains(draggedInvItem.itemData))
                     {
                         draggedInvItem.myInventory.items.RemoveAt(index);
                         draggedInvItem.myInventory.items.Insert(index + 1, draggedInvItem.itemData);
@@ -1444,7 +1444,7 @@ public class UIManager : MonoBehaviour
             if (gm.containerInvUI.emptyTileMaxVolume - gm.containerInvUI.GetTotalVolumeForTile(gm.dropItemController.GetDirectionFromDropPosition(groundPosition)) - itemDataComingFrom.bagInventory.currentVolume - itemDataComingFrom.item.volume >= 0)
                 return true;
         }
-        else if (gm.containerInvUI.emptyTileMaxVolume - gm.containerInvUI.GetTotalVolumeForTile(gm.dropItemController.GetDirectionFromDropPosition(groundPosition)) - itemDataComingFrom.item.volume >= 0)
+        else if (gm.containerInvUI.emptyTileMaxVolume - gm.containerInvUI.GetTotalVolumeForTile(gm.dropItemController.GetDirectionFromDropPosition(groundPosition)) - (itemDataComingFrom.item.volume * itemDataComingFrom.GetPercentRemaining_Decimal()) >= 0)
             return true;
 
         gm.flavorText.WriteLine("<i>There's not enough room on the ground to drop the " + itemDataComingFrom.GetItemName(itemDataComingFrom.currentStackSize) + ".</i>");

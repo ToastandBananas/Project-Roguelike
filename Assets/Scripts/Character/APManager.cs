@@ -13,6 +13,8 @@ public class APManager : MonoBehaviour
     readonly int baseMovementCost = 100;
     readonly int rotationCost = 6;
 
+    readonly float baseOverEncumberedPenalty = 0.5f;
+
     GameManager gm;
 
     #region Singleton
@@ -40,16 +42,21 @@ public class APManager : MonoBehaviour
 
     public IEnumerator UseAP(CharacterManager characterManager, int APAmount, bool queuingNewAction = true)
     {
-        if (queuingNewAction) characterManager.EditActionsQueued(1);
+        if (queuingNewAction)
+        {
+            characterManager.EditActionsQueued(1);
+            if (characterManager.IsOverEncumbered())
+                APAmount += GetOverEncumberedAPPenalty(characterManager, APAmount);
+        }
 
         if (APAmount <= 0)
         {
-            Debug.Log("APAmount <= 0");
+            Debug.Log("APAmount <= 0. Fix me?");
             characterManager.EditActionsQueued(-1);
             characterManager.currentQueueNumber++;
             yield break;
         }
-
+        
         while (characterManager.isMyTurn == false) { yield return null; }
 
         if (characterManager.status.isDead)
@@ -103,9 +110,9 @@ public class APManager : MonoBehaviour
         }
     }
 
-    public int GetMovementAPCost(bool diaganol)
+    public int GetMovementAPCost(bool diagonal)
     {
-        if (diaganol)
+        if (diagonal)
             return Mathf.RoundToInt(baseMovementCost * 1.414214f);
         else
             return baseMovementCost;
@@ -282,5 +289,10 @@ public class APManager : MonoBehaviour
     public int GetRemoveMedicalItemAPCost(MedicalSupply medSupply)
     {
         return Mathf.RoundToInt(GetApplyMedicalItemAPCost(medSupply) * 0.75f);
+    }
+
+    public int GetOverEncumberedAPPenalty(CharacterManager characterManager, int APAmount)
+    {
+        return Mathf.RoundToInt(APAmount * (baseOverEncumberedPenalty + ((characterManager.totalCarryWeight - characterManager.characterStats.GetMaximumWeightCapacity()) / characterManager.characterStats.GetMaximumWeightCapacity())));
     }
 }

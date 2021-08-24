@@ -16,11 +16,11 @@ public class Movement : MonoBehaviour
     [HideInInspector] public CharacterManager characterManager;
 
     float moveTime = 0.2f;
-    float diaganolMoveTime;
+    float diagonalMoveTime;
 
     public virtual void Awake()
     {
-        diaganolMoveTime = moveTime / 1.414214f; // 1.414214 is the length of a diagonal movement
+        diagonalMoveTime = moveTime / 1.414214f; // 1.414214 is the length of a diagonal movement
         canMove = true;
 
         characterManager = GetComponent<CharacterManager>();
@@ -69,7 +69,7 @@ public class Movement : MonoBehaviour
             arcHeight *= -1f;
         float inverseMoveTime;
         if (IsDiagonal(endPos))
-            inverseMoveTime = 1 / (diaganolMoveTime / possibleMoveCount);
+            inverseMoveTime = 1 / (diagonalMoveTime / possibleMoveCount);
         else
             inverseMoveTime = 1 / (moveTime / possibleMoveCount);
 
@@ -112,7 +112,7 @@ public class Movement : MonoBehaviour
 
         float inverseMoveTime;
         if (IsDiagonal(endPos))
-            inverseMoveTime = 1 / (diaganolMoveTime / possibleMoveCount);
+            inverseMoveTime = 1 / (diagonalMoveTime / possibleMoveCount);
         else
             inverseMoveTime = 1 / (moveTime / possibleMoveCount);
 
@@ -622,7 +622,7 @@ public class Movement : MonoBehaviour
 
     public bool IsDiagonal(Vector2 endPos)
     {
-        if (transform.position.x != endPos.x && transform.position.y != endPos.y) 
+        if (Mathf.RoundToInt(transform.position.x) != Mathf.RoundToInt(endPos.x) && Mathf.RoundToInt(transform.position.y) != Mathf.RoundToInt(endPos.y)) 
             return true;
         return false;
     }

@@ -210,6 +210,9 @@ public class DropItemController : MonoBehaviour
         if (invItemComingFrom != null)
             invItemComingFrom.UpdateInventoryWeightAndVolume();
 
+        if (invComingFrom != null && invComingFrom.inventoryOwner != null)
+            invComingFrom.inventoryOwner.SetTotalCarriedWeightAndVolume();
+
         if (invComingFrom == null || invComingFrom.CompareTag("Object") == false)
             gm.flavorText.WriteLine_DropItem(characterDropping, itemData, amountToDrop);
     }

@@ -28,7 +28,7 @@ public class PlayerEquipmentManager : EquipmentManager
     {
         if (GameControls.gamePlayActions.playerSwitchStance.WasPressed)
         {
-            if (IsDualWielding() == false && RightHandItemEquipped())
+            if (IsDualWielding() == false && RightHandItemEquipped() && RightWeaponSheathed() == false)
                 StartCoroutine(characterManager.humanoidSpriteManager.SwapStance(this, characterManager, currentEquipment[(int)EquipmentSlot.RightHandItem]));
         }
 

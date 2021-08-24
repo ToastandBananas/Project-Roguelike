@@ -22,6 +22,7 @@ public class CharacterManager : MonoBehaviour
     [HideInInspector] public Inventory personalInventory, backpackInventory, leftHipPouchInventory, rightHipPouchInventory, quiverInventory;
     public List<ItemData> carriedItems = new List<ItemData>();
     public float leftHandCarryPercent, rightHandCarryPercent;
+    [HideInInspector] public float totalCarryWeight, totalCarryVolume;
 
     [HideInInspector] public CircleCollider2D circleCollider;
     [HideInInspector] public Rigidbody2D rigidBody;
@@ -166,7 +167,7 @@ public class CharacterManager : MonoBehaviour
         carriedItems.Add(carriedItemData);
         carriedItemData.parentInventory = personalInventory;
         carriedItemData.parentInventory.inventoryOwner = this;
-
+        
         // Remove the old itemData from its inventory or from the ground
         if (itemData.parentInventory != null)
             itemData.parentInventory.RemoveItem(itemData, itemData.currentStackSize, invItem);
@@ -179,20 +180,19 @@ public class CharacterManager : MonoBehaviour
 
         // Clear out the item and its InventoryItem
         if (invItem != null)
-        {
-            if (invItem.myInvUI != null)
-                invItem.myInvUI.UpdateUI();
             invItem.ClearItem();
-        }
         else
             itemData.ReturnToObjectPool();
 
         // If our Personal Inventory is active in the UI, update it to show the new carried item
         if (gm.playerInvUI.activeInventory == gm.playerManager.personalInventory)
-        {
             gm.playerInvUI.ShowNewInventoryItem(carriedItemData);
-            gm.playerInvUI.UpdateUI();
-        }
+
+
+        // Update total weight and volume and the UI
+        SetTotalCarriedWeightAndVolume();
+        gm.containerInvUI.UpdateUI();
+        gm.playerInvUI.UpdateUI();
 
         // Show flavor text for picking up and carrying the item
         gm.flavorText.WriteLine_CarryItem(this, carriedItemData);
@@ -206,15 +206,15 @@ public class CharacterManager : MonoBehaviour
             return false;
         else if (leftHand.isSevered || leftHand.isIncapacitated)
         {
-            if (itemData.item.GetSizeFactor() * itemCount <= 1f - rightHandCarryPercent)
+            if ((float)(itemData.item.GetSizeFactor() * itemCount) <= 1f - rightHandCarryPercent)
                 return true;
         }
         else if (rightHand.isSevered || rightHand.isIncapacitated)
         {
-            if (itemData.item.GetSizeFactor() * itemCount <= 1f - leftHandCarryPercent)
+            if ((float)(itemData.item.GetSizeFactor() * itemCount) <= 1f - leftHandCarryPercent)
                 return true;
         }
-        else if (itemData.item.GetSizeFactor() * itemCount <= 2f - leftHandCarryPercent - rightHandCarryPercent)
+        else if ((float)(itemData.item.GetSizeFactor() * itemCount) <= 2f - leftHandCarryPercent - rightHandCarryPercent)
             return true;
         return false;
     }
@@ -223,8 +223,10 @@ public class CharacterManager : MonoBehaviour
     {
         if (carriedItems.Contains(itemData))
         {
+            Debug.Log(carriedItems.Count);
             if (itemData.currentStackSize - itemCount <= 0)
                 carriedItems.Remove(itemData);
+            Debug.Log(carriedItems.Count);
 
             // Subtract from carry percentages
             float carryPercent = itemData.item.GetSizeFactor() * itemCount;
@@ -242,6 +244,8 @@ public class CharacterManager : MonoBehaviour
                 leftHandCarryPercent = 0;
             if (rightHandCarryPercent < 0)
                 rightHandCarryPercent = 0;
+
+            SetTotalCarriedWeightAndVolume();
         }
     }
 
@@ -527,6 +531,101 @@ public class CharacterManager : MonoBehaviour
         }
 
         return medicalItems;
+    }
+
+    public void SetTotalCarriedWeightAndVolume()
+    {
+        SetTotalCarriedWeight();
+        SetTotalCarriedVolume();
+    }
+
+    public IEnumerator DelaySetTotalCarriedWeightAndVolume()
+    {
+        yield return null;
+        SetTotalCarriedWeightAndVolume();
+    }
+
+    void SetTotalCarriedWeight()
+    {
+        totalCarryWeight = 0;
+
+        if (personalInventory != null)
+            totalCarryWeight += personalInventory.currentWeight;
+
+        if (backpackInventory != null)
+            totalCarryWeight += backpackInventory.currentWeight;
+
+        if (leftHipPouchInventory != null)
+            totalCarryWeight += leftHipPouchInventory.currentWeight;
+
+        if (rightHipPouchInventory != null)
+            totalCarryWeight += rightHipPouchInventory.currentWeight;
+
+        if (quiverInventory != null)
+            totalCarryWeight += quiverInventory.currentWeight;
+        
+        if (isNPC == false && gm.playerManager.keysInventory != null)
+            totalCarryWeight += gm.playerManager.keysInventory.currentWeight;
+
+        for (int i = 0; i < carriedItems.Count; i++)
+        {
+            totalCarryWeight += carriedItems[i].item.weight * carriedItems[i].currentStackSize * carriedItems[i].GetPercentRemaining_Decimal();
+            if (carriedItems[i].item.IsBag() || carriedItems[i].item.IsPortableContainer())
+                totalCarryWeight += gm.playerInvUI.GetTotalWeight(carriedItems[i].bagInventory.items);
+        }
+
+        totalCarryWeight += equipmentManager.currentWeight;
+        totalCarryWeight = Mathf.RoundToInt(totalCarryWeight * 100f) / 100f;
+
+        if (isNPC == false && IsOverEncumbered())
+            gm.flavorText.WriteLine_OverEncumbered();
+    }
+
+    void SetTotalCarriedVolume()
+    {
+        totalCarryVolume = 0;
+
+        if (personalInventory != null)
+            totalCarryVolume += personalInventory.currentVolume;
+
+        if (backpackInventory != null)
+            totalCarryVolume += backpackInventory.currentVolume;
+
+        if (leftHipPouchInventory != null)
+            totalCarryVolume += leftHipPouchInventory.currentVolume;
+
+        if (rightHipPouchInventory != null)
+            totalCarryVolume += rightHipPouchInventory.currentVolume;
+
+        if (quiverInventory != null)
+            totalCarryVolume += quiverInventory.currentVolume;
+
+        if (isNPC == false && gm.playerManager.keysInventory != null)
+            totalCarryVolume += gm.playerManager.keysInventory.currentVolume;
+
+        for (int i = 0; i < carriedItems.Count; i++)
+        {
+            totalCarryVolume += carriedItems[i].item.volume * carriedItems[i].GetPercentRemaining_Decimal() * carriedItems[i].currentStackSize;
+            if (carriedItems[i].item.IsBag() || carriedItems[i].item.IsPortableContainer())
+                totalCarryVolume += gm.playerInvUI.GetTotalVolume(carriedItems[i].bagInventory.items);
+        }
+
+        totalCarryVolume += equipmentManager.currentVolume;
+        totalCarryVolume = Mathf.RoundToInt(totalCarryVolume * 100f) / 100f;
+    }
+
+    public bool IsOverEncumbered()
+    {
+        if (totalCarryWeight > characterStats.GetMaximumWeightCapacity())
+            return true;
+        return false;
+    }
+
+    public bool IsMyInventory(Inventory inv)
+    {
+        if (inv == personalInventory || inv == backpackInventory || inv == leftHipPouchInventory || inv == rightHipPouchInventory || inv == quiverInventory || (isNPC == false && inv == gm.playerManager.keysInventory))
+            return true;
+        return false;
     }
 
     public void EditActionsQueued(int amount)

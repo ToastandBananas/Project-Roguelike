@@ -183,7 +183,7 @@ public class InventoryUI : MonoBehaviour
         float totalWeight = 0f;
         for (int i = 0; i < itemsList.Count; i++)
         {
-            totalWeight += itemsList[i].item.weight * itemsList[i].currentStackSize;
+            totalWeight += itemsList[i].item.weight * itemsList[i].currentStackSize * itemsList[i].GetPercentRemaining_Decimal();
             if (itemsList[i].item.IsBag() || itemsList[i].item.IsPortableContainer())
             {
                 if (itemsList[i].item.IsBag() && itemsList[i].IsPickup())
@@ -191,13 +191,13 @@ public class InventoryUI : MonoBehaviour
 
                 for (int j = 0; j < itemsList[i].bagInventory.items.Count; j++)
                 {
-                    totalWeight += itemsList[i].bagInventory.items[j].item.weight * itemsList[i].bagInventory.items[j].currentStackSize;
+                    totalWeight += itemsList[i].bagInventory.items[j].item.weight * itemsList[i].bagInventory.items[j].currentStackSize * itemsList[i].bagInventory.items[j].GetPercentRemaining_Decimal();
 
                     if (itemsList[i].bagInventory.items[j].item.IsBag() || itemsList[i].bagInventory.items[j].item.IsPortableContainer())
                     {
                         for (int k = 0; k < itemsList[i].bagInventory.items[j].bagInventory.items.Count; k++)
                         {
-                            totalWeight += itemsList[i].bagInventory.items[j].bagInventory.items[k].item.weight * itemsList[i].bagInventory.items[j].bagInventory.items[k].currentStackSize;
+                            totalWeight += itemsList[i].bagInventory.items[j].bagInventory.items[k].item.weight * itemsList[i].bagInventory.items[j].bagInventory.items[k].currentStackSize * itemsList[i].bagInventory.items[j].bagInventory.items[k].GetPercentRemaining_Decimal();
                         }
                     }
                 }
@@ -224,7 +224,7 @@ public class InventoryUI : MonoBehaviour
         float totalVolume = 0f;
         for (int i = 0; i < itemsList.Count; i++)
         {
-            totalVolume += itemsList[i].item.volume * itemsList[i].currentStackSize;
+            totalVolume += itemsList[i].item.volume * itemsList[i].GetPercentRemaining_Decimal() * itemsList[i].currentStackSize;
             if (itemsList[i].item.IsBag() || itemsList[i].item.itemType == ItemType.Container)
             {
                 if (itemsList[i].item.IsBag() && itemsList[i].IsPickup())
@@ -232,13 +232,13 @@ public class InventoryUI : MonoBehaviour
 
                 for (int j = 0; j < itemsList[i].bagInventory.items.Count; j++)
                 {
-                    totalVolume += itemsList[i].bagInventory.items[j].item.volume * itemsList[i].bagInventory.items[j].currentStackSize;
+                    totalVolume += itemsList[i].bagInventory.items[j].item.volume * itemsList[i].bagInventory.items[j].GetPercentRemaining_Decimal() * itemsList[i].bagInventory.items[j].currentStackSize;
 
                     if (itemsList[i].bagInventory.items[j].item.IsBag() || itemsList[i].bagInventory.items[j].item.IsPortableContainer())
                     {
                         for (int k = 0; k < itemsList[i].bagInventory.items[j].bagInventory.items.Count; k++)
                         {
-                            totalVolume += itemsList[i].bagInventory.items[j].bagInventory.items[k].item.volume * itemsList[i].bagInventory.items[j].bagInventory.items[k].currentStackSize;
+                            totalVolume += itemsList[i].bagInventory.items[j].bagInventory.items[k].item.volume * itemsList[i].bagInventory.items[j].bagInventory.items[k].GetPercentRemaining_Decimal() * itemsList[i].bagInventory.items[j].bagInventory.items[k].currentStackSize;
                         }
                     }
                 }

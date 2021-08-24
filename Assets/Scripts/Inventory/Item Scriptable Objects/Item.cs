@@ -51,7 +51,11 @@ public class Item : ScriptableObject
                 invItem.UpdateInventoryWeightAndVolume();
 
             if (inventory != null)
+            {
                 inventory.UpdateCurrentWeightAndVolume();
+                if (inventory.inventoryOwner != null)
+                    inventory.inventoryOwner.SetTotalCarriedWeightAndVolume();
+            }
 
             if (invItem != null)
                 invItem.myInvUI.UpdateUI();

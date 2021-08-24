@@ -58,12 +58,15 @@ public class EquipmentManager : MonoBehaviour
                 currentEquipment[(int)EquipmentSlot.LeftHandItem].GetItemDatasInventoryItem().UpdateAllItemTexts();
         }
 
-        gm.flavorText.WriteLine_Equip(newItemData, characterManager);
-        if (equipSlot == EquipmentSlot.LeftHandItem || equipSlot == EquipmentSlot.RightHandItem)
-            gm.flavorText.WriteLine_SwitchStance(characterManager, newItemData, (Weapon)newItemData.item);
-
         if (newItemData != null)
+        {
+            gm.flavorText.WriteLine_Equip(newItemData, characterManager);
+            if (newItemData.item.IsWeapon() && (equipSlot == EquipmentSlot.LeftHandItem || equipSlot == EquipmentSlot.RightHandItem))
+                gm.flavorText.WriteLine_SwitchStance(characterManager, newItemData, (Weapon)newItemData.item);
+
             newItemData.ReturnToObjectPool();
+        }
+        
         if (oldItemData != null)
             oldItemData.ReturnToObjectPool();
     }
@@ -99,11 +102,6 @@ public class EquipmentManager : MonoBehaviour
 
             Inventory bagsInventory = gm.playerInvUI.GetInventoryFromBagEquipSlot(newItemData);
 
-            for (int i = 0; i < newItemData.bagInventory.items.Count; i++)
-            {
-                gm.uiManager.CreateNewItemDataChild(newItemData.bagInventory.items[i], bagsInventory, bagsInventory.itemsParent, true);
-            }
-
             // Set the weight and volume of the "new" bag
             bagsInventory.UpdateCurrentWeightAndVolume();
 
@@ -135,6 +133,9 @@ public class EquipmentManager : MonoBehaviour
             gm.containerInvUI.SetSideBarIcon_Floor(gm.containerInvUI.activeDirection);
             gm.containerInvUI.GetInventoriesListFromDirection(gm.containerInvUI.activeDirection).Remove(newItemData.bagInventory);
         }
+
+        // Update the character's total weight/volume
+        characterManager.SetTotalCarriedWeightAndVolume();
 
         return true;
     }
@@ -296,6 +297,9 @@ public class EquipmentManager : MonoBehaviour
         }
 
         UnassignEquipment(equipmentSlot);
+
+        // Update the character's total weight/volume
+        characterManager.SetTotalCarriedWeightAndVolume();
 
         return true;
     }

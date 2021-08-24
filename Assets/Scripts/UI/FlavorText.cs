@@ -537,32 +537,49 @@ public class FlavorText : MonoBehaviour
                 + "don't have enough room in " + Utilities.GetPossessivePronoun(character) + "hands.");
     }
 
+    public void WriteLine_OverEncumbered()
+    {
+        WriteLine("<b>You</b> feel weighed down by all of the items and equipment you have on you. Your every action feels sluggish.");
+    }
+
     public void WriteLine_TakeItem(ItemData itemTaking, int amountTaking, Inventory inventoryTakingFrom, Inventory inventoryPuttingIn)
     {
-        string invPuttingInName;
-        if (inventoryPuttingIn == gm.playerManager.personalInventory)
-            invPuttingInName = "Personal Inventory";
-        else
-            invPuttingInName = inventoryPuttingIn.name;
+        string invTakingFromName = "";
+        string invPuttingInName = "";
+        if (inventoryTakingFrom != null)
+        {
+            if (inventoryTakingFrom == gm.playerManager.personalInventory)
+                invTakingFromName = "Personal Inventory";
+            else
+                invTakingFromName = inventoryTakingFrom.name;
+        }
+
+        if (inventoryPuttingIn != null)
+        {
+            if (inventoryPuttingIn == gm.playerManager.personalInventory)
+                invPuttingInName = "Personal Inventory";
+            else
+                invPuttingInName = inventoryPuttingIn.name;
+        }
 
         if (inventoryPuttingIn == gm.playerManager.keysInventory)
         {
             if (inventoryTakingFrom != null)
-                WriteLine("<b>You</b> took " + Utilities.GetIndefiniteArticle(itemTaking.GetItemName(amountTaking), false, true) + " from the <b>" + inventoryTakingFrom.name + "</b> and put it on your <b>key ring</b>.");
+                WriteLine("<b>You</b> took " + Utilities.GetIndefiniteArticle(itemTaking.GetItemName(amountTaking), false, true) + " from the <b>" + invTakingFromName + "</b> and put it on your <b>key ring</b>.");
             else
                 WriteLine("<b>You</b> picked up " + Utilities.GetIndefiniteArticle(itemTaking.GetItemName(amountTaking), false, true) + " and put it on your <b>key ring</b>.");
         }
         else if (amountTaking == 1)
         {
             if (inventoryTakingFrom != null)
-                WriteLine("<b>You</b> took " + Utilities.GetIndefiniteArticle(itemTaking.GetItemName(amountTaking), false, true) + " from the <b>" + inventoryTakingFrom.name + "</b> and put it in your <b>" + invPuttingInName + "</b>.");
+                WriteLine("<b>You</b> took " + Utilities.GetIndefiniteArticle(itemTaking.GetItemName(amountTaking), false, true) + " from the <b>" + invTakingFromName + "</b> and put it in your <b>" + invPuttingInName + "</b>.");
             else
                 WriteLine("<b>You</b> picked up " + Utilities.GetIndefiniteArticle(itemTaking.GetItemName(amountTaking), false, true) + " and put it in your <b>" + invPuttingInName + "</b>.");
         }
         else
         {
             if (inventoryTakingFrom != null)
-                WriteLine("<b>You</b> took <b>" + amountTaking + " " + itemTaking.GetItemName(amountTaking) + "</b> from the <b>" + inventoryTakingFrom.name + "</b> and put them in your <b>" + invPuttingInName + "</b>.");
+                WriteLine("<b>You</b> took <b>" + amountTaking + " " + itemTaking.GetItemName(amountTaking) + "</b> from the <b>" + invTakingFromName + "</b> and put them in your <b>" + invPuttingInName + "</b>.");
             else
                 WriteLine("<b>You</b> picked up <b>" + amountTaking + " " + itemTaking.GetItemName(amountTaking) + "</b>" + " and put them in your <b>" + invPuttingInName + "</b>.");
         }
@@ -570,23 +587,40 @@ public class FlavorText : MonoBehaviour
 
     public void WriteLine_TransferItem(ItemData itemTaking, int amountTaking, EquipmentManager equipmentManagerTakingFrom, Inventory inventoryTakingFrom, Inventory inventoryPuttingIn)
     {
+        string invTakingFromName = "";
+        string invPuttingInName = "";
+        if (inventoryTakingFrom != null)
+        {
+            if (inventoryTakingFrom == gm.playerManager.personalInventory)
+                invTakingFromName = "Personal Inventory";
+            else
+                invTakingFromName = inventoryTakingFrom.name;
+        }
+
+        if (inventoryPuttingIn != null)
+        {
+            if (inventoryPuttingIn == gm.playerManager.personalInventory)
+                invPuttingInName = "Personal Inventory";
+            else
+                invPuttingInName = inventoryPuttingIn.name;
+        }
+
         if (amountTaking == 1)
         {
             if (equipmentManagerTakingFrom != null)
-                WriteLine(Utilities.GetPronoun(null, true, false) + "took " + Utilities.GetIndefiniteArticle(itemTaking.GetItemName(amountTaking), false, true) + " from your <b>" + equipmentManagerTakingFrom.name 
-                    + "</b> and put it in the <b>" + inventoryPuttingIn.name + "</b>.");
+                WriteLine("<b>You</b> took " + Utilities.GetIndefiniteArticle(itemTaking.GetItemName(amountTaking), false, true) + " from your <b>Equipped Items</b> and put it in the <b>" 
+                    + invPuttingInName + "</b>.");
             else
-                WriteLine(Utilities.GetPronoun(null, true, false) + "took " + Utilities.GetIndefiniteArticle(itemTaking.GetItemName(amountTaking), false, true) + " from your <b>" + inventoryTakingFrom.name 
-                    + "</b> and put it in the <b>" + inventoryPuttingIn.name + "</b>.");
+                WriteLine("<b>You</b> took " + Utilities.GetIndefiniteArticle(itemTaking.GetItemName(amountTaking), false, true) + " from your <b>" + invTakingFromName 
+                    + "</b> and put it in the <b>" + invPuttingInName + "</b>.");
         }
         else
         {
             if (equipmentManagerTakingFrom != null)
-                WriteLine(Utilities.GetPronoun(null, true, false) + "took " + amountTaking + " <b>" + itemTaking.GetItemName(amountTaking) + "</b> from your <b>" + equipmentManagerTakingFrom.name 
-                    + "</b> and put them in the <b>" + inventoryPuttingIn.name + "</b>.");
+                WriteLine("<b>You</b> took " + amountTaking + " <b>" + itemTaking.GetItemName(amountTaking) + "</b> from your <b>Equipped Items</b> and put them in the <b>" + invPuttingInName + "</b>.");
             else
-                WriteLine(Utilities.GetPronoun(null, true, false) + "took " + amountTaking + " <b>" + itemTaking.GetItemName(amountTaking) + "</b> from your <b>" + inventoryTakingFrom.name 
-                    + "</b> and put them in the <b>" + inventoryPuttingIn.name + "</b>.");
+                WriteLine("<b>You</b> took " + amountTaking + " <b>" + itemTaking.GetItemName(amountTaking) + "</b> from your <b>" + invTakingFromName
+                    + "</b> and put them in the <b>" + invPuttingInName + "</b>.");
         }
     }
 
