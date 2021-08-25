@@ -49,7 +49,7 @@ public class Item : ScriptableObject
                 itemData.RemoveItemData();
             else if (invItem != null)
                 invItem.UpdateInventoryWeightAndVolume();
-
+            
             if (inventory != null)
             {
                 inventory.UpdateCurrentWeightAndVolume();

@@ -7588,6 +7588,8 @@ MonoBehaviour:
   carriedItems: []
   leftHandCarryPercent: 0
   rightHandCarryPercent: 0
+  totalCarryWeight: 0
+  totalCarryVolume: 0
   circleCollider: {fileID: 0}
   rigidBody: {fileID: 0}
   spriteRenderer: {fileID: 0}
@@ -13845,6 +13847,8 @@ MonoBehaviour:
   carriedItems: []
   leftHandCarryPercent: 0
   rightHandCarryPercent: 0
+  totalCarryWeight: 0
+  totalCarryVolume: 0
   circleCollider: {fileID: 0}
   rigidBody: {fileID: 0}
   spriteRenderer: {fileID: 0}
@@ -21187,6 +21191,8 @@ MonoBehaviour:
   carriedItems: []
   leftHandCarryPercent: 0
   rightHandCarryPercent: 0
+  totalCarryWeight: 0
+  totalCarryVolume: 0
   circleCollider: {fileID: 0}
   rigidBody: {fileID: 0}
   spriteRenderer: {fileID: 0}
@@ -98775,6 +98781,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayText: {fileID: 1236654203}
   focusedCharacter: {fileID: 0}
+  focusedDeadCharacters: []
   focusedObject: {fileID: 0}
   focusedItems: []
 --- !u!114 &2133154657

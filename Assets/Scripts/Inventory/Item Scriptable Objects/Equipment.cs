@@ -61,7 +61,6 @@ public class Equipment : Item
             // Equip the item
             itemUsed = characterManager.equipmentManager.Equip(itemData, invItem, equipSlot);
             itemEquipped = true;
-            characterManager.DropAllCarriedItems(itemData);
         }
 
         if (itemUsed)

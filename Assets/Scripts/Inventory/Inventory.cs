@@ -88,13 +88,14 @@ public class Inventory : MonoBehaviour
         int amountAddedToExistingStacks = 0;
         if (itemDataComingFrom.item.maxStackSize > 1 && InventoryContainsSameItem(itemDataComingFrom))
             amountAddedToExistingStacks = AddToExistingStacks(itemDataComingFrom, itemCount, invComingFrom, shouldUpdateWeightAndVolume);
-
+        Debug.Log(amountAddedToExistingStacks);
         // Subtract the amount we added to existing stacks from our itemCount
         itemCount -= amountAddedToExistingStacks;
         
         // If there's still some left to add
         if ((itemCount == 1 && amountAddedToExistingStacks == 0) || (itemCount > 0 && itemDataComingFrom.currentStackSize > 0))
         {
+            Debug.Log("Here");
             // Create a new ItemData Object
             ItemData itemDataToAdd = gm.objectPoolManager.GetItemDataFromPool(itemDataComingFrom.item, this);
 
@@ -192,7 +193,10 @@ public class Inventory : MonoBehaviour
         }
 
         if (inventoryOwner != null)
+        {
+            inventoryOwner.RemoveCarriedItem(itemDataComingFrom, itemCount);
             inventoryOwner.SetTotalCarriedWeightAndVolume();
+        }
 
         UpdateCurrentWeightAndVolume();
         if (myInvUI == gm.containerInvUI && gm.containerInvUI.activeInventory == this)
@@ -205,6 +209,7 @@ public class Inventory : MonoBehaviour
 
     public void RemoveItem(ItemData itemData, int itemCount, InventoryItem invItem)
     {
+        Debug.Log("Removing item");
         // Subtract itemCount from the item's currentStackSize
         itemData.currentStackSize -= itemCount;
         if (itemData.currentStackSize < 0)
@@ -315,6 +320,9 @@ public class Inventory : MonoBehaviour
                 InventoryItem invItem = items[i].GetItemDatasInventoryItem();
                 for (int j = 0; j < itemCount; j++)
                 {
+                    if (items[i] == itemDataComingFrom)
+                        continue;
+
                     if (items[i].currentStackSize < items[i].item.maxStackSize)
                     {
                         items[i].currentStackSize++;
@@ -353,7 +361,7 @@ public class Inventory : MonoBehaviour
                 break;
         }
 
-        if (itemDatasInvItem != null)
+        if (amountAdded > 0 && itemDatasInvItem != null)
             itemDatasInvItem.UpdateItemNumberTexts();
         
         return amountAdded;

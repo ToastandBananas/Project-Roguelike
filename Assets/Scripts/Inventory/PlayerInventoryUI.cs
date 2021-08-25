@@ -350,13 +350,13 @@ public class PlayerInventoryUI : InventoryUI
                 if (gm.playerManager.carriedItems.Count == 0)
                     weightText.text = (Mathf.RoundToInt(activeInventory.currentWeight * 100f) / 100f).ToString();
                 else
-                    weightText.text = (Mathf.RoundToInt(activeInventory.currentWeight * 100f) / 100f).ToString() + " (" + GetTotalWeight(gm.playerManager.carriedItems) + ")";
+                    weightText.text = (Mathf.RoundToInt(activeInventory.currentWeight * 100f) / 100f).ToString() + " (+" + GetTotalWeight(gm.playerManager.carriedItems) + ")";
 
                 if (gm.playerManager.carriedItems.Count == 0)
                     volumeText.text = (Mathf.RoundToInt(activeInventory.currentVolume * 100f) / 100f).ToString() + "/" + activeInventory.maxVolume.ToString();
                 else
                     volumeText.text = (Mathf.RoundToInt(activeInventory.currentVolume * 100f) / 100f).ToString() + "/" + activeInventory.maxVolume.ToString()
-                        + " (" + GetTotalVolume(gm.playerManager.carriedItems) + ")";
+                        + " (+" + GetTotalVolume(gm.playerManager.carriedItems) + ")";
             }
             else if (activeInventory == gm.playerManager.keysInventory)
             {

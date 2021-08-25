@@ -58,6 +58,8 @@ public class EquipmentManager : MonoBehaviour
                 currentEquipment[(int)EquipmentSlot.LeftHandItem].GetItemDatasInventoryItem().UpdateAllItemTexts();
         }
 
+        characterManager.DropAllCarriedItems();
+
         if (newItemData != null)
         {
             gm.flavorText.WriteLine_Equip(newItemData, characterManager);
@@ -334,13 +336,13 @@ public class EquipmentManager : MonoBehaviour
                 Weapon weapon = null;
                 if (newItemData.item.IsWeapon())
                     weapon = (Weapon)newItemData.item;
-                
+
                 // If the weapon we're equipping is two-handed and there's a weapon equipped in our off-hand, unequip it
                 if (weapon != null && weapon.IsTwoHanded(characterManager) && currentEquipment[(int)EquipmentSlot.LeftHandItem] != null)
                     Unequip(EquipmentSlot.LeftHandItem, true, true, true);
-                // If we're equipping a weapon to our left hand and we already have a two-handed weapon equipped, unequip it
-                else if (TwoHandedWeaponEquipped() && equipmentSlot == EquipmentSlot.LeftHandItem)
-                    Unequip(EquipmentSlot.RightHandItem, true, true, true);
+                // If we're equipping a weapon to our left hand and we are two-handing, switch to the one-handed stance
+                else if (equipmentSlot == EquipmentSlot.LeftHandItem && isTwoHanding)
+                    StartCoroutine(characterManager.humanoidSpriteManager.SwapStance(this, characterManager, currentEquipment[(int)EquipmentSlot.RightHandItem]));
             }
             else if (newItemData.item.IsBag())
             {

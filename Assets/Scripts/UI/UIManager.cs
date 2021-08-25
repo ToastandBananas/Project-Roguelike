@@ -20,6 +20,7 @@ public class UIManager : MonoBehaviour
     GameManager gm;
 
     readonly float minDragTime = 0.125f;
+    readonly int dragOffset = 40;
     float dragTimer;
     int activeInvItemCount;
 
@@ -1015,12 +1016,19 @@ public class UIManager : MonoBehaviour
 
     void RearrangeItems(InventoryItem draggedInvItem)
     {
-        // Drag the InventoryItem up (if the mouse position is above the draggedItem's original position)
-        if (draggedInvItem.transform.GetSiblingIndex() != 0 && draggedInvItem.myInvUI == activeInvUI && activeInvItem != draggedInvItem && Input.mousePosition.y > draggedInvItem.transform.position.y + 40)
+        // If the item is in a bag that the player is carrying, don't allow the player to place the item here
+        if (draggedInvItem.parentInvItem != null && gm.playerManager.carriedItems.Contains(draggedInvItem.parentInvItem.itemData))
         {
-            // Set the new sibling index of the item
+            draggedInvItem.canDragToCurrentLocation = false;
+            return;
+        }
+
+        // Drag the InventoryItem up (if the mouse position is above the draggedItem's original position)
+        if (draggedInvItem.transform.GetSiblingIndex() != 0 && draggedInvItem.myInvUI == activeInvUI && activeInvItem != draggedInvItem && Input.mousePosition.y > draggedInvItem.transform.position.y + dragOffset)
+        {
+            // Set the new sibling index of the item. If the parent bag item of the item we're dragging is on the ground, make sure not to move the dragged item above the bag item
             if (draggedInvItem.parentInvItem == null || draggedInvItem.parentInvItem.itemData.IsPickup() == false
-                || draggedInvItem.parentInvItem.itemData.item.IsPortableContainer() || draggedInvItem.transform.GetSiblingIndex() >= draggedInvItem.parentInvItem.transform.GetSiblingIndex() + 2) // If the parent bag item of the item we're dragging is on the ground, make sure not to move the dragged item above the bag item
+                || draggedInvItem.parentInvItem.itemData.item.IsPortableContainer() || draggedInvItem.transform.GetSiblingIndex() >= draggedInvItem.parentInvItem.transform.GetSiblingIndex() + 2)
             {
                 draggedInvItem.transform.SetSiblingIndex(draggedInvItem.transform.GetSiblingIndex() - 1);
             }
@@ -1107,6 +1115,8 @@ public class UIManager : MonoBehaviour
                     }
                     else
                     {
+                        gm.playerManager.RemoveCarriedItem(draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize);
+                        draggedInvItem.UpdateAllItemTexts();
                         draggedInvItem.myInventory.items.Remove(draggedInvItem.itemData);
                         draggedInvItem.myInventory.UpdateCurrentWeightAndVolume();
 
@@ -1143,7 +1153,7 @@ public class UIManager : MonoBehaviour
                 if (draggedInvItem.myInventory != null)
                 {
                     int index = draggedInvItem.myInventory.items.IndexOf(draggedInvItem.itemData);
-                    if (index > 0) // If this is not the first item in the list
+                    if (index > 0 && draggedInvItem.myInventory.items.Contains(draggedInvItem.itemData)) // If this is not the first item in the list
                     {
                         draggedInvItem.myInventory.items.RemoveAt(index);
                         draggedInvItem.myInventory.items.Insert(index - 1, draggedInvItem.itemData);
@@ -1165,7 +1175,7 @@ public class UIManager : MonoBehaviour
         }
         // Drag the InventoryItem down (if the mouse position is below the draggedItem's original position)
         else if (draggedInvItem.transform.GetSiblingIndex() != draggedInvItem.myInvUI.inventoryItemObjectPool.pooledInventoryItems.Count - 1 && draggedInvItem.myInvUI == activeInvUI && activeInvItem != draggedInvItem 
-            && Input.mousePosition.y < draggedInvItem.transform.position.y - 40)
+            && Input.mousePosition.y < draggedInvItem.transform.position.y - dragOffset)
         {
             // Set the new sibling index of the item
             draggedInvItem.transform.SetSiblingIndex(draggedInvItem.transform.GetSiblingIndex() + 1);
@@ -1282,9 +1292,11 @@ public class UIManager : MonoBehaviour
                         // Update weight/volume for the bag the item came from
                         draggedInvItem.parentInvItem.UpdateInventoryWeightAndVolume();
                     }
-                    else
+                    else // If the item was not inside a bag previously
                     {
                         draggedInvItem.isItemInsideBag = true;
+                        gm.playerManager.RemoveCarriedItem(draggedInvItem.itemData, draggedInvItem.itemData.currentStackSize);
+                        draggedInvItem.UpdateAllItemTexts();
 
                         // If the item is in a container, remove it from the appropriate directional list
                         if (draggedInvItem.myInvUI == gm.containerInvUI)

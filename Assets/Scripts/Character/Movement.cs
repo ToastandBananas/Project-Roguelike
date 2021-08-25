@@ -53,6 +53,9 @@ public class Movement : MonoBehaviour
         isMoving = true;
         transform.position = Utilities.ClampedPosition(transform.position);
 
+        // Update the character's position within our GameTiles data
+        GameTiles.AddCharacter(characterManager, endPos);
+
         // Set pathfinding grid graph tags for current and end position nodes
         gm.gameTiles.SetTagForNode(gm.gameTiles.gridGraph.GetNearest(transform.position).node);
         gm.gameTiles.gridGraph.GetNearest(endPos).node.Tag = 31; // Character tag
@@ -94,8 +97,6 @@ public class Movement : MonoBehaviour
             yield return null;
         }
 
-        GameTiles.AddCharacter(characterManager, transform.position);
-
         isMoving = false;
         OnFinishedMoving();
     }
@@ -105,6 +106,9 @@ public class Movement : MonoBehaviour
         if (isMoving) yield break;
         isMoving = true;
         transform.position = Utilities.ClampedPosition(transform.position);
+
+        // Update the character's position within our GameTiles data
+        GameTiles.AddCharacter(characterManager, endPos);
 
         // Set pathfinding grid graph tags for current and end position nodes
         gm.gameTiles.SetTagForNode(gm.gameTiles.gridGraph.GetNearest(transform.position).node);
@@ -124,8 +128,6 @@ public class Movement : MonoBehaviour
 
             yield return null;
         }
-
-        GameTiles.AddCharacter(characterManager, transform.position);
 
         isMoving = false;
         OnFinishedMoving();
@@ -166,8 +168,7 @@ public class Movement : MonoBehaviour
     public void TeleportToPosition(Vector2 endPos)
     {
         transform.position = endPos;
-        GameTiles.AddCharacter(characterManager, transform.position);
-
+        GameTiles.AddCharacter(characterManager, endPos);
         OnFinishedMoving();
     }
 

@@ -12,6 +12,7 @@ public class Vision : MonoBehaviour
 
     [HideInInspector] public CircleCollider2D visionCollider;
 
+    /// <summary>Objects, Walls</summary>
     [HideInInspector] public LayerMask sightObstacleMask;
 
     CharacterManager characterManager;
@@ -104,20 +105,20 @@ public class Vision : MonoBehaviour
             CharacterManager closestEnemy = null;
             float distanceToClosestEnemy = 0;
 
-            foreach (CharacterManager enemy in characterManager.vision.knownEnemiesInRange)
+            for (int i = 0; i < characterManager.vision.knownEnemiesInRange.Count; i++)
             {
                 if (closestEnemy == null)
                 {
-                    closestEnemy = enemy;
+                    closestEnemy = characterManager.vision.knownEnemiesInRange[i];
                     if (characterManager.vision.knownEnemiesInRange.Count > 1)
-                        distanceToClosestEnemy = Vector2.Distance(enemy.transform.position, transform.position);
+                        distanceToClosestEnemy = Vector2.Distance(characterManager.vision.knownEnemiesInRange[i].transform.position, transform.position);
                 }
                 else
                 {
-                    float distanceToEnemy = Vector2.Distance(enemy.transform.position, transform.position);
+                    float distanceToEnemy = Vector2.Distance(characterManager.vision.knownEnemiesInRange[i].transform.position, transform.position);
                     if (distanceToEnemy < distanceToClosestEnemy)
                     {
-                        closestEnemy = enemy;
+                        closestEnemy = characterManager.vision.knownEnemiesInRange[i];
                         distanceToClosestEnemy = distanceToEnemy;
                     }
                 }
@@ -136,20 +137,20 @@ public class Vision : MonoBehaviour
             CharacterManager closestAlly = null;
             float distanceToClosestAlly = 0;
 
-            foreach (CharacterManager ally in characterManager.vision.alliesInRange)
+            for (int i = 0; i < characterManager.vision.alliesInRange.Count; i++)
             {
                 if (closestAlly == null)
                 {
-                    closestAlly = ally;
+                    closestAlly = characterManager.vision.alliesInRange[i];
                     if (characterManager.vision.alliesInRange.Count > 1)
-                        distanceToClosestAlly = Vector2.Distance(ally.transform.position, transform.position);
+                        distanceToClosestAlly = Vector2.Distance(characterManager.vision.alliesInRange[i].transform.position, transform.position);
                 }
                 else
                 {
-                    float distanceToAlly = Vector2.Distance(ally.transform.position, transform.position);
+                    float distanceToAlly = Vector2.Distance(characterManager.vision.alliesInRange[i].transform.position, transform.position);
                     if (distanceToAlly < distanceToClosestAlly)
                     {
-                        closestAlly = ally;
+                        closestAlly = characterManager.vision.alliesInRange[i];
                         distanceToClosestAlly = distanceToAlly;
                     }
                 }

@@ -112,11 +112,11 @@ public class NPCAttack : Attack
 
     public override void DetermineAttack(CharacterManager targetsCharacterManager, Stats targetsStats)
     {
-        characterManager.movement.Rotate(GetDirectionFromCharacter(targetsStats.transform));
+        characterManager.movement.Rotate(GetDirectionToTarget(targetsStats.transform));
         StartRandomMeleeAttack(targetsCharacterManager, targetsStats);
     }
 
-    public Direction GetDirectionFromCharacter(Transform targetsTransform)
+    public Direction GetDirectionToTarget(Transform targetsTransform)
     {
         if (transform.position == targetsTransform.position)
             return Direction.Center;

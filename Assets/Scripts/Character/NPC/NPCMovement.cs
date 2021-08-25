@@ -100,11 +100,12 @@ public class NPCMovement : Movement
         // Finish searching for a path before moving
         while (AIPath.pathPending) { yield return null; }
 
-        // Remove the NPC from the tile they were on
-        GameTiles.RemoveCharacter(transform.position);
-
         // Get the next position and the direction the character needs to face
         nextPos = GetNextPosition();
+
+        // Remove the NPC from the tile they were on, if they are moving
+        if (nextPos != (Vector2)transform.position)
+            GameTiles.RemoveCharacter(transform.position);
 
         // Possible move count will determine the speed of the character's movement, to prevent gameplay delays
         int possibleMoveCount = Mathf.FloorToInt(characterManager.characterStats.maxAP.GetValue() / gm.apManager.GetMovementAPCost(false));
@@ -146,7 +147,7 @@ public class NPCMovement : Movement
             {
                 // Make sure the NPC isn't trying to move on top of an obstacle, such as an object or wall
                 RaycastHit2D hit = Physics2D.Raycast(nextPos, Vector2.zero, 1, movementObstacleMask);
-                if (hit.collider == null)
+                if (hit.collider == null && GameTiles.characters.TryGetValue(nextPos, out CharacterManager character) == false)
                     return nextPos;
                 else
                     return transform.position;

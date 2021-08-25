@@ -188,11 +188,9 @@ public class CharacterManager : MonoBehaviour
         if (gm.playerInvUI.activeInventory == gm.playerManager.personalInventory)
             gm.playerInvUI.ShowNewInventoryItem(carriedItemData);
 
-
         // Update total weight and volume and the UI
-        SetTotalCarriedWeightAndVolume();
+        StartCoroutine(DelaySetTotalCarriedWeightAndVolume());
         gm.containerInvUI.UpdateUI();
-        gm.playerInvUI.UpdateUI();
 
         // Show flavor text for picking up and carrying the item
         gm.flavorText.WriteLine_CarryItem(this, carriedItemData);
@@ -223,10 +221,8 @@ public class CharacterManager : MonoBehaviour
     {
         if (carriedItems.Contains(itemData))
         {
-            Debug.Log(carriedItems.Count);
             if (itemData.currentStackSize - itemCount <= 0)
                 carriedItems.Remove(itemData);
-            Debug.Log(carriedItems.Count);
 
             // Subtract from carry percentages
             float carryPercent = itemData.item.GetSizeFactor() * itemCount;
@@ -245,7 +241,7 @@ public class CharacterManager : MonoBehaviour
             if (rightHandCarryPercent < 0)
                 rightHandCarryPercent = 0;
 
-            SetTotalCarriedWeightAndVolume();
+            StartCoroutine(DelaySetTotalCarriedWeightAndVolume());
         }
     }
 
@@ -543,6 +539,7 @@ public class CharacterManager : MonoBehaviour
     {
         yield return null;
         SetTotalCarriedWeightAndVolume();
+        gm.playerInvUI.UpdateUI();
     }
 
     void SetTotalCarriedWeight()

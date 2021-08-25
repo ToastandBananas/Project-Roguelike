@@ -237,7 +237,7 @@ public class PlayerMovement : Movement
         RaycastHit2D hit = RaycastMovePosition(startCell, targetCell);
 
         // If the target tile is a walkable tile, the player moves here
-        if (hit.collider == null)
+        if (hit.collider == null && GameTiles.characters.TryGetValue(targetCell, out CharacterManager character) == false)
         {
             GameTiles.RemoveCharacter(transform.position);
             if (targetCell.y == startCell.y)
