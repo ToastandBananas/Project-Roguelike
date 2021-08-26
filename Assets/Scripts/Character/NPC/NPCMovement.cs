@@ -82,7 +82,7 @@ public class NPCMovement : Movement
 
         Vector2 nextPos = GetNextPosition();
         Debug.Log(transform.position + " / " + nextPos + " / " + GetNextDirection(nextPos));
-        Rotate(GetNextDirection(nextPos));
+        RotateTowardsDirection(GetNextDirection(nextPos), true);
         characterManager.QueueAction(MoveToNextPointOnPath(), gm.apManager.GetMovementAPCost(IsDiagonal(nextPos)));
         // StartCoroutine(MoveToNextPointOnPath());
     }
@@ -109,6 +109,9 @@ public class NPCMovement : Movement
 
         // Get the next position and the direction the character needs to face
         Vector2 nextPos = GetNextPosition();
+
+        // Make sure the character is facing the correct direction
+        RotateTowardsDirection(GetNextDirection(nextPos), false);
 
         // Remove the NPC from the tile they were on, if they are moving
         if (nextPos != (Vector2)transform.position)

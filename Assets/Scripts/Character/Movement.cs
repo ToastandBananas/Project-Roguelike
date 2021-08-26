@@ -207,18 +207,20 @@ public class Movement : MonoBehaviour
         //characterManager.FinishAction();
     }
 
-    public void Rotate(Direction targetDirection)
+    public void RotateTowardsDirection(Direction targetDirection, bool queuingAction)
     {
         GetRotationsSegmentCount(targetDirection, out int segmentCount, out bool clockwise);
 
         for (int i = 0; i < segmentCount; i++)
         {
-            characterManager.QueueAction(RotateOneSegment(clockwise), gm.apManager.GetRotateAPCost());
-            // StartCoroutine(RotateOneSegment(clockwise));
+            if (queuingAction)
+                characterManager.QueueAction(RotateOneSegment(clockwise, queuingAction), gm.apManager.GetRotateAPCost());
+            else
+                StartCoroutine(RotateOneSegment(clockwise, queuingAction));
         }
     }
 
-    IEnumerator RotateOneSegment(bool clockwise)
+    IEnumerator RotateOneSegment(bool clockwise, bool doingAction)
     {
         // StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetRotateAPCost()));
 
@@ -235,7 +237,10 @@ public class Movement : MonoBehaviour
 
         // Update arrow graphic to point in current direction facing
         characterManager.humanoidSpriteManager.SetFacingArrowDirection(directionFacing);
-        characterManager.FinishAction();
+
+        if (doingAction)
+            characterManager.FinishAction();
+
         yield return null;
     }
 

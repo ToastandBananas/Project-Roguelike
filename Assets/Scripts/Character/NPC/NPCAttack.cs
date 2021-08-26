@@ -116,7 +116,7 @@ public class NPCAttack : Attack
 
     public override void DetermineAttack(CharacterManager targetsCharacterManager, Stats targetsStats)
     {
-        characterManager.movement.Rotate(GetDirectionToTarget(targetsStats.transform));
+        characterManager.movement.RotateTowardsDirection(GetDirectionToTarget(targetsStats.transform), true);
         StartRandomMeleeAttack(targetsCharacterManager, targetsStats);
     }
 
