@@ -49,7 +49,13 @@ public class Movement : MonoBehaviour
 
     public IEnumerator ArcMovement(Vector2 endPos, int possibleMoveCount = 1)
     {
-        if (isMoving) yield break;
+        characterManager.FinishAction();
+        if (isMoving)
+        {
+            characterManager.FinishAction();
+            yield break;
+        }
+
         isMoving = true;
         transform.position = Utilities.ClampedPosition(transform.position);
 
@@ -103,7 +109,13 @@ public class Movement : MonoBehaviour
     
     public IEnumerator SmoothMovement(Vector2 endPos, int possibleMoveCount = 1)
     {
-        if (isMoving) yield break;
+        characterManager.FinishAction();
+        if (isMoving)
+        {
+            characterManager.FinishAction();
+            yield break;
+        }
+
         isMoving = true;
         transform.position = Utilities.ClampedPosition(transform.position);
 
@@ -135,9 +147,14 @@ public class Movement : MonoBehaviour
     
     public IEnumerator BlockedMovement(Vector3 endPos)
     {
-        if (isMoving) yield break;
+        characterManager.FinishAction();
+        if (isMoving)
+        {
+            characterManager.FinishAction();
+            yield break;
+        }
+        
         isMoving = true;
-
         Vector3 originalPos = transform.position;
 
         endPos = transform.position + ((endPos - transform.position) / 3);
@@ -169,10 +186,11 @@ public class Movement : MonoBehaviour
     {
         transform.position = endPos;
         GameTiles.AddCharacter(characterManager, endPos);
+        characterManager.FinishAction();
         OnFinishedMoving();
     }
 
-    void OnFinishedMoving(bool updateTiles = true)
+    public void OnFinishedMoving(bool updateTiles = true)
     {
         if (characterManager.isNPC)
         {
@@ -181,9 +199,12 @@ public class Movement : MonoBehaviour
         }
         else
         {
+            characterManager.vision.CheckEnemyVisibility();
             if (updateTiles)
                 gm.containerInvUI.OnPlayerMoved();
         }
+
+        //characterManager.FinishAction();
     }
 
     public void Rotate(Direction targetDirection)
@@ -192,27 +213,30 @@ public class Movement : MonoBehaviour
 
         for (int i = 0; i < segmentCount; i++)
         {
-            StartCoroutine(RotateOneSegment(clockwise));
+            characterManager.QueueAction(RotateOneSegment(clockwise), gm.apManager.GetRotateAPCost());
+            // StartCoroutine(RotateOneSegment(clockwise));
         }
     }
 
     IEnumerator RotateOneSegment(bool clockwise)
     {
-        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetRotateAPCost()));
+        // StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetRotateAPCost()));
 
-        int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
-        while (queueNumber != characterManager.currentQueueNumber)
-        {
-            yield return null;
-            if (characterManager.status.isDead) yield break;
-        }
+        //int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
+        //while (queueNumber != characterManager.currentQueueNumber)
+        //{
+        //if (characterManager.status.isDead) yield break;
+        //}
 
         // Update current direction facing
+        // Debug.Log(directionFacing + " / " + GetRotationsNextDirection(clockwise));
         directionFacing = GetRotationsNextDirection(clockwise);
         FaceForward();
 
         // Update arrow graphic to point in current direction facing
         characterManager.humanoidSpriteManager.SetFacingArrowDirection(directionFacing);
+        characterManager.FinishAction();
+        yield return null;
     }
 
     void GetRotationsSegmentCount(Direction targetDirection, out int count, out bool clockwise)

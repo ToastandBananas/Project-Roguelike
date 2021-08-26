@@ -52,33 +52,45 @@ public class TextPopup : MonoBehaviour
     }
 
     // Create a damage popup
-    public static TextPopup CreateDamagePopup(Vector3 position, float damageAmount, bool isCriticalHit)
+    public static TextPopup CreateDamagePopup(SpriteRenderer spriteRenderer, Vector3 position, float damageAmount, bool isCriticalHit)
     {
-        TextPopup damagePopup = GameManager.instance.objectPoolManager.textPopupObjectPool.GetPooledTextPopup();
-        
-        damagePopup.SetupDamagePopup(position, damageAmount, isCriticalHit);
+        if (spriteRenderer == null || spriteRenderer.isVisible)
+        {
+            TextPopup damagePopup = GameManager.instance.objectPoolManager.textPopupObjectPool.GetPooledTextPopup();
 
-        return damagePopup;
+            damagePopup.SetupDamagePopup(position, damageAmount, isCriticalHit);
+
+            return damagePopup;
+        }
+        return null;
     }
 
     // Create a heal popup
-    public static TextPopup CreateHealPopup(Vector3 position, float healAmount)
+    public static TextPopup CreateHealPopup(SpriteRenderer spriteRenderer, Vector3 position, float healAmount)
     {
-        TextPopup healPopup = GameManager.instance.objectPoolManager.textPopupObjectPool.GetPooledTextPopup();
+        if (spriteRenderer == null || spriteRenderer.isVisible)
+        {
+            TextPopup healPopup = GameManager.instance.objectPoolManager.textPopupObjectPool.GetPooledTextPopup();
 
-        healPopup.SetupHealPopup(position, healAmount);
+            healPopup.SetupHealPopup(position, healAmount);
 
-        return healPopup;
+            return healPopup;
+        }
+        return null;
     }
 
     // Create a text popup with a given string
-    public static TextPopup CreateTextStringPopup(Vector3 position, string stringText)
+    public static TextPopup CreateTextStringPopup(SpriteRenderer spriteRenderer, Vector3 position, string stringText)
     {
-        TextPopup textPopup = GameManager.instance.objectPoolManager.textPopupObjectPool.GetPooledTextPopup();
+        if (spriteRenderer == null || spriteRenderer.isVisible)
+        {
+            TextPopup textPopup = GameManager.instance.objectPoolManager.textPopupObjectPool.GetPooledTextPopup();
 
-        textPopup.SetupTextStringPopup(position, stringText);
+            textPopup.SetupTextStringPopup(position, stringText);
 
-        return textPopup;
+            return textPopup;
+        }
+        return null;
     }
 
     void SetupDamagePopup(Vector3 position, float damageAmount, bool isCriticalHit)

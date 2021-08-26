@@ -68,6 +68,8 @@ public class NPCMovement : Movement
 
     public IEnumerator Move()
     {
+        Debug.Log(transform.position);
+        if (isMoving) yield break;
         yield return null;
 
         // Update the character's path
@@ -76,21 +78,26 @@ public class NPCMovement : Movement
         // Finish searching for a path before moving
         while (AIPath.pathPending) { yield return null; }
 
-        Rotate(GetNextDirection());
-        StartCoroutine(MoveToNextPointOnPath());
+        if (isMoving) yield break;
+
+        Vector2 nextPos = GetNextPosition();
+        Debug.Log(transform.position + " / " + nextPos + " / " + GetNextDirection(nextPos));
+        Rotate(GetNextDirection(nextPos));
+        characterManager.QueueAction(MoveToNextPointOnPath(), gm.apManager.GetMovementAPCost(IsDiagonal(nextPos)));
+        // StartCoroutine(MoveToNextPointOnPath());
     }
 
     IEnumerator MoveToNextPointOnPath()
     {
-        Vector2 nextPos = GetNextPosition();
-        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost(IsDiagonal(nextPos))));
+        // Vector2 nextPos = GetNextPosition();
+        //StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost(IsDiagonal(nextPos))));
 
-        int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
-        while (queueNumber != characterManager.currentQueueNumber)
-        {
-            yield return null;
-            if (characterManager.status.isDead) yield break;
-        }
+        //int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
+        //while (queueNumber != characterManager.currentQueueNumber)
+        //{
+        //yield return null;
+        //if (characterManager.status.isDead) yield break;
+        //}
 
         yield return null;
 
@@ -101,7 +108,7 @@ public class NPCMovement : Movement
         while (AIPath.pathPending) { yield return null; }
 
         // Get the next position and the direction the character needs to face
-        nextPos = GetNextPosition();
+        Vector2 nextPos = GetNextPosition();
 
         // Remove the NPC from the tile they were on, if they are moving
         if (nextPos != (Vector2)transform.position)
@@ -155,7 +162,7 @@ public class NPCMovement : Movement
         }
     }
 
-    Direction GetNextDirection()
+    Direction GetNextDirection(Vector2 nextPos)
     {
         Path path = seeker.GetCurrentPath();
         if (path == null || path.vectorPath.Count <= 1)
@@ -164,7 +171,26 @@ public class NPCMovement : Movement
         }
         else
         {
-            Vector3 dir = (path.vectorPath[1] - transform.position).normalized;
+            if (nextPos.x == transform.position.x && nextPos.y == transform.position.y + 1)
+                return Direction.North;
+            else if (nextPos.x == transform.position.x && nextPos.y == transform.position.y - 1)
+                return Direction.South;
+            else if (nextPos.x == transform.position.x + 1 && nextPos.y == transform.position.y)
+                return Direction.East;
+            else if (nextPos.x == transform.position.x - 1 && nextPos.y == transform.position.y)
+                return Direction.West;
+            else if (nextPos.x == transform.position.x - 1 && nextPos.y == transform.position.y + 1)
+                return Direction.Northwest;
+            else if (nextPos.x == transform.position.x + 1 && nextPos.y == transform.position.y + 1)
+                return Direction.Northeast;
+            else if (nextPos.x == transform.position.x + 1 && nextPos.y == transform.position.y - 1)
+                return Direction.Southeast;
+            else if (nextPos.x == transform.position.x - 1 && nextPos.y == transform.position.y - 1)
+                return Direction.Southwest;
+            else
+                return directionFacing;
+            /*Vector3 dir = (path.vectorPath[1] - transform.position).normalized;
+            Debug.Log(path.vectorPath[1]  + " / " + dir);
             if (dir.x == 0 && dir.y == 1) // North
                 return Direction.North;
             else if (dir.x == 0 && dir.y == -1) // South
@@ -182,7 +208,10 @@ public class NPCMovement : Movement
             else if (dir.x > 0 && dir.y < 0) // Southeast
                 return Direction.Southeast;
             else
+            {
+                Debug.Log("Here");
                 return directionFacing;
+            }*/
         }
     }
 

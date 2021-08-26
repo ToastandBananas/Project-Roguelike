@@ -235,9 +235,9 @@ public class Status : MonoBehaviour
             damage = 0;
 
         if (damage > 0)
-            TextPopup.CreateDamagePopup(transform.position, damage, false);
+            TextPopup.CreateDamagePopup(characterManager.spriteRenderer, transform.position, damage, false);
         else
-            TextPopup.CreateTextStringPopup(transform.position, "Absorbed");
+            TextPopup.CreateTextStringPopup(characterManager.spriteRenderer, transform.position, "Absorbed");
 
         BodyPart bodyPart = GetBodyPart(bodyPartType);
         bodyPart.Damage(damage);
@@ -344,13 +344,13 @@ public class Status : MonoBehaviour
 
         if (finalTotalDamage > 0)
         {
-            TextPopup.CreateDamagePopup(transform.position, finalTotalDamage, criticalHit);
+            TextPopup.CreateDamagePopup(characterManager.spriteRenderer, transform.position, finalTotalDamage, criticalHit);
             bodyPart.Damage(finalTotalDamage);
             if ((bodyPart.bodyPartType == BodyPartType.Torso || bodyPart.bodyPartType == BodyPartType.Head) && bodyPart.currentHealth <= 0)
                 Die();
         }
         else
-            TextPopup.CreateTextStringPopup(transform.position, "Absorbed");
+            TextPopup.CreateTextStringPopup(characterManager.spriteRenderer, transform.position, "Absorbed");
 
         return finalTotalDamage;
     }

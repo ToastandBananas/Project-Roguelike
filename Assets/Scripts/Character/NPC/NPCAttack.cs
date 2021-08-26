@@ -96,8 +96,12 @@ public class NPCAttack : Attack
 
     public void MoveInToAttack()
     {
+        if (characterManager.npcMovement.target == null)
+        {
+            SwitchTarget_Nearest();
+        }
         // If close enough, do attack animation
-        if (TargetInAttackRange(characterManager.npcMovement.target.transform))
+        else if (TargetInAttackRange(characterManager.npcMovement.target.transform))
         {
             DetermineAttack(characterManager.npcMovement.target, characterManager.npcMovement.target.characterStats);
         }

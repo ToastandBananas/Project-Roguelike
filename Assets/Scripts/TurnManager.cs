@@ -35,6 +35,7 @@ public class TurnManager : MonoBehaviour
     public IEnumerator FinishTurn(CharacterManager characterManager)
     {
         while (characterManager.movement.isMoving) { yield return null; }
+        //yield return null;
         
         if (characterManager.isMyTurn)
         {
@@ -67,7 +68,11 @@ public class TurnManager : MonoBehaviour
 
         gm.healthDisplay.UpdateTooltip();
 
+        gm.playerManager.vision.CheckEnemyVisibility();
+
         gm.playerManager.characterStats.ApplyAPLossBuildup();
+        if (gm.playerManager.characterStats.currentAP > 0)
+            gm.playerManager.StartCoroutine(gm.playerManager.GetNextQueuedAction());
     }
 
     void FinishNPCsTurn(CharacterManager npcsCharManager)

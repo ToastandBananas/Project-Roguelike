@@ -44,7 +44,7 @@ public class APManager : MonoBehaviour
     {
         if (queuingNewAction)
         {
-            characterManager.EditActionsQueued(1);
+            //characterManager.EditActionsQueued(1);
             if (characterManager.IsOverEncumbered())
                 APAmount += GetOverEncumberedAPPenalty(characterManager, APAmount);
         }
@@ -52,8 +52,8 @@ public class APManager : MonoBehaviour
         if (APAmount <= 0)
         {
             Debug.Log("APAmount <= 0. Fix me?");
-            characterManager.EditActionsQueued(-1);
-            characterManager.currentQueueNumber++;
+            //characterManager.EditActionsQueued(-1);
+            //characterManager.currentQueueNumber++;
             yield break;
         }
         
@@ -61,8 +61,8 @@ public class APManager : MonoBehaviour
 
         if (characterManager.status.isDead)
         {
-            characterManager.EditActionsQueued(-1);
-            characterManager.currentQueueNumber++;
+            //characterManager.EditActionsQueued(-1);
+            //characterManager.currentQueueNumber++;
             yield break;
         }
         
@@ -72,8 +72,9 @@ public class APManager : MonoBehaviour
         if (APRemainder <= 0)
         {
             // Adjust our queue numbers, so that the appropriate coroutines can finish running
-            characterManager.EditActionsQueued(-1);
-            characterManager.currentQueueNumber++;
+            //characterManager.EditActionsQueued(-1);
+            //characterManager.currentQueueNumber++;
+            characterManager.StartCoroutine(characterManager.GetNextQueuedAction());
 
             yield return null;
 

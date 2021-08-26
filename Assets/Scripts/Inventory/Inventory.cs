@@ -209,7 +209,6 @@ public class Inventory : MonoBehaviour
 
     public void RemoveItem(ItemData itemData, int itemCount, InventoryItem invItem)
     {
-        Debug.Log("Removing item");
         // Subtract itemCount from the item's currentStackSize
         itemData.currentStackSize -= itemCount;
         if (itemData.currentStackSize < 0)

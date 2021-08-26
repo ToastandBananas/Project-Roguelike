@@ -43,12 +43,12 @@ public class FlavorText : MonoBehaviour
 
     public void WriteLine(string input)
     {
-        int numLines = Convert.ToString(stringBuilder).Split('\n').Length;
+        int numLines = stringBuilder.ToString().Split('\n').Length;
         if (numLines > maxLines)
-            stringBuilder.Remove(0, Convert.ToString(stringBuilder).Split('\n').FirstOrDefault().Length + 1);
+            stringBuilder.Remove(0, stringBuilder.ToString().Split('\n').FirstOrDefault().Length + 1);
 
         stringBuilder.Append("- " + input + "\n");
-        flavorText.text = Convert.ToString(stringBuilder);
+        flavorText.text = stringBuilder.ToString();
 
         StartCoroutine(SetupScrollbar());
     }
@@ -58,6 +58,16 @@ public class FlavorText : MonoBehaviour
         for (int i = 0; i < yieldCount; i++) { yield return null; }
         WriteLine(input);
     }
+
+    #region General
+    public void WriteLine_SeeNPC(CharacterManager npc)
+    {
+        if (npc.isNamed)
+            WriteLine("<b>You</b> see <b>" + npc.name + "</b>.");
+        else
+            WriteLine("<b>You</b> see " + Utilities.GetIndefiniteArticle(npc.name, false, true) + ".");
+    }
+    #endregion
 
     #region Combat
     public void WriteLine_MeleeAttackCharacter(CharacterManager attacker, CharacterManager target, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, BodyPartType bodyPartHit, int damage, bool attackedFromBehind)

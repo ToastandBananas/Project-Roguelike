@@ -127,7 +127,8 @@ public class Attack : MonoBehaviour
 
     public void MeleeAttack(CharacterManager targetsCharacterManager, Stats targetsStats, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType)
     {
-        StartCoroutine(characterManager.movement.BlockedMovement(targetsStats.transform.position));
+        if (characterManager.spriteRenderer.isVisible)
+            StartCoroutine(characterManager.movement.BlockedMovement(targetsStats.transform.position));
 
         ItemData weaponUsedItemData = GetWeaponUsed(generalAttackType);
         Weapon weaponUsed = null;
@@ -241,6 +242,9 @@ public class Attack : MonoBehaviour
             gm.flavorText.WriteLine_MeleeAttackObject(characterManager, targetsStats, generalAttackType, meleeAttackType, totalDamage);
             TryGetWeaponStuck(targetsStats, null, weaponUsedItemData, mainPhysicalDamageType, pierceDamage, slashDamage, cleaveDamage);
         }
+
+        if (characterManager.spriteRenderer.isVisible == false)
+            characterManager.movement.OnFinishedMoving(false);
     }
 
     bool TryGetWeaponStuck(Stats targetsStats, CharacterManager target, ItemData weaponUsedItemData, PhysicalDamageType mainPhysicalDamageType, int pierceDamage, int slashDamage, int cleaveDamage, BodyPartType bodyPartHit = BodyPartType.Torso)
@@ -357,14 +361,14 @@ public class Attack : MonoBehaviour
                 if (random > percentChanceEvade)
                 {
                     // Attack missed
-                    TextPopup.CreateTextStringPopup(targetsCharStats.transform.position, "Missed");
+                    TextPopup.CreateTextStringPopup(targetsCharStats.spriteRenderer, targetsCharStats.transform.position, "Missed");
                     gm.flavorText.WriteLine_MissedAttack(characterManager, targetsCharStats.characterManager);
                     return true;
                 }
                 else
                 {
                     // Attack was evaded
-                    TextPopup.CreateTextStringPopup(targetsCharStats.transform.position, "Evaded");
+                    TextPopup.CreateTextStringPopup(targetsCharStats.spriteRenderer, targetsCharStats.transform.position, "Evaded");
                     gm.flavorText.WriteLine_EvadedAttack(characterManager, targetsCharStats.characterManager);
                     return true;
                 }
@@ -434,7 +438,7 @@ public class Attack : MonoBehaviour
                 if (weaponUsedItemData != null)
                     weaponUsedItemData.DamageDurability();
 
-                TextPopup.CreateTextStringPopup(targetsCharStats.transform.position, "Blocked");
+                TextPopup.CreateTextStringPopup(targetsCharStats.spriteRenderer, targetsCharStats.transform.position, "Blocked");
                 return true;
             }
         }

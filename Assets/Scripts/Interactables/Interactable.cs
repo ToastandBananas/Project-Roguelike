@@ -24,7 +24,7 @@ public class Interactable : MonoBehaviour
 
     void Update()
     {
-        if (isFocus && hasInteracted == false)
+        /*if (isFocus && hasInteracted == false)
         {
             float distance = Vector2.Distance(focusedCharacter.position, interactionTransform.position);
             if (distance <= interactRadius)
@@ -40,7 +40,7 @@ public class Interactable : MonoBehaviour
 
                 hasInteracted = true;
             }
-        }
+        }*/
         
         if (GameControls.gamePlayActions.playerInteract.WasPressed && playerInRange && playerManager.focusedInteractable == this && playerManager.playerController.canInteract)
         {

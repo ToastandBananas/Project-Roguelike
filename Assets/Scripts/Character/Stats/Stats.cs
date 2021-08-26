@@ -4,11 +4,14 @@ public class Stats : MonoBehaviour
 {
     [HideInInspector] public bool canTakeDamage = true;
 
+    [HideInInspector] public SpriteRenderer spriteRenderer;
     [HideInInspector] public GameManager gm;
 
     public virtual void Start()
     {
         gm = GameManager.instance;
+        if (spriteRenderer == null)
+            spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     public virtual int TakeDamage(int damage)

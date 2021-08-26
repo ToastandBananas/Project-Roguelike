@@ -16,6 +16,7 @@ public class Vision : MonoBehaviour
     [HideInInspector] public LayerMask sightObstacleMask;
 
     CharacterManager characterManager;
+    GameManager gm;
 
     void Awake()
     {
@@ -25,6 +26,11 @@ public class Vision : MonoBehaviour
         visionCollider.radius = lookRadius;
 
         sightObstacleMask = LayerMask.GetMask("Objects", "Walls");
+    }
+
+    void Start()
+    {
+        gm = GameManager.instance;
     }
 
     public void CheckEnemyVisibility()
@@ -52,6 +58,9 @@ public class Vision : MonoBehaviour
             // If the character has a direct line of sight (meaning no obstacles in the way) to the enemy in question and they weren't visible previously, add them to the knownEnemiesInRange list
             if (hit.collider == null && knownEnemiesInRange.Contains(enemiesInRange[i]) == false && IsFacingTransform(enemiesInRange[i].transform))
             {
+                if (characterManager.isNPC == false)
+                    gm.flavorText.WriteLine_SeeNPC(enemiesInRange[i]);
+
                 knownEnemiesInRange.Add(enemiesInRange[i]);
 
                 if (characterManager.npcMovement != null)

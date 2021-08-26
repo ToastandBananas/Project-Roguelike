@@ -18,7 +18,7 @@ public class ObjectStats : Stats
             if (damage <= 0)
                 damage = 1;
 
-            TextPopup.CreateDamagePopup(transform.position, damage, false);
+            TextPopup.CreateDamagePopup(spriteRenderer, transform.position, damage, false);
 
             currentHealth -= damage;
             if (currentHealth <= 0)
@@ -38,7 +38,7 @@ public class ObjectStats : Stats
         else
             currentHealth += healAmount;
 
-        TextPopup.CreateHealPopup(transform.position, healAmount);
+        TextPopup.CreateHealPopup(spriteRenderer, transform.position, healAmount);
 
         return healAmount;
     }

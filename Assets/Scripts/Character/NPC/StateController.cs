@@ -21,7 +21,9 @@ public class StateController : MonoBehaviour
 
     public void DoAction()
     {
-        if (characterManager.actionsQueued == 0)
+        if (characterManager.actions.Count > 0)
+            characterManager.StartCoroutine(characterManager.GetNextQueuedAction());
+        else
         {
             switch (characterManager.stateController.currentState)
             {

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
 {
+    [HideInInspector] public List<IEnumerator> actions = new List<IEnumerator>();
+    public List<int> QueuedAP = new List<int>();
+
     public bool isNamed;
 
     [HideInInspector] public Alliances alliances;
@@ -20,8 +23,8 @@ public class CharacterManager : MonoBehaviour
     [HideInInspector] public Vision vision;
 
     [HideInInspector] public Inventory personalInventory, backpackInventory, leftHipPouchInventory, rightHipPouchInventory, quiverInventory;
-    public List<ItemData> carriedItems = new List<ItemData>();
-    public float leftHandCarryPercent, rightHandCarryPercent;
+    [HideInInspector] public List<ItemData> carriedItems = new List<ItemData>();
+    [HideInInspector] public float leftHandCarryPercent, rightHandCarryPercent;
     [HideInInspector] public float totalCarryWeight, totalCarryVolume;
 
     [HideInInspector] public CircleCollider2D circleCollider;
@@ -30,7 +33,8 @@ public class CharacterManager : MonoBehaviour
     [HideInInspector] public Transform appliedItemsParent;
 
     [HideInInspector] public bool isNPC { get; private set; }
-    [HideInInspector] public bool isMyTurn = false;
+    public bool isMyTurn = false;
+    public bool isPerformingAction;
     [HideInInspector] public int actionsQueued { get; private set; }
     [HideInInspector] public int currentQueueNumber;
 
@@ -50,6 +54,7 @@ public class CharacterManager : MonoBehaviour
         attack = GetComponent<Attack>();
         characterStats = GetComponent<CharacterStats>();
         characterStats.characterManager = this;
+        characterStats.spriteRenderer = spriteRenderer;
         movement = GetComponent<Movement>();
         status = GetComponent<Status>();
         status.characterManager = this;
@@ -93,15 +98,6 @@ public class CharacterManager : MonoBehaviour
         GameTiles.AddCharacter(this, transform.position);
     }
 
-    public void TakeTurn()
-    {
-        if (isNPC && characterStats.currentAP > 0 && actionsQueued == 0 && movement.isMoving == false && status.isDead == false)
-        {
-            vision.CheckEnemyVisibility();
-            stateController.DoAction();
-        }
-    }
-
     public bool IsNextToPlayer()
     {
         int distX = Mathf.RoundToInt(Mathf.Abs(transform.position.x - gm.playerManager.transform.position.x));
@@ -113,12 +109,7 @@ public class CharacterManager : MonoBehaviour
         return false;
     }
 
-    public void ResetActionsQueue()
-    {
-        actionsQueued = 0;
-        currentQueueNumber = 0;
-    }
-
+    #region Inventory
     public IEnumerator CarryItem(ItemData itemData, InventoryItem invItem)
     {
         // Make sure we have room in our hands to carry the item, otherwise yield break out of this method and show some flavor text
@@ -624,6 +615,34 @@ public class CharacterManager : MonoBehaviour
             return true;
         return false;
     }
+    #endregion
+
+    #region Action Queue
+    public void TakeTurn()
+    {
+        if (isMyTurn && status.isDead == false)
+        {
+            if (characterStats.currentAP <= 0)
+                StartCoroutine(gm.turnManager.FinishTurn(this));
+            else
+            {
+                vision.CheckEnemyVisibility();
+
+                if (actions.Count > 0)
+                    StartCoroutine(GetNextQueuedAction());
+                else if (isNPC)
+                    stateController.DoAction();
+            }
+        }
+    }
+
+    public void ResetActionsQueue()
+    {
+        actions.Clear();
+        QueuedAP.Clear();
+        actionsQueued = 0;
+        currentQueueNumber = 0;
+    }
 
     public void EditActionsQueued(int amount)
     {
@@ -631,4 +650,53 @@ public class CharacterManager : MonoBehaviour
         if (actionsQueued < 0)
             actionsQueued = 0;
     }
+
+    public void QueueAction(IEnumerator action, int APCost)
+    {
+        // if (isNPC) Debug.Log(name + " queued " + action);
+        actions.Add(action);
+        QueuedAP.Add(APCost);
+        if (isMyTurn && characterStats.currentAP > 0)
+            StartCoroutine(GetNextQueuedAction());
+    }
+
+    public IEnumerator GetNextQueuedAction()
+    {
+        if (actions.Count > 0 && isPerformingAction == false)
+        {
+            int APRemainder = characterStats.UseAPAndGetRemainder(QueuedAP[0]);
+            if (APRemainder <= 0)
+            {
+                isPerformingAction = true;
+                yield return StartCoroutine(actions[0]);
+
+                // if (isNPC == false) Debug.Log("Got next queued action. Actions still queued: " + actions.Count);
+            }
+            else
+            {
+                // if (isNPC == false) Debug.Log("Can't do next queued action yet. Remaining AP: " + APRemainder);
+                QueuedAP[0] = APRemainder;
+                StartCoroutine(gm.turnManager.FinishTurn(this));
+            }
+        }
+        else
+            yield return null;
+    }
+
+    public void FinishAction()
+    {
+        if (QueuedAP.Count > 0)
+            QueuedAP.Remove(QueuedAP[0]);
+        if (actions.Count > 0)
+            actions.Remove(actions[0]);
+
+        isPerformingAction = false;
+        
+        // If the character has no AP remaining, end their turn
+        if (characterStats.currentAP <= 0)
+            StartCoroutine(gm.turnManager.FinishTurn(this));
+        else if (movement.isMoving == false) // Take another action
+            TakeTurn();
+    }
+    #endregion
 }

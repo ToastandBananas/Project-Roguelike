@@ -7567,6 +7567,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eef99f1668f62f4b8120f6afd85b208, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  QueuedAP: 
   isNamed: 0
   alliances: {fileID: 0}
   spriteManager: {fileID: 0}
@@ -7669,6 +7670,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canTakeDamage: 1
+  spriteRenderer: {fileID: 0}
   gm: {fileID: 0}
   agility:
     baseValue: 20
@@ -12567,6 +12569,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canTakeDamage: 1
+  spriteRenderer: {fileID: 0}
   gm: {fileID: 0}
   maxHealth:
     baseValue: 100
@@ -13764,6 +13767,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canTakeDamage: 1
+  spriteRenderer: {fileID: 0}
   gm: {fileID: 0}
   agility:
     baseValue: 0
@@ -13826,6 +13830,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4004fc607cc2be74ca2a9381dda4ecaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  QueuedAP: 
   isNamed: 0
   alliances: {fileID: 0}
   spriteManager: {fileID: 0}
@@ -20891,7 +20896,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1347319889
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21170,6 +21175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4004fc607cc2be74ca2a9381dda4ecaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  QueuedAP: 
   isNamed: 0
   alliances: {fileID: 0}
   spriteManager: {fileID: 0}
@@ -21301,6 +21307,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canTakeDamage: 1
+  spriteRenderer: {fileID: 0}
   gm: {fileID: 0}
   agility:
     baseValue: 0
