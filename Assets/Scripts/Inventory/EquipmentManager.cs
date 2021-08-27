@@ -40,13 +40,6 @@ public class EquipmentManager : MonoBehaviour
 
     public IEnumerator SetUpEquipment(ItemData newItemData, ItemData oldItemData, Equipment equipment, EquipmentSlot equipSlot, bool droppingEquipment)
     {
-        int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
-        while (queueNumber != characterManager.currentQueueNumber)
-        {
-            yield return null;
-            if (characterManager.status.isDead) yield break;
-        }
-
         SetEquippedSprite(equipSlot, equipment, droppingEquipment);
         OnEquipmentChanged(oldItemData, newItemData);
 
@@ -71,6 +64,11 @@ public class EquipmentManager : MonoBehaviour
         
         if (oldItemData != null)
             oldItemData.ReturnToObjectPool();
+
+        if (characterManager.status.isDead == false)
+            characterManager.FinishAction();
+
+        yield return null;
     }
 
     public bool Equip(ItemData newItemData, InventoryItem invItemComingFrom, EquipmentSlot equipmentSlot)
@@ -333,16 +331,9 @@ public class EquipmentManager : MonoBehaviour
             // If the new item is a weapon
             if (newItemData.item.IsWeapon() || newItemData.item.IsShield())
             {
-                Weapon weapon = null;
-                if (newItemData.item.IsWeapon())
-                    weapon = (Weapon)newItemData.item;
-
-                // If the weapon we're equipping is two-handed and there's a weapon equipped in our off-hand, unequip it
-                if (weapon != null && weapon.IsTwoHanded(characterManager) && currentEquipment[(int)EquipmentSlot.LeftHandItem] != null)
-                    Unequip(EquipmentSlot.LeftHandItem, true, true, true);
                 // If we're equipping a weapon to our left hand and we are two-handing, switch to the one-handed stance
-                else if (equipmentSlot == EquipmentSlot.LeftHandItem && isTwoHanding)
-                    StartCoroutine(characterManager.humanoidSpriteManager.SwapStance(this, characterManager, currentEquipment[(int)EquipmentSlot.RightHandItem]));
+                if (equipmentSlot == EquipmentSlot.LeftHandItem && isTwoHanding)
+                    characterManager.QueueAction(characterManager.humanoidSpriteManager.SwapStance(this, characterManager, currentEquipment[(int)EquipmentSlot.RightHandItem]), gm.apManager.GetSwapStanceAPCost(characterManager));
             }
             else if (newItemData.item.IsBag())
             {
@@ -484,6 +475,9 @@ public class EquipmentManager : MonoBehaviour
     /// <summary> Returns a melee weapon's slash, blunt, pierce or cleave damage based on the melee attack type. </summary>
     public int GetPhysicalMeleeDamage(ItemData weaponsItemData, MeleeAttackType meleeAttackType, PhysicalDamageType physicalDamageType)
     {
+        if (weaponsItemData == null)
+            return 0;
+
         float damage = 0;
         switch (physicalDamageType)
         {
@@ -599,10 +593,9 @@ public class EquipmentManager : MonoBehaviour
                 if (equipment.IsWeapon())
                     weapon = (Weapon)equipment;
 
-                // If the new weapon is two-handed, remove our left weapon sprite if we have one and set our character's sprites to the two-handed stance
-                if (weapon != null && weapon.IsTwoHanded(characterManager))
+                // If the new weapon is two-handed for the character and they don't already have a left weapon/shield equipped
+                if (LeftHandItemEquipped() == false && weapon.IsTwoHanded(characterManager))
                 {
-                    RemoveEquipmentSprite(EquipmentSlot.LeftHandItem);
                     characterManager.humanoidSpriteManager.SetupTwoHandedWeaponStance(this, characterManager);
                 }
                 // If the new weapon is one-handed and our right weapon is now null, remove our right weapon sprite and set our character's sprites to the one-handed stance
@@ -657,19 +650,7 @@ public class EquipmentManager : MonoBehaviour
 
         if (canSheatheLeft || canSheatheRight)
         {
-            if (canSheatheLeft && canSheatheRight)
-                StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetSheatheWeaponAPCost(currentEquipment[(int)EquipmentSlot.LeftHandItem], currentEquipment[(int)EquipmentSlot.RightHandItem])));
-            else if (canSheatheLeft)
-                StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetSheatheWeaponAPCost(currentEquipment[(int)EquipmentSlot.LeftHandItem])));
-            else if (canSheatheRight)
-                StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetSheatheWeaponAPCost(currentEquipment[(int)EquipmentSlot.RightHandItem])));
-
-            int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
-            while (queueNumber != characterManager.currentQueueNumber)
-            {
-                yield return null;
-                if (characterManager.status.isDead) yield break;
-            }
+            if (characterManager.status.isDead) yield break;
             
             if (canSheatheRight)
             {
@@ -695,22 +676,17 @@ public class EquipmentManager : MonoBehaviour
             else if (canSheatheRight)
                 gm.flavorText.WriteLine_SheatheWeapon(currentEquipment[(int)EquipmentSlot.RightHandItem], null);
         }
+
+        characterManager.FinishAction();
     }
 
     public IEnumerator UnsheatheWeapons()
     {
         if (BothWeaponsSheathed() && (currentEquipment[(int)EquipmentSlot.RightHandItem] != null || currentEquipment[(int)EquipmentSlot.LeftHandItem] != null))
         {
+            if (characterManager.status.isDead) yield break;
+
             characterManager.DropAllCarriedItems();
-
-            StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetUnheatheWeaponAPCost(currentEquipment[(int)EquipmentSlot.LeftHandItem], currentEquipment[(int)EquipmentSlot.RightHandItem])));
-
-            int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
-            while (queueNumber != characterManager.currentQueueNumber)
-            {
-                yield return null;
-                if (characterManager.status.isDead) yield break;
-            }
 
             if (currentEquipment[(int)EquipmentSlot.RightHandItem] != null)
             {
@@ -732,6 +708,8 @@ public class EquipmentManager : MonoBehaviour
             
             gm.flavorText.WriteLine_UnheatheWeapon(currentEquipment[(int)EquipmentSlot.LeftHandItem], currentEquipment[(int)EquipmentSlot.RightHandItem]);
         }
+
+        characterManager.FinishAction();
     }
 
     public bool LeftWeaponSheathed()

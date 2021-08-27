@@ -117,14 +117,7 @@ public class HumanoidSpriteManager : SpriteManager
 
     public IEnumerator SwapStance(EquipmentManager equipmentManager, CharacterManager characterManager, ItemData weaponItemData)
     {
-        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetSwapStanceAPCost(characterManager)));
-
-        int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
-        while (queueNumber != characterManager.currentQueueNumber)
-        {
-            yield return null;
-            if (characterManager.status.isDead) yield break;
-        }
+        if (characterManager.status.isDead) yield break;
 
         if (equipmentManager.isTwoHanding)
             SetupOneHandedWeaponStance(equipmentManager, characterManager);
@@ -132,6 +125,8 @@ public class HumanoidSpriteManager : SpriteManager
             SetupTwoHandedWeaponStance(equipmentManager, characterManager);
 
         gm.flavorText.WriteLine_SwitchStance(characterManager, weaponItemData, (Weapon)weaponItemData.item);
+
+        characterManager.FinishAction();
     }
 
     public void AssignSprite(EquipmentSlot equipSlot, Equipment equipment, EquipmentManager equipmentManager)
@@ -229,6 +224,7 @@ public class HumanoidSpriteManager : SpriteManager
 
     public void SetFacingArrowDirection(Direction direction)
     {
+        // Debug.Log("Switching arrow to point: " + direction);
         switch (direction)
         {
             case Direction.North:

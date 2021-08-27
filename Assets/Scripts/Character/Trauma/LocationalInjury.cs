@@ -48,30 +48,30 @@ public class LocationalInjury
 
     public IEnumerator ApplyMedicalItem(CharacterManager characterApplying, ItemData itemData, Inventory inventory, InventoryItem invItem)
     {
-        characterApplying.StartCoroutine(APManager.instance.UseAP(characterApplying, APManager.instance.GetApplyMedicalItemAPCost((MedicalSupply)itemData.item)));
-
+        if (characterApplying.status.isDead)
+            yield break;
+        else if (characterManager.status.isDead)
+        {
+            characterApplying.FinishAction();
+            yield break;
+        }
         // If the someone else is applying the bandage, lose AP so that this character can't try to perform any actions
-        if (characterApplying != characterManager)
+        else if(characterApplying != characterManager)
             APManager.instance.LoseAP(characterManager, APManager.instance.GetApplyMedicalItemAPCost((MedicalSupply)itemData.item));
 
-        int queueNumber = characterApplying.currentQueueNumber + characterApplying.actionsQueued;
-        while (queueNumber != characterApplying.currentQueueNumber)
-        {
-            yield return null;
-            if (characterManager.status.isDead || characterApplying.status.isDead)
-                yield break;
-        }
-        
         if (CanApplyBandage(itemData))
             ApplyBandage(characterApplying, itemData);
 
         itemData.item.Use(characterApplying, inventory, invItem, itemData, 1);
 
+        // If this is the player, update the Health Display
         if (characterManager.isNPC == false)
         {
             HealthDisplay.instance.UpdateHealthHeaderColor(injuryLocation);
             HealthDisplay.instance.UpdateTooltip();
         }
+
+        characterApplying.FinishAction();
     }
 
     void ApplyBandage(CharacterManager characterApplying, ItemData bandageItemData)
@@ -89,19 +89,16 @@ public class LocationalInjury
 
     public IEnumerator RemoveMedicalItem(CharacterManager characterRemoving, MedicalSupplyType medicalSupplyType)
     {
-        characterRemoving.StartCoroutine(APManager.instance.UseAP(characterRemoving, APManager.instance.GetRemoveMedicalItemAPCost(bandage)));
-
-        // If the someone else is removing the bandage, lose AP so that this character can't try to perform any actions
-        if (characterRemoving != characterManager)
-            APManager.instance.LoseAP(characterManager, APManager.instance.GetRemoveMedicalItemAPCost(bandage));
-
-        int queueNumber = characterRemoving.currentQueueNumber + characterRemoving.actionsQueued;
-        while (queueNumber != characterRemoving.currentQueueNumber)
+        if (characterRemoving.status.isDead)
+            yield break;
+        else if (characterManager.status.isDead)
         {
-            yield return null;
-            if (characterManager.status.isDead || characterRemoving.status.isDead)
-                yield break;
+            characterRemoving.FinishAction();
+            yield break;
         }
+        // If the someone else is removing the bandage, lose AP so that this character can't try to perform any actions
+        else if (characterRemoving != characterManager)
+            APManager.instance.LoseAP(characterManager, APManager.instance.GetRemoveMedicalItemAPCost(bandage));
 
         if (medicalSupplyType == MedicalSupplyType.Bandage)
             RemoveBandage(characterRemoving);
@@ -111,6 +108,8 @@ public class LocationalInjury
             HealthDisplay.instance.UpdateHealthHeaderColor(injuryLocation);
             HealthDisplay.instance.UpdateTooltip();
         }
+
+        characterRemoving.FinishAction();
     }
 
     public void RemoveBandage(CharacterManager characterRemoving)
@@ -194,6 +193,17 @@ public class LocationalInjury
         if (injury.CanBandage() && bandage != null)
             return true;
         return false;
+    }
+
+    public MedicalSupply GetAppliedMedicalSupply(MedicalSupplyType medSupplyType)
+    {
+        switch (medSupplyType)
+        {
+            case MedicalSupplyType.Bandage:
+                return bandage;
+            default:
+                return null;
+        }
     }
 
     public string GetBleedSeverity()

@@ -40,61 +40,6 @@ public class APManager : MonoBehaviour
         gm = GameManager.instance;
     }
 
-    public IEnumerator UseAP(CharacterManager characterManager, int APAmount, bool queuingNewAction = true)
-    {
-        if (queuingNewAction)
-        {
-            //characterManager.EditActionsQueued(1);
-            if (characterManager.IsOverEncumbered())
-                APAmount += GetOverEncumberedAPPenalty(characterManager, APAmount);
-        }
-
-        if (APAmount <= 0)
-        {
-            Debug.Log("APAmount <= 0. Fix me?");
-            //characterManager.EditActionsQueued(-1);
-            //characterManager.currentQueueNumber++;
-            yield break;
-        }
-        
-        while (characterManager.isMyTurn == false) { yield return null; }
-
-        if (characterManager.status.isDead)
-        {
-            //characterManager.EditActionsQueued(-1);
-            //characterManager.currentQueueNumber++;
-            yield break;
-        }
-        
-        // Try to use the full AP amount. If we can't, then use what we can and return the remainder to APRemainder
-        int APRemainder = characterManager.characterStats.UseAPAndGetRemainder(APAmount);
-        // If the entire amount was used
-        if (APRemainder <= 0)
-        {
-            // Adjust our queue numbers, so that the appropriate coroutines can finish running
-            //characterManager.EditActionsQueued(-1);
-            //characterManager.currentQueueNumber++;
-            characterManager.StartCoroutine(characterManager.GetNextQueuedAction());
-
-            yield return null;
-
-            // If the character has no AP remaining, end their turn
-            if (characterManager.characterStats.currentAP <= 0)
-                StartCoroutine(gm.turnManager.FinishTurn(characterManager));
-            else // Take another action, if this is an NPC
-                characterManager.TakeTurn();
-        }
-        else
-        {
-            // Finish the character's turn and run this coroutine again with the remaining AP, but wait for the character to finish moving
-            StartCoroutine(gm.turnManager.FinishTurn(characterManager));
-
-            while (characterManager.movement.isMoving) { yield return null; }
-
-            StartCoroutine(UseAP(characterManager, APRemainder, false));
-        }
-    }
-
     public void LoseAP(CharacterManager characterManager, int APAmount)
     {
         if (characterManager.characterStats.currentAP > APAmount)
@@ -210,6 +155,7 @@ public class APManager : MonoBehaviour
     {
         float cost = (item.weight + item.volume) * itemCount;
         cost += invWeight + invVolume;
+        cost *= 2;
 
         if (transferringInventoryToInventory)
             cost *= 2;
@@ -260,19 +206,28 @@ public class APManager : MonoBehaviour
         }
     }
 
-    public int GetSheatheWeaponAPCost(ItemData weaponOne, ItemData weaponTwo = null)
+    public int GetSheatheWeaponAPCost(EquipmentManager equipmentManager, bool sheatheLeft, bool sheatheRight)
     {
         float cost = 0;
-        if (weaponOne != null)
-            cost += weaponOne.item.weight + weaponOne.item.volume;
-        if (weaponTwo != null)
-            cost += weaponTwo.item.weight + weaponTwo.item.volume;
+        if (sheatheLeft && equipmentManager.LeftWeaponSheathed() == false && equipmentManager.currentEquipment[(int)EquipmentSlot.LeftHandItem] != null)
+            cost += equipmentManager.currentEquipment[(int)EquipmentSlot.LeftHandItem].item.weight + equipmentManager.currentEquipment[(int)EquipmentSlot.LeftHandItem].item.volume;
+
+        if (sheatheRight && equipmentManager.RightWeaponSheathed() == false && equipmentManager.currentEquipment[(int)EquipmentSlot.RightHandItem] != null)
+            cost += equipmentManager.currentEquipment[(int)EquipmentSlot.RightHandItem].item.weight + equipmentManager.currentEquipment[(int)EquipmentSlot.RightHandItem].item.volume;
+
         return Mathf.RoundToInt(cost);
     }
 
-    public int GetUnheatheWeaponAPCost(ItemData leftWeapon, ItemData rightWeapon)
+    public int GetUnheatheWeaponAPCost(EquipmentManager equipmentManager)
     {
-        return Mathf.RoundToInt(GetSheatheWeaponAPCost(leftWeapon, rightWeapon) / 2);
+        float cost = 0;
+        if (equipmentManager.LeftHandItemEquipped() && equipmentManager.LeftWeaponSheathed())
+            cost += equipmentManager.currentEquipment[(int)EquipmentSlot.LeftHandItem].item.weight + equipmentManager.currentEquipment[(int)EquipmentSlot.LeftHandItem].item.volume;
+
+        if (equipmentManager.RightHandItemEquipped() && equipmentManager.RightWeaponSheathed())
+            cost += equipmentManager.currentEquipment[(int)EquipmentSlot.RightHandItem].item.weight + equipmentManager.currentEquipment[(int)EquipmentSlot.RightHandItem].item.volume;
+
+        return Mathf.RoundToInt(cost / 2);
     }
 
     public int GetConsumeAPCost(Consumable consumable, float itemCount, float percentUsed)

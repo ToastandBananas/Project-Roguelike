@@ -47,7 +47,7 @@ public class PlayerMovement : Movement
             {
                 if (vertical > 0.3f) // Up
                 {
-                    RotateTowardsDirection(Direction.North, true);
+                    Rotate(Direction.North, true);
 
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(0, 1));
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
@@ -60,7 +60,7 @@ public class PlayerMovement : Movement
                 }
                 else if (vertical < -0.3f) // Down
                 {
-                    RotateTowardsDirection(Direction.South, true);
+                    Rotate(Direction.South, true);
 
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(0, -1));
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
@@ -76,7 +76,7 @@ public class PlayerMovement : Movement
             {
                 if (horizontal < -0.3f) // Left
                 {
-                    RotateTowardsDirection(Direction.West, true);
+                    Rotate(Direction.West, true);
 
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(-1, 0));
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
@@ -89,7 +89,7 @@ public class PlayerMovement : Movement
                 }
                 else if (horizontal > 0.3f) // Right
                 {
-                    RotateTowardsDirection(Direction.East, true);
+                    Rotate(Direction.East, true);
 
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(1, 0));
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
@@ -105,7 +105,7 @@ public class PlayerMovement : Movement
             {
                 if (horizontal < -0.3f) // Up-left
                 {
-                    RotateTowardsDirection(Direction.Northwest, true);
+                    Rotate(Direction.Northwest, true);
 
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(-1, 1));
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
@@ -118,7 +118,7 @@ public class PlayerMovement : Movement
                 }
                 else if (horizontal > 0.3f) // Up-right
                 {
-                    RotateTowardsDirection(Direction.Northeast, true);
+                    Rotate(Direction.Northeast, true);
 
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(1, 1));
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
@@ -134,7 +134,7 @@ public class PlayerMovement : Movement
             {
                 if (horizontal < -0.3f) // Down-left
                 {
-                    RotateTowardsDirection(Direction.Southwest, true);
+                    Rotate(Direction.Southwest, true);
 
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(-1, -1));
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
@@ -147,7 +147,7 @@ public class PlayerMovement : Movement
                 }
                 else if (horizontal > 0.3f) // Down-right
                 {
-                    RotateTowardsDirection(Direction.Southeast, true);
+                    Rotate(Direction.Southeast, true);
 
                     hit = RaycastMovePosition(transform.position, transform.position + new Vector3(1, -1));
                     if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
@@ -166,7 +166,7 @@ public class PlayerMovement : Movement
         {
             gm.uiManager.DisableInventoryUIComponents();
 
-            RotateTowardsDirection(Direction.Northwest, true);
+            Rotate(Direction.Northwest, true);
 
             hit = RaycastMovePosition(transform.position, transform.position + new Vector3(-1, 1));
             if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
@@ -183,7 +183,7 @@ public class PlayerMovement : Movement
         {
             gm.uiManager.DisableInventoryUIComponents();
 
-            RotateTowardsDirection(Direction.Northeast, true);
+            Rotate(Direction.Northeast, true);
 
             hit = RaycastMovePosition(transform.position, transform.position + new Vector3(1, 1));
             if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
@@ -200,7 +200,7 @@ public class PlayerMovement : Movement
         {
             gm.uiManager.DisableInventoryUIComponents();
 
-            RotateTowardsDirection(Direction.Southwest, true);
+            Rotate(Direction.Southwest, true);
 
             hit = RaycastMovePosition(transform.position, transform.position + new Vector3(-1, -1));
             if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
@@ -217,7 +217,7 @@ public class PlayerMovement : Movement
         {
             gm.uiManager.DisableInventoryUIComponents();
 
-            RotateTowardsDirection(Direction.Southeast, true);
+            Rotate(Direction.Southeast, true);
 
             hit = RaycastMovePosition(transform.position, transform.position + new Vector3(1, -1));
             if (hit.collider != null && hit.collider.TryGetComponent(out CharacterManager charManager) && charManager.status.isDead == false)
@@ -234,14 +234,7 @@ public class PlayerMovement : Movement
 
     public IEnumerator Move(int xDir, int yDir)
     {
-        //StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost(IsDiagonal(transform.position + new Vector3(xDir, yDir)))));
-
-        //int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
-        //while (queueNumber != characterManager.currentQueueNumber)
-        //{
-            yield return null;
-            //if (characterManager.status.isDead) yield break;
-        //}
+        if (characterManager.status.isDead) yield break;
 
         Vector2 startCell = transform.position;
         Vector2 targetCell = startCell + new Vector2(xDir, yDir);

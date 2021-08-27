@@ -25,7 +25,14 @@ public class Consumable : Item
 
     public override void Use(CharacterManager characterManager, Inventory inventory, InventoryItem invItem, ItemData itemData, int itemCount, PartialAmount partialAmountToUse = PartialAmount.Whole, EquipmentSlot equipSlot = EquipmentSlot.Shirt)
     {
-        characterManager.StartCoroutine(characterManager.status.Consume(itemData, itemCount, partialAmountToUse));
+        float percentUsed = 1;
+        if (itemData.percentRemaining - GetPartialAmountsPercentage(partialAmountToUse) > 0)
+            percentUsed = GetPartialAmountsPercentage(partialAmountToUse) / 100f;
+        else
+            percentUsed = itemData.percentRemaining / 100f;
+
+        characterManager.QueueAction(characterManager.status.Consume(itemData, this, itemCount, percentUsed, itemData.GetItemName(itemCount)), APManager.instance.GetConsumeAPCost(this, itemCount, percentUsed));
+        //characterManager.StartCoroutine(characterManager.status.Consume(itemData, itemCount, partialAmountToUse));
 
         base.Use(characterManager, inventory, invItem, itemData, itemCount, partialAmountToUse, equipSlot);
     }

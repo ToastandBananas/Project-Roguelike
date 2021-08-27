@@ -178,6 +178,9 @@ public class Movement : MonoBehaviour
             yield return null;
         }
 
+        if (characterManager.attack.isAttacking)
+            characterManager.attack.isAttacking = false;
+
         isMoving = false;
         OnFinishedMoving(false);
     }
@@ -194,6 +197,7 @@ public class Movement : MonoBehaviour
     {
         if (characterManager.isNPC)
         {
+            characterManager.npcMovement.moveQueued = false;
             if (characterManager.isMyTurn && characterManager.characterStats.currentAP > 0)
                 characterManager.TakeTurn();
         }
@@ -207,8 +211,9 @@ public class Movement : MonoBehaviour
         //characterManager.FinishAction();
     }
 
-    public void RotateTowardsDirection(Direction targetDirection, bool queuingAction)
+    public void Rotate(Direction targetDirection, bool queuingAction)
     {
+        // Debug.Log(characterManager.name + " is about to rotate...");
         GetRotationsSegmentCount(targetDirection, out int segmentCount, out bool clockwise);
 
         for (int i = 0; i < segmentCount; i++)
@@ -222,15 +227,9 @@ public class Movement : MonoBehaviour
 
     IEnumerator RotateOneSegment(bool clockwise, bool doingAction)
     {
-        // StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetRotateAPCost()));
-
-        //int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
-        //while (queueNumber != characterManager.currentQueueNumber)
-        //{
-        //if (characterManager.status.isDead) yield break;
-        //}
-
         // Update current direction facing
+        if (characterManager.status.isDead) yield break;
+
         // Debug.Log(directionFacing + " / " + GetRotationsNextDirection(clockwise));
         directionFacing = GetRotationsNextDirection(clockwise);
         FaceForward();
@@ -240,8 +239,6 @@ public class Movement : MonoBehaviour
 
         if (doingAction)
             characterManager.FinishAction();
-
-        yield return null;
     }
 
     void GetRotationsSegmentCount(Direction targetDirection, out int count, out bool clockwise)

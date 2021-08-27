@@ -92,7 +92,8 @@ public class ContextMenu : MonoBehaviour
 
     void ApplyMedicalItemToInjury_FromInventory(LocationalInjury locationalInjury, ItemData medicalItemData, Inventory inventory)
     {
-        StartCoroutine(locationalInjury.ApplyMedicalItem(gm.playerManager, medicalItemData, inventory, medicalItemData.GetItemDatasInventoryItem()));
+        gm.playerManager.QueueAction(locationalInjury.ApplyMedicalItem(gm.playerManager, medicalItemData, inventory, medicalItemData.GetItemDatasInventoryItem()), APManager.instance.GetApplyMedicalItemAPCost((MedicalSupply)medicalItemData.item));
+        //StartCoroutine(locationalInjury.ApplyMedicalItem(gm.playerManager, medicalItemData, inventory, medicalItemData.GetItemDatasInventoryItem()));
         DisableContextMenu();
     }
 
@@ -110,7 +111,7 @@ public class ContextMenu : MonoBehaviour
 
     void RemoveMedicalItem(LocationalInjury locationalInjury, MedicalSupplyType medicalSupplyType)
     {
-        StartCoroutine(locationalInjury.RemoveMedicalItem(gm.playerManager, medicalSupplyType));
+        gm.playerManager.QueueAction(locationalInjury.RemoveMedicalItem(gm.playerManager, medicalSupplyType), APManager.instance.GetRemoveMedicalItemAPCost(locationalInjury.GetAppliedMedicalSupply(medicalSupplyType)));
         DisableContextMenu();
     }
     #endregion
@@ -260,7 +261,8 @@ public class ContextMenu : MonoBehaviour
 
     void ApplyMedicalItemToInjury_InventoryItem(LocationalInjury locationalInjury)
     {
-        StartCoroutine(locationalInjury.ApplyMedicalItem(gm.playerManager, contextActiveInvItem.itemData, contextActiveInvItem.myInventory, contextActiveInvItem));
+        gm.playerManager.QueueAction(locationalInjury.ApplyMedicalItem(gm.playerManager, contextActiveInvItem.itemData, contextActiveInvItem.myInventory, contextActiveInvItem), gm.apManager.GetApplyMedicalItemAPCost((MedicalSupply)contextActiveInvItem.itemData.item));
+        //StartCoroutine(locationalInjury.ApplyMedicalItem(gm.playerManager, contextActiveInvItem.itemData, contextActiveInvItem.myInventory, contextActiveInvItem));
         DisableContextMenu();
     }
 

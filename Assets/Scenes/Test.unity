@@ -7596,6 +7596,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   appliedItemsParent: {fileID: 0}
   isMyTurn: 0
+  isPerformingAction: 0
   currentQueueNumber: 0
   gm: {fileID: 0}
   keysInventory: {fileID: 667730167}
@@ -13292,7 +13293,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &938806425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13859,6 +13860,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   appliedItemsParent: {fileID: 0}
   isMyTurn: 0
+  isPerformingAction: 0
   currentQueueNumber: 0
   gm: {fileID: 0}
 --- !u!114 &938806436
@@ -20896,7 +20898,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1347319889
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21204,6 +21206,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   appliedItemsParent: {fileID: 0}
   isMyTurn: 0
+  isPerformingAction: 0
   currentQueueNumber: 0
   gm: {fileID: 0}
 --- !u!114 &1347319900

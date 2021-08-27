@@ -110,6 +110,9 @@ public class Status : MonoBehaviour
                 int injuryCount = bodyParts[i].injuries.Count;
                 for (int j = injuryCount - 1; j >= 0; j--)
                 {
+                    if (bodyParts[i].injuries[j] == null)
+                        continue;
+
                     // Update bandage soil, if one has been applied to the wound
                     if (bodyParts[i].injuries[j].bandage != null)
                         bodyParts[i].injuries[j].SoilBandage(0.1f / bodyParts[i].injuries[j].bandage.quality);
@@ -123,15 +126,15 @@ public class Status : MonoBehaviour
                     }
                     // If this is an NPC and the injury is finished healing, but it still has an applied medical item
                     else if (characterManager.isNPC && bodyParts[i].injuries[j].injuryTimeRemaining <= 0 && characterManager.stateController.currentState != State.Fight 
-                        && characterManager.humanoidSpriteManager != null && characterManager.actionsQueued == 0)
+                        && characterManager.humanoidSpriteManager != null && characterManager.actions.Count == 0)
                     {
                         // If the applied medical item is a bandage
                         if (bodyParts[i].injuries[j].bandageItemData != null)
-                            StartCoroutine(bodyParts[i].injuries[j].RemoveMedicalItem(characterManager, MedicalSupplyType.Bandage));
+                            characterManager.QueueAction(bodyParts[i].injuries[j].RemoveMedicalItem(characterManager, MedicalSupplyType.Bandage), APManager.instance.GetRemoveMedicalItemAPCost(bodyParts[i].injuries[j].bandage));
                     }
 
                     // If this is an NPC and any of their injuries are untreated, check if they have the appropriate medical items and if so, treat the wound
-                    if (characterManager.isNPC && characterManager.stateController.currentState != State.Fight && characterManager.humanoidSpriteManager != null && characterManager.actionsQueued == 0 
+                    if (characterManager.isNPC && characterManager.stateController.currentState != State.Fight && characterManager.humanoidSpriteManager != null && characterManager.actions.Count == 0 
                         && bodyParts[i].injuries[j].InjuryRemedied() == false && (bodyParts[i].injuries[j].injuryTimeRemaining > 240 || bodyParts[i].injuries[j].bleedTimeRemaining > 0))
                     {
                         // Bandage the injury?
@@ -139,7 +142,7 @@ public class Status : MonoBehaviour
                         {
                             List<ItemData> bandages = characterManager.GetMedicalSupplies(MedicalSupplyType.Bandage);
                             if (bandages.Count > 0)
-                                StartCoroutine(bodyParts[i].injuries[j].ApplyMedicalItem(characterManager, bandages[0], bandages[0].parentInventory, null));
+                                characterManager.QueueAction(bodyParts[i].injuries[j].ApplyMedicalItem(characterManager, bandages[0], bandages[0].parentInventory, null), APManager.instance.GetApplyMedicalItemAPCost((MedicalSupply)bandages[0].item));
                         }
                     }
                 }
@@ -551,24 +554,9 @@ public class Status : MonoBehaviour
         }
     }
 
-    public IEnumerator Consume(ItemData consumableItemData, int itemCount, PartialAmount partialAmount)
+    public IEnumerator Consume(ItemData consumableItemData, Consumable consumable, int itemCount, float percentUsed, string itemName)
     {
-        Consumable consumable = (Consumable)consumableItemData.item;
-        string itemName = consumableItemData.GetItemName(itemCount);
-        float percentUsed = 1;
-        if (consumableItemData.percentRemaining - consumable.GetPartialAmountsPercentage(partialAmount) > 0)
-            percentUsed = consumable.GetPartialAmountsPercentage(partialAmount) / 100f;
-        else
-            percentUsed = consumableItemData.percentRemaining / 100f;
-
-        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetConsumeAPCost(consumable, itemCount, percentUsed)));
-
-        int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
-        while (queueNumber != characterManager.currentQueueNumber)
-        {
-            yield return null;
-            if (characterManager.status.isDead) yield break;
-        }
+        if (isDead) yield break;
 
         // Adjust overall bodily healthiness
         if (consumable.healthinessAdjustment != 0)
@@ -587,6 +575,8 @@ public class Status : MonoBehaviour
             gm.flavorText.WriteLine_Consume(characterManager, consumable, itemName, percentUsed);
         else
             gm.flavorText.WriteLine_Consume(characterManager, consumable, itemName, 1);
+
+        characterManager.FinishAction();
     }
 
     public virtual BodyPart GetBodyPart(BodyPartType bodyPartType)

@@ -88,14 +88,13 @@ public class Inventory : MonoBehaviour
         int amountAddedToExistingStacks = 0;
         if (itemDataComingFrom.item.maxStackSize > 1 && InventoryContainsSameItem(itemDataComingFrom))
             amountAddedToExistingStacks = AddToExistingStacks(itemDataComingFrom, itemCount, invComingFrom, shouldUpdateWeightAndVolume);
-        Debug.Log(amountAddedToExistingStacks);
+        
         // Subtract the amount we added to existing stacks from our itemCount
         itemCount -= amountAddedToExistingStacks;
         
         // If there's still some left to add
         if ((itemCount == 1 && amountAddedToExistingStacks == 0) || (itemCount > 0 && itemDataComingFrom.currentStackSize > 0))
         {
-            Debug.Log("Here");
             // Create a new ItemData Object
             ItemData itemDataToAdd = gm.objectPoolManager.GetItemDataFromPool(itemDataComingFrom.item, this);
 
@@ -114,8 +113,7 @@ public class Inventory : MonoBehaviour
             }
 
             // Since we transferred data from the old ItemData, we need to make sure to set the currentStackSize to 1 if we were only adding one of the item
-            //if (itemCount == 1)
-                itemDataToAdd.currentStackSize = itemCount;
+            itemDataToAdd.currentStackSize = itemCount;
 
             // Add the new ItemData to this Inventory's items list
             items.Add(itemDataToAdd);
@@ -240,7 +238,7 @@ public class Inventory : MonoBehaviour
             inventoryOwner.SetTotalCarriedWeightAndVolume();
     }
 
-    public bool AddItemToInventory_OneAtATime(Inventory invComingFrom, ItemData itemData, InventoryItem invItem)
+    public bool AddItemToInventory_OneAtATime(CharacterManager characterAdding, Inventory invComingFrom, ItemData itemData, InventoryItem invItem)
     {
         int stackSize = itemData.currentStackSize;
         float bagInvWeight = 0;
@@ -267,11 +265,11 @@ public class Inventory : MonoBehaviour
 
                     // Calculate and use AP
                     if (invComingFrom != null)
-                        gm.uiManager.StartCoroutine(gm.apManager.UseAP(gm.playerManager, gm.apManager.GetTransferItemCost(itemData.item, stackSize, bagInvWeight, bagInvVolume, true)));
+                        gm.apManager.LoseAP(characterAdding, gm.apManager.GetTransferItemCost(itemData.item, stackSize, bagInvWeight, bagInvVolume, true));
                     else
                     {
                         GameTiles.RemoveItemData(itemData, itemData.transform.position);
-                        gm.uiManager.StartCoroutine(gm.apManager.UseAP(gm.playerManager, gm.apManager.GetTransferItemCost(itemData.item, stackSize, bagInvWeight, bagInvVolume, false)));
+                        gm.apManager.LoseAP(characterAdding, gm.apManager.GetTransferItemCost(itemData.item, stackSize, bagInvWeight, bagInvVolume, false));
                     }
 
                     // Write some flavor text
@@ -291,9 +289,9 @@ public class Inventory : MonoBehaviour
                 // Calculate and use AP
                 int amountAdded = stackSize - itemData.currentStackSize;
                 if (invComingFrom != null)
-                    gm.uiManager.StartCoroutine(gm.apManager.UseAP(gm.playerManager, gm.apManager.GetTransferItemCost(itemData.item, amountAdded, bagInvWeight, bagInvVolume, true)));
+                    gm.apManager.LoseAP(characterAdding, gm.apManager.GetTransferItemCost(itemData.item, amountAdded, bagInvWeight, bagInvVolume, true));
                 else
-                    gm.uiManager.StartCoroutine(gm.apManager.UseAP(gm.playerManager, gm.apManager.GetTransferItemCost(itemData.item, amountAdded, bagInvWeight, bagInvVolume, false)));
+                    gm.apManager.LoseAP(characterAdding, gm.apManager.GetTransferItemCost(itemData.item, amountAdded, bagInvWeight, bagInvVolume, false));
 
                 // Write some flavor text
                 if (someAdded)

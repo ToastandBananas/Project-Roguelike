@@ -31,26 +31,16 @@ public class Attack : MonoBehaviour
         // This is just meant to be overridden
     } 
 
-    public virtual IEnumerator DoAttack(CharacterManager targetsCharacterManager, Stats targetsStats, Weapon weapon, GeneralAttackType attackType, MeleeAttackType meleeAttackType)
+    public virtual IEnumerator DoAttack(CharacterManager targetsCharacterManager, Stats targetsStats, GeneralAttackType attackType, MeleeAttackType meleeAttackType)
     {
-        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetAttackAPCost(characterManager, weapon, attackType)));
         isAttacking = true;
 
-        int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
-        while (queueNumber != characterManager.currentQueueNumber || canAttack == false)
+        if (cancellingAttacking || characterManager.status.isDead || targetsStats.IsDeadOrDestroyed() || TargetInAttackRange(targetsStats.transform) == false)
         {
-            yield return null;
-            if (cancellingAttacking)
-            {
-                cancellingAttacking = false;
-                characterManager.TakeTurn();
-                yield break;
-            }
-        }
-
-        if ((targetsCharacterManager != null && targetsCharacterManager.status.isDead) || targetsStats.IsDeadOrDestroyed() || TargetInAttackRange(targetsStats.transform) == false)
-        {
-            characterManager.TakeTurn();
+            cancellingAttacking = false;
+            isAttacking = false;
+            if (characterManager.status.isDead == false)
+                characterManager.FinishAction();
             yield break;
         }
 
@@ -78,20 +68,19 @@ public class Attack : MonoBehaviour
                 break;
         }
 
-        isAttacking = false;
         StartCoroutine(AttackCooldown());
     }
 
     public void StartMeleeAttack(CharacterManager targetsCharacterManager, Stats targetsStats, MeleeAttackType meleeAttackType)
     {
         if (characterManager.equipmentManager.IsDualWielding())
-            StartCoroutine(DoAttack(targetsCharacterManager, targetsStats, characterManager.equipmentManager.GetRightWeapon(), GeneralAttackType.DualWield, meleeAttackType));
+            characterManager.QueueAction(DoAttack(targetsCharacterManager, targetsStats, GeneralAttackType.DualWield, meleeAttackType), gm.apManager.GetAttackAPCost(characterManager, characterManager.equipmentManager.GetRightWeapon(), GeneralAttackType.DualWield));
         else if (characterManager.equipmentManager.RightHandItemEquipped())
-            StartCoroutine(DoAttack(targetsCharacterManager, targetsStats, characterManager.equipmentManager.GetRightWeapon(), GeneralAttackType.PrimaryWeapon, meleeAttackType));
+            characterManager.QueueAction(DoAttack(targetsCharacterManager, targetsStats, GeneralAttackType.PrimaryWeapon, meleeAttackType), gm.apManager.GetAttackAPCost(characterManager, characterManager.equipmentManager.GetRightWeapon(), GeneralAttackType.PrimaryWeapon));
         else if (characterManager.equipmentManager.LeftHandItemEquipped())
-            StartCoroutine(DoAttack(targetsCharacterManager, targetsStats, characterManager.equipmentManager.GetLeftWeapon(), GeneralAttackType.SecondaryWeapon, meleeAttackType));
+            characterManager.QueueAction(DoAttack(targetsCharacterManager, targetsStats, GeneralAttackType.SecondaryWeapon, meleeAttackType), gm.apManager.GetAttackAPCost(characterManager, characterManager.equipmentManager.GetLeftWeapon(), GeneralAttackType.SecondaryWeapon));
         else // Punch, if no weapons equipped
-            StartCoroutine(DoAttack(targetsCharacterManager, targetsStats, null, GeneralAttackType.Unarmed, meleeAttackType));
+            characterManager.QueueAction(DoAttack(targetsCharacterManager, targetsStats, GeneralAttackType.Unarmed, meleeAttackType), gm.apManager.GetAttackAPCost(characterManager, null, GeneralAttackType.Unarmed));
     }
 
     public void StartRandomMeleeAttack(CharacterManager targetsCharacterManager, Stats targetsStats)
@@ -110,12 +99,12 @@ public class Attack : MonoBehaviour
     {
         if (dualWieldAttackCount == 0)
         {
+            // Queue up the left weapon attack
+            characterManager.QueueAction(DoAttack(targetsCharacterManager, targetsStats, GeneralAttackType.SecondaryWeapon, meleeAttackType), gm.apManager.GetAttackAPCost(characterManager, characterManager.equipmentManager.GetLeftWeapon(), GeneralAttackType.SecondaryWeapon));
+            
             // Do a right weapon attack
             MeleeAttack(targetsCharacterManager, targetsStats, GeneralAttackType.PrimaryWeapon, meleeAttackType);
             dualWieldAttackCount++;
-            
-            // Now start up the left weapon attack
-            StartCoroutine(DoAttack(targetsCharacterManager, targetsStats, characterManager.equipmentManager.GetLeftWeapon(), GeneralAttackType.SecondaryWeapon, meleeAttackType));
         }
         else
         {
@@ -127,6 +116,15 @@ public class Attack : MonoBehaviour
 
     public void MeleeAttack(CharacterManager targetsCharacterManager, Stats targetsStats, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType)
     {
+        if (targetsStats.IsDeadOrDestroyed())
+        {
+            characterManager.FinishAction();
+            return;
+        }
+        else if (characterManager.status.isDead)
+            return;
+
+        // Don't worry about the movement animation if the character is outside of the camera's view
         if (characterManager.spriteRenderer.isVisible)
             StartCoroutine(characterManager.movement.BlockedMovement(targetsStats.transform.position));
 
@@ -243,8 +241,12 @@ public class Attack : MonoBehaviour
             TryGetWeaponStuck(targetsStats, null, weaponUsedItemData, mainPhysicalDamageType, pierceDamage, slashDamage, cleaveDamage);
         }
 
+        // If the character is outside of the camera's view, finish the action, since finishing the action normally occurs in the BlockedMovement coroutine
         if (characterManager.spriteRenderer.isVisible == false)
-            characterManager.movement.OnFinishedMoving(false);
+        {
+            isAttacking = false;
+            characterManager.FinishAction();
+        }
     }
 
     bool TryGetWeaponStuck(Stats targetsStats, CharacterManager target, ItemData weaponUsedItemData, PhysicalDamageType mainPhysicalDamageType, int pierceDamage, int slashDamage, int cleaveDamage, BodyPartType bodyPartHit = BodyPartType.Torso)
@@ -279,12 +281,6 @@ public class Attack : MonoBehaviour
         
         if (random <= stickChance) // If stuck
         {
-            // Use up AP until the character can pull the weapon out
-            if (target != null)
-                StartCoroutine(UnstickWeapon(target, bodyPartHit, weaponUsedItemData, mainPhysicalDamageType, Mathf.RoundToInt(percentDamage * maxHealth), percentDamage)); // If stuck in NPC
-            else
-                StartCoroutine(UnstickWeapon(targetsStats, weaponUsedItemData, mainPhysicalDamageType, Mathf.RoundToInt(percentDamage * maxHealth), percentDamage)); // If stuck in an object
-
             // The target will lose a little bit of AP, based off of damage done
             if (target != null)
             {
@@ -294,22 +290,21 @@ public class Attack : MonoBehaviour
             else
                 gm.flavorText.WriteLine_StickWeapon(characterManager, targetsStats, weaponUsedItemData);
 
+            // Use up AP until the character can pull the weapon out
+            if (target != null) // If stuck in an NPC
+                characterManager.QueueAction(UnstickWeapon(target, bodyPartHit, weaponUsedItemData, Mathf.RoundToInt(percentDamage * maxHealth), percentDamage), gm.apManager.GetWeaponStickAPCost(characterManager, (Weapon)weaponUsedItemData.item, mainPhysicalDamageType, percentDamage));
+            else // If stuck in an object
+                characterManager.QueueAction(UnstickWeapon(targetsStats, weaponUsedItemData, Mathf.RoundToInt(percentDamage * maxHealth), percentDamage), gm.apManager.GetWeaponStickAPCost(characterManager, (Weapon)weaponUsedItemData.item, mainPhysicalDamageType, percentDamage));
+             
             return true;
         }
 
         return false;
     }
 
-    IEnumerator UnstickWeapon(CharacterManager target, BodyPartType bodyPartStuck, ItemData weaponUsedItemData, PhysicalDamageType mainPhysicalDamageType, int damage, float percentDamage)
+    IEnumerator UnstickWeapon(CharacterManager target, BodyPartType bodyPartStuck, ItemData weaponUsedItemData, int damage, float percentDamage)
     {
-        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetWeaponStickAPCost(characterManager, (Weapon)weaponUsedItemData.item, mainPhysicalDamageType, percentDamage)));
-
-        int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
-        while (queueNumber != characterManager.currentQueueNumber)
-        {
-            yield return null;
-            if (characterManager.status.isDead) yield break;
-        }
+        if (characterManager.status.isDead) yield break;
 
         int newDamage = 0;
         if (target.status.isDead == false)
@@ -326,20 +321,16 @@ public class Attack : MonoBehaviour
 
         // Write some flavor text
         gm.flavorText.WriteLine_UnstickWeapon(characterManager, target, bodyPartStuck, weaponUsedItemData, newDamage);
+
+        characterManager.FinishAction();
     }
 
-    IEnumerator UnstickWeapon(Stats targetsStats, ItemData weaponUsedItemData, PhysicalDamageType mainPhysicalDamageType, int damage, float percentDamage)
+    IEnumerator UnstickWeapon(Stats targetsStats, ItemData weaponUsedItemData, int damage, float percentDamage)
     {
-        StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetWeaponStickAPCost(characterManager, (Weapon)weaponUsedItemData.item, mainPhysicalDamageType, percentDamage)));
+        if (characterManager.status.isDead) yield break;
 
-        int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
-        while (queueNumber != characterManager.currentQueueNumber)
-        {
-            yield return null;
-            if (characterManager.status.isDead) yield break;
-        }
-        
         gm.flavorText.WriteLine_UnstickWeapon(characterManager, targetsStats, weaponUsedItemData, damage);
+        characterManager.FinishAction();
     }
 
     bool TryEvade(CharacterStats targetsCharStats)
@@ -752,9 +743,6 @@ public class Attack : MonoBehaviour
             Debug.Log("Cancelling attack...");
             cancellingAttacking = true;
             dualWieldAttackCount = 0;
-            characterManager.EditActionsQueued(-1);
-            characterManager.currentQueueNumber++;
-            characterManager.TakeTurn();
         }
     }
 

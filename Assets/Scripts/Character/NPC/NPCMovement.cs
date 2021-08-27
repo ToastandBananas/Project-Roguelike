@@ -32,9 +32,10 @@ public class NPCMovement : Movement
     [HideInInspector] public int currentPatrolPointIndex;
     [HideInInspector] public bool initialPatrolPointSet;
 
-    public CharacterManager target;
+    [HideInInspector] public CharacterManager target;
     [HideInInspector] public Vector2 targetPosition;
 
+    [HideInInspector] public bool moveQueued;
     [HideInInspector] public AIPath AIPath;
     [HideInInspector] public AIDestinationSetter AIDestSetter;
     Seeker seeker;
@@ -68,9 +69,7 @@ public class NPCMovement : Movement
 
     public IEnumerator Move()
     {
-        Debug.Log(transform.position);
-        if (isMoving) yield break;
-        yield return null;
+        if (moveQueued || isMoving || characterManager.status.isDead) yield break;
 
         // Update the character's path
         AIPath.SearchPath();
@@ -78,28 +77,18 @@ public class NPCMovement : Movement
         // Finish searching for a path before moving
         while (AIPath.pathPending) { yield return null; }
 
-        if (isMoving) yield break;
+        //if (isMoving) yield break;
 
         Vector2 nextPos = GetNextPosition();
-        Debug.Log(transform.position + " / " + nextPos + " / " + GetNextDirection(nextPos));
-        RotateTowardsDirection(GetNextDirection(nextPos), true);
+        Rotate(GetNextDirection(nextPos), true);
         characterManager.QueueAction(MoveToNextPointOnPath(), gm.apManager.GetMovementAPCost(IsDiagonal(nextPos)));
-        // StartCoroutine(MoveToNextPointOnPath());
     }
 
     IEnumerator MoveToNextPointOnPath()
     {
-        // Vector2 nextPos = GetNextPosition();
-        //StartCoroutine(gm.apManager.UseAP(characterManager, gm.apManager.GetMovementAPCost(IsDiagonal(nextPos))));
+        if (characterManager.status.isDead) yield break;
 
-        //int queueNumber = characterManager.currentQueueNumber + characterManager.actionsQueued;
-        //while (queueNumber != characterManager.currentQueueNumber)
-        //{
-        //yield return null;
-        //if (characterManager.status.isDead) yield break;
-        //}
-
-        yield return null;
+        moveQueued = true;
 
         // Update the character's path
         AIPath.SearchPath();
@@ -111,7 +100,7 @@ public class NPCMovement : Movement
         Vector2 nextPos = GetNextPosition();
 
         // Make sure the character is facing the correct direction
-        RotateTowardsDirection(GetNextDirection(nextPos), false);
+        Rotate(GetNextDirection(nextPos), false);
 
         // Remove the NPC from the tile they were on, if they are moving
         if (nextPos != (Vector2)transform.position)
@@ -192,29 +181,6 @@ public class NPCMovement : Movement
                 return Direction.Southwest;
             else
                 return directionFacing;
-            /*Vector3 dir = (path.vectorPath[1] - transform.position).normalized;
-            Debug.Log(path.vectorPath[1]  + " / " + dir);
-            if (dir.x == 0 && dir.y == 1) // North
-                return Direction.North;
-            else if (dir.x == 0 && dir.y == -1) // South
-                return Direction.South;
-            else if (dir.x == 1 && dir.y == 0) // East
-                return Direction.East;
-            else if (dir.x == -1 && dir.y == 0) // West
-                return Direction.West;
-            else if (dir.x < 0 && dir.y > 0) // Northwest
-                return Direction.Northwest;
-            else if (dir.x > 0 && dir.y > 0) // Northeast
-                return Direction.Northeast;
-            else if (dir.x < 0 && dir.y < 0) // Southwest
-                return Direction.Southwest;
-            else if (dir.x > 0 && dir.y < 0) // Southeast
-                return Direction.Southeast;
-            else
-            {
-                Debug.Log("Here");
-                return directionFacing;
-            }*/
         }
     }
 

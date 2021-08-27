@@ -28,16 +28,16 @@ public class PlayerEquipmentManager : EquipmentManager
     {
         if (GameControls.gamePlayActions.playerSwitchStance.WasPressed)
         {
-            if (IsDualWielding() == false && RightHandItemEquipped() && RightWeaponSheathed() == false)
-                StartCoroutine(characterManager.humanoidSpriteManager.SwapStance(this, characterManager, currentEquipment[(int)EquipmentSlot.RightHandItem]));
+            if (LeftHandItemEquipped() == false && RightHandItemEquipped() && RightWeaponSheathed() == false)
+                characterManager.QueueAction(characterManager.humanoidSpriteManager.SwapStance(this, characterManager, currentEquipment[(int)EquipmentSlot.RightHandItem]), gm.apManager.GetSwapStanceAPCost(characterManager));
         }
 
         if (GameControls.gamePlayActions.playerSheatheWeapon.WasPressed)
         {
             if (BothWeaponsSheathed())
-                StartCoroutine(UnsheatheWeapons());
+                characterManager.QueueAction(UnsheatheWeapons(), gm.apManager.GetUnheatheWeaponAPCost(this));
             else
-                StartCoroutine(SheatheWeapons(true, true));
+                characterManager.QueueAction(SheatheWeapons(true, true), gm.apManager.GetSheatheWeaponAPCost(this, true, true));
         }
     }
 }

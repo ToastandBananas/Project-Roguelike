@@ -33,10 +33,8 @@ public class CharacterManager : MonoBehaviour
     [HideInInspector] public Transform appliedItemsParent;
 
     [HideInInspector] public bool isNPC { get; private set; }
-    public bool isMyTurn = false;
-    public bool isPerformingAction;
-    [HideInInspector] public int actionsQueued { get; private set; }
-    [HideInInspector] public int currentQueueNumber;
+    [HideInInspector] public bool isMyTurn = false;
+    [HideInInspector] public bool isPerformingAction;
 
     [HideInInspector] public GameManager gm;
 
@@ -123,23 +121,16 @@ public class CharacterManager : MonoBehaviour
 
         // Sheathe/stow away weapons or shields if necessary
         if (equipmentManager.isTwoHanding || equipmentManager.TwoHandedWeaponEquipped())
-            StartCoroutine(equipmentManager.SheatheWeapons(false, true));
+            QueueAction(equipmentManager.SheatheWeapons(false, true), gm.apManager.GetSheatheWeaponAPCost(equipmentManager, false, true));
         else if (leftHandCarryPercent + carryPercent <= 1f)
-            StartCoroutine(equipmentManager.SheatheWeapons(true, false));
+            QueueAction(equipmentManager.SheatheWeapons(true, false), gm.apManager.GetSheatheWeaponAPCost(equipmentManager, true, false));
         else
-            StartCoroutine(equipmentManager.SheatheWeapons(true, true));
+            QueueAction(equipmentManager.SheatheWeapons(true, true), gm.apManager.GetSheatheWeaponAPCost(equipmentManager, true, true));
 
         if (itemData.bagInventory != null)
-            StartCoroutine(gm.apManager.UseAP(this, gm.apManager.GetTransferItemCost(itemData.item, itemData.currentStackSize, itemData.bagInventory.currentWeight, itemData.bagInventory.currentVolume, false)));
+            gm.apManager.LoseAP(this, gm.apManager.GetTransferItemCost(itemData.item, itemData.currentStackSize, itemData.bagInventory.currentWeight, itemData.bagInventory.currentVolume, false));
         else
-            StartCoroutine(gm.apManager.UseAP(this, gm.apManager.GetTransferItemCost(itemData.item, itemData.currentStackSize, 0, 0, false)));
-
-        int queueNumber = currentQueueNumber + actionsQueued;
-        while (queueNumber != currentQueueNumber)
-        {
-            yield return null;
-            if (status.isDead) yield break;
-        }
+            gm.apManager.LoseAP(this, gm.apManager.GetTransferItemCost(itemData.item, itemData.currentStackSize, 0, 0, false));
 
         // If we can carry the item, add to the handCarryPercent value based off of item size
         if (leftHandCarryPercent + carryPercent <= 1f)
@@ -340,7 +331,7 @@ public class CharacterManager : MonoBehaviour
             // If the item is ammunition, try adding here first
             if (itemAdding.itemType == ItemType.Ammo && quiverInventory != null && itemToAdd.currentStackSize > 0)
             {
-                if (quiverInventory.AddItemToInventory_OneAtATime(itemToAdd.parentInventory, itemToAdd, invItem))
+                if (quiverInventory.AddItemToInventory_OneAtATime(this, itemToAdd.parentInventory, itemToAdd, invItem))
                 {
                     quiverInventory.UpdateCurrentWeightAndVolume();
                     if (isNPC == false)
@@ -352,7 +343,7 @@ public class CharacterManager : MonoBehaviour
             if (isNPC == false && itemToAdd.currentStackSize > 0 && gm.playerInvUI.activeInventory != null && (gm.playerInvUI.activeInventory != gm.playerManager.keysInventory || itemToAdd.item.itemType == ItemType.Key)
                 && itemToAdd.item.maxStackSize > 1 && gm.playerInvUI.activeInventory != gm.playerManager.quiverInventory)
             {
-                if (gm.playerInvUI.activeInventory.AddItemToInventory_OneAtATime(itemToAdd.parentInventory, itemToAdd, invItem))
+                if (gm.playerInvUI.activeInventory.AddItemToInventory_OneAtATime(this, itemToAdd.parentInventory, itemToAdd, invItem))
                 {
                     gm.playerInvUI.activeInventory.UpdateCurrentWeightAndVolume();
                     StartCoroutine(gm.playerInvUI.PlayAddItemEffect(itemAdding.pickupSprite, null, gm.playerInvUI.activePlayerInvSideBarButton));
@@ -362,7 +353,7 @@ public class CharacterManager : MonoBehaviour
             // Now try to fit the item in other equipped bags
             if (itemToAdd.currentStackSize > 0 && backpackInventory != null && gm.playerInvUI.activeInventory != backpackInventory)
             {
-                if (backpackInventory.AddItemToInventory_OneAtATime(itemToAdd.parentInventory, itemToAdd, invItem))
+                if (backpackInventory.AddItemToInventory_OneAtATime(this, itemToAdd.parentInventory, itemToAdd, invItem))
                 {
                     backpackInventory.UpdateCurrentWeightAndVolume();
                     if (isNPC == false)
@@ -372,7 +363,7 @@ public class CharacterManager : MonoBehaviour
 
             if (itemToAdd.currentStackSize > 0 && leftHipPouchInventory != null && gm.playerInvUI.activeInventory != leftHipPouchInventory)
             {
-                if (leftHipPouchInventory.AddItemToInventory_OneAtATime(itemToAdd.parentInventory, itemToAdd, invItem))
+                if (leftHipPouchInventory.AddItemToInventory_OneAtATime(this, itemToAdd.parentInventory, itemToAdd, invItem))
                 {
                     leftHipPouchInventory.UpdateCurrentWeightAndVolume();
                     if (isNPC == false)
@@ -382,7 +373,7 @@ public class CharacterManager : MonoBehaviour
 
             if (itemToAdd.currentStackSize > 0 && rightHipPouchInventory != null && gm.playerInvUI.activeInventory != rightHipPouchInventory)
             {
-                if (rightHipPouchInventory.AddItemToInventory_OneAtATime(itemToAdd.parentInventory, itemToAdd, invItem))
+                if (rightHipPouchInventory.AddItemToInventory_OneAtATime(this, itemToAdd.parentInventory, itemToAdd, invItem))
                 {
                     rightHipPouchInventory.UpdateCurrentWeightAndVolume();
                     if (isNPC == false)
@@ -393,7 +384,7 @@ public class CharacterManager : MonoBehaviour
             // Now try to fit the item in the player's personal inventory
             if (itemToAdd.currentStackSize > 0 && personalInventory != null && gm.playerInvUI.activeInventory != personalInventory)
             {
-                if (personalInventory.AddItemToInventory_OneAtATime(itemToAdd.parentInventory, itemToAdd, invItem))
+                if (personalInventory.AddItemToInventory_OneAtATime(this, itemToAdd.parentInventory, itemToAdd, invItem))
                 {
                     gm.playerManager.personalInventory.UpdateCurrentWeightAndVolume();
                     if (isNPC == false)
@@ -636,24 +627,9 @@ public class CharacterManager : MonoBehaviour
         }
     }
 
-    public void ResetActionsQueue()
-    {
-        actions.Clear();
-        QueuedAP.Clear();
-        actionsQueued = 0;
-        currentQueueNumber = 0;
-    }
-
-    public void EditActionsQueued(int amount)
-    {
-        actionsQueued += amount;
-        if (actionsQueued < 0)
-            actionsQueued = 0;
-    }
-
     public void QueueAction(IEnumerator action, int APCost)
     {
-        // if (isNPC) Debug.Log(name + " queued " + action);
+        if (isNPC) Debug.Log(name + " queued " + action);
         actions.Add(action);
         QueuedAP.Add(APCost);
         if (isMyTurn && characterStats.currentAP > 0)
@@ -697,6 +673,12 @@ public class CharacterManager : MonoBehaviour
             StartCoroutine(gm.turnManager.FinishTurn(this));
         else if (movement.isMoving == false) // Take another action
             TakeTurn();
+    }
+
+    public void ResetActionsQueue()
+    {
+        actions.Clear();
+        QueuedAP.Clear();
     }
     #endregion
 }
