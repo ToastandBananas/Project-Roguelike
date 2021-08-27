@@ -381,7 +381,8 @@ public class Status : MonoBehaviour
                     if (applicableInjuries[random].bandage == null || random2 < 50 / applicableInjuries[random].bandage.quality)
                     {
                         applicableInjuries[random].Reinjure();
-                        gm.flavorText.WriteLine_Reinjure(characterManager, applicableInjuries[random].injury, bodyPart.bodyPartType);
+                        if (gm.playerManager.CanSee(characterManager.spriteRenderer))
+                            gm.flavorText.WriteLine_Reinjure(characterManager, applicableInjuries[random].injury, bodyPart.bodyPartType);
                     }
                 }
             }
@@ -403,7 +404,9 @@ public class Status : MonoBehaviour
         {
             Injury laceration = gm.traumaSystem.GetLaceration(characterManager, bodyPart.bodyPartType, slashDamage);
             TraumaSystem.ApplyInjury(characterManager, laceration, bodyPart.bodyPartType, attackedFromBehind);
-            gm.flavorText.WriteLine_Injury(characterManager, laceration, bodyPart.bodyPartType);
+
+            if (gm.playerManager.CanSee(characterManager.spriteRenderer))
+                gm.flavorText.WriteLine_Injury(characterManager, laceration, bodyPart.bodyPartType);
         }
         else if (cleaveDamage > 0)
         {
@@ -431,8 +434,7 @@ public class Status : MonoBehaviour
             if (characterManager.IsNextToPlayer())
                 gm.containerInvUI.GetItemsAroundPlayer();
         }
-
-        name = "Dead " + name;
+        
         gameObject.tag = "Dead Body";
         gameObject.layer = 14;
 
@@ -492,7 +494,8 @@ public class Status : MonoBehaviour
 
         characterManager.spriteManager.SetToDeathSprite(characterManager.spriteRenderer);
 
-        gm.flavorText.StartCoroutine(gm.flavorText.DelayWriteLine(Utilities.GetPronoun(characterManager, true, false) + "died."));
+        if (gm.playerManager.CanSee(characterManager.spriteRenderer))
+            gm.flavorText.StartCoroutine(gm.flavorText.DelayWriteLine(Utilities.GetPronoun(characterManager, true, false) + "died."));
     }
 
     void Heal_Passive(int timePassed)
@@ -571,10 +574,13 @@ public class Status : MonoBehaviour
             TraumaSystem.ApplyBuff(characterManager, consumable, itemCount, percentUsed);
 
         // Show some flavor text
-        if (consumableItemData.percentRemaining - (percentUsed * 100) > 0)
-            gm.flavorText.WriteLine_Consume(characterManager, consumable, itemName, percentUsed);
-        else
-            gm.flavorText.WriteLine_Consume(characterManager, consumable, itemName, 1);
+        if (gm.playerManager.CanSee(characterManager.spriteRenderer))
+        {
+            if (consumableItemData.percentRemaining - (percentUsed * 100) > 0)
+                gm.flavorText.WriteLine_Consume(characterManager, consumable, itemName, percentUsed);
+            else
+                gm.flavorText.WriteLine_Consume(characterManager, consumable, itemName, 1);
+        }
 
         characterManager.FinishAction();
     }

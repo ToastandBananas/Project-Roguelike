@@ -16,7 +16,8 @@ public class Equipment : Item
     {
         if (itemData.durability <= 0)
         {
-            GameManager.instance.flavorText.WriteLine_TryEquipBrokenItem(itemData, characterManager);
+            if (characterManager.isNPC == false)
+                GameManager.instance.flavorText.WriteLine_TryEquipBrokenItem(itemData, characterManager);
             return;
         }
 

@@ -273,7 +273,8 @@ public class Inventory : MonoBehaviour
                     }
 
                     // Write some flavor text
-                    gm.flavorText.WriteLine_TakeItem(itemData, stackSize, invComingFrom, this);
+                    if (characterAdding.isNPC == false)
+                        gm.flavorText.WriteLine_TakeItem(itemData, stackSize, invComingFrom, this);
 
                     if (invItem != null)
                         invItem.ClearItem();
@@ -294,7 +295,7 @@ public class Inventory : MonoBehaviour
                     gm.apManager.LoseAP(characterAdding, gm.apManager.GetTransferItemCost(itemData.item, amountAdded, bagInvWeight, bagInvVolume, false));
 
                 // Write some flavor text
-                if (someAdded)
+                if (someAdded && characterAdding.isNPC == false)
                     gm.flavorText.WriteLine_TakeItem(itemData, stackSize - itemData.currentStackSize, invComingFrom, this);
 
                 gm.containerInvUI.UpdateUI();

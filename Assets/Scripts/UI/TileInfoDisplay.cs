@@ -121,7 +121,7 @@ public class TileInfoDisplay : MonoBehaviour
                 if (deadCharacters.Count > 1)
                     stringBuilder.Append("You see multiple lifeless bodies here...\n\n");
                 else if (deadCharacters.Count == 1)
-                    stringBuilder.Append("You see a <b>" + deadCharacters[0].name + "</b>.\n\n");
+                    stringBuilder.Append("You see a <b>Dead " + deadCharacters[0].name + "</b>.\n\n");
             }
 
             // If there are any items at this position, show their names

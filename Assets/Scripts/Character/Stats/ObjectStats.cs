@@ -15,8 +15,8 @@ public class ObjectStats : Stats
     {
         if (canTakeDamage)
         {
-            if (damage <= 0)
-                damage = 1;
+            if (damage < 0)
+                damage = 0;
 
             TextPopup.CreateDamagePopup(spriteRenderer, transform.position, damage, false);
 
@@ -50,10 +50,13 @@ public class ObjectStats : Stats
 
         if (TryGetComponent(out Inventory inv))
         {
-            if (inv.items.Count > 0)
-                gm.flavorText.StartCoroutine(gm.flavorText.DelayWriteLine("The " + name + " was destroyed and its contents spill out on the ground."));
-            else
-                gm.flavorText.StartCoroutine(gm.flavorText.DelayWriteLine("The " + name + " was destroyed."));
+            if (gm.playerManager.CanSee(spriteRenderer))
+            {
+                if (inv.items.Count > 0)
+                    gm.flavorText.StartCoroutine(gm.flavorText.DelayWriteLine("The " + name + " was destroyed and its contents spill out on the ground."));
+                else
+                    gm.flavorText.StartCoroutine(gm.flavorText.DelayWriteLine("The " + name + " was destroyed."));
+            }
 
             for (int i = 0; i < inv.items.Count; i++)
             {
@@ -63,7 +66,7 @@ public class ObjectStats : Stats
 
             inv.items.Clear();
         }
-        else
+        else if (gm.playerManager.CanSee(spriteRenderer))
             gm.flavorText.StartCoroutine(gm.flavorText.DelayWriteLine("The " + name + " was destroyed."));
 
         gameObject.SetActive(false);

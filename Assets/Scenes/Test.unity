@@ -7597,7 +7597,6 @@ MonoBehaviour:
   appliedItemsParent: {fileID: 0}
   isMyTurn: 0
   isPerformingAction: 0
-  currentQueueNumber: 0
   gm: {fileID: 0}
   keysInventory: {fileID: 667730167}
   playerGameObject: {fileID: 0}
@@ -13293,7 +13292,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &938806425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13503,6 +13502,7 @@ MonoBehaviour:
   initialPatrolPointSet: 0
   target: {fileID: 0}
   targetPosition: {x: 0, y: 0}
+  moveQueued: 0
   AIPath: {fileID: 0}
   AIDestSetter: {fileID: 0}
 --- !u!114 &938806432
@@ -13861,7 +13861,6 @@ MonoBehaviour:
   appliedItemsParent: {fileID: 0}
   isMyTurn: 0
   isPerformingAction: 0
-  currentQueueNumber: 0
   gm: {fileID: 0}
 --- !u!114 &938806436
 MonoBehaviour:
@@ -20939,6 +20938,7 @@ MonoBehaviour:
   initialPatrolPointSet: 0
   target: {fileID: 0}
   targetPosition: {x: 0, y: 0}
+  moveQueued: 0
   AIPath: {fileID: 0}
   AIDestSetter: {fileID: 0}
 --- !u!114 &1347319890
@@ -21207,7 +21207,6 @@ MonoBehaviour:
   appliedItemsParent: {fileID: 0}
   isMyTurn: 0
   isPerformingAction: 0
-  currentQueueNumber: 0
   gm: {fileID: 0}
 --- !u!114 &1347319900
 MonoBehaviour:

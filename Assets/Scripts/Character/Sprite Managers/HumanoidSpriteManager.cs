@@ -124,7 +124,8 @@ public class HumanoidSpriteManager : SpriteManager
         else
             SetupTwoHandedWeaponStance(equipmentManager, characterManager);
 
-        gm.flavorText.WriteLine_SwitchStance(characterManager, weaponItemData, (Weapon)weaponItemData.item);
+        if (characterManager.isNPC == false)
+            gm.flavorText.WriteLine_SwitchStance(characterManager, weaponItemData, (Weapon)weaponItemData.item);
 
         characterManager.FinishAction();
     }

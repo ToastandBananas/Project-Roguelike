@@ -137,11 +137,15 @@ public class Attack : MonoBehaviour
             mainPhysicalDamageType = weaponUsedItemData.GetMeleeAttacksPhysicalDamageType(meleeAttackType);
         }
 
-        int bluntDamage = characterManager.equipmentManager.GetPhysicalMeleeDamage(weaponUsedItemData, meleeAttackType, PhysicalDamageType.Blunt);
+        int bluntDamage = 0;
+        if (weaponUsedItemData != null)
+            bluntDamage = characterManager.equipmentManager.GetPhysicalMeleeDamage(weaponUsedItemData, meleeAttackType, PhysicalDamageType.Blunt);
+        else
+            bluntDamage = characterManager.characterStats.unarmedDamage.GetValue();
         int pierceDamage = characterManager.equipmentManager.GetPhysicalMeleeDamage(weaponUsedItemData, meleeAttackType, PhysicalDamageType.Pierce);
         int slashDamage = characterManager.equipmentManager.GetPhysicalMeleeDamage(weaponUsedItemData, meleeAttackType, PhysicalDamageType.Slash);
         int cleaveDamage = characterManager.equipmentManager.GetPhysicalMeleeDamage(weaponUsedItemData, meleeAttackType, PhysicalDamageType.Cleave);
-        
+
         // Check if there are any damage penalties to apply
         if (weaponUsed != null)
         {
@@ -211,16 +215,19 @@ public class Attack : MonoBehaviour
                     if (finalDamage > 0)
                     {
                         // Show some flavor text
-                        if (armorPenetrated == false && clothingPenetrated == false)
-                            gm.flavorText.WriteLine_MeleeAttackCharacter(characterManager, targetCharStats.characterManager, generalAttackType, meleeAttackType, bodyPartToHit, finalDamage, behindTarget);
-                        else if (armorPenetrated && clothingPenetrated)
-                            gm.flavorText.WriteLine_PenetrateArmorAndClothing_Melee(characterManager, targetCharStats.characterManager, armor, clothing, generalAttackType, meleeAttackType, mainPhysicalDamageType, bodyPartToHit, finalDamage, behindTarget);
-                        else if (armorPenetrated)
-                            gm.flavorText.WriteLine_PenetrateWearable_Melee(characterManager, targetCharStats.characterManager, armor, generalAttackType, meleeAttackType, mainPhysicalDamageType, bodyPartToHit, finalDamage, behindTarget);
-                        else if (clothingPenetrated)
-                            gm.flavorText.WriteLine_PenetrateWearable_Melee(characterManager, targetCharStats.characterManager, clothing, generalAttackType, meleeAttackType, mainPhysicalDamageType, bodyPartToHit, finalDamage, behindTarget);
+                        if (gm.playerManager.CanSee(characterManager.spriteRenderer))
+                        {
+                            if (armorPenetrated == false && clothingPenetrated == false)
+                                gm.flavorText.WriteLine_MeleeAttackCharacter(characterManager, targetCharStats.characterManager, generalAttackType, meleeAttackType, bodyPartToHit, finalDamage, behindTarget);
+                            else if (armorPenetrated && clothingPenetrated)
+                                gm.flavorText.WriteLine_PenetrateArmorAndClothing_Melee(characterManager, targetCharStats.characterManager, armor, clothing, generalAttackType, meleeAttackType, mainPhysicalDamageType, bodyPartToHit, finalDamage, behindTarget);
+                            else if (armorPenetrated)
+                                gm.flavorText.WriteLine_PenetrateWearable_Melee(characterManager, targetCharStats.characterManager, armor, generalAttackType, meleeAttackType, mainPhysicalDamageType, bodyPartToHit, finalDamage, behindTarget);
+                            else if (clothingPenetrated)
+                                gm.flavorText.WriteLine_PenetrateWearable_Melee(characterManager, targetCharStats.characterManager, clothing, generalAttackType, meleeAttackType, mainPhysicalDamageType, bodyPartToHit, finalDamage, behindTarget);
+                        }
 
-                        // See if the weapon will stick in the opponent's flesh
+                        // See if the weapon will get stuck in the opponent's flesh
                         if (weaponUsedItemData != null && weaponUsedItemData.durability > 0 && (armor == null || armorPenetrated) && (clothing == null || clothingPenetrated))
                         {
                             // This can't happen with blunt damage only weapons
@@ -228,7 +235,7 @@ public class Attack : MonoBehaviour
                                 TryGetWeaponStuck(targetsStats, targetsCharacterManager, weaponUsedItemData, mainPhysicalDamageType, pierceDamage, slashDamage, cleaveDamage, bodyPartToHit);
                         }
                     }
-                    else // Show some flavor text
+                    else if (gm.playerManager.CanSee(characterManager.spriteRenderer)) // Show some flavor text
                         gm.flavorText.WriteLine_AbsorbedMeleeAttack(characterManager, targetCharStats.characterManager, generalAttackType, meleeAttackType, bodyPartToHit, behindTarget);
                 }
             }
@@ -237,7 +244,10 @@ public class Attack : MonoBehaviour
         {
             // Damage the object and show flavor text
             targetsStats.TakeDamage(totalDamage);
-            gm.flavorText.WriteLine_MeleeAttackObject(characterManager, targetsStats, generalAttackType, meleeAttackType, totalDamage);
+            if (gm.playerManager.CanSee(characterManager.spriteRenderer))
+                gm.flavorText.WriteLine_MeleeAttackObject(characterManager, targetsStats, generalAttackType, meleeAttackType, totalDamage);
+
+            // See if the weapon will get stuck in the object
             TryGetWeaponStuck(targetsStats, null, weaponUsedItemData, mainPhysicalDamageType, pierceDamage, slashDamage, cleaveDamage);
         }
 
@@ -285,9 +295,10 @@ public class Attack : MonoBehaviour
             if (target != null)
             {
                 gm.apManager.LoseAP(target, gm.apManager.GetStuckWithWeaponAPLoss(target, percentDamage));
-                gm.flavorText.WriteLine_StickWeapon(characterManager, target, bodyPartHit, weaponUsedItemData);
+                if (gm.playerManager.CanSee(characterManager.spriteRenderer))
+                    gm.flavorText.WriteLine_StickWeapon(characterManager, target, bodyPartHit, weaponUsedItemData);
             }
-            else
+            else if (gm.playerManager.CanSee(characterManager.spriteRenderer))
                 gm.flavorText.WriteLine_StickWeapon(characterManager, targetsStats, weaponUsedItemData);
 
             // Use up AP until the character can pull the weapon out
@@ -320,7 +331,8 @@ public class Attack : MonoBehaviour
         target.status.LoseBlood(100f * percentDamage);
 
         // Write some flavor text
-        gm.flavorText.WriteLine_UnstickWeapon(characterManager, target, bodyPartStuck, weaponUsedItemData, newDamage);
+        if (gm.playerManager.CanSee(characterManager.spriteRenderer))
+            gm.flavorText.WriteLine_UnstickWeapon(characterManager, target, bodyPartStuck, weaponUsedItemData, newDamage);
 
         characterManager.FinishAction();
     }
@@ -329,7 +341,9 @@ public class Attack : MonoBehaviour
     {
         if (characterManager.status.isDead) yield break;
 
-        gm.flavorText.WriteLine_UnstickWeapon(characterManager, targetsStats, weaponUsedItemData, damage);
+        if (gm.playerManager.CanSee(characterManager.spriteRenderer))
+            gm.flavorText.WriteLine_UnstickWeapon(characterManager, targetsStats, weaponUsedItemData, damage);
+
         characterManager.FinishAction();
     }
 
@@ -352,15 +366,21 @@ public class Attack : MonoBehaviour
                 if (random > percentChanceEvade)
                 {
                     // Attack missed
-                    TextPopup.CreateTextStringPopup(targetsCharStats.spriteRenderer, targetsCharStats.transform.position, "Missed");
-                    gm.flavorText.WriteLine_MissedAttack(characterManager, targetsCharStats.characterManager);
+                    if (gm.playerManager.CanSee(characterManager.spriteRenderer))
+                    {
+                        TextPopup.CreateTextStringPopup(targetsCharStats.spriteRenderer, targetsCharStats.transform.position, "Missed");
+                        gm.flavorText.WriteLine_MissedAttack(characterManager, targetsCharStats.characterManager);
+                    }
                     return true;
                 }
                 else
                 {
                     // Attack was evaded
-                    TextPopup.CreateTextStringPopup(targetsCharStats.spriteRenderer, targetsCharStats.transform.position, "Evaded");
-                    gm.flavorText.WriteLine_EvadedAttack(characterManager, targetsCharStats.characterManager);
+                    if (gm.playerManager.CanSee(characterManager.spriteRenderer))
+                    {
+                        TextPopup.CreateTextStringPopup(targetsCharStats.spriteRenderer, targetsCharStats.transform.position, "Evaded");
+                        gm.flavorText.WriteLine_EvadedAttack(characterManager, targetsCharStats.characterManager);
+                    }
                     return true;
                 }
             }
@@ -417,12 +437,20 @@ public class Attack : MonoBehaviour
                 random = Random.Range(0f, 1f);
                 if (leftBlockChance == 0 || random > leftBlockChance)
                 {
-                    gm.flavorText.WriteLine_BlockedAttack(characterManager, targetsCharStats.characterManager, targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.RightHandItem));
+                    // Show block flavor text
+                    if (gm.playerManager.CanSee(characterManager.spriteRenderer))
+                        gm.flavorText.WriteLine_BlockedAttack(characterManager, targetsCharStats.characterManager, targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.RightHandItem));
+
+                    // Damage the right hand item's durability
                     targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.RightHandItem).DamageDurability(damage, false);
                 }
                 else
                 {
-                    gm.flavorText.WriteLine_BlockedAttack(characterManager, targetsCharStats.characterManager, targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.LeftHandItem));
+                    // Show block flavor text
+                    if (gm.playerManager.CanSee(characterManager.spriteRenderer))
+                        gm.flavorText.WriteLine_BlockedAttack(characterManager, targetsCharStats.characterManager, targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.LeftHandItem));
+                    
+                    // Damage the left hand item's durability
                     targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.LeftHandItem).DamageDurability(damage, false);
                 }
 

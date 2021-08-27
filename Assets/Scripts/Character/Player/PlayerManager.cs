@@ -52,6 +52,15 @@ public class PlayerManager : CharacterManager
 
         keysInventory.Init();
     }
+    
+    /// <summary>Determines if the sprite renderer in question is within the main camera's frame, as well as in direct eyesight of the player.</summary>
+    public bool CanSee(SpriteRenderer spriteRenderer)
+    {
+        if (spriteRenderer == this.spriteRenderer 
+            || (spriteRenderer.isVisible && Physics2D.Raycast(transform.position, (spriteRenderer.transform.position - transform.position).normalized, Vector2.Distance(transform.position, spriteRenderer.transform.position), vision.sightObstacleMask) == false))
+            return true;
+        return false;
+    }
 
     public Interactable GetNearestInteractable()
     {

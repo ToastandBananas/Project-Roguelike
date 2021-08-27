@@ -215,7 +215,8 @@ public class DropItemController : MonoBehaviour
         else if (invItemComingFrom != null && invItemComingFrom.myInvUI == gm.playerInvUI)
             StartCoroutine(gm.playerManager.DelaySetTotalCarriedWeightAndVolume());
 
-        if (invComingFrom == null || invComingFrom.CompareTag("Object") == false)
+        if (((characterDropping != null && gm.playerManager.CanSee(characterDropping.spriteRenderer))
+            || (invComingFrom != null && invComingFrom.container != null && gm.playerManager.CanSee(invComingFrom.container.spriteRenderer))) && (invComingFrom == null || invComingFrom.CompareTag("Object") == false))
             gm.flavorText.WriteLine_DropItem(characterDropping, itemData, amountToDrop);
     }
 

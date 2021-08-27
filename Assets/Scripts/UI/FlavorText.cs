@@ -146,6 +146,7 @@ public class FlavorText : MonoBehaviour
 
     public void WriteLine_MeleeAttackObject(CharacterManager attacker, Stats targetsStats, GeneralAttackType generalAttackType, MeleeAttackType meleeAttackType, int damage)
     {
+        Debug.Log(damage);
         switch (generalAttackType)
         {
             case GeneralAttackType.Unarmed:
@@ -520,10 +521,9 @@ public class FlavorText : MonoBehaviour
             WriteLine(Utilities.GetPronoun(character, true, false) + "dropped " + amountDropping + " <b>" + itemDropping.GetItemName(amountDropping) + "</b>.");
     }
 
-    public void WriteLine_DroppingPersonalItems(CharacterManager character)
+    public void WriteLine_DroppingPersonalItems()
     {
-        WriteLine(Utilities.GetPronoun(character, true, false) + "no longer have room for all of the items in " + Utilities.GetPossessivePronoun(character) 
-            + "<b>Personal Inventory</b>. " + Utilities.GetPronoun(character, true, false) + "will have to drop some items for now.");
+        WriteLine("<b>You</b> no longer have room for all of the items in your <b>Personal Inventory</b>. You will have to drop some items for now.");
     }
 
     public void WriteLine_CarryItem(CharacterManager character, ItemData itemData)
@@ -540,11 +540,9 @@ public class FlavorText : MonoBehaviour
         BodyPart rightHand = character.status.GetBodyPart(BodyPartType.RightHand);
 
         if ((leftHand.isIncapacitated || leftHand.isSevered) && (rightHand.isIncapacitated || rightHand.isSevered))
-            WriteLine(Utilities.GetPronoun(character, true, false) + "want to pick up and carry the <b>" + itemData.GetItemName(itemCount) + "</b>, but " + Utilities.GetPronoun(character, false, false) 
-                + "no longer have use of either of " + Utilities.GetPossessivePronoun(character) + "hands.");
+            WriteLine("<b>You</b> want to pick up and carry the <b>" + itemData.GetItemName(itemCount) + "</b>, but you no longer have use of either of your hands.");
         else
-            WriteLine(Utilities.GetPronoun(character, true, false) + "try to pick up and carry the <b>" + itemData.GetItemName(itemCount) + "</b>, but " + Utilities.GetPronoun(character, false, false) 
-                + "don't have enough room in " + Utilities.GetPossessivePronoun(character) + "hands.");
+            WriteLine("<b>You</b> try to pick up and carry the <b>" + itemData.GetItemName(itemCount) + "</b>, but you don't have enough room in your hands.");
     }
 
     public void WriteLine_OverEncumbered()
@@ -644,8 +642,7 @@ public class FlavorText : MonoBehaviour
         else
             inventoryName = inventory.name;
 
-        WriteLine(Utilities.GetPronoun(characterManager, true, false) + "try to put " + Utilities.GetIndefiniteArticle(itemData.GetItemName(itemData.currentStackSize), false, true) + " in " + Utilities.GetPossessivePronoun(characterManager) 
-            + "<b>" + inventoryName + "</b>, but it is too large.");
+        WriteLine("<b>You</b> try to put " + Utilities.GetIndefiniteArticle(itemData.GetItemName(itemData.currentStackSize), false, true) + " in your <b>" + inventoryName + "</b>, but it is too large.");
     }
 
     public void WriteLine_Equip(ItemData itemEquipping, CharacterManager characterManager)

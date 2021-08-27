@@ -75,8 +75,6 @@ public class CharacterManager : MonoBehaviour
         TryGetComponent(out personalInventory);
         if (equipmentManager != null)
             equipmentManager.characterManager = this;
-
-        ResetActionsQueue();
     }
 
     public virtual void Start()
@@ -113,7 +111,8 @@ public class CharacterManager : MonoBehaviour
         // Make sure we have room in our hands to carry the item, otherwise yield break out of this method and show some flavor text
         if (HaveRoomInHandsToCarryItem(itemData, itemData.currentStackSize) == false)
         {
-            gm.flavorText.WriteLine_CantCarryItem(this, itemData, itemData.currentStackSize);
+            if (isNPC == false)
+                gm.flavorText.WriteLine_CantCarryItem(this, itemData, itemData.currentStackSize);
             yield break;
         }
 
@@ -175,7 +174,8 @@ public class CharacterManager : MonoBehaviour
         gm.containerInvUI.UpdateUI();
 
         // Show flavor text for picking up and carrying the item
-        gm.flavorText.WriteLine_CarryItem(this, carriedItemData);
+        if (gm.playerManager.CanSee(spriteRenderer))
+            gm.flavorText.WriteLine_CarryItem(this, carriedItemData);
     }
 
     public bool HaveRoomInHandsToCarryItem(ItemData itemData, int itemCount)
@@ -629,7 +629,7 @@ public class CharacterManager : MonoBehaviour
 
     public void QueueAction(IEnumerator action, int APCost)
     {
-        if (isNPC) Debug.Log(name + " queued " + action);
+        // if (isNPC) Debug.Log(name + " queued " + action);
         actions.Add(action);
         QueuedAP.Add(APCost);
         if (isMyTurn && characterStats.currentAP > 0)
