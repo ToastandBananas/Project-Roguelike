@@ -28,6 +28,9 @@ public class GameControls : MonoBehaviour
 
         gamePlayActions.playerSwitchStance.AddDefaultBinding(InputControlType.LeftBumper); // Switch Stance
         gamePlayActions.playerSwitchStance.AddDefaultBinding(Key.F);
+        
+        gamePlayActions.playerRun.AddDefaultBinding(InputControlType.LeftStickButton); // Toggle Run
+        gamePlayActions.playerRun.AddDefaultBinding(Key.T);
 
         // Movement
         gamePlayActions.playerMoveUp.AddDefaultBinding(InputControlType.LeftStickUp); // Up
@@ -94,8 +97,8 @@ public class GameControls : MonoBehaviour
         gamePlayActions.menuRight.AddDefaultBinding(Key.RightArrow);
         gamePlayActions.menuRight.AddDefaultBinding(InputControlType.DPadRight);
 
-        gamePlayActions.menuContainerTakeAll.AddDefaultBinding(Key.T);
-        gamePlayActions.menuContainerTakeAll.AddDefaultBinding(InputControlType.LeftStickButton);
+        gamePlayActions.menuContainerTakeAll.AddDefaultBinding(Key.Tilde);
+        gamePlayActions.menuContainerTakeAll.AddDefaultBinding(InputControlType.RightStickButton);
 
         gamePlayActions.menuTakeItem.AddDefaultBinding(InputControlType.Action4);
 

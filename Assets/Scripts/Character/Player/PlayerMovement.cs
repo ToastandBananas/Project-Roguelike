@@ -14,6 +14,9 @@ public class PlayerMovement : Movement
     
     void Update()
     {
+        if (GameControls.gamePlayActions.playerRun.WasPressed)
+            ToggleRun();
+
         CheckForMovement();
     }
 
@@ -55,8 +58,7 @@ public class PlayerMovement : Movement
                     else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.IsDeadOrDestroyed() == false)
                         playerManager.playerAttack.DetermineAttack(null, stats);
                     else
-                        playerManager.QueueAction(Move(0, 1), gm.apManager.GetMovementAPCost(IsDiagonal(transform.position + new Vector3(0, 1))));
-                        // StartCoroutine(Move(0, 1));
+                        playerManager.QueueAction(Move(0, 1), gm.apManager.GetMovementAPCost(playerManager, IsDiagonal(transform.position + new Vector3(0, 1))));
                 }
                 else if (vertical < -0.3f) // Down
                 {
@@ -68,8 +70,7 @@ public class PlayerMovement : Movement
                     else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.IsDeadOrDestroyed() == false)
                         playerManager.playerAttack.DetermineAttack(null, stats);
                     else
-                        playerManager.QueueAction(Move(0, -1), gm.apManager.GetMovementAPCost(IsDiagonal(transform.position + new Vector3(0, -1))));
-                        // StartCoroutine(Move(0, -1));
+                        playerManager.QueueAction(Move(0, -1), gm.apManager.GetMovementAPCost(playerManager, IsDiagonal(transform.position + new Vector3(0, -1))));
                 }
             }
             else if (vertical <= 0.3f && vertical >= -0.3f)
@@ -84,8 +85,7 @@ public class PlayerMovement : Movement
                     else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.IsDeadOrDestroyed() == false)
                         playerManager.playerAttack.DetermineAttack(null, stats);
                     else
-                        playerManager.QueueAction(Move(-1, 0), gm.apManager.GetMovementAPCost(IsDiagonal(transform.position + new Vector3(-1, 0))));
-                        // StartCoroutine(Move(-1, 0));
+                        playerManager.QueueAction(Move(-1, 0), gm.apManager.GetMovementAPCost(playerManager, IsDiagonal(transform.position + new Vector3(-1, 0))));
                 }
                 else if (horizontal > 0.3f) // Right
                 {
@@ -97,8 +97,7 @@ public class PlayerMovement : Movement
                     else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.IsDeadOrDestroyed() == false)
                         playerManager.playerAttack.DetermineAttack(null, stats);
                     else
-                        playerManager.QueueAction(Move(1, 0), gm.apManager.GetMovementAPCost(IsDiagonal(transform.position + new Vector3(1, 0))));
-                        // StartCoroutine(Move(1, 0));
+                        playerManager.QueueAction(Move(1, 0), gm.apManager.GetMovementAPCost(playerManager, IsDiagonal(transform.position + new Vector3(1, 0))));
                 }
             }
             else if (vertical > 0.3f)
@@ -113,8 +112,7 @@ public class PlayerMovement : Movement
                     else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.IsDeadOrDestroyed() == false)
                         playerManager.playerAttack.DetermineAttack(null, stats);
                     else
-                        playerManager.QueueAction(Move(-1, 1), gm.apManager.GetMovementAPCost(IsDiagonal(transform.position + new Vector3(-1, 1))));
-                        // StartCoroutine(Move(-1, 1));
+                        playerManager.QueueAction(Move(-1, 1), gm.apManager.GetMovementAPCost(playerManager, IsDiagonal(transform.position + new Vector3(-1, 1))));
                 }
                 else if (horizontal > 0.3f) // Up-right
                 {
@@ -126,8 +124,7 @@ public class PlayerMovement : Movement
                     else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.IsDeadOrDestroyed() == false)
                         playerManager.playerAttack.DetermineAttack(null, stats);
                     else
-                        playerManager.QueueAction(Move(1, 1), gm.apManager.GetMovementAPCost(IsDiagonal(transform.position + new Vector3(1, 1))));
-                        // StartCoroutine(Move(1, 1));
+                        playerManager.QueueAction(Move(1, 1), gm.apManager.GetMovementAPCost(playerManager, IsDiagonal(transform.position + new Vector3(1, 1))));
                 }
             }
             else if (vertical < -0.3f)
@@ -142,8 +139,7 @@ public class PlayerMovement : Movement
                     else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.IsDeadOrDestroyed() == false)
                         playerManager.playerAttack.DetermineAttack(null, stats);
                     else
-                        playerManager.QueueAction(Move(-1, -1), gm.apManager.GetMovementAPCost(IsDiagonal(transform.position + new Vector3(-1, -1))));
-                        // StartCoroutine(Move(-1, -1));
+                        playerManager.QueueAction(Move(-1, -1), gm.apManager.GetMovementAPCost(playerManager, IsDiagonal(transform.position + new Vector3(-1, -1))));
                 }
                 else if (horizontal > 0.3f) // Down-right
                 {
@@ -155,8 +151,7 @@ public class PlayerMovement : Movement
                     else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.IsDeadOrDestroyed() == false)
                         playerManager.playerAttack.DetermineAttack(null, stats);
                     else
-                        playerManager.QueueAction(Move(1, -1), gm.apManager.GetMovementAPCost(IsDiagonal(transform.position + new Vector3(1, -1))));
-                        // StartCoroutine(Move(1, -1));
+                        playerManager.QueueAction(Move(1, -1), gm.apManager.GetMovementAPCost(playerManager, IsDiagonal(transform.position + new Vector3(1, -1))));
                 }
             }
 
@@ -174,8 +169,7 @@ public class PlayerMovement : Movement
             else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.IsDeadOrDestroyed() == false)
                 playerManager.playerAttack.DetermineAttack(null, stats);
             else
-                playerManager.QueueAction(Move(-1, 1), gm.apManager.GetMovementAPCost(IsDiagonal(transform.position + new Vector3(-1, 1))));
-                // StartCoroutine(Move(-1, 1));
+                playerManager.QueueAction(Move(-1, 1), gm.apManager.GetMovementAPCost(playerManager, IsDiagonal(transform.position + new Vector3(-1, 1))));
 
             StartCoroutine(MovementCooldown(0.25f));
         }
@@ -191,8 +185,7 @@ public class PlayerMovement : Movement
             else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.IsDeadOrDestroyed() == false)
                 playerManager.playerAttack.DetermineAttack(null, stats);
             else
-                playerManager.QueueAction(Move(1, 1), gm.apManager.GetMovementAPCost(IsDiagonal(transform.position + new Vector3(1, 1))));
-                // StartCoroutine(Move(1, 1));
+                playerManager.QueueAction(Move(1, 1), gm.apManager.GetMovementAPCost(playerManager, IsDiagonal(transform.position + new Vector3(1, 1))));
 
             StartCoroutine(MovementCooldown(0.25f));
         }
@@ -208,8 +201,7 @@ public class PlayerMovement : Movement
             else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.IsDeadOrDestroyed() == false)
                 playerManager.playerAttack.DetermineAttack(null, stats);
             else
-                playerManager.QueueAction(Move(-1, -1), gm.apManager.GetMovementAPCost(IsDiagonal(transform.position + new Vector3(-1, -1))));
-                // StartCoroutine(Move(-1, -1));
+                playerManager.QueueAction(Move(-1, -1), gm.apManager.GetMovementAPCost(playerManager, IsDiagonal(transform.position + new Vector3(-1, -1))));
 
             StartCoroutine(MovementCooldown(0.25f));
         }
@@ -225,8 +217,7 @@ public class PlayerMovement : Movement
             else if (hit.collider != null && hit.collider.TryGetComponent(out Stats stats) && stats.IsDeadOrDestroyed() == false)
                 playerManager.playerAttack.DetermineAttack(null, stats);
             else
-                playerManager.QueueAction(Move(1, -1), gm.apManager.GetMovementAPCost(IsDiagonal(transform.position + new Vector3(1, -1))));
-                // StartCoroutine(Move(1, -1));
+                playerManager.QueueAction(Move(1, -1), gm.apManager.GetMovementAPCost(playerManager, IsDiagonal(transform.position + new Vector3(1, -1))));
 
             StartCoroutine(MovementCooldown(0.25f));
         }
@@ -244,6 +235,22 @@ public class PlayerMovement : Movement
         // If the target tile is a walkable tile, the player moves here
         if (hit.collider == null && GameTiles.characters.TryGetValue(targetCell, out CharacterManager character) == false)
         {
+            // If over-encumbered, use stamina and stop running
+            if (characterManager.IsOverEncumbered())
+            {
+                if (isRunning) ToggleRun();
+                characterManager.status.UseStamina(StaminaCosts.GetOverEncumberedMoveCost(characterManager, IsDiagonal(targetCell)));
+            }
+            // If running, use stamina (or stop running if not enough stamina)
+            else if (isRunning)
+            {
+                float runStaminaCost = StaminaCosts.GetRunCost(characterManager, IsDiagonal(targetCell));
+                if (characterManager.status.HasEnoughStamina(runStaminaCost))
+                    characterManager.status.UseStamina(runStaminaCost);
+                else
+                    ToggleRun();
+            }
+
             GameTiles.RemoveCharacter(transform.position);
             if (targetCell.y == startCell.y)
                 StartCoroutine(ArcMovement(targetCell));

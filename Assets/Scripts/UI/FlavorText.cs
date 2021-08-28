@@ -547,6 +547,7 @@ public class FlavorText : MonoBehaviour
 
     public void WriteLine_OverEncumbered()
     {
+        Debug.Log("Here");
         WriteLine("<b>You</b> feel weighed down by all of the items and equipment you have on you. Your every action feels sluggish.");
     }
 

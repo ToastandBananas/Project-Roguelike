@@ -64,6 +64,7 @@ public class TurnManager : MonoBehaviour
 
         gm.playerManager.status.UpdateBuffs();
         gm.playerManager.status.UpdateInjuries();
+        gm.playerManager.status.RegenerateStamina(6);
         TimeSystem.IncreaseTime();
 
         gm.healthDisplay.UpdateTooltip();
@@ -93,6 +94,7 @@ public class TurnManager : MonoBehaviour
 
             charManager.status.UpdateBuffs();
             charManager.status.UpdateInjuries();
+            charManager.status.RegenerateStamina(6);
 
             charManager.characterStats.ApplyAPLossBuildup();
 

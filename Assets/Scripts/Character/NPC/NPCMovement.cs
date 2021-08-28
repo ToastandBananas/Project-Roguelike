@@ -81,7 +81,7 @@ public class NPCMovement : Movement
 
         Vector2 nextPos = GetNextPosition();
         Rotate(GetNextDirection(nextPos), true);
-        characterManager.QueueAction(MoveToNextPointOnPath(), gm.apManager.GetMovementAPCost(IsDiagonal(nextPos)));
+        characterManager.QueueAction(MoveToNextPointOnPath(), gm.apManager.GetMovementAPCost(characterManager, IsDiagonal(nextPos)));
     }
 
     IEnumerator MoveToNextPointOnPath()
@@ -106,8 +106,24 @@ public class NPCMovement : Movement
         if (nextPos != (Vector2)transform.position)
             GameTiles.RemoveCharacter(transform.position);
 
+        // If over-encumbered, use stamina and stop running
+        if (characterManager.IsOverEncumbered())
+        {
+            if (isRunning) ToggleRun();
+            characterManager.status.UseStamina(StaminaCosts.GetOverEncumberedMoveCost(characterManager, IsDiagonal(nextPos)));
+        }
+        // If running, use stamina (or stop running if not enough stamina)
+        else if (isRunning)
+        {
+            float runStaminaCost = StaminaCosts.GetRunCost(characterManager, IsDiagonal(nextPos));
+            if (characterManager.status.HasEnoughStamina(runStaminaCost))
+                characterManager.status.UseStamina(runStaminaCost);
+            else
+                ToggleRun();
+        }
+
         // Possible move count will determine the speed of the character's movement, to prevent gameplay delays
-        int possibleMoveCount = Mathf.FloorToInt(characterManager.characterStats.maxAP.GetValue() / gm.apManager.GetMovementAPCost(false));
+        int possibleMoveCount = Mathf.FloorToInt(characterManager.characterStats.maxAP.GetValue() / gm.apManager.GetMovementAPCost(characterManager, false));
 
         // Move
         if (characterManager.spriteRenderer.isVisible == false)

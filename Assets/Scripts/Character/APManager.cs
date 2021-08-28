@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public enum ActionType { Move, Attack, Equip, Unequip }
@@ -14,6 +13,7 @@ public class APManager : MonoBehaviour
     readonly int rotationCost = 6;
 
     readonly float baseOverEncumberedPenalty = 0.5f;
+    readonly float baseOutOfStaminaPenalty = 2.5f;
 
     GameManager gm;
 
@@ -56,12 +56,31 @@ public class APManager : MonoBehaviour
         }
     }
 
-    public int GetMovementAPCost(bool diagonal)
+    public int GetMovementAPCost(CharacterManager characterMoving, bool diagonal)
     {
+        float cost = 0;
         if (diagonal)
-            return Mathf.RoundToInt(baseMovementCost * 1.414214f);
+            cost = Mathf.RoundToInt(baseMovementCost * 1.414214f);
         else
-            return baseMovementCost;
+            cost = baseMovementCost;
+
+        // TODO: Account for tile type
+
+        if (characterMoving.IsOverEncumbered())
+        {
+            cost += GetOverEncumberedAPPenalty(characterMoving, cost);
+
+            // If out of stamina, apply an additional penalty
+            if (characterMoving.status.currentStamina <= 1)
+                cost *= baseOutOfStaminaPenalty;
+        }
+
+        // Cut the movement cost in half if the character is running
+        if (characterMoving.movement.isRunning)
+            cost *= 0.5f;
+
+        Debug.Log(characterMoving.name + " move cost: " + Mathf.RoundToInt(cost));
+        return Mathf.RoundToInt(cost);
     }
 
     public int GetRotateAPCost()
@@ -71,28 +90,42 @@ public class APManager : MonoBehaviour
 
     public int GetAttackAPCost(CharacterManager characterManager, Weapon weapon, GeneralAttackType attackType)
     {
+        float cost = 0;
         switch (attackType)
         {
             case GeneralAttackType.Unarmed:
-                return 50;
+                cost = 50;
+                break;
             case GeneralAttackType.PrimaryWeapon:
-                return CalculateMeleeAttackAPCost(characterManager, weapon);
+                cost = CalculateMeleeAttackAPCost(characterManager, weapon);
+                break;
             case GeneralAttackType.SecondaryWeapon:
-                return CalculateMeleeAttackAPCost(characterManager, weapon);
+                cost = CalculateMeleeAttackAPCost(characterManager, weapon);
+                break;
             case GeneralAttackType.DualWield:
                 if (characterManager.attack.dualWieldAttackCount == 0)
-                    return CalculateMeleeAttackAPCost(characterManager, weapon);
+                    cost = CalculateMeleeAttackAPCost(characterManager, weapon);
                 else
-                    return CalculateDualWieldSecondAttackAPCost(characterManager, weapon);
+                    cost = CalculateDualWieldSecondAttackAPCost(characterManager, weapon);
+                break;
             case GeneralAttackType.Ranged:
-                return CalculateMeleeAttackAPCost(characterManager, weapon);
+                cost = CalculateMeleeAttackAPCost(characterManager, weapon);
+                break;
             case GeneralAttackType.Throwing:
-                return CalculateThrowAPCost(characterManager, weapon);
+                cost = CalculateThrowAPCost(characterManager, weapon);
+                break;
             case GeneralAttackType.Magic:
-                return 100;
+                cost = 100;
+                break;
             default:
-                return 100;
+                cost = 100;
+                break;
         }
+
+        if (characterManager.status.HasEnoughStamina(StaminaCosts.GetAttackCost(characterManager, weapon)) == false)
+            cost *= baseOutOfStaminaPenalty;
+
+        return Mathf.RoundToInt(cost);
     }
 
     public int GetWeaponStickAPCost(CharacterManager characterManager, Weapon weaponUsed, PhysicalDamageType mainPhysicalDamageType, float percentDamage)
@@ -247,7 +280,7 @@ public class APManager : MonoBehaviour
         return Mathf.RoundToInt(GetApplyMedicalItemAPCost(medSupply) * 0.75f);
     }
 
-    public int GetOverEncumberedAPPenalty(CharacterManager characterManager, int APAmount)
+    public int GetOverEncumberedAPPenalty(CharacterManager characterManager, float APAmount)
     {
         return Mathf.RoundToInt(APAmount * (baseOverEncumberedPenalty + ((characterManager.totalCarryWeight - characterManager.characterStats.GetMaximumWeightCapacity()) / characterManager.characterStats.GetMaximumWeightCapacity())));
     }

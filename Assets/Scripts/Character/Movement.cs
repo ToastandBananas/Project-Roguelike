@@ -9,7 +9,7 @@ public class Movement : MonoBehaviour
     [Tooltip("Multiplier for the arc height, which is dependent on the distance from the target (set to 0 for no arc)")]
     public float arcMultiplier = 0.1f;
 
-    [HideInInspector] public bool isMoving, canMove;
+    [HideInInspector] public bool isMoving, isRunning, canMove;
     [HideInInspector] public Direction directionFacing;
 
     [HideInInspector] public GameManager gm;
@@ -652,6 +652,13 @@ public class Movement : MonoBehaviour
         if (Mathf.RoundToInt(transform.position.x) != Mathf.RoundToInt(endPos.x) && Mathf.RoundToInt(transform.position.y) != Mathf.RoundToInt(endPos.y)) 
             return true;
         return false;
+    }
+
+    public void ToggleRun()
+    {
+        isRunning = !isRunning;
+        if (characterManager.isNPC == false)
+            gm.healthDisplay.UpdateMobilityText();
     }
 
     public IEnumerator MovementCooldown(float cooldownTime)

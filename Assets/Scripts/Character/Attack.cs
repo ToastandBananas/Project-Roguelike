@@ -14,6 +14,9 @@ public class Attack : MonoBehaviour
     [HideInInspector] public bool canAttack = true;
     [HideInInspector] public int dualWieldAttackCount = 0;
 
+    readonly float noStaminaDamageMultiplier = 0.5f;
+    readonly float noStaminaBlockChanceMultiplier = 0.33f;
+
     readonly int maxBlockChance = 85;
     bool cancellingAttacking;
 
@@ -147,24 +150,29 @@ public class Attack : MonoBehaviour
         int cleaveDamage = characterManager.equipmentManager.GetPhysicalMeleeDamage(weaponUsedItemData, meleeAttackType, PhysicalDamageType.Cleave);
 
         // Check if there are any damage penalties to apply
+        float damagePenaltyMultiplier = 1f;
         if (weaponUsed != null)
         {
-            float damagePenaltyMultiplier = 1f;
-
             // If the character is two-handing their weapon, but they don't have the proper strength to do so, apply a damage penalty
             if (characterManager.equipmentManager.isTwoHanding && characterManager.characterStats.strength.GetValue() < weaponUsed.StrengthRequired_TwoHand())
                 damagePenaltyMultiplier = (float)characterManager.characterStats.strength.GetValue() / (float)weaponUsed.StrengthRequired_TwoHand();
             // If the character is one-handing their weapon, but they don't have the proper strength to do so, apply a damage penalty
             else if (characterManager.equipmentManager.isTwoHanding == false && weaponUsed.CanOneHand(characterManager) == false)
                 damagePenaltyMultiplier = (float)characterManager.characterStats.strength.GetValue() / (float)weaponUsed.strengthRequirement_OneHand;
+        }
 
-            if (damagePenaltyMultiplier < 1f)
-            {
-                bluntDamage = Mathf.RoundToInt(bluntDamage * damagePenaltyMultiplier);
-                pierceDamage = Mathf.RoundToInt(pierceDamage * damagePenaltyMultiplier);
-                slashDamage = Mathf.RoundToInt(slashDamage * damagePenaltyMultiplier);
-                cleaveDamage = Mathf.RoundToInt(cleaveDamage * damagePenaltyMultiplier);
-            }
+        float staminaCost = StaminaCosts.GetAttackCost(characterManager, weaponUsed);
+        if (characterManager.status.HasEnoughStamina(staminaCost) == false)
+            damagePenaltyMultiplier *= noStaminaDamageMultiplier;
+
+        characterManager.status.UseStamina(staminaCost);
+
+        if (damagePenaltyMultiplier < 1f)
+        {
+            bluntDamage = Mathf.RoundToInt(bluntDamage * damagePenaltyMultiplier);
+            pierceDamage = Mathf.RoundToInt(pierceDamage * damagePenaltyMultiplier);
+            slashDamage = Mathf.RoundToInt(slashDamage * damagePenaltyMultiplier);
+            cleaveDamage = Mathf.RoundToInt(cleaveDamage * damagePenaltyMultiplier);
         }
 
         int totalDamage = bluntDamage + pierceDamage + slashDamage + cleaveDamage;
@@ -426,11 +434,24 @@ public class Attack : MonoBehaviour
             if (blockChance > maxBlockChance)
                 blockChance = maxBlockChance;
 
+            // Get the stamina cost to block
+            float blockStaminaCost;
+            if (weaponUsedItemData != null)
+                blockStaminaCost = StaminaCosts.GetBlockCost(targetsCharStats.characterManager, (Weapon)weaponUsedItemData.item);
+            else
+                blockStaminaCost = StaminaCosts.GetBlockCost(targetsCharStats.characterManager, null);
+            
+            // If the character doesn't have enough stamina for blocking, their block chance will be significantly reduced
+            if (targetsCharStats.characterManager.status.HasEnoughStamina(blockStaminaCost) == false)
+                blockChance *= noStaminaBlockChanceMultiplier;
+
             // Determine if the attack was blocked
             float random = Random.Range(1f, 100f);
             if (random <= blockChance)
             {
-                // Attack was blocked
+                // Attack was successfully blocked, so use stamina
+                targetsCharStats.characterManager.status.UseStamina(blockStaminaCost);
+
                 // Determine which shield or weapon blocked the attack and damage its durability
                 float percentChanceBlockLeft = leftBlockChance / blockChance;
 

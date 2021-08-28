@@ -136,9 +136,6 @@ public class EquipmentManager : MonoBehaviour
             gm.containerInvUI.GetInventoriesListFromDirection(gm.containerInvUI.activeDirection).Remove(newItemData.bagInventory);
         }
 
-        // Update the character's total weight/volume
-        characterManager.SetTotalCarriedWeightAndVolume();
-
         return true;
     }
 

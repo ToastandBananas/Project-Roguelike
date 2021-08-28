@@ -638,6 +638,9 @@ public class CharacterManager : MonoBehaviour
 
     public IEnumerator GetNextQueuedAction()
     {
+        if (status.isDead)
+            yield break;
+
         if (actions.Count > 0 && isPerformingAction == false)
         {
             int APRemainder = characterStats.UseAPAndGetRemainder(QueuedAP[0]);

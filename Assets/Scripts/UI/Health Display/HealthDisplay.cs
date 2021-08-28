@@ -8,14 +8,18 @@ public class HealthDisplay : MonoBehaviour
     [SerializeField] TextMeshProUGUI tooltipHeader;
     [SerializeField] GameObject tooltipParent;
 
-    [Header("Header Texts")]
+    [Header("Body Part Headers")]
     [SerializeField] TextMeshProUGUI headHeader;
     [SerializeField] TextMeshProUGUI torsoHeader, leftArmHeader, leftHandHeader, leftLegHeader, leftFootHeader, rightArmHeader, rightHandHeader, rightLegHeader, rightFootHeader;
 
-    [Header("Health Texts")]
+    [Header("Body Part Health Texts")]
     [SerializeField] TextMeshProUGUI headHealthText;
     [SerializeField] TextMeshProUGUI torsoHealthText, leftArmHealthText, leftHandHealthText, leftLegHealthText, leftFootHealthText;
     [SerializeField] TextMeshProUGUI rightArmHealthText, rightHandHealthText, rightLegHealthText, rightFootHealthText;
+
+    [Header("Other Info Texts")]
+    [SerializeField] TextMeshProUGUI mobilityText;
+    [SerializeField] TextMeshProUGUI currentStaminaText;
 
     [HideInInspector] public HealthDisplay_BodyPart focusedBodyPart;
     [HideInInspector] public HealthDisplay_BodyPart selectedBodyPart;
@@ -50,10 +54,13 @@ public class HealthDisplay : MonoBehaviour
     {
         gm = GameManager.instance;
 
+        UpdateMobilityText();
+        UpdateCurrentStaminaText();
         UpdateAllHealthTexts();
         HideTooltip();
     }
 
+    #region Body Part Health
     public void UpdateAllHealthTexts()
     {
         for (int i = 0; i < Enum.GetValues(typeof(BodyPartType)).Length; i++)
@@ -173,7 +180,9 @@ public class HealthDisplay : MonoBehaviour
                 break;
         }
     }
+    #endregion
 
+    #region Sidebar Tooltip
     public void SetTooltipHeader(BodyPartType bodyPartType)
     {
         tooltipHeader.text = Utilities.FormatEnumStringWithSpaces(bodyPartType.ToString(), true);
@@ -190,6 +199,14 @@ public class HealthDisplay : MonoBehaviour
             injuryTextButton.button.enabled = false;
 
         injuryTextButton.gameObject.SetActive(true);
+    }
+
+    public void UpdateTooltip()
+    {
+        if (focusedBodyPart != null)
+            focusedBodyPart.GenerateTooltipTexts();
+        else if (selectedBodyPart != null)
+            selectedBodyPart.GenerateTooltipTexts();
     }
 
     public void ShowTooltip()
@@ -213,12 +230,20 @@ public class HealthDisplay : MonoBehaviour
             gm.objectPoolManager.injuryTextButtonObjectPool.pooledInjuryTextButtons[i].injuryText.ClearMesh();
         }
     }
+    #endregion
 
-    public void UpdateTooltip()
+    #region Other Info Box
+    public void UpdateMobilityText()
     {
-        if (focusedBodyPart != null)
-            focusedBodyPart.GenerateTooltipTexts();
-        else if (selectedBodyPart != null)
-            selectedBodyPart.GenerateTooltipTexts();
+        if (gm.playerManager.movement.isRunning)
+            mobilityText.text = "Running";
+        else
+            mobilityText.text = "Walking";
     }
+
+    public void UpdateCurrentStaminaText()
+    {
+        currentStaminaText.text = gm.playerManager.status.currentStamina + "/" + gm.playerManager.status.maxStamina.GetValue();
+    }
+    #endregion
 }

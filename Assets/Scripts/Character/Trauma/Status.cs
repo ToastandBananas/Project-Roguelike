@@ -19,6 +19,12 @@ public class Status : MonoBehaviour
     public List<BodyPart> bodyParts = new List<BodyPart>();
     public List<Buff> buffs = new List<Buff>();
 
+    [Header("Stamina")]
+    public IntStat maxStamina;
+    public float currentStamina;
+    int staminaRegenTurnCooldown;
+    readonly float baseStaminaRegenPerTurn = 2;
+
     [Header("Healthiness")]
     public IntStat maxBloodAmount;
     public float currentBloodAmount;
@@ -49,6 +55,7 @@ public class Status : MonoBehaviour
         if (characterManager == null)
             characterManager = GetComponent<CharacterManager>();
 
+        currentStamina = maxStamina.GetValue();
         currentBloodAmount = maxBloodAmount.GetValue();
 
         for (int i = 0; i < bodyParts.Count; i++)
@@ -63,6 +70,7 @@ public class Status : MonoBehaviour
         gm = GameManager.instance;
     }
 
+    #region Healthiness
     public float GetHealthiness()
     {
         return healthiness;
@@ -76,7 +84,9 @@ public class Status : MonoBehaviour
         else if (healthiness > maxHealthiness)
             healthiness = maxHealthiness;
     }
+    #endregion
 
+    #region Update Buffs/Injuries
     public void UpdateBuffs(int timePassed = TimeSystem.defaultTimeTickInSeconds)
     {
         Heal_Passive(timePassed);
@@ -149,7 +159,9 @@ public class Status : MonoBehaviour
             }
         }
     }
+    #endregion
 
+    #region Bleed
     void Bleed(int timePassed)
     {
         for (int i = 0; i < bodyParts.Count; i++)
@@ -217,7 +229,9 @@ public class Status : MonoBehaviour
         }
         return false;
     }
+    #endregion
 
+    #region Damage
     void ApplyDamageBuildup()
     {
         int roundedDamageAmount = 0;
@@ -497,7 +511,9 @@ public class Status : MonoBehaviour
         if (gm.playerManager.CanSee(characterManager.spriteRenderer))
             gm.flavorText.StartCoroutine(gm.flavorText.DelayWriteLine(Utilities.GetPronoun(characterManager, true, false) + "died."));
     }
+    #endregion
 
+    #region Heal
     void Heal_Passive(int timePassed)
     {
         // Apply natural healing first, if the character is healthy enough
@@ -556,6 +572,55 @@ public class Status : MonoBehaviour
             }
         }
     }
+    #endregion
+
+    #region Stamina
+    public void UseStamina(float amount)
+    {
+        currentStamina -= amount;
+        if (currentStamina < 0)
+            currentStamina = 0;
+        else
+            currentStamina = Mathf.RoundToInt(currentStamina * 100f) / 100f;
+
+        StartStaminaRegenCooldown();
+
+        if (characterManager.isNPC == false)
+            gm.healthDisplay.UpdateCurrentStaminaText();
+    }
+
+    public void GainStamina(float amount)
+    {
+        currentStamina += amount;
+        if (currentStamina > maxStamina.GetValue())
+            currentStamina = maxStamina.GetValue();
+        else
+            currentStamina = Mathf.RoundToInt(currentStamina * 100f) / 100f;
+        
+        if (characterManager.isNPC == false)
+            gm.healthDisplay.UpdateCurrentStaminaText();
+    }
+
+    public void RegenerateStamina(int timePassed)
+    {
+        if (staminaRegenTurnCooldown > 0)
+            staminaRegenTurnCooldown -= Mathf.RoundToInt(timePassed / 6);
+        else
+            GainStamina(baseStaminaRegenPerTurn * (timePassed / 6)); // Divide by the amount of turns that have passed since last regen
+    }
+
+    public void StartStaminaRegenCooldown(int turnCount = 5)
+    {
+        staminaRegenTurnCooldown = turnCount;
+    }
+
+    public bool HasEnoughStamina(float amountNeeded)
+    {
+        if (currentStamina >= amountNeeded)
+            return true;
+        return false;
+    }
+    #endregion
 
     public IEnumerator Consume(ItemData consumableItemData, Consumable consumable, int itemCount, float percentUsed, string itemName)
     {
