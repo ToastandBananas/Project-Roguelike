@@ -17,6 +17,9 @@ public class PlayerMovement : Movement
         if (GameControls.gamePlayActions.playerRun.WasPressed)
             ToggleRun();
 
+        if (GameControls.gamePlayActions.playerWait.WasPressed)
+            StartCoroutine(gm.turnManager.FinishTurn(playerManager));
+
         CheckForMovement();
     }
 

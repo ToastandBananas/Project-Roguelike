@@ -18,6 +18,11 @@ public class FloatStat
         return finalValue;
     }
 
+    public float GetBaseValue()
+    {
+        return baseValue;
+    }
+
     public void EditBaseValue(float amount)
     {
         baseValue += amount;
@@ -38,5 +43,10 @@ public class FloatStat
     {
         if (modifier != 0)
             modifiers.Remove(modifier);
+    }
+
+    public void ClearModifiers()
+    {
+        modifiers.Clear();
     }
 }

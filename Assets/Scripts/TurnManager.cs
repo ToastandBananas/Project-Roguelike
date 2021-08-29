@@ -34,8 +34,8 @@ public class TurnManager : MonoBehaviour
 
     public IEnumerator FinishTurn(CharacterManager characterManager)
     {
-        while (characterManager.movement.isMoving) { yield return null; }
-        //yield return null;
+        //while (characterManager.movement.isMoving) { yield return null; }
+        yield return null;
         
         if (characterManager.isMyTurn)
         {
@@ -64,7 +64,10 @@ public class TurnManager : MonoBehaviour
 
         gm.playerManager.status.UpdateBuffs();
         gm.playerManager.status.UpdateInjuries();
-        gm.playerManager.status.RegenerateStamina(6);
+        gm.playerManager.status.RegenerateStamina();
+        gm.playerManager.status.DrainNourishment();
+        gm.playerManager.status.DrainThirst();
+
         TimeSystem.IncreaseTime();
 
         gm.healthDisplay.UpdateTooltip();
@@ -72,7 +75,7 @@ public class TurnManager : MonoBehaviour
         gm.playerManager.vision.CheckEnemyVisibility();
 
         gm.playerManager.characterStats.ApplyAPLossBuildup();
-        if (gm.playerManager.characterStats.currentAP > 0)
+        if (gm.playerManager.characterStats.currentAP > 0 && gm.playerManager.actions.Count > 0)
             gm.playerManager.StartCoroutine(gm.playerManager.GetNextQueuedAction());
     }
 
@@ -94,7 +97,9 @@ public class TurnManager : MonoBehaviour
 
             charManager.status.UpdateBuffs();
             charManager.status.UpdateInjuries();
-            charManager.status.RegenerateStamina(6);
+            charManager.status.RegenerateStamina();
+            charManager.status.DrainNourishment();
+            charManager.status.DrainThirst();
 
             charManager.characterStats.ApplyAPLossBuildup();
 

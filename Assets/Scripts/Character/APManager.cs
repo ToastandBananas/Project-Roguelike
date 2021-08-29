@@ -79,7 +79,7 @@ public class APManager : MonoBehaviour
         if (characterMoving.movement.isRunning)
             cost *= 0.5f;
 
-        Debug.Log(characterMoving.name + " move cost: " + Mathf.RoundToInt(cost));
+        // Debug.Log(characterMoving.name + " move cost: " + Mathf.RoundToInt(cost));
         return Mathf.RoundToInt(cost);
     }
 

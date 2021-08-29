@@ -19,7 +19,7 @@ public class HealthDisplay : MonoBehaviour
 
     [Header("Other Info Texts")]
     [SerializeField] TextMeshProUGUI mobilityText;
-    [SerializeField] TextMeshProUGUI currentStaminaText;
+    [SerializeField] TextMeshProUGUI currentStaminaText, hungerText, thirstText;
 
     [HideInInspector] public HealthDisplay_BodyPart focusedBodyPart;
     [HideInInspector] public HealthDisplay_BodyPart selectedBodyPart;
@@ -56,6 +56,8 @@ public class HealthDisplay : MonoBehaviour
 
         UpdateMobilityText();
         UpdateCurrentStaminaText();
+        UpdateHungerText();
+        UpdateThirstText();
         UpdateAllHealthTexts();
         HideTooltip();
     }
@@ -244,6 +246,16 @@ public class HealthDisplay : MonoBehaviour
     public void UpdateCurrentStaminaText()
     {
         currentStaminaText.text = gm.playerManager.status.currentStamina + "/" + gm.playerManager.status.maxStamina.GetValue();
+    }
+
+    public void UpdateHungerText()
+    {
+        hungerText.text = gm.playerManager.status.GetHunger() + "%";
+    }
+
+    public void UpdateThirstText()
+    {
+        thirstText.text = gm.playerManager.status.GetThirst() + "%";
     }
     #endregion
 }

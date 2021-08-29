@@ -11,7 +11,7 @@ public class TimeSystem : MonoBehaviour
     public static void IncreaseTime()
     {
         IncreaseCurrentSecond(defaultTimeTickInSeconds);
-        LogTime();
+        // LogTime();
     }
 
     static void IncreaseCurrentSecond(int seconds)
@@ -62,8 +62,13 @@ public class TimeSystem : MonoBehaviour
         return (timeAmount.x * 60 * 60) + (timeAmount.y * 60) + timeAmount.z;
     }
 
+    public static void UpdateTimeDisplay()
+    {
+        // TODO
+    }
+
     public static void LogTime()
     {
-        // Debug.Log(currentHour + ":" + currentMinute + ":" + currentSecond);
+        Debug.Log(currentHour + ":" + currentMinute + ":" + currentSecond);
     }
 }

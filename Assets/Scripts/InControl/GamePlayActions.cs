@@ -5,7 +5,7 @@ public class GamePlayActions : PlayerActionSet
     public PlayerAction playerInteract;
     public PlayerAction playerSwapWeapon, playerSheatheWeapon, playerAttack, playerSwitchStance;
 
-    public PlayerAction playerRun;
+    public PlayerAction playerRun, playerWait;
     public PlayerAction playerMoveUp, playerMoveDown, playerMoveLeft, playerMoveRight;
     public PlayerAction playerMoveUpLeft, playerMoveUpRight, playerMoveDownLeft, playerMoveDownRight;
     public PlayerTwoAxisAction playerMovementAxis;
@@ -37,6 +37,7 @@ public class GamePlayActions : PlayerActionSet
 
         // Movement
         playerRun = CreatePlayerAction("PlayerRun");
+        playerWait = CreatePlayerAction("PlayerWait");
         playerMoveUp = CreatePlayerAction("PlayerMoveUp");
         playerMoveDown = CreatePlayerAction("PlayerMoveDown");
         playerMoveLeft = CreatePlayerAction("PlayerMoveLeft");

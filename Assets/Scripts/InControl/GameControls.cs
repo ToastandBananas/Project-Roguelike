@@ -32,6 +32,11 @@ public class GameControls : MonoBehaviour
         gamePlayActions.playerRun.AddDefaultBinding(InputControlType.LeftStickButton); // Toggle Run
         gamePlayActions.playerRun.AddDefaultBinding(Key.T);
 
+        gamePlayActions.playerWait.AddDefaultBinding(InputControlType.Select); // Wait
+        gamePlayActions.playerWait.AddDefaultBinding(InputControlType.Share);
+        gamePlayActions.playerWait.AddDefaultBinding(InputControlType.Back);
+        gamePlayActions.playerWait.AddDefaultBinding(Key.Period);
+
         // Movement
         gamePlayActions.playerMoveUp.AddDefaultBinding(InputControlType.LeftStickUp); // Up
         gamePlayActions.playerMoveUp.AddDefaultBinding(Key.W);

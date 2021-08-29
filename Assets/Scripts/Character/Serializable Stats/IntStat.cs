@@ -18,6 +18,11 @@ public class IntStat
         return finalValue;
     }
 
+    public int GetBaseValue()
+    {
+        return baseValue;
+    }
+
     public void EditBaseValue(int amount)
     {
         baseValue += amount;
@@ -38,5 +43,10 @@ public class IntStat
     {
         if (modifier != 0)
             modifiers.Remove(modifier);
+    }
+
+    public void ClearModifiers()
+    {
+        modifiers.Clear();
     }
 }
