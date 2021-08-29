@@ -7795,6 +7795,7 @@ GameObject:
   - component: {fileID: 549636867}
   - component: {fileID: 549636872}
   - component: {fileID: 549636874}
+  - component: {fileID: 549636876}
   - component: {fileID: 549636875}
   - component: {fileID: 549636871}
   m_Layer: 6
@@ -8410,6 +8411,18 @@ MonoBehaviour:
   myInvUI: {fileID: 0}
   myItemData: {fileID: 0}
   hasBeenInitialized: 0
+--- !u!114 &549636876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549636862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efb19af717813f549a615dec99cc34ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &554865803
 GameObject:
   m_ObjectHideFlags: 0

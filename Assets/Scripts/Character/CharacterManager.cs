@@ -19,6 +19,7 @@ public class CharacterManager : MonoBehaviour
     [HideInInspector] public NPCMovement npcMovement;
     [HideInInspector] public StateController stateController;
     [HideInInspector] public CharacterStats characterStats;
+    [HideInInspector] public Nutrition nutrition;
     [HideInInspector] public Status status;
     [HideInInspector] public Vision vision;
 
@@ -70,7 +71,8 @@ public class CharacterManager : MonoBehaviour
             npcMovement = (NPCMovement)movement;
             stateController = GetComponent<StateController>();
         }
-        
+
+        TryGetComponent(out nutrition);
         TryGetComponent(out equipmentManager);
         TryGetComponent(out personalInventory);
         if (equipmentManager != null)

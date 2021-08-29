@@ -250,12 +250,12 @@ public class HealthDisplay : MonoBehaviour
 
     public void UpdateHungerText()
     {
-        hungerText.text = gm.playerManager.status.GetHunger() + "%";
+        hungerText.text = gm.playerManager.nutrition.GetHunger() + "%";
     }
 
     public void UpdateThirstText()
     {
-        thirstText.text = gm.playerManager.status.GetThirst() + "%";
+        thirstText.text = gm.playerManager.nutrition.GetThirst() + "%";
     }
     #endregion
 }
