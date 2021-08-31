@@ -26,7 +26,7 @@ public class PlayerMovement : Movement
     void CheckForMovement()
     {
         // Do nothing if the Player is still moving
-        if (playerManager.isMyTurn == false || isMoving || characterManager.actions.Count > 0/*characterManager.actionsQueued > 0*/ || GameControls.gamePlayActions.leftCtrl.IsPressed)
+        if (playerManager.isMyTurn == false || isMoving || characterManager.actions.Count > 0 || GameControls.gamePlayActions.leftCtrl.IsPressed)
             return;
 
         Vector2 movementInput = GameControls.gamePlayActions.playerMovementAxis.Value;

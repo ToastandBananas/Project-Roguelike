@@ -5,7 +5,7 @@ using UnityEngine;
 public class CharacterManager : MonoBehaviour
 {
     [HideInInspector] public List<IEnumerator> actions = new List<IEnumerator>();
-    public List<int> QueuedAP = new List<int>();
+    public List<int> queuedAP = new List<int>();
 
     public bool isNamed;
 
@@ -633,9 +633,12 @@ public class CharacterManager : MonoBehaviour
     {
         // if (isNPC) Debug.Log(name + " queued " + action);
         actions.Add(action);
-        QueuedAP.Add(APCost);
+        queuedAP.Add(APCost);
         if (isMyTurn && characterStats.currentAP > 0)
             StartCoroutine(GetNextQueuedAction());
+
+        if (isNPC == false)
+            gm.healthDisplay.UpdateLastAPUsed(APCost);
     }
 
     public IEnumerator GetNextQueuedAction()
@@ -645,18 +648,17 @@ public class CharacterManager : MonoBehaviour
 
         if (actions.Count > 0 && isPerformingAction == false)
         {
-            int APRemainder = characterStats.UseAPAndGetRemainder(QueuedAP[0]);
+            int APRemainder = characterStats.UseAPAndGetRemainder(queuedAP[0]);
             if (APRemainder <= 0)
             {
                 isPerformingAction = true;
                 yield return StartCoroutine(actions[0]);
-
                 // if (isNPC == false) Debug.Log("Got next queued action. Actions still queued: " + actions.Count);
             }
             else
             {
                 // if (isNPC == false) Debug.Log("Can't do next queued action yet. Remaining AP: " + APRemainder);
-                QueuedAP[0] = APRemainder;
+                queuedAP[0] = APRemainder;
                 StartCoroutine(gm.turnManager.FinishTurn(this));
             }
         }
@@ -666,11 +668,11 @@ public class CharacterManager : MonoBehaviour
 
     public void FinishAction()
     {
-        if (QueuedAP.Count > 0)
-            QueuedAP.Remove(QueuedAP[0]);
+        if (queuedAP.Count > 0)
+            queuedAP.Remove(queuedAP[0]);
         if (actions.Count > 0)
             actions.Remove(actions[0]);
-
+        
         isPerformingAction = false;
         
         // If the character has no AP remaining, end their turn
@@ -683,7 +685,7 @@ public class CharacterManager : MonoBehaviour
     public void ResetActionsQueue()
     {
         actions.Clear();
-        QueuedAP.Clear();
+        queuedAP.Clear();
     }
     #endregion
 }

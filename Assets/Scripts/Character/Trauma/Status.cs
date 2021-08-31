@@ -22,8 +22,8 @@ public class Status : MonoBehaviour
     [Header("Stamina")]
     public IntStat maxStamina;
     public float currentStamina;
+    public FloatStat staminaRegenPercent;
     int staminaRegenTurnCooldown;
-    readonly float baseStaminaRegenPercent = 0.02f;
 
     [Header("Healthiness")]
     public IntStat maxBloodAmount;
@@ -602,7 +602,7 @@ public class Status : MonoBehaviour
         if (staminaRegenTurnCooldown > 0)
             staminaRegenTurnCooldown -= Mathf.RoundToInt(timePassed / TimeSystem.defaultTimeTickInSeconds);
         else
-            GainStamina((baseStaminaRegenPercent * maxStamina.GetValue()) * (timePassed / TimeSystem.defaultTimeTickInSeconds)); // Divide by the amount of turns that have passed since last regen
+            GainStamina(staminaRegenPercent.GetValue() * maxStamina.GetValue() * (timePassed / TimeSystem.defaultTimeTickInSeconds)); // Divide by the amount of turns that have passed since last regen
     }
 
     public void StartStaminaRegenCooldown(int turnCount = 5)

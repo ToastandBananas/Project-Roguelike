@@ -52,6 +52,7 @@ public class Movement : MonoBehaviour
         characterManager.FinishAction();
         if (isMoving)
         {
+            Debug.Log("Here");
             characterManager.FinishAction();
             yield break;
         }
@@ -102,8 +103,7 @@ public class Movement : MonoBehaviour
 
             yield return null;
         }
-
-        isMoving = false;
+        
         OnFinishedMoving();
     }
     
@@ -131,7 +131,7 @@ public class Movement : MonoBehaviour
             inverseMoveTime = 1 / (diagonalMoveTime / possibleMoveCount);
         else
             inverseMoveTime = 1 / (moveTime / possibleMoveCount);
-
+        
         while ((Vector2)transform.position != endPos)
         {
             // if (characterManager.isNPC) Debug.Log("Smooth movement: " + endPos);
@@ -140,8 +140,7 @@ public class Movement : MonoBehaviour
 
             yield return null;
         }
-
-        isMoving = false;
+        
         OnFinishedMoving();
     }
     
@@ -181,7 +180,6 @@ public class Movement : MonoBehaviour
         if (characterManager.attack.isAttacking)
             characterManager.attack.isAttacking = false;
 
-        isMoving = false;
         OnFinishedMoving(false);
     }
 
@@ -195,6 +193,7 @@ public class Movement : MonoBehaviour
 
     public void OnFinishedMoving(bool updateTiles = true)
     {
+        isMoving = false;
         if (characterManager.isNPC)
         {
             characterManager.npcMovement.moveQueued = false;

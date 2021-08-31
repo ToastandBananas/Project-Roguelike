@@ -54,6 +54,12 @@ public class APManager : MonoBehaviour
 
             StartCoroutine(gm.turnManager.FinishTurn(characterManager));
         }
+
+        if (characterManager.isNPC == false)
+        {
+            gm.healthDisplay.UpdateLastAPUsed(APAmount);
+            gm.healthDisplay.UpdateAPText();
+        }
     }
 
     public int GetMovementAPCost(CharacterManager characterMoving, bool diagonal)

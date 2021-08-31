@@ -81,14 +81,13 @@ public class NPCMovement : Movement
 
         Vector2 nextPos = GetNextPosition();
         Rotate(GetNextDirection(nextPos), true);
+        moveQueued = true;
         characterManager.QueueAction(MoveToNextPointOnPath(), gm.apManager.GetMovementAPCost(characterManager, IsDiagonal(nextPos)));
     }
 
     IEnumerator MoveToNextPointOnPath()
     {
         if (characterManager.status.isDead) yield break;
-
-        moveQueued = true;
 
         // Update the character's path
         AIPath.SearchPath();
@@ -123,7 +122,9 @@ public class NPCMovement : Movement
         }
 
         // Possible move count will determine the speed of the character's movement, to prevent gameplay delays
-        int possibleMoveCount = Mathf.FloorToInt(characterManager.characterStats.maxAP.GetValue() / gm.apManager.GetMovementAPCost(characterManager, false));
+        int possibleMoveCount = Mathf.FloorToInt(characterManager.characterStats.MaxAP() / gm.apManager.GetMovementAPCost(characterManager, false));
+        if (possibleMoveCount < 1)
+            possibleMoveCount = 1;
 
         // Move
         if (characterManager.spriteRenderer.isVisible == false)

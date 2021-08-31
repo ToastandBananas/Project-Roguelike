@@ -19,7 +19,7 @@ public class HealthDisplay : MonoBehaviour
 
     [Header("Other Info Texts")]
     [SerializeField] TextMeshProUGUI mobilityText;
-    [SerializeField] TextMeshProUGUI currentStaminaText, hungerText, thirstText;
+    [SerializeField] TextMeshProUGUI currentStaminaText, hungerText, thirstText, APText;
 
     [HideInInspector] public HealthDisplay_BodyPart focusedBodyPart;
     [HideInInspector] public HealthDisplay_BodyPart selectedBodyPart;
@@ -27,6 +27,8 @@ public class HealthDisplay : MonoBehaviour
 
     StringBuilder stringBuilder = new StringBuilder();
     GameManager gm;
+
+    int lastAPUsed;
 
     readonly string red = "#C81236";
     readonly string orange = "#FE6E00";
@@ -56,8 +58,7 @@ public class HealthDisplay : MonoBehaviour
 
         UpdateMobilityText();
         UpdateCurrentStaminaText();
-        UpdateHungerText();
-        UpdateThirstText();
+        UpdateAPText();
         UpdateAllHealthTexts();
         HideTooltip();
     }
@@ -250,12 +251,30 @@ public class HealthDisplay : MonoBehaviour
 
     public void UpdateHungerText()
     {
-        hungerText.text = gm.playerManager.nutrition.GetHunger() + "%";
+        //hungerText.text = gm.playerManager.nutrition.GetHunger() + "%";
+        hungerText.text = Utilities.FormatEnumStringWithSpaces(gm.playerManager.nutrition.currentHungerLevel.ToString(), false);
     }
 
     public void UpdateThirstText()
     {
-        thirstText.text = gm.playerManager.nutrition.GetThirst() + "%";
+        //thirstText.text = gm.playerManager.nutrition.GetThirst() + "%";
+        if (gm.playerManager.nutrition.currentThirstLevel == ThirstLevel.DyingOfThirst)
+            thirstText.text = "Dying of Thirst";
+        else
+            thirstText.text = Utilities.FormatEnumStringWithSpaces(gm.playerManager.nutrition.currentThirstLevel.ToString(), false);
+    }
+
+    public void UpdateAPText()
+    {
+        if (lastAPUsed > 0)
+            APText.text = gm.playerManager.characterStats.currentAP + " (" + lastAPUsed + ")";
+        else
+            APText.text = gm.playerManager.characterStats.currentAP.ToString();
+    }
+
+    public void UpdateLastAPUsed(int APUsed)
+    {
+        lastAPUsed = APUsed;
     }
     #endregion
 }

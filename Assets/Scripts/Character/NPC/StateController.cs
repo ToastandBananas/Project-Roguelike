@@ -23,9 +23,9 @@ public class StateController : MonoBehaviour
     {
         if (characterManager.actions.Count > 0)
             characterManager.StartCoroutine(characterManager.GetNextQueuedAction());
-        else
+        else if (characterManager.movement.isMoving == false)
         {
-            switch (characterManager.stateController.currentState)
+            switch (currentState)
             {
                 case State.Idle:
                     StartCoroutine(gm.turnManager.FinishTurn(characterManager));

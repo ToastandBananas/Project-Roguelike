@@ -11,10 +11,10 @@ public class CharacterStats : Stats
     public IntStat speed;
     public IntStat strength;
 
-    [Header("AP")]
-    public IntStat maxAP;
+    //[Header("AP")]
     public int currentAP { get; private set; }
     int APLossBuildup;
+    readonly int baseAP = 25;
 
     [Header("Personal Inv. Volume")]
     public FloatStat maxPersonalInvVolume;
@@ -36,7 +36,12 @@ public class CharacterStats : Stats
 
     void Awake()
     {
-        currentAP = maxAP.GetValue();
+        ReplenishAP();
+    }
+
+    public int MaxAP()
+    {
+        return Mathf.RoundToInt(baseAP + (speed.GetValue() * 1.5f));
     }
 
     public int UseAPAndGetRemainder(int amount)
@@ -62,11 +67,13 @@ public class CharacterStats : Stats
     {
         // Debug.Log("AP used: " + amount);
         currentAP -= amount;
+        if (characterManager.isNPC == false)
+            gm.healthDisplay.UpdateAPText();
     }
 
     public void ReplenishAP()
     {
-        currentAP = maxAP.GetValue();
+        currentAP = MaxAP();
     }
 
     public void AddToCurrentAP(int amountToAdd)
