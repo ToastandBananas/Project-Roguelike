@@ -8559,6 +8559,8 @@ MonoBehaviour:
     baseValue: 100
     modifiers: 
   currentWater: 0
+  hungerStatusEffect: {fileID: 0}
+  thirstStatusEffect: {fileID: 0}
 --- !u!1 &554865803
 GameObject:
   m_ObjectHideFlags: 0
@@ -9911,7 +9913,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 4
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -12726,7 +12728,7 @@ MonoBehaviour:
   stackSizeSelector: {fileID: 0}
   tileInfoDisplay: {fileID: 0}
   tooltipManager: {fileID: 0}
-  traumaSystem: {fileID: 0}
+  healthSystem: {fileID: 0}
   turnManager: {fileID: 0}
   uiManager: {fileID: 0}
 --- !u!114 &840856819
@@ -12821,6 +12823,32 @@ MonoBehaviour:
   gashes: []
   stabWounds: []
   bruises: []
+  hungerEffects:
+  - {fileID: 11400000, guid: 74a2246b4aaaf3241ac38d8ff7dbf722, type: 2}
+  - {fileID: 11400000, guid: 01bc8e6ae1ef52a4ebda578406549aa1, type: 2}
+  - {fileID: 11400000, guid: 2228603a831a1a344b2505f45f684ae6, type: 2}
+  - {fileID: 11400000, guid: ed1aff068f43cde4797444cd1d0945cb, type: 2}
+  - {fileID: 11400000, guid: 52e1bf9679545914794be765496c2d7c, type: 2}
+  - {fileID: 11400000, guid: e43306fcdb434574aa5494931b39e7ae, type: 2}
+  - {fileID: 11400000, guid: c56991345da519d439567dab3deacc8f, type: 2}
+  - {fileID: 11400000, guid: a168044febfc87245b31a1f347eb673b, type: 2}
+  - {fileID: 11400000, guid: 3e403a0371c27e940a8de149cb9859b1, type: 2}
+  - {fileID: 11400000, guid: e28b323c42143b74b931dac87580111b, type: 2}
+  - {fileID: 11400000, guid: 86ef90e28c8b5784aa05acb442f5efff, type: 2}
+  - {fileID: 11400000, guid: 39ebab3eb3120774db21f0e1cfeaba33, type: 2}
+  thirstEffects:
+  - {fileID: 11400000, guid: 26941f4821f0efb4092cbedd349681e1, type: 2}
+  - {fileID: 11400000, guid: 823823ee3875f0c4488584bce57b0c7c, type: 2}
+  - {fileID: 11400000, guid: b28f2f9de7611554da2f51e3a64122dc, type: 2}
+  - {fileID: 11400000, guid: b3de4c5efa813e4448e6bea1b6bfd626, type: 2}
+  - {fileID: 11400000, guid: 7876a9f69a34ee04b853c755d5221303, type: 2}
+  - {fileID: 11400000, guid: e29aa47caddcc5d41b6893156a680f1f, type: 2}
+  - {fileID: 11400000, guid: efe82bc5919fd5b48afb98f6252416a8, type: 2}
+  - {fileID: 11400000, guid: 88bb43a599c70c446b4fcdd2f2a17f6e, type: 2}
+  - {fileID: 11400000, guid: 02393a1e04af6c941939d918af91c060, type: 2}
+  - {fileID: 11400000, guid: edd449eaec666714785d5168b953f71b, type: 2}
+  - {fileID: 11400000, guid: 01517a76aa55ce444a3ab8874aa92295, type: 2}
+  - {fileID: 11400000, guid: d811578e7449406408792304815349aa, type: 2}
 --- !u!1 &848710992
 GameObject:
   m_ObjectHideFlags: 0
@@ -18881,7 +18909,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1167739931
 RectTransform:
   m_ObjectHideFlags: 0
@@ -26748,7 +26776,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -99616,7 +99644,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 4
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0

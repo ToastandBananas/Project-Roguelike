@@ -34,7 +34,7 @@ MonoBehaviour:
   energyRestoration: 20
   staminaRecoveryAmount: 10
   manaRecoveryAmount: 0
-  healthinessAdjustment: 0.75
+  healthinessAdjustment: 0.15
   instantHealPercent: 0
   gradualHealPercent: 0.05
   minGradualHealTime: {x: 0, y: 45, z: 0}

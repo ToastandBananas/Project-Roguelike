@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TraumaSystem : MonoBehaviour
+public class HealthSystem : MonoBehaviour
 {
     [Header("Bleeding Wounds")]
     public Injury[] abrasions;
@@ -11,10 +11,14 @@ public class TraumaSystem : MonoBehaviour
     [Header("Blunt Trauma")]
     public Injury[] bruises;
 
+    [Header("Hunger/Thirst Effects")]
+    public StatusEffect[] hungerEffects;
+    public StatusEffect[] thirstEffects;
+
     static GameManager gm;
 
     #region Singleton
-    public static TraumaSystem instance;
+    public static HealthSystem instance;
     void Awake()
     {
         if (instance != null)
@@ -116,6 +120,72 @@ public class TraumaSystem : MonoBehaviour
             if (lacerations[5] == null)
                 Debug.LogError("Severe Laceration Injury not assigned in the TraumaSystem's inspector. Fix me!");
             return lacerations[5];
+        }
+    }
+
+    public StatusEffect GetHungerStatusEffect(CharacterManager characterManager)
+    {
+        switch (characterManager.nutrition.currentHungerLevel)
+        {
+            case HungerLevel.Engorged:
+                return hungerEffects[0];
+            case HungerLevel.UncomfortablyFull:
+                return hungerEffects[1];
+            case HungerLevel.Stuffed:
+                return hungerEffects[2];
+            case HungerLevel.Sated:
+                return hungerEffects[3];
+            case HungerLevel.Full:
+                return hungerEffects[4];
+            case HungerLevel.Satisfied:
+                return hungerEffects[5];
+            case HungerLevel.Peckish:
+                return hungerEffects[6];
+            case HungerLevel.Hungry:
+                return hungerEffects[7];
+            case HungerLevel.VeryHungry:
+                return hungerEffects[8];
+            case HungerLevel.Famished:
+                return hungerEffects[9];
+            case HungerLevel.Starving:
+                return hungerEffects[10];
+            case HungerLevel.Ravenous:
+                return hungerEffects[11];
+            default:
+                return null;
+        }
+    }
+
+    public StatusEffect GetThirstStatusEffect(CharacterManager characterManager)
+    {
+        switch (characterManager.nutrition.currentThirstLevel)
+        {
+            case ThirstLevel.WaterIntoxicated:
+                return thirstEffects[0];
+            case ThirstLevel.Overhydrated:
+                return thirstEffects[1];
+            case ThirstLevel.Slaked:
+                return thirstEffects[2];
+            case ThirstLevel.Sated:
+                return thirstEffects[3];
+            case ThirstLevel.Quenched:
+                return thirstEffects[4];
+            case ThirstLevel.Satisfied:
+                return thirstEffects[5];
+            case ThirstLevel.Cottonmouthed:
+                return thirstEffects[6];
+            case ThirstLevel.Thirsty:
+                return thirstEffects[7];
+            case ThirstLevel.Parched:
+                return thirstEffects[8];
+            case ThirstLevel.BoneDry:
+                return thirstEffects[9];
+            case ThirstLevel.Dehydrated:
+                return thirstEffects[10];
+            case ThirstLevel.DyingOfThirst:
+                return thirstEffects[11];
+            default:
+                return null;
         }
     }
 }

@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public StackSizeSelector stackSizeSelector;
     [HideInInspector] public TileInfoDisplay tileInfoDisplay;
     [HideInInspector] public TooltipManager tooltipManager;
-    [HideInInspector] public TraumaSystem traumaSystem;
+    [HideInInspector] public HealthSystem healthSystem;
     [HideInInspector] public TurnManager turnManager;
     [HideInInspector] public UIManager uiManager;
 
@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
         stackSizeSelector = StackSizeSelector.instance;
         tileInfoDisplay = TileInfoDisplay.instance;
         tooltipManager = TooltipManager.instance;
-        traumaSystem = TraumaSystem.instance;
+        healthSystem = HealthSystem.instance;
         turnManager = TurnManager.instance;
         uiManager = UIManager.instance;
     }

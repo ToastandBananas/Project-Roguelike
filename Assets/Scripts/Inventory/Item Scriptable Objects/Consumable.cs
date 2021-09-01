@@ -31,7 +31,7 @@ public class Consumable : Item
         else
             percentUsed = itemData.percentRemaining / 100f;
 
-        characterManager.QueueAction(characterManager.status.Consume(itemData, this, itemCount, percentUsed, itemData.GetItemName(itemCount)), APManager.instance.GetConsumeAPCost(this, itemCount, percentUsed));
+        characterManager.QueueAction(characterManager.nutrition.Consume(itemData, this, itemCount, percentUsed, itemData.GetItemName(itemCount)), APManager.instance.GetConsumeAPCost(this, itemCount, percentUsed));
 
         base.Use(characterManager, inventory, invItem, itemData, itemCount, partialAmountToUse, equipSlot);
     }

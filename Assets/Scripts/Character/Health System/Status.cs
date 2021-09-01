@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -412,8 +411,8 @@ public class Status : MonoBehaviour
         // Let cleave damage take priority, since the injuries caused by them are relatively similar to slashing injuries, but cleave injuries are more severe
         if (slashDamage > 0 && slashDamage > cleaveDamage)
         {
-            Injury laceration = gm.traumaSystem.GetLaceration(characterManager, bodyPart.bodyPartType, slashDamage);
-            TraumaSystem.ApplyInjury(characterManager, laceration, bodyPart.bodyPartType, attackedFromBehind);
+            Injury laceration = gm.healthSystem.GetLaceration(characterManager, bodyPart.bodyPartType, slashDamage);
+            HealthSystem.ApplyInjury(characterManager, laceration, bodyPart.bodyPartType, attackedFromBehind);
 
             if (gm.playerManager.CanSee(characterManager.spriteRenderer))
                 gm.flavorText.WriteLine_Injury(characterManager, laceration, bodyPart.bodyPartType);
@@ -617,34 +616,6 @@ public class Status : MonoBehaviour
         return false;
     }
     #endregion
-
-    public IEnumerator Consume(ItemData consumableItemData, Consumable consumable, int itemCount, float percentUsed, string itemName)
-    {
-        if (isDead) yield break;
-
-        // Adjust overall bodily healthiness
-        if (consumable.healthinessAdjustment != 0)
-            characterManager.status.AdjustHealthiness(consumable.healthinessAdjustment * itemCount * percentUsed);
-
-        // Instantly heal entire body
-        if (consumable.instantHealPercent > 0)
-            characterManager.status.HealAllBodyParts_Percent(consumable.instantHealPercent * itemCount * percentUsed);
-
-        // Apply heal over time buff
-        if (consumable.gradualHealPercent > 0)
-            TraumaSystem.ApplyBuff(characterManager, consumable, itemCount, percentUsed);
-
-        // Show some flavor text
-        if (gm.playerManager.CanSee(characterManager.spriteRenderer))
-        {
-            if (consumableItemData.percentRemaining - (percentUsed * 100) > 0)
-                gm.flavorText.WriteLine_Consume(characterManager, consumable, itemName, percentUsed);
-            else
-                gm.flavorText.WriteLine_Consume(characterManager, consumable, itemName, 1);
-        }
-
-        characterManager.FinishAction();
-    }
 
     public virtual BodyPart GetBodyPart(BodyPartType bodyPartType)
     {

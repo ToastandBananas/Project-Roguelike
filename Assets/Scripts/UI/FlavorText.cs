@@ -750,6 +750,19 @@ public class FlavorText : MonoBehaviour
     }
     #endregion
 
+    #region Status Effects
+    public void WriteLine_Vomit(CharacterManager character)
+    {
+        WriteLine(Utilities.GetPronoun(character, true, true) + "nausea hits a breaking point. " + Utilities.GetPronoun(character, false, false) + "vomit all over the ground.");
+    }
+
+    public void WriteLine_DryHeave(CharacterManager character)
+    {
+        WriteLine(Utilities.GetPronoun(character, true, true) + "nausea hits a breaking point. " + Utilities.GetPronoun(character, true, false) + "start dry heaving, as there's nothing left in " 
+            + Utilities.GetPossessivePronoun(character) + "stomach.");
+    }
+    #endregion
+
     IEnumerator SetupScrollbar()
     {
         yield return null;

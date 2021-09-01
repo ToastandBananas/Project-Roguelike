@@ -274,6 +274,11 @@ public class APManager : MonoBehaviour
         return Mathf.RoundToInt(((consumable.volume * 100) + (consumable.weight * 100)) * itemCount * percentUsed);
     }
 
+    public int GetPukeCost(CharacterManager characterManager)
+    {
+        return Random.Range(characterManager.characterStats.MaxAP() * 2, characterManager.characterStats.MaxAP() * 5); // 2-5 turns
+    }
+
     public int GetApplyMedicalItemAPCost(MedicalSupply medSupply)
     {
         if (medSupply.medicalSupplyType == MedicalSupplyType.Bandage)

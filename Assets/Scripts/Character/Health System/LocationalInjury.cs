@@ -131,7 +131,7 @@ public class LocationalInjury
         bandage = null;
 
         if (injuryTimeRemaining <= 0)
-            TraumaSystem.RemoveInjury(characterManager, this);
+            HealthSystem.RemoveInjury(characterManager, this);
     }
 
     public void SoilBandage(float amount)
