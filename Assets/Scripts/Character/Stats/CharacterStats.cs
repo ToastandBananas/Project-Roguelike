@@ -3,13 +3,14 @@ using UnityEngine;
 public class CharacterStats : Stats
 {
     [Header("Main Stats")]
-    public IntStat agility;
-    public IntStat constitution;
-    public IntStat dexterity;
-    public IntStat endurance;
-    public IntStat intelligence;
-    public IntStat speed;
-    public IntStat strength;
+    public IntStat agility;      // Evasion
+    public IntStat constitution; // Max health
+    public IntStat dexterity;    // Physical attack accuracy & critical hit chance
+    public IntStat endurance;    // Max stamina
+    public IntStat intelligence; // Magic power
+    public IntStat speed;        // Max AP
+    public IntStat strength;     // Max carrying capacity & damage
+    public IntStat wisdom;       // Max MP & MP regen
 
     //[Header("AP")]
     public int currentAP { get; private set; }

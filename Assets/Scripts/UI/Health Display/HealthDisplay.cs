@@ -18,8 +18,8 @@ public class HealthDisplay : MonoBehaviour
     [SerializeField] TextMeshProUGUI rightArmHealthText, rightHandHealthText, rightLegHealthText, rightFootHealthText;
 
     [Header("Other Info Texts")]
-    [SerializeField] TextMeshProUGUI mobilityText;
-    [SerializeField] TextMeshProUGUI currentStaminaText, hungerText, thirstText, APText;
+    [SerializeField] TextMeshProUGUI timeText;
+    [SerializeField] TextMeshProUGUI mobilityText, currentStaminaText, hungerText, thirstText, APText;
 
     [HideInInspector] public HealthDisplay_BodyPart focusedBodyPart;
     [HideInInspector] public HealthDisplay_BodyPart selectedBodyPart;
@@ -56,6 +56,7 @@ public class HealthDisplay : MonoBehaviour
     {
         gm = GameManager.instance;
 
+        UpdateTimeText();
         UpdateMobilityText();
         UpdateCurrentStaminaText();
         UpdateAPText();
@@ -236,6 +237,11 @@ public class HealthDisplay : MonoBehaviour
     #endregion
 
     #region Other Info Box
+    public void UpdateTimeText()
+    {
+        timeText.text = TimeSystem.currentHour.ToString("#00") + ":" + TimeSystem.currentMinute.ToString("#00") + ":" + TimeSystem.currentSecond.ToString("#00");
+    }
+
     public void UpdateMobilityText()
     {
         if (gm.playerManager.movement.isRunning)

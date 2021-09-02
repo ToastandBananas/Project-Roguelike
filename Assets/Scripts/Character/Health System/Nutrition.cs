@@ -19,10 +19,11 @@ public class Nutrition : MonoBehaviour
 
     int starvingStaminaDetriment, dehydratedStaminaDetriment;
     int starvingSpeedDetriment, dehydratedSpeedDetriment;
+    [SerializeField] float consumableStaminaBonus;
 
     // If this builds up to 100, the character pukes
     float nausea;
-    bool vomitQueued;
+    bool vomitActionQueued;
 
     CharacterManager characterManager;
     GameManager gm;
@@ -31,13 +32,18 @@ public class Nutrition : MonoBehaviour
     {
         characterManager = GetComponent<CharacterManager>();
 
-        currentNourishment = maxNourishment.GetValue() * 0.75f;
-        currentWater = maxWater.GetValue() * 0.75f;
+        currentNourishment = maxNourishment.GetValue() * Random.Range(0.5f, 0.8f);
+        currentWater = maxWater.GetValue() * Random.Range(0.5f, 0.8f);
     }
 
     void Start()
     {
         gm = GameManager.instance;
+
+        IncreaseStaminaBonus(50f * (currentNourishment / maxNourishment.GetValue()));
+        characterManager.status.currentStamina = characterManager.status.maxStamina.GetValue();
+        if (characterManager.isNPC == false)
+            gm.healthDisplay.UpdateCurrentStaminaText();
 
         AddHungerEffects();
         AddThirstEffects();
@@ -356,9 +362,9 @@ public class Nutrition : MonoBehaviour
         nausea += amount;
         if (nausea < 0)
             nausea = 0;
-        else if (nausea >= 100 && vomitQueued == false)
+        else if (nausea >= 100 && vomitActionQueued == false)
         {
-            vomitQueued = true;
+            vomitActionQueued = true;
             characterManager.QueueAction(Vomit(), gm.apManager.GetPukeCost(characterManager));
         }
     }
@@ -370,6 +376,60 @@ public class Nutrition : MonoBehaviour
     }
     #endregion
 
+    #region Consumable Stamina Bonus
+    void IncreaseStaminaBonus(float amount)
+    {
+        // Remove the old max stamina modifier, calculate the new one & then re-add it
+        characterManager.status.maxStamina.RemoveModifier(Mathf.RoundToInt(consumableStaminaBonus));
+        consumableStaminaBonus += amount;
+        characterManager.status.maxStamina.AddModifier(Mathf.RoundToInt(consumableStaminaBonus));
+
+        if (characterManager.status.currentStamina > characterManager.status.maxStamina.GetValue())
+            characterManager.status.currentStamina = characterManager.status.maxStamina.GetValue();
+
+        if (characterManager.isNPC == false)
+            gm.healthDisplay.UpdateCurrentStaminaText();
+    }
+
+    void DecreaseStaminaBonus(float amount)
+    {
+        // Remove the old max stamina modifier, calculate the new one & then re-add it
+        characterManager.status.maxStamina.RemoveModifier(Mathf.RoundToInt(consumableStaminaBonus));
+        consumableStaminaBonus -= amount;
+
+        if (consumableStaminaBonus <= 0f)
+            consumableStaminaBonus = 0f;
+        else
+            characterManager.status.maxStamina.AddModifier(Mathf.RoundToInt(consumableStaminaBonus));
+
+        if (characterManager.status.currentStamina > characterManager.status.maxStamina.GetValue())
+            characterManager.status.currentStamina = characterManager.status.maxStamina.GetValue();
+
+        if (characterManager.isNPC == false)
+            gm.healthDisplay.UpdateCurrentStaminaText();
+    }
+
+    public void DrainStaminaBonus(int timePassed = TimeSystem.defaultTimeTickInSeconds)
+    {
+        if (consumableStaminaBonus > 0)
+        {
+            characterManager.status.maxStamina.RemoveModifier(Mathf.RoundToInt(consumableStaminaBonus));
+            consumableStaminaBonus -= maxNourishment.GetValue() * 0.000278f * (timePassed / TimeSystem.defaultTimeTickInSeconds);
+
+            if (consumableStaminaBonus <= 0f)
+                consumableStaminaBonus = 0f;
+            else
+                characterManager.status.maxStamina.AddModifier(Mathf.RoundToInt(consumableStaminaBonus));
+
+            if (characterManager.status.currentStamina > characterManager.status.maxStamina.GetValue())
+                characterManager.status.currentStamina = characterManager.status.maxStamina.GetValue();
+
+            if (characterManager.isNPC == false)
+                gm.healthDisplay.UpdateCurrentStaminaText();
+        }
+    }
+    #endregion
+
     #region Actions
     public IEnumerator Vomit()
     {
@@ -378,24 +438,34 @@ public class Nutrition : MonoBehaviour
         if (currentNourishment < 0f && currentWater < 0f) // Dry heave if there's nothing in your stomach
         {
             // Show some flavor text
-            gm.flavorText.WriteLine_DryHeave(characterManager);
+            if (gm.playerManager.CanSee(characterManager.spriteRenderer))
+                gm.flavorText.WriteLine_DryHeave(characterManager);
         }
         else
         {
-            // Lose a random percentage of your food and/or water content if you're over 25% full/quenched
-            // Otherwise, lose the rest of your food and/or water content
+            // Lose a random percentage of your food/stamina bonus and/or water content if you're over 25% full/quenched
+            // Otherwise, lose the rest of your food/stamina bonus and/or water content
             if (GetFullness() >= 25f)
-                DecreaseNourishment(Random.Range(currentNourishment * 0.5f, currentNourishment * 0.75f));
+            {
+                DecreaseNourishment(currentNourishment * Random.Range(0.5f, 0.75f));
+                if (consumableStaminaBonus > 0)
+                    DecreaseStaminaBonus(consumableStaminaBonus * Random.Range(0.5f, 0.75f));
+            }
             else if (currentNourishment > 0f)
+            {
                 DecreaseNourishment(currentNourishment);
+                if (consumableStaminaBonus > 0)
+                    DecreaseStaminaBonus(consumableStaminaBonus);
+            }
 
             if (GetThirstQuench() >= 25f)
-                DecreaseWater(Random.Range(currentWater * 0.5f, currentWater * 0.75f));
+                DecreaseWater(currentWater * Random.Range(0.5f, 0.75f));
             else if (currentWater > 0f)
                 DecreaseWater(currentWater);
 
             // Show some flavor text
-            gm.flavorText.WriteLine_Vomit(characterManager);
+            if (gm.playerManager.CanSee(characterManager.spriteRenderer))
+                gm.flavorText.WriteLine_Vomit(characterManager);
         }
 
         // Update thirst effects and current thirst level
@@ -404,7 +474,7 @@ public class Nutrition : MonoBehaviour
 
         // Lower nausea levels
         AdjustNausea(Random.Range(-35f, -15f));
-        vomitQueued = false;
+        vomitActionQueued = false;
 
         characterManager.FinishAction();
     }
@@ -416,6 +486,10 @@ public class Nutrition : MonoBehaviour
         // Adjust overall bodily healthiness
         if (consumable.healthinessAdjustment != 0)
             characterManager.status.AdjustHealthiness(consumable.healthinessAdjustment * itemCount * percentUsed);
+
+        // Adjust max stamina bonus
+        if (consumable.maxStaminaBonus > 0)
+            IncreaseStaminaBonus(consumable.maxStaminaBonus * itemCount * percentUsed);
 
         // Adjust nourishment
         if (consumable.nourishment > 0)
@@ -440,6 +514,12 @@ public class Nutrition : MonoBehaviour
                 gm.flavorText.WriteLine_Consume(characterManager, consumable, itemName, percentUsed);
             else
                 gm.flavorText.WriteLine_Consume(characterManager, consumable, itemName, 1);
+
+            if (NourishmentPercent() > 100f && characterManager.isNPC == false)
+                gm.flavorText.WriteLine_NauseaOvereating();
+
+            if (ThirstQuenchPercent() > 100f && characterManager.isNPC == false)
+                gm.flavorText.WriteLine_NauseaOverdrinking();
         }
 
         characterManager.FinishAction();

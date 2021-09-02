@@ -30,6 +30,7 @@ MonoBehaviour:
   minBaseFreshness: 25
   maxBaseFreshness: 100
   consumableType: 0
+  maxStaminaBonus: 0.25
   nourishment: 1
   thirstQuench: 1
   energyRestoration: 0

@@ -751,6 +751,16 @@ public class FlavorText : MonoBehaviour
     #endregion
 
     #region Status Effects
+    public void WriteLine_NauseaOvereating()
+    {
+        WriteLine("<b>You</b> feel nauseous from eating too much.");
+    }
+
+    public void WriteLine_NauseaOverdrinking()
+    {
+        WriteLine("<b>You</b> feel nauseous from drinking too much.");
+    }
+
     public void WriteLine_Vomit(CharacterManager character)
     {
         WriteLine(Utilities.GetPronoun(character, true, true) + "nausea hits a breaking point. " + Utilities.GetPronoun(character, false, false) + "vomit all over the ground.");

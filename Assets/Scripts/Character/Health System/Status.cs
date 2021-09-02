@@ -50,6 +50,11 @@ public class Status : MonoBehaviour
         if (characterManager == null)
             characterManager = GetComponent<CharacterManager>();
 
+        if (characterManager.isNPC)
+            maxStamina.SetBaseValue(Mathf.RoundToInt(characterManager.characterStats.endurance.GetValue() * Random.Range(1.5f, 3f)));
+        else
+            maxStamina.SetBaseValue(characterManager.characterStats.endurance.GetValue());
+
         currentStamina = maxStamina.GetValue();
         currentBloodAmount = maxBloodAmount.GetValue();
 

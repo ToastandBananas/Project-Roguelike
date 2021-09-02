@@ -11,6 +11,7 @@ public class TimeSystem : MonoBehaviour
     public static void IncreaseTime()
     {
         IncreaseCurrentSecond(defaultTimeTickInSeconds);
+        HealthDisplay.instance.UpdateTimeText();
         // LogTime();
     }
 
@@ -60,11 +61,6 @@ public class TimeSystem : MonoBehaviour
     public static int GetTotalSeconds(Vector3Int timeAmount)
     {
         return (timeAmount.x * 60 * 60) + (timeAmount.y * 60) + timeAmount.z;
-    }
-
-    public static void UpdateTimeDisplay()
-    {
-        // TODO
     }
 
     public static void LogTime()

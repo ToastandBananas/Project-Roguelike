@@ -10,6 +10,7 @@ public class Consumable : Item
 
     [Header("Consumable Stats")]
     public ConsumableType consumableType;
+    public float maxStaminaBonus;
     public int nourishment;
     public int thirstQuench;
     public int energyRestoration;

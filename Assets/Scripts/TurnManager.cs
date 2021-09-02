@@ -65,6 +65,7 @@ public class TurnManager : MonoBehaviour
         gm.playerManager.status.UpdateBuffs();
         gm.playerManager.status.UpdateInjuries();
         gm.playerManager.status.RegenerateStamina();
+        gm.playerManager.nutrition.DrainStaminaBonus();
         gm.playerManager.nutrition.DrainNourishment();
         gm.playerManager.nutrition.DrainWater();
         gm.playerManager.nutrition.DrainNausea();
@@ -102,6 +103,7 @@ public class TurnManager : MonoBehaviour
 
             if (charManager.nutrition != null)
             {
+                charManager.nutrition.DrainStaminaBonus();
                 charManager.nutrition.DrainNourishment();
                 charManager.nutrition.DrainWater();
                 charManager.nutrition.DrainNausea();

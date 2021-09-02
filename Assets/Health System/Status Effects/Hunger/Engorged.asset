@@ -16,4 +16,4 @@ MonoBehaviour:
   maxStaminaMultiplier: -0.3
   staminaRegenModifier: -0.0015
   healthinessAdjustmentPerTurn: -0.05
-  nauseaPerTurn: 2
+  nauseaPerTurn: 1.5
