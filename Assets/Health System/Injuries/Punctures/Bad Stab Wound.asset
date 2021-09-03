@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7e888af97e57e04e908c436c244f865, type: 3}
+  m_Name: Bad Stab Wound
+  m_EditorClassIdentifier: 
+  name: Bad Stab Wound
+  description: 
+  injuryType: 2
+  severity: 3
+  minInjuryHealTime: {x: 40, y: 0, z: 0}
+  maxInjuryHealTime: {x: 82, y: 0, z: 0}
+  damagePerTurn: {x: 0.2, y: 0.35}
+  bleedTime: {x: 180, y: 300}
+  immediateBloodLoss: {x: 4.5, y: 9}
+  bloodLossPerTurn: {x: 3, y: 4.5}

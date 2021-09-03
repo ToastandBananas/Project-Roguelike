@@ -28,8 +28,6 @@ public class HealthDisplay : MonoBehaviour
     StringBuilder stringBuilder = new StringBuilder();
     GameManager gm;
 
-    int lastAPUsed;
-
     readonly string red = "#C81236";
     readonly string orange = "#FE6E00";
     readonly string blue = "#0055B3";
@@ -272,15 +270,10 @@ public class HealthDisplay : MonoBehaviour
 
     public void UpdateAPText()
     {
-        if (lastAPUsed > 0)
-            APText.text = gm.playerManager.characterStats.currentAP + " (" + lastAPUsed + ")";
+        if (gm.apManager.LastAPUsed() > 0)
+            APText.text = gm.playerManager.characterStats.currentAP + " (" + gm.apManager.LastAPUsed() + ")";
         else
             APText.text = gm.playerManager.characterStats.currentAP.ToString();
-    }
-
-    public void UpdateLastAPUsed(int APUsed)
-    {
-        lastAPUsed = APUsed;
     }
     #endregion
 }

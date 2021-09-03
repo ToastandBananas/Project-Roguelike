@@ -12958,7 +12958,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f3b298d3ae410764a8d261ff4c4ac634, type: 2}
   - {fileID: 11400000, guid: daf631e826a9d7941860136c98ec0251, type: 2}
   gashes: []
-  stabWounds: []
+  punctures:
+  - {fileID: 11400000, guid: b4ba96fb03c0dfc42ae96b776cc6ffe7, type: 2}
+  - {fileID: 11400000, guid: f2ebb40232b10c549b1d704a19210b25, type: 2}
+  - {fileID: 11400000, guid: 30ae21c57d318a94a9eb980bc4d7e272, type: 2}
+  - {fileID: 11400000, guid: 596a5fa01210efe4282b92b0d5d908b3, type: 2}
+  - {fileID: 11400000, guid: e6809fec7c12e7f43b2e008194829e68, type: 2}
+  - {fileID: 11400000, guid: 77563e1e127dc6448a3021edd6bb9e80, type: 2}
+  - {fileID: 11400000, guid: cfddf3e0ea3aa424086df5219f67bd76, type: 2}
   bruises: []
   hungerEffects:
   - {fileID: 11400000, guid: 74a2246b4aaaf3241ac38d8ff7dbf722, type: 2}

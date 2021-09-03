@@ -169,8 +169,8 @@ public class Status : MonoBehaviour
             for (int k = 0; k < bodyParts[i].injuries.Count; k++)
             {
                 // Lower blood loss per turn as the injury heals
-                if (bodyParts[i].injuries[k].injury.GetBloodLossPerTurn().x > 0 && bodyParts[i].injuries[k].bloodLossPerTurn >= bodyParts[i].injuries[k].injury.GetBloodLossPerTurn().x / 2f)
-                    bodyParts[i].injuries[k].bloodLossPerTurn -= bodyParts[i].injuries[k].injury.GetBloodLossPerTurn().x * 0.001f;
+                if (bodyParts[i].injuries[k].injury.BloodLossPerTurn().x > 0 && bodyParts[i].injuries[k].bloodLossPerTurn >= bodyParts[i].injuries[k].injury.BloodLossPerTurn().x / 2f)
+                    bodyParts[i].injuries[k].bloodLossPerTurn -= bodyParts[i].injuries[k].injury.BloodLossPerTurn().x * 0.001f;
 
                 // If the injury is still bleeding
                 if (bodyParts[i].injuries[k].bleedTimeRemaining > 0)
@@ -410,7 +410,11 @@ public class Status : MonoBehaviour
 
         if (pierceDamage > 0)
         {
+            Injury punctureWound = gm.healthSystem.GetPunctureWound(characterManager, bodyPart.bodyPartType, pierceDamage);
+            HealthSystem.ApplyInjury(characterManager, punctureWound, bodyPart.bodyPartType, attackedFromBehind);
 
+            if (gm.playerManager.CanSee(characterManager.spriteRenderer))
+                gm.flavorText.WriteLine_Injury(characterManager, punctureWound, bodyPart.bodyPartType);
         }
 
         // Let cleave damage take priority, since the injuries caused by them are relatively similar to slashing injuries, but cleave injuries are more severe

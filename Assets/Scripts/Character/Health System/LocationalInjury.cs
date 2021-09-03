@@ -37,11 +37,11 @@ public class LocationalInjury
 
         injuryTimeRemaining = Random.Range(TimeSystem.GetTotalSeconds(injury.minInjuryHealTime), TimeSystem.GetTotalSeconds(injury.maxInjuryHealTime) + 1);
 
-        Vector2Int bleedTimes = injury.GetBleedTime();
+        Vector2Int bleedTimes = injury.BleedTime();
         if (bleedTimes.y > 0)
             bleedTimeRemaining = Random.Range(bleedTimes.x, bleedTimes.y + 1);
 
-        Vector2 bloodLossValues = injury.GetBloodLossPerTurn();
+        Vector2 bloodLossValues = injury.BloodLossPerTurn();
         if (bloodLossValues.y > 0)
             bloodLossPerTurn = Random.Range(bloodLossValues.x, bloodLossValues.y);
     }
@@ -168,20 +168,20 @@ public class LocationalInjury
         if (bloodLossPerTurn > 0)
         {
             // Start bleeding again, or increase bleed time up to the max value
-            Vector2Int bleedTimes = injury.GetBleedTime();
+            Vector2Int bleedTimes = injury.BleedTime();
             bleedTimeRemaining += Random.Range(Mathf.RoundToInt(bleedTimes.x / 1.25f), Mathf.RoundToInt(bleedTimes.y / 1.25f));
             if (bleedTimeRemaining > bleedTimes.y)
                 bleedTimeRemaining = bleedTimes.y;
 
             // Worsen bleeding, up to the max value
-            Vector2 bloodLoss = injury.GetBloodLossPerTurn();
+            Vector2 bloodLoss = injury.BloodLossPerTurn();
             bloodLossPerTurn *= 1.25f;
             if (bloodLossPerTurn > bloodLoss.y)
                 bloodLossPerTurn = bloodLoss.y;
         }
 
         // Add to the total injury time remaining, up to the max value
-        Vector2Int injuryTimes = injury.GetInjuryTimesInSeconds();
+        Vector2Int injuryTimes = injury.InjuryTimeInSeconds();
         injuryTimeRemaining += Random.Range(injuryTimes.x / 2, (injuryTimes.y + 1) / 2);
         if (injuryTimeRemaining > injuryTimes.y)
             injuryTimeRemaining = injuryTimes.y;

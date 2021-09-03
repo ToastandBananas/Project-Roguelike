@@ -17,7 +17,7 @@ public class CharacterStats : Stats
     int APLossBuildup;
     readonly int baseAP = 25;
 
-    [Header("Personal Inv. Volume")]
+    [Header("Personal Inventory")]
     public FloatStat maxPersonalInvVolume;
 
     [Header("Skills")]

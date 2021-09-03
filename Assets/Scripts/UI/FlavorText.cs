@@ -473,6 +473,11 @@ public class FlavorText : MonoBehaviour
             + Utilities.FormatEnumStringWithSpaces(bodyPartType.ToString(), true) + ", causing <b><color=red>" + damage + "</color></b> damage.", 3));
     }
 
+    public void WriteLine_BloodSpurt(CharacterManager characterManager)
+    {
+        StartCoroutine(DelayWriteLine("Blood spurts out of " + Utilities.GetPossessivePronoun(characterManager) + "wound.", 2));
+    }
+
     public void WriteLine_ApplyBandage(CharacterManager characterApplying, CharacterManager characterBeingBandaged, Injury injury, ItemData itemData, BodyPartType bodyPartType)
     {
         if (characterApplying == characterBeingBandaged)

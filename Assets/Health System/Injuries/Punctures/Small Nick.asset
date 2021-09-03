@@ -9,15 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 494931b850fa3e04aac1395fb38cc72b, type: 3}
-  m_Name: Small Cut
+  m_Script: {fileID: 11500000, guid: d7e888af97e57e04e908c436c244f865, type: 3}
+  m_Name: Small Nick
   m_EditorClassIdentifier: 
-  name: Small Cut
-  description: You barely even notice it.
-  injuryType: 1
+  name: Small Nick
+  description: 
+  injuryType: 2
   severity: 0
-  minInjuryHealTime: {x: 1, y: 30, z: 0}
-  maxInjuryHealTime: {x: 3, y: 0, z: 0}
+  minInjuryHealTime: {x: 1, y: 45, z: 0}
+  maxInjuryHealTime: {x: 3, y: 15, z: 0}
   damagePerTurn: {x: 0.01, y: 0.025}
-  bleedTime: {x: 30, y: 60}
-  bloodLossPerTurn: {x: 1, y: 1}
+  bleedTime: {x: 20, y: 42}
+  immediateBloodLoss: {x: 1, y: 2}
+  bloodLossPerTurn: {x: 0.5, y: 1}

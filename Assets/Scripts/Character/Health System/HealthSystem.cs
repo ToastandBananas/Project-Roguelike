@@ -6,7 +6,7 @@ public class HealthSystem : MonoBehaviour
     public Injury[] abrasions;
     public Injury[] lacerations;
     public Injury[] gashes;
-    public Injury[] stabWounds;
+    public Injury[] punctures;
 
     [Header("Blunt Trauma")]
     public Injury[] bruises;
@@ -42,6 +42,13 @@ public class HealthSystem : MonoBehaviour
     public static void ApplyInjury(CharacterManager character, Injury injury, BodyPartType injuryLocation, bool onBackOfBodyPart)
     {
         character.status.GetBodyPart(injuryLocation).injuries.Add(new LocationalInjury(character, injury, injuryLocation, onBackOfBodyPart));
+
+        Vector2 immediateBloodLoss = injury.ImmediateBloodLoss();
+        if (immediateBloodLoss.y > 0)
+        {
+            character.status.LoseBlood(Random.Range(immediateBloodLoss.x, immediateBloodLoss.y));
+            gm.flavorText.WriteLine_BloodSpurt(character);
+        }
     }
 
     public static void RemoveInjury(CharacterManager character, LocationalInjury personalInjury)
@@ -90,7 +97,7 @@ public class HealthSystem : MonoBehaviour
         {
             // Cut
             if (lacerations[2] == null)
-                Debug.LogError("Cut not assigned in the TraumaSystem's inspector. Fix me!");
+                Debug.LogError("Cut Injury not assigned in the TraumaSystem's inspector. Fix me!");
             return lacerations[2];
         }
         else if (damage / maxBodyPartHealth <= 0.2f)
@@ -120,6 +127,63 @@ public class HealthSystem : MonoBehaviour
             if (lacerations[5] == null)
                 Debug.LogError("Severe Laceration Injury not assigned in the TraumaSystem's inspector. Fix me!");
             return lacerations[5];
+        }
+    }
+
+    public Injury GetPunctureWound(CharacterManager characterManager, BodyPartType bodyPartType, int damage)
+    {
+        // Get the max health for the body part being cut
+        float maxBodyPartHealth = characterManager.status.GetBodyPart(bodyPartType).maxHealth.GetValue();
+
+        // Determine the severity of cut based off of the percent damage done in relation to the max health
+        if (damage / maxBodyPartHealth <= 0.05f)
+        {
+            // Small Nick
+            if (punctures[0] == null)
+                Debug.LogError("Small Nick Injury not assigned in the TraumaSystem's inspector. Fix me!");
+            return punctures[0];
+        }
+        else if (damage / maxBodyPartHealth <= 0.1f)
+        {
+            // Minor Stab Wound
+            if (punctures[1] == null)
+                Debug.LogError("Minor Stab Wound Injury not assigned in the TraumaSystem's inspector. Fix me!");
+            return punctures[1];
+        }
+        else if (damage / maxBodyPartHealth <= 0.15f)
+        {
+            // Stab Wound
+            if (punctures[2] == null)
+                Debug.LogError("Stab Wound Injury not assigned in the TraumaSystem's inspector. Fix me!");
+            return punctures[2];
+        }
+        else if (damage / maxBodyPartHealth <= 0.2f)
+        {
+            // Bad Stab Wound
+            if (punctures[3] == null)
+                Debug.LogError("Bad Stab Wound Injury not assigned in the TraumaSystem's inspector. Fix me!");
+            return punctures[3];
+        }
+        else if (damage / maxBodyPartHealth <= 0.25f)
+        {
+            // Puncture Wound
+            if (punctures[4] == null)
+                Debug.LogError("Puncture Wound Injury not assigned in the TraumaSystem's inspector. Fix me!");
+            return punctures[4];
+        }
+        else if (damage / maxBodyPartHealth <= 0.3f)
+        {
+            // Deep Puncture Wound
+            if (punctures[4] == null)
+                Debug.LogError("Deep Puncture Wound Injury not assigned in the TraumaSystem's inspector. Fix me!");
+            return punctures[4];
+        }
+        else // if (damage / maxBodyPartHealth <= 0.35f)
+        {
+            // Severe Puncture Wound
+            if (punctures[5] == null)
+                Debug.LogError("Severe Puncture Wound Injury not assigned in the TraumaSystem's inspector. Fix me!");
+            return punctures[5];
         }
     }
 

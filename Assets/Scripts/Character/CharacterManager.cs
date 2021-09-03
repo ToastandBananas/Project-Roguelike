@@ -638,7 +638,7 @@ public class CharacterManager : MonoBehaviour
             StartCoroutine(GetNextQueuedAction());
 
         if (isNPC == false)
-            gm.healthDisplay.UpdateLastAPUsed(APCost);
+            gm.apManager.UpdateLastAPUsed(APCost);
     }
 
     public IEnumerator GetNextQueuedAction()

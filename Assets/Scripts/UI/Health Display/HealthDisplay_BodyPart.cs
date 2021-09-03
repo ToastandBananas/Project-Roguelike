@@ -60,7 +60,7 @@ public class HealthDisplay_BodyPart : MonoBehaviour, IPointerEnterHandler, IPoin
                     stringBuilder.Append("- <color=" + blue + ">" + "Bandaged with " + bodyPart.injuries[i].bandageItemData.GetItemName(1) + " (Soilage: " + bodyPart.injuries[i].bandageItemData.GetSoilage().ToString("#0") + "%)</color>\n");
 
                 // If the wound can bleed...
-                if (bodyPart.injuries[i].injury.GetBleedTime().y > 0 && bodyPart.injuries[i].injuryTimeRemaining > 0)
+                if (bodyPart.injuries[i].injury.BleedTime().y > 0 && bodyPart.injuries[i].injuryTimeRemaining > 0)
                 {
                     // Bleed Severity
                     if (bodyPart.injuries[i].bleedTimeRemaining > 0)

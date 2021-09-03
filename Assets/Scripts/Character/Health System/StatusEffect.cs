@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Status Effect", menuName = "Status Effect/Basic")]
+[CreateAssetMenu(fileName = "New Status Effect", menuName = "Health System/Status Effect/Basic")]
 public class StatusEffect : ScriptableObject
 {
     [Header("Main Stats")]

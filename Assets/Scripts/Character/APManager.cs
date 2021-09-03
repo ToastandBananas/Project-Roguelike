@@ -15,6 +15,8 @@ public class APManager : MonoBehaviour
     readonly float baseOverEncumberedPenalty = 0.5f;
     readonly float baseOutOfStaminaPenalty = 2.5f;
 
+    int lastAPUsed;
+
     GameManager gm;
 
     #region Singleton
@@ -40,6 +42,16 @@ public class APManager : MonoBehaviour
         gm = GameManager.instance;
     }
 
+    public void UpdateLastAPUsed(int APUsed)
+    {
+        lastAPUsed = APUsed;
+    }
+
+    public int LastAPUsed()
+    {
+        return lastAPUsed;
+    }
+
     public void LoseAP(CharacterManager characterManager, int APAmount)
     {
         if (characterManager.characterStats.currentAP > APAmount)
@@ -57,7 +69,7 @@ public class APManager : MonoBehaviour
 
         if (characterManager.isNPC == false)
         {
-            gm.healthDisplay.UpdateLastAPUsed(APAmount);
+            gm.apManager.UpdateLastAPUsed(APAmount);
             gm.healthDisplay.UpdateAPText();
         }
     }

@@ -14,17 +14,22 @@ public class Injury : ScriptableObject
     public Vector3Int maxInjuryHealTime;
     public Vector2 damagePerTurn;
 
-    public Vector2Int GetInjuryTimesInSeconds()
+    public Vector2Int InjuryTimeInSeconds()
     {
         return new Vector2Int(TimeSystem.GetTotalSeconds(minInjuryHealTime), TimeSystem.GetTotalSeconds(maxInjuryHealTime));
     }
 
-    public virtual Vector2Int GetBleedTime()
+    public virtual Vector2Int BleedTime()
     {
         return Vector2Int.zero;
     }
 
-    public virtual Vector2 GetBloodLossPerTurn()
+    public virtual Vector2 BloodLossPerTurn()
+    {
+        return Vector2.zero;
+    }
+
+    public virtual Vector2 ImmediateBloodLoss()
     {
         return Vector2.zero;
     }
