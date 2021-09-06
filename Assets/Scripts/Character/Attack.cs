@@ -144,7 +144,7 @@ public class Attack : MonoBehaviour
         if (weaponUsedItemData != null)
             bluntDamage = characterManager.equipmentManager.GetPhysicalMeleeDamage(weaponUsedItemData, meleeAttackType, PhysicalDamageType.Blunt);
         else
-            bluntDamage = characterManager.characterStats.unarmedDamage.GetValue();
+            bluntDamage = characterManager.characterStats.UnarmedDamage();
         int pierceDamage = characterManager.equipmentManager.GetPhysicalMeleeDamage(weaponUsedItemData, meleeAttackType, PhysicalDamageType.Pierce);
         int slashDamage = characterManager.equipmentManager.GetPhysicalMeleeDamage(weaponUsedItemData, meleeAttackType, PhysicalDamageType.Slash);
         int cleaveDamage = characterManager.equipmentManager.GetPhysicalMeleeDamage(weaponUsedItemData, meleeAttackType, PhysicalDamageType.Cleave);
@@ -181,7 +181,7 @@ public class Attack : MonoBehaviour
         {
             CharacterStats targetCharStats = (CharacterStats)targetsStats;
 
-            if (TryEvade(targetCharStats) == false) // Check if the target evaded the attack (or the attacker missed)
+            if (TryEvade(targetCharStats, weaponUsed) == false) // Check if the target evaded the attack (or the attacker missed)
             {
                 if (TryBlock(targetCharStats, weaponUsedItemData, totalDamage) == false) // Check if the target blocked the attack with a shield or a weapon
                 {
@@ -355,10 +355,10 @@ public class Attack : MonoBehaviour
         characterManager.FinishAction();
     }
 
-    bool TryEvade(CharacterStats targetsCharStats)
+    bool TryEvade(CharacterStats targetsCharStats, Weapon attackWeaponUsed)
     {
         // Evade/miss chance equals the attacker's accuracy plus the target's evasion divided by 2
-        float evadePlusMiss = 100 - characterManager.characterStats.meleeAccuracy.GetValue() + targetsCharStats.evasion.GetValue();
+        float evadePlusMiss = 100 - characterManager.characterStats.AttackAccuracy(attackWeaponUsed) + targetsCharStats.EvasionSkill();
         float evadeChance = evadePlusMiss / 2;
         
         if (evadeChance > 0)
@@ -368,7 +368,7 @@ public class Attack : MonoBehaviour
             if (random <= evadeChance)
             {
                 // Determine if the attack was evaded or if the attacker just straight up missed
-                float percentChanceEvade = targetsCharStats.evasion.GetValue() / evadePlusMiss;
+                float percentChanceEvade = targetsCharStats.EvasionSkill() / evadePlusMiss;
 
                 random = Random.Range(0f, 1f);
                 if (random > percentChanceEvade)
@@ -412,9 +412,9 @@ public class Attack : MonoBehaviour
             if (targetsCharStats.characterManager.equipmentManager.LeftHandItemEquipped())
             {
                 if (targetsCharStats.characterManager.equipmentManager.GetEquipment(EquipmentSlot.LeftHandItem).IsShield())
-                    leftBlockChance = (targetsCharStats.shieldBlock.GetValue() / 2.5f * targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.LeftHandItem).blockChanceMultiplier);
+                    leftBlockChance = (targetsCharStats.BlockSkill(targetsCharStats.characterManager.equipmentManager.GetLeftShield()) / 2.5f * targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.LeftHandItem).blockChanceMultiplier);
                 else
-                    leftBlockChance = (targetsCharStats.weaponBlock.GetValue() / 3 * targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.LeftHandItem).blockChanceMultiplier);
+                    leftBlockChance = (targetsCharStats.BlockSkill(targetsCharStats.characterManager.equipmentManager.GetLeftWeapon()) / 3f * targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.LeftHandItem).blockChanceMultiplier);
 
                 blockChance += leftBlockChance;
             }
@@ -423,9 +423,9 @@ public class Attack : MonoBehaviour
             if (targetsCharStats.characterManager.equipmentManager.RightHandItemEquipped())
             {
                 if (targetsCharStats.characterManager.equipmentManager.GetEquipment(EquipmentSlot.RightHandItem).IsShield())
-                    rightBlockChance = (targetsCharStats.shieldBlock.GetValue() / 2.5f * targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.RightHandItem).blockChanceMultiplier);
+                    rightBlockChance = (targetsCharStats.BlockSkill(targetsCharStats.characterManager.equipmentManager.GetRightShield()) / 2.5f * targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.RightHandItem).blockChanceMultiplier);
                 else
-                    rightBlockChance = (targetsCharStats.weaponBlock.GetValue() / 3 * targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.RightHandItem).blockChanceMultiplier);
+                    rightBlockChance = (targetsCharStats.BlockSkill(targetsCharStats.characterManager.equipmentManager.GetRightWeapon()) / 3f * targetsCharStats.characterManager.equipmentManager.GetEquipmentsItemData(EquipmentSlot.RightHandItem).blockChanceMultiplier);
 
                 blockChance += rightBlockChance;
             }

@@ -130,6 +130,63 @@ public class HealthSystem : MonoBehaviour
         }
     }
 
+    public Injury GetGash(CharacterManager characterManager, BodyPartType bodyPartType, int damage)
+    {
+        // Get the max health for the body part being cut
+        float maxBodyPartHealth = characterManager.status.GetBodyPart(bodyPartType).maxHealth.GetValue();
+
+        // Determine the severity of cut based off of the percent damage done in relation to the max health
+        if (damage / maxBodyPartHealth <= 0.05f)
+        {
+            // Small Cut
+            if (lacerations[0] == null)
+                Debug.LogError("Small Cut Injury not assigned in the TraumaSystem's inspector. Fix me!");
+            return lacerations[0];
+        }
+        else if (damage / maxBodyPartHealth <= 0.1f)
+        {
+            // Minor Cut
+            if (lacerations[1] == null)
+                Debug.LogError("Minor Cut Injury not assigned in the TraumaSystem's inspector. Fix me!");
+            return lacerations[1];
+        }
+        else if (damage / maxBodyPartHealth <= 0.15f)
+        {
+            // Cut
+            if (lacerations[2] == null)
+                Debug.LogError("Cut Injury not assigned in the TraumaSystem's inspector. Fix me!");
+            return lacerations[2];
+        }
+        else if (damage / maxBodyPartHealth <= 0.2f)
+        {
+            // Bad Cut
+            if (lacerations[3] == null)
+                Debug.LogError("Bad Cut Injury not assigned in the TraumaSystem's inspector. Fix me!");
+            return lacerations[3];
+        }
+        else if (damage / maxBodyPartHealth <= 0.25f)
+        {
+            // Gash
+            if (gashes[0] == null)
+                Debug.LogError("Gash Injury not assigned in the TraumaSystem's inspector. Fix me!");
+            return gashes[0];
+        }
+        else if (damage / maxBodyPartHealth <= 0.3f)
+        {
+            // Deep Gash
+            if (gashes[1] == null)
+                Debug.LogError("Deep Gash Injury not assigned in the TraumaSystem's inspector. Fix me!");
+            return gashes[1];
+        }
+        else // if (damage / maxBodyPartHealth <= 0.35f)
+        {
+            // Severe Gash
+            if (gashes[2] == null)
+                Debug.LogError("Severe Gash Injury not assigned in the TraumaSystem's inspector. Fix me!");
+            return gashes[2];
+        }
+    }
+
     public Injury GetPunctureWound(CharacterManager characterManager, BodyPartType bodyPartType, int damage)
     {
         // Get the max health for the body part being cut

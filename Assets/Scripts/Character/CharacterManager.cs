@@ -597,7 +597,7 @@ public class CharacterManager : MonoBehaviour
 
     public bool IsOverEncumbered()
     {
-        if (totalCarryWeight > characterStats.GetMaximumWeightCapacity())
+        if (totalCarryWeight > characterStats.MaximumWeightCapacity())
             return true;
         return false;
     }

@@ -166,7 +166,7 @@ public class PlayerInventoryUI : InventoryUI
             }
         }
 
-        totalWeightText.text = gm.playerManager.totalCarryWeight + "/" + gm.playerManager.characterStats.GetMaximumWeightCapacity();
+        totalWeightText.text = gm.playerManager.totalCarryWeight + "/" + gm.playerManager.characterStats.MaximumWeightCapacity();
         totalVolumeText.text = gm.playerManager.totalCarryVolume.ToString();
 
         // Setup the scrollbar
@@ -375,7 +375,7 @@ public class PlayerInventoryUI : InventoryUI
             volumeText.text = GetTotalVolume(gm.playerManager.playerEquipmentManager.currentEquipment).ToString();
         }
 
-        totalWeightText.text = gm.playerManager.totalCarryWeight + "/" + gm.playerManager.characterStats.GetMaximumWeightCapacity();
+        totalWeightText.text = gm.playerManager.totalCarryWeight + "/" + gm.playerManager.characterStats.MaximumWeightCapacity();
         totalVolumeText.text = gm.playerManager.totalCarryVolume.ToString();
     }
 

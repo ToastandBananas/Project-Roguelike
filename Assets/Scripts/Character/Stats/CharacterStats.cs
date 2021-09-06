@@ -3,33 +3,30 @@ using UnityEngine;
 public class CharacterStats : Stats
 {
     [Header("Main Stats")]
-    public IntStat agility;      // Evasion
+    public IntStat agility;      // Evasion & block chance
     public IntStat constitution; // Max health
     public IntStat dexterity;    // Physical attack accuracy & critical hit chance
     public IntStat endurance;    // Max stamina
     public IntStat intelligence; // Magic power
     public IntStat speed;        // Max AP
-    public IntStat strength;     // Max carrying capacity & damage
+    public IntStat strength;     // Max carrying capacity & melee damage
     public IntStat wisdom;       // Max MP & MP regen
-
-    //[Header("AP")]
-    public int currentAP { get; private set; }
-    int APLossBuildup;
-    readonly int baseAP = 25;
 
     [Header("Personal Inventory")]
     public FloatStat maxPersonalInvVolume;
 
     [Header("Skills")]
+    public IntStat martialArtsSkill;
+    public IntStat shieldSkill;
     public IntStat swordSkill;
 
-    [Header("Combat")]
-    public IntStat unarmedDamage;
-    public FloatStat meleeAccuracy;
-    public FloatStat rangedAccuracy;
-    public FloatStat evasion;
-    public FloatStat shieldBlock;
-    public FloatStat weaponBlock;
+    // [Header("AP")]
+    public int currentAP { get; private set; }
+    int APLossBuildup;
+    readonly int baseAP = 25;
+
+    [HideInInspector] public float totalAgilityMods;
+    [HideInInspector] public float totalSpeedMods;
 
     [HideInInspector] public CharacterManager characterManager;
 
@@ -40,9 +37,13 @@ public class CharacterStats : Stats
         ReplenishAP();
     }
 
+    #region AP
     public int MaxAP()
     {
-        return Mathf.RoundToInt(baseAP + (speed.GetValue() * 1.5f));
+        if (speed.GetValue() > 0)
+            return Mathf.RoundToInt(baseAP + (speed.GetValue() * 1.5f));
+        else
+            return baseAP;
     }
 
     public int UseAPAndGetRemainder(int amount)
@@ -111,21 +112,66 @@ public class CharacterStats : Stats
     {
         return APLossBuildup;
     }
+    #endregion
 
-    public float GetCriticalChance()
+    #region Stat Mods
+    public void AdjustTotalAgilityMods(float amount)
+    {
+        characterManager.characterStats.agility.RemoveModifier(Mathf.RoundToInt(totalAgilityMods));
+        totalAgilityMods += amount;
+        characterManager.characterStats.agility.AddModifier(Mathf.RoundToInt(totalAgilityMods));
+    }
+
+    public void AdjustTotalSpeedMods(float amount)
+    {
+        characterManager.characterStats.speed.RemoveModifier(Mathf.RoundToInt(totalSpeedMods));
+        totalSpeedMods += amount;
+        characterManager.characterStats.speed.AddModifier(Mathf.RoundToInt(totalSpeedMods));
+    }
+    #endregion
+
+    public float BlockSkill(Weapon weapon)
+    {
+        return (WeaponSkill(weapon) + agility.GetValue()) / 2f;
+    }
+
+    public float BlockSkill(Shield shield)
+    {
+        return (shieldSkill.GetValue() + agility.GetValue()) / 2f;
+    }
+
+    public float EvasionSkill()
+    {
+        return agility.GetValue();
+    }
+
+    public float CriticalChance()
     {
         return (strength.GetValue() + dexterity.GetValue()) / 10f;
     }
 
-    public int GetWeaponSkill(Weapon weapon)
+    public int WeaponSkill(Weapon weapon)
     {
         if (weapon.weaponType == WeaponType.Sword)
             return swordSkill.GetValue();
         return 0;
     }
 
+    public int UnarmedDamage()
+    {
+        return Mathf.RoundToInt((martialArtsSkill.GetValue() + strength.GetValue()) / Random.Range(3.8f, 4.2f));
+    }
+
+    public float AttackAccuracy(Weapon weapon)
+    {
+        if (weapon != null)
+            return (dexterity.GetValue() + WeaponSkill(weapon)) / 2f;
+        else
+            return (dexterity.GetValue() + martialArtsSkill.GetValue()) / 2f;
+    }
+
     /// <summary>This is the amount that a character can carry before they become over-encumbered.</summary>
-    public float GetMaximumWeightCapacity()
+    public float MaximumWeightCapacity()
     {
         return baseCarryWeight + (strength.GetValue() * 2f);
     }

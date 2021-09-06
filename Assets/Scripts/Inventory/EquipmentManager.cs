@@ -508,7 +508,7 @@ public class EquipmentManager : MonoBehaviour
                 else if (meleeAttackType == MeleeAttackType.Overhead)
                     damage = weaponsItemData.bluntDamage_Overhead;
                 else
-                    damage = characterManager.characterStats.unarmedDamage.GetValue();
+                    damage = characterManager.characterStats.UnarmedDamage();
                 break;
             case PhysicalDamageType.Pierce:
                 if (meleeAttackType == MeleeAttackType.Swipe)

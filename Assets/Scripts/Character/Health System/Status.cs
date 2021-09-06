@@ -127,14 +127,29 @@ public class Status : MonoBehaviour
                     if (bodyParts[i].injuries[j].bandage != null)
                         bodyParts[i].injuries[j].SoilBandage(0.1f / bodyParts[i].injuries[j].bandage.quality);
 
+                    // Lower the injury's speed modifier over time
+                    if (bodyParts[i].injuries[j].speedModifier > 0)
+                    {
+                        characterManager.characterStats.AdjustTotalSpeedMods(-bodyParts[i].injuries[j].speedModifier);
+                        bodyParts[i].injuries[j].speedModifier -= (timePassed / TimeSystem.defaultTimeTickInSeconds) * bodyParts[i].injuries[j].injury.speedModifier.x * 0.001f * bodyParts[i].injuries[j].injuryHealMultiplier;
+
+                        if (bodyParts[i].injuries[j].speedModifier <= 0)
+                            bodyParts[i].injuries[j].speedModifier = 0;
+                        else
+                            characterManager.characterStats.AdjustTotalSpeedMods(bodyParts[i].injuries[j].speedModifier);
+                    }
+
                     // Update injury time remaining
                     bodyParts[i].injuries[j].injuryTimeRemaining -= Mathf.RoundToInt(timePassed * bodyParts[i].injuries[j].injuryHealMultiplier);
+
+                    // If the injury is finished healing and there's not medical items applied
                     if (bodyParts[i].injuries[j].injuryTimeRemaining <= 0 && bodyParts[i].injuries[j].bandageItemData == null)
                     {
+                        characterManager.characterStats.AdjustTotalSpeedMods(-bodyParts[i].injuries[j].speedModifier);
                         bodyParts[i].injuries.Remove(bodyParts[i].injuries[j]);
                         gm.healthDisplay.UpdateHealthHeaderColor(bodyParts[i].bodyPartType, bodyParts[i]);
                     }
-                    // If this is an NPC and the injury is finished healing, but it still has an applied medical item
+                    // If this is an NPC and the injury is finished healing, but it still has any applied medical items, the NPC will now remove them
                     else if (characterManager.isNPC && bodyParts[i].injuries[j].injuryTimeRemaining <= 0 && characterManager.stateController.currentState != State.Fight 
                         && characterManager.humanoidSpriteManager != null && characterManager.actions.Count == 0)
                     {
@@ -168,10 +183,6 @@ public class Status : MonoBehaviour
         {
             for (int k = 0; k < bodyParts[i].injuries.Count; k++)
             {
-                // Lower blood loss per turn as the injury heals
-                if (bodyParts[i].injuries[k].injury.BloodLossPerTurn().x > 0 && bodyParts[i].injuries[k].bloodLossPerTurn >= bodyParts[i].injuries[k].injury.BloodLossPerTurn().x / 2f)
-                    bodyParts[i].injuries[k].bloodLossPerTurn -= bodyParts[i].injuries[k].injury.BloodLossPerTurn().x * 0.001f;
-
                 // If the injury is still bleeding
                 if (bodyParts[i].injuries[k].bleedTimeRemaining > 0)
                 {
@@ -189,7 +200,7 @@ public class Status : MonoBehaviour
 
                     // Update bleed time remaining
                     bodyParts[i].injuries[k].bleedTimeRemaining -= Mathf.RoundToInt(timePassed * bodyParts[i].injuries[k].injuryHealMultiplier);
-                    if (bodyParts[i].injuries[k].bleedTimeRemaining < 0)
+                    if (bodyParts[i].injuries[k].bleedTimeRemaining <= 0)
                     {
                         bodyParts[i].injuries[k].bleedTimeRemaining = 0;
 
@@ -197,6 +208,10 @@ public class Status : MonoBehaviour
                             gm.healthDisplay.UpdateHealthHeaderColor(bodyParts[i].bodyPartType, bodyParts[i]);
                     }
                 }
+                
+                // Lower blood loss per turn as the injury heals
+                if (bodyParts[i].injuries[k].bloodLossPerTurn > 0)
+                    bodyParts[i].injuries[k].bloodLossPerTurn -= (timePassed / TimeSystem.defaultTimeTickInSeconds) * bodyParts[i].injuries[k].injury.BloodLossPerTurn().x * 0.001f * bodyParts[i].injuries[k].injuryHealMultiplier;
             }
 
             // Show some flavor text if the injury is bleeding
@@ -208,7 +223,7 @@ public class Status : MonoBehaviour
     public void LoseBlood(float amount)
     {
         currentBloodAmount -= amount;
-        // TODO: Negative effects, such as lightheadedness and fainting
+        // TODO: Negative status effects, such as lightheadedness and fainting
         
     }
 
@@ -268,7 +283,7 @@ public class Status : MonoBehaviour
     public int TakeLocationalDamage(CharacterManager attacker, int bluntDamage, int pierceDamage, int slashDamage, int cleaveDamage, bool attackedFromBehind, BodyPartType bodyPartType, EquipmentManager equipmentManager, Wearable armor, Wearable clothing, bool armorPenetrated, bool clothingPenetrated)
     {
         bool criticalHit = false;
-        if (attackedFromBehind || Random.Range(1f, 100f) <= attacker.characterStats.GetCriticalChance())
+        if (attackedFromBehind || Random.Range(1f, 100f) <= attacker.characterStats.CriticalChance())
             criticalHit = true;
 
         if (criticalHit)
@@ -428,7 +443,11 @@ public class Status : MonoBehaviour
         }
         else if (cleaveDamage > 0)
         {
+            Injury gash = gm.healthSystem.GetGash(characterManager, bodyPart.bodyPartType, cleaveDamage);
+            HealthSystem.ApplyInjury(characterManager, gash, bodyPart.bodyPartType, attackedFromBehind);
 
+            if (gm.playerManager.CanSee(characterManager.spriteRenderer))
+                gm.flavorText.WriteLine_Injury(characterManager, gash, bodyPart.bodyPartType);
         }
     }
 

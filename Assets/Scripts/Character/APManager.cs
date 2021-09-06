@@ -76,7 +76,7 @@ public class APManager : MonoBehaviour
 
     public int GetMovementAPCost(CharacterManager characterMoving, bool diagonal)
     {
-        float cost = 0;
+        float cost;
         if (diagonal)
             cost = Mathf.RoundToInt(baseMovementCost * 1.414214f);
         else
@@ -305,6 +305,6 @@ public class APManager : MonoBehaviour
 
     public int GetOverEncumberedAPPenalty(CharacterManager characterManager, float APAmount)
     {
-        return Mathf.RoundToInt(APAmount * (baseOverEncumberedPenalty + ((characterManager.totalCarryWeight - characterManager.characterStats.GetMaximumWeightCapacity()) / characterManager.characterStats.GetMaximumWeightCapacity())));
+        return Mathf.RoundToInt(APAmount * (baseOverEncumberedPenalty + ((characterManager.totalCarryWeight - characterManager.characterStats.MaximumWeightCapacity()) / characterManager.characterStats.MaximumWeightCapacity())));
     }
 }

@@ -20,7 +20,7 @@ public class StaminaCosts : MonoBehaviour
     public static float GetOverEncumberedMoveCost(CharacterManager characterMoving, bool diaganol)
     {
         // The greater the over-encumbrance, the greater the stamina cost
-        float cost = (characterMoving.totalCarryWeight - characterMoving.characterStats.GetMaximumWeightCapacity()) * 0.2f;
+        float cost = (characterMoving.totalCarryWeight - characterMoving.characterStats.MaximumWeightCapacity()) * 0.2f;
         if (diaganol)
             cost *= 1.414214f;
 

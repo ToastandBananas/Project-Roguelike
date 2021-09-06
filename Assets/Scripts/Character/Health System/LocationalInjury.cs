@@ -20,6 +20,8 @@ public class LocationalInjury
     public int bleedTimeRemaining;
     public float bloodLossPerTurn;
 
+    public float speedModifier;
+
     [HideInInspector] public CharacterManager characterManager;
 
     public LocationalInjury(CharacterManager characterManager, Injury injury, BodyPartType injuryLocation, bool onBackOfBodyPart)
@@ -44,6 +46,12 @@ public class LocationalInjury
         Vector2 bloodLossValues = injury.BloodLossPerTurn();
         if (bloodLossValues.y > 0)
             bloodLossPerTurn = Random.Range(bloodLossValues.x, bloodLossValues.y);
+
+        if (injury.speedModifier.y > 0)
+            speedModifier = (Random.Range(injury.speedModifier.x, injury.speedModifier.y) / 100f) * characterManager.characterStats.speed.GetBaseValue();
+
+        if (injury.speedMod_LowerBodyOnly == false || InjuryLocatedOnLowerBody())
+            characterManager.characterStats.AdjustTotalSpeedMods(speedModifier);
     }
 
     public IEnumerator ApplyMedicalItem(CharacterManager characterApplying, ItemData itemData, Inventory inventory, InventoryItem invItem)
@@ -164,10 +172,10 @@ public class LocationalInjury
 
     public void Reinjure()
     {
-        // If this is an injury that bleeds, re-open it or add onto the bleed time
+        // If this is an injury that bleeds
         if (bloodLossPerTurn > 0)
         {
-            // Start bleeding again, or increase bleed time up to the max value
+            // Start bleeding again or increase bleed time, up to the max value
             Vector2Int bleedTimes = injury.BleedTime();
             bleedTimeRemaining += Random.Range(Mathf.RoundToInt(bleedTimes.x / 1.25f), Mathf.RoundToInt(bleedTimes.y / 1.25f));
             if (bleedTimeRemaining > bleedTimes.y)
@@ -175,9 +183,24 @@ public class LocationalInjury
 
             // Worsen bleeding, up to the max value
             Vector2 bloodLoss = injury.BloodLossPerTurn();
-            bloodLossPerTurn *= 1.25f;
+            bloodLossPerTurn *= Random.Range(1.15f, 1.35f);
             if (bloodLossPerTurn > bloodLoss.y)
                 bloodLossPerTurn = bloodLoss.y;
+        }
+
+        // If this injury affects speed
+        if (speedModifier > 0)
+        {
+            // Remove the current speed modifier
+            characterManager.characterStats.AdjustTotalSpeedMods(-speedModifier);
+
+            // Increase the speed modifier, up to the max value
+            speedModifier *= Random.Range(1.15f, 1.35f);
+            if (speedModifier > injury.speedModifier.y)
+                speedModifier = injury.speedModifier.y;
+
+            // Re-add the speed modifier
+            characterManager.characterStats.AdjustTotalSpeedMods(speedModifier);
         }
 
         // Add to the total injury time remaining, up to the max value
@@ -222,5 +245,20 @@ public class LocationalInjury
             return "Bleeding Heavily";
         else
             return "Bleeding Severely";
+    }
+
+    bool InjuryLocatedOnUpperBody()
+    {
+        if (injuryLocation == BodyPartType.Torso || injuryLocation == BodyPartType.Head || injuryLocation == BodyPartType.LeftArm || injuryLocation == BodyPartType.RightArm
+            || injuryLocation == BodyPartType.LeftHand || injuryLocation == BodyPartType.RightHand)
+            return true;
+        return false;
+    }
+
+    bool InjuryLocatedOnLowerBody()
+    {
+        if (injuryLocation == BodyPartType.LeftLeg || injuryLocation == BodyPartType.RightLeg || injuryLocation == BodyPartType.LeftFoot || injuryLocation == BodyPartType.RightFoot)
+            return true;
+        return false;
     }
 }

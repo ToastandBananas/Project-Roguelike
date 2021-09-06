@@ -9,10 +9,14 @@ public class Injury : ScriptableObject
     public InjuryType injuryType;
     public int severity;
 
-    [Header("Bleed Variables")]
+    [Header("Damage")]
     public Vector3Int minInjuryHealTime;
     public Vector3Int maxInjuryHealTime;
     public Vector2 damagePerTurn;
+
+    [Header("Stat Modifiers")]
+    public bool speedMod_LowerBodyOnly = true;
+    [Tooltip("Percent")] public Vector2 speedModifier;
 
     public Vector2Int InjuryTimeInSeconds()
     {

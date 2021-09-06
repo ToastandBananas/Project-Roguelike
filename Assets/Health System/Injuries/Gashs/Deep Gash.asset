@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 494931b850fa3e04aac1395fb38cc72b, type: 3}
-  m_Name: Bad Cut
+  m_Name: Deep Gash
   m_EditorClassIdentifier: 
-  name: Bad Cut
-  description: This one's gonna leave a scar.
+  name: Deep Gash
+  description: Ouch.
   injuryType: 1
-  severity: 3
-  minInjuryHealTime: {x: 36, y: 0, z: 0}
-  maxInjuryHealTime: {x: 72, y: 0, z: 0}
-  damagePerTurn: {x: 0.2, y: 0.35}
+  severity: 5
+  minInjuryHealTime: {x: 140, y: 0, z: 0}
+  maxInjuryHealTime: {x: 220, y: 0, z: 0}
+  damagePerTurn: {x: 0.75, y: 1.2}
   speedMod_LowerBodyOnly: 1
-  speedModifier: {x: 0.85, y: 1.4}
-  bleedTime: {x: 240, y: 360}
-  bloodLossPerTurn: {x: 4, y: 6}
+  speedModifier: {x: 2.35, y: 2.9}
+  bleedTime: {x: 620, y: 800}
+  bloodLossPerTurn: {x: 12, y: 15}

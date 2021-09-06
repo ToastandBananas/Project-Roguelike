@@ -19,5 +19,7 @@ MonoBehaviour:
   minInjuryHealTime: {x: 5, y: 0, z: 0}
   maxInjuryHealTime: {x: 10, y: 0, z: 0}
   damagePerTurn: {x: 0.025, y: 0.05}
+  speedMod_LowerBodyOnly: 1
+  speedModifier: {x: 0.05, y: 0.1}
   bleedTime: {x: 60, y: 120}
   bloodLossPerTurn: {x: 2, y: 3}

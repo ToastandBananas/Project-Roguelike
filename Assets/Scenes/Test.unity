@@ -12957,7 +12957,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 800e96fd316297442994b796a0c6d069, type: 2}
   - {fileID: 11400000, guid: f3b298d3ae410764a8d261ff4c4ac634, type: 2}
   - {fileID: 11400000, guid: daf631e826a9d7941860136c98ec0251, type: 2}
-  gashes: []
+  gashes:
+  - {fileID: 11400000, guid: a0253abcf141c1f4fb4d4a35a3992460, type: 2}
+  - {fileID: 11400000, guid: 2ece8224956126f4098ba4cbce37be35, type: 2}
+  - {fileID: 11400000, guid: 397a5acd716cdc341ace40cfcca50906, type: 2}
   punctures:
   - {fileID: 11400000, guid: b4ba96fb03c0dfc42ae96b776cc6ffe7, type: 2}
   - {fileID: 11400000, guid: f2ebb40232b10c549b1d704a19210b25, type: 2}
