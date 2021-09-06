@@ -8249,27 +8249,17 @@ MonoBehaviour:
   maxPersonalInvVolume:
     baseValue: 2
     modifiers: []
+  martialArtsSkill:
+    baseValue: 20
+    modifiers: 
+  shieldSkill:
+    baseValue: 20
+    modifiers: 
   swordSkill:
     baseValue: 20
     modifiers: 
-  unarmedDamage:
-    baseValue: 1
-    modifiers: 
-  meleeAccuracy:
-    baseValue: 20
-    modifiers: []
-  rangedAccuracy:
-    baseValue: 20
-    modifiers: []
-  evasion:
-    baseValue: 20
-    modifiers: []
-  shieldBlock:
-    baseValue: 20
-    modifiers: []
-  weaponBlock:
-    baseValue: 20
-    modifiers: []
+  totalAgilityMods: 0
+  totalSpeedMods: 0
   characterManager: {fileID: 0}
 --- !u!114 &549636873
 MonoBehaviour:
@@ -14976,27 +14966,17 @@ MonoBehaviour:
   maxPersonalInvVolume:
     baseValue: 2
     modifiers: []
+  martialArtsSkill:
+    baseValue: 20
+    modifiers: 
+  shieldSkill:
+    baseValue: 20
+    modifiers: 
   swordSkill:
     baseValue: 20
     modifiers: 
-  unarmedDamage:
-    baseValue: 2
-    modifiers: 
-  meleeAccuracy:
-    baseValue: 50
-    modifiers: []
-  rangedAccuracy:
-    baseValue: 50
-    modifiers: []
-  evasion:
-    baseValue: 10
-    modifiers: []
-  shieldBlock:
-    baseValue: 30
-    modifiers: []
-  weaponBlock:
-    baseValue: 40
-    modifiers: []
+  totalAgilityMods: 0
+  totalSpeedMods: 0
   characterManager: {fileID: 0}
 --- !u!114 &938806435
 MonoBehaviour:
@@ -22512,7 +22492,7 @@ MonoBehaviour:
     baseValue: 20
     modifiers: 
   strength:
-    baseValue: 20
+    baseValue: 60
     modifiers: 
   wisdom:
     baseValue: 20
@@ -22520,27 +22500,17 @@ MonoBehaviour:
   maxPersonalInvVolume:
     baseValue: 2
     modifiers: []
+  martialArtsSkill:
+    baseValue: 20
+    modifiers: 
+  shieldSkill:
+    baseValue: 20
+    modifiers: 
   swordSkill:
     baseValue: 20
     modifiers: 
-  unarmedDamage:
-    baseValue: 2
-    modifiers: 
-  meleeAccuracy:
-    baseValue: 50
-    modifiers: []
-  rangedAccuracy:
-    baseValue: 50
-    modifiers: []
-  evasion:
-    baseValue: 10
-    modifiers: []
-  shieldBlock:
-    baseValue: 30
-    modifiers: []
-  weaponBlock:
-    baseValue: 40
-    modifiers: []
+  totalAgilityMods: 0
+  totalSpeedMods: 0
   characterManager: {fileID: 0}
 --- !u!114 &1347319904
 MonoBehaviour:

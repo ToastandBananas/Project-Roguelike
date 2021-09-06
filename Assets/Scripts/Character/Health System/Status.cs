@@ -127,17 +127,8 @@ public class Status : MonoBehaviour
                     if (bodyParts[i].injuries[j].bandage != null)
                         bodyParts[i].injuries[j].SoilBandage(0.1f / bodyParts[i].injuries[j].bandage.quality);
 
-                    // Lower the injury's speed modifier over time
-                    if (bodyParts[i].injuries[j].speedModifier > 0)
-                    {
-                        characterManager.characterStats.AdjustTotalSpeedMods(-bodyParts[i].injuries[j].speedModifier);
-                        bodyParts[i].injuries[j].speedModifier -= (timePassed / TimeSystem.defaultTimeTickInSeconds) * bodyParts[i].injuries[j].injury.speedModifier.x * 0.001f * bodyParts[i].injuries[j].injuryHealMultiplier;
-
-                        if (bodyParts[i].injuries[j].speedModifier <= 0)
-                            bodyParts[i].injuries[j].speedModifier = 0;
-                        else
-                            characterManager.characterStats.AdjustTotalSpeedMods(bodyParts[i].injuries[j].speedModifier);
-                    }
+                    // Slowly lower negative stat modifiers over time
+                    DrainStatModifiers(bodyParts[i].injuries[j], timePassed);
 
                     // Update injury time remaining
                     bodyParts[i].injuries[j].injuryTimeRemaining -= Mathf.RoundToInt(timePassed * bodyParts[i].injuries[j].injuryHealMultiplier);
@@ -172,6 +163,33 @@ public class Status : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+    
+    void DrainStatModifiers(LocationalInjury locationalInjury, int timePassed)
+    {
+        // Lower the injury's agility modifier over time
+        if (locationalInjury.agilityModifier != 0)
+        {
+            characterManager.characterStats.AdjustTotalAgilityMods(-locationalInjury.agilityModifier);
+            locationalInjury.agilityModifier += (timePassed / TimeSystem.defaultTimeTickInSeconds) * Mathf.Abs(locationalInjury.injury.agilityModifier.x) * 0.001f * locationalInjury.injuryHealMultiplier;
+
+            if (locationalInjury.agilityModifier >= 0)
+                locationalInjury.agilityModifier = 0;
+            else
+                characterManager.characterStats.AdjustTotalSpeedMods(locationalInjury.agilityModifier);
+        }
+
+        // Lower the injury's speed modifier over time
+        if (locationalInjury.speedModifier != 0)
+        {
+            characterManager.characterStats.AdjustTotalSpeedMods(-locationalInjury.speedModifier);
+            locationalInjury.speedModifier += (timePassed / TimeSystem.defaultTimeTickInSeconds) * Mathf.Abs(locationalInjury.injury.speedModifier.x) * 0.001f * locationalInjury.injuryHealMultiplier;
+
+            if (locationalInjury.speedModifier >= 0)
+                locationalInjury.speedModifier = 0;
+            else
+                characterManager.characterStats.AdjustTotalSpeedMods(locationalInjury.speedModifier);
         }
     }
     #endregion
@@ -211,7 +229,7 @@ public class Status : MonoBehaviour
                 
                 // Lower blood loss per turn as the injury heals
                 if (bodyParts[i].injuries[k].bloodLossPerTurn > 0)
-                    bodyParts[i].injuries[k].bloodLossPerTurn -= (timePassed / TimeSystem.defaultTimeTickInSeconds) * bodyParts[i].injuries[k].injury.BloodLossPerTurn().x * 0.001f * bodyParts[i].injuries[k].injuryHealMultiplier;
+                    bodyParts[i].injuries[k].bloodLossPerTurn -= (timePassed / TimeSystem.defaultTimeTickInSeconds) * Mathf.Abs(bodyParts[i].injuries[k].injury.BloodLossPerTurn().x) * 0.001f * bodyParts[i].injuries[k].injuryHealMultiplier;
             }
 
             // Show some flavor text if the injury is bleeding

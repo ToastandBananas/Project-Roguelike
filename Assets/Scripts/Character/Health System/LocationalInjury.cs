@@ -20,6 +20,7 @@ public class LocationalInjury
     public int bleedTimeRemaining;
     public float bloodLossPerTurn;
 
+    public float agilityModifier;
     public float speedModifier;
 
     [HideInInspector] public CharacterManager characterManager;
@@ -47,11 +48,25 @@ public class LocationalInjury
         if (bloodLossValues.y > 0)
             bloodLossPerTurn = Random.Range(bloodLossValues.x, bloodLossValues.y);
 
-        if (injury.speedModifier.y > 0)
-            speedModifier = (Random.Range(injury.speedModifier.x, injury.speedModifier.y) / 100f) * characterManager.characterStats.speed.GetBaseValue();
+        if (injury.agilityModifier.y != 0)
+        {
+            if (injury.agilityMod_LowerBodyOnly == false || InjuryLocatedOnLowerBody())
+            {
+                agilityModifier = (Random.Range(injury.agilityModifier.x, injury.agilityModifier.y) / 100f) * characterManager.characterStats.agility.GetBaseValue();
+                characterManager.characterStats.AdjustTotalAgilityMods(agilityModifier);
+                Debug.Log(agilityModifier);
+            }
+        }
 
-        if (injury.speedMod_LowerBodyOnly == false || InjuryLocatedOnLowerBody())
-            characterManager.characterStats.AdjustTotalSpeedMods(speedModifier);
+        if (injury.speedModifier.y != 0)
+        {
+            if (injury.speedMod_LowerBodyOnly == false || InjuryLocatedOnLowerBody())
+            {
+                speedModifier = (Random.Range(injury.speedModifier.x, injury.speedModifier.y) / 100f) * characterManager.characterStats.speed.GetBaseValue();
+                characterManager.characterStats.AdjustTotalSpeedMods(speedModifier);
+                Debug.Log(speedModifier);
+            }
+        }
     }
 
     public IEnumerator ApplyMedicalItem(CharacterManager characterApplying, ItemData itemData, Inventory inventory, InventoryItem invItem)
