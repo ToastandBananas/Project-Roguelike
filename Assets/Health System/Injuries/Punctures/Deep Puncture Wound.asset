@@ -19,9 +19,11 @@ MonoBehaviour:
   minInjuryHealTime: {x: 130, y: 0, z: 0}
   maxInjuryHealTime: {x: 204, y: 0, z: 0}
   damagePerTurn: {x: 0.6, y: 0.9}
-  agilityModifier: {x: -2.75, y: -2.35}
+  agilityModifier: {x: -8.5, y: -6.25}
   agilityMod_LowerBodyOnly: 1
-  speedModifier: {x: -2.75, y: -2.35}
+  dexterityModifier: {x: -8.5, y: -6.25}
+  dexterityMod_ArmsOnly: 1
+  speedModifier: {x: -8.5, y: -6.25}
   speedMod_LowerBodyOnly: 1
   bleedTime: {x: 444, y: 618}
   immediateBloodLoss: {x: 9.5, y: 19}

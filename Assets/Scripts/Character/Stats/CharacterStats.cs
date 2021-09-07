@@ -25,9 +25,7 @@ public class CharacterStats : Stats
     int APLossBuildup;
     readonly int baseAP = 25;
 
-    [HideInInspector] public float totalAgilityMods;
-    [HideInInspector] public float totalSpeedMods;
-
+    [HideInInspector] public float totalAgilityMods, totalConstitutionMods, totalDexterityMods, totalEnduranceMods, totalIntelligenceMods, totalSpeedMods, totalStrengthMods, totalWisdomMods;
     [HideInInspector] public CharacterManager characterManager;
 
     readonly float baseCarryWeight = 10;
@@ -122,11 +120,53 @@ public class CharacterStats : Stats
         characterManager.characterStats.agility.AddModifier(Mathf.RoundToInt(totalAgilityMods));
     }
 
+    public void AdjustTotalConstitutionMods(float amount)
+    {
+        characterManager.characterStats.constitution.RemoveModifier(Mathf.RoundToInt(totalConstitutionMods));
+        totalConstitutionMods += amount;
+        characterManager.characterStats.constitution.AddModifier(Mathf.RoundToInt(totalConstitutionMods));
+    }
+
+    public void AdjustTotalDexterityMods(float amount)
+    {
+        characterManager.characterStats.dexterity.RemoveModifier(Mathf.RoundToInt(totalDexterityMods));
+        totalDexterityMods += amount;
+        characterManager.characterStats.dexterity.AddModifier(Mathf.RoundToInt(totalDexterityMods));
+    }
+
+    public void AdjustTotalEnduranceMods(float amount)
+    {
+        characterManager.characterStats.endurance.RemoveModifier(Mathf.RoundToInt(totalEnduranceMods));
+        totalEnduranceMods += amount;
+        characterManager.characterStats.endurance.AddModifier(Mathf.RoundToInt(totalEnduranceMods));
+    }
+
+    public void AdjustTotalIntelligenceMods(float amount)
+    {
+        characterManager.characterStats.intelligence.RemoveModifier(Mathf.RoundToInt(totalIntelligenceMods));
+        totalIntelligenceMods += amount;
+        characterManager.characterStats.intelligence.AddModifier(Mathf.RoundToInt(totalIntelligenceMods));
+    }
+
     public void AdjustTotalSpeedMods(float amount)
     {
         characterManager.characterStats.speed.RemoveModifier(Mathf.RoundToInt(totalSpeedMods));
         totalSpeedMods += amount;
         characterManager.characterStats.speed.AddModifier(Mathf.RoundToInt(totalSpeedMods));
+    }
+
+    public void AdjustTotalStrengthMods(float amount)
+    {
+        characterManager.characterStats.strength.RemoveModifier(Mathf.RoundToInt(totalStrengthMods));
+        totalStrengthMods += amount;
+        characterManager.characterStats.strength.AddModifier(Mathf.RoundToInt(totalStrengthMods));
+    }
+
+    public void AdjustTotalWisdomMods(float amount)
+    {
+        characterManager.characterStats.wisdom.RemoveModifier(Mathf.RoundToInt(totalWisdomMods));
+        totalWisdomMods += amount;
+        characterManager.characterStats.wisdom.AddModifier(Mathf.RoundToInt(totalWisdomMods));
     }
     #endregion
 

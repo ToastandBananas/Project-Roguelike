@@ -21,6 +21,7 @@ public class LocationalInjury
     public float bloodLossPerTurn;
 
     public float agilityModifier;
+    public float dexterityModifier;
     public float speedModifier;
 
     [HideInInspector] public CharacterManager characterManager;
@@ -54,7 +55,15 @@ public class LocationalInjury
             {
                 agilityModifier = (Random.Range(injury.agilityModifier.x, injury.agilityModifier.y) / 100f) * characterManager.characterStats.agility.GetBaseValue();
                 characterManager.characterStats.AdjustTotalAgilityMods(agilityModifier);
-                Debug.Log(agilityModifier);
+            }
+        }
+
+        if (injury.dexterityModifier.y != 0)
+        {
+            if (injury.dexterityMod_ArmsOnly == false || InjuryLocatedOnArms())
+            {
+                dexterityModifier = (Random.Range(injury.dexterityModifier.x, injury.dexterityModifier.y) / 100f) * characterManager.characterStats.dexterity.GetBaseValue();
+                characterManager.characterStats.AdjustTotalDexterityMods(dexterityModifier);
             }
         }
 
@@ -64,7 +73,6 @@ public class LocationalInjury
             {
                 speedModifier = (Random.Range(injury.speedModifier.x, injury.speedModifier.y) / 100f) * characterManager.characterStats.speed.GetBaseValue();
                 characterManager.characterStats.AdjustTotalSpeedMods(speedModifier);
-                Debug.Log(speedModifier);
             }
         }
     }
@@ -187,7 +195,7 @@ public class LocationalInjury
 
     public void Reinjure()
     {
-        // If this is an injury that bleeds
+        // If this is an injury that bleeds and it hasn't sealed up yet
         if (bloodLossPerTurn > 0)
         {
             // Start bleeding again or increase bleed time, up to the max value
@@ -201,6 +209,36 @@ public class LocationalInjury
             bloodLossPerTurn *= Random.Range(1.15f, 1.35f);
             if (bloodLossPerTurn > bloodLoss.y)
                 bloodLossPerTurn = bloodLoss.y;
+        }
+
+        // If this injury affects agility
+        if (agilityModifier > 0)
+        {
+            // Remove the current speed modifier
+            characterManager.characterStats.AdjustTotalAgilityMods(-agilityModifier);
+
+            // Increase the speed modifier, up to the max value
+            agilityModifier *= Random.Range(1.15f, 1.35f);
+            if (speedModifier > injury.agilityModifier.y)
+                speedModifier = injury.agilityModifier.y;
+
+            // Re-add the speed modifier
+            characterManager.characterStats.AdjustTotalAgilityMods(agilityModifier);
+        }
+
+        // If this injury affects dexterity
+        if (dexterityModifier > 0)
+        {
+            // Remove the current speed modifier
+            characterManager.characterStats.AdjustTotalDexterityMods(-dexterityModifier);
+
+            // Increase the speed modifier, up to the max value
+            dexterityModifier *= Random.Range(1.15f, 1.35f);
+            if (dexterityModifier > injury.dexterityModifier.y)
+                dexterityModifier = injury.dexterityModifier.y;
+
+            // Re-add the speed modifier
+            characterManager.characterStats.AdjustTotalDexterityMods(dexterityModifier);
         }
 
         // If this injury affects speed
@@ -266,6 +304,13 @@ public class LocationalInjury
     {
         if (injuryLocation == BodyPartType.Torso || injuryLocation == BodyPartType.Head || injuryLocation == BodyPartType.LeftArm || injuryLocation == BodyPartType.RightArm
             || injuryLocation == BodyPartType.LeftHand || injuryLocation == BodyPartType.RightHand)
+            return true;
+        return false;
+    }
+
+    bool InjuryLocatedOnArms()
+    {
+        if (injuryLocation == BodyPartType.LeftArm || injuryLocation == BodyPartType.RightArm || injuryLocation == BodyPartType.LeftHand || injuryLocation == BodyPartType.RightHand)
             return true;
         return false;
     }

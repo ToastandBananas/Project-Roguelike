@@ -15,9 +15,11 @@ public class Injury : ScriptableObject
     public Vector2 damagePerTurn;
 
     [Header("Stat Modifiers")]
-    [Tooltip("Whole Number Percent (Ex: 3.5)")] public Vector2 agilityModifier;
+    [Tooltip("Percent (Ex: 3.5%)")] public Vector2 agilityModifier;
     public bool agilityMod_LowerBodyOnly = true;
-    [Tooltip("Whole Number Percent (Ex: 3.5)")] public Vector2 speedModifier;
+    [Tooltip("Percent (Ex: 3.5%)")] public Vector2 dexterityModifier;
+    public bool dexterityMod_ArmsOnly = true;
+    [Tooltip("Percent (Ex: 3.5%)")] public Vector2 speedModifier;
     public bool speedMod_LowerBodyOnly = true;
 
     public Vector2Int InjuryTimeInSeconds()

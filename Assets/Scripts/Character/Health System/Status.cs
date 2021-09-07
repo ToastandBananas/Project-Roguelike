@@ -172,19 +172,31 @@ public class Status : MonoBehaviour
         if (locationalInjury.agilityModifier != 0)
         {
             characterManager.characterStats.AdjustTotalAgilityMods(-locationalInjury.agilityModifier);
-            locationalInjury.agilityModifier += (timePassed / TimeSystem.defaultTimeTickInSeconds) * Mathf.Abs(locationalInjury.injury.agilityModifier.x) * 0.001f * locationalInjury.injuryHealMultiplier;
+            locationalInjury.agilityModifier += (timePassed / TimeSystem.defaultTimeTickInSeconds) * Mathf.Abs(locationalInjury.injury.agilityModifier.x) * 0.0001f * locationalInjury.injuryHealMultiplier;
 
             if (locationalInjury.agilityModifier >= 0)
                 locationalInjury.agilityModifier = 0;
             else
-                characterManager.characterStats.AdjustTotalSpeedMods(locationalInjury.agilityModifier);
+                characterManager.characterStats.AdjustTotalAgilityMods(locationalInjury.agilityModifier);
+        }
+
+        // Lower the injury's dexterity modifier over time
+        if (locationalInjury.dexterityModifier != 0)
+        {
+            characterManager.characterStats.AdjustTotalDexterityMods(-locationalInjury.dexterityModifier);
+            locationalInjury.dexterityModifier += (timePassed / TimeSystem.defaultTimeTickInSeconds) * Mathf.Abs(locationalInjury.injury.dexterityModifier.x) * 0.0001f * locationalInjury.injuryHealMultiplier;
+
+            if (locationalInjury.dexterityModifier >= 0)
+                locationalInjury.dexterityModifier = 0;
+            else
+                characterManager.characterStats.AdjustTotalDexterityMods(locationalInjury.dexterityModifier);
         }
 
         // Lower the injury's speed modifier over time
         if (locationalInjury.speedModifier != 0)
         {
             characterManager.characterStats.AdjustTotalSpeedMods(-locationalInjury.speedModifier);
-            locationalInjury.speedModifier += (timePassed / TimeSystem.defaultTimeTickInSeconds) * Mathf.Abs(locationalInjury.injury.speedModifier.x) * 0.001f * locationalInjury.injuryHealMultiplier;
+            locationalInjury.speedModifier += (timePassed / TimeSystem.defaultTimeTickInSeconds) * Mathf.Abs(locationalInjury.injury.speedModifier.x) * 0.0001f * locationalInjury.injuryHealMultiplier;
 
             if (locationalInjury.speedModifier >= 0)
                 locationalInjury.speedModifier = 0;
