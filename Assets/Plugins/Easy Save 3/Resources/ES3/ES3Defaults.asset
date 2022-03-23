@@ -33,7 +33,6 @@ MonoBehaviour:
     - AstarPathfindingProject
     - Assembly-CSharp-firstpass
     - Assembly-CSharp
-    - VSSettingsProvider
     - PsdPlugin
     - AstarPathfindingProjectEditor
     - InControl.Editor

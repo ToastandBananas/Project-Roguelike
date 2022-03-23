@@ -84,6 +84,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -592,6 +593,27 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Gloves_Long_12: 3092687047059359777
+      Gloves_Long_10: -4487678075059954153
+      Gloves_Long_4: -7382263440082133128
+      Gloves_Long_3: -8215280312497376567
+      Gloves_Long_13: -3162752845266393131
+      Gloves_Long_16: -7069132755940507069
+      Gloves_Long_9: 453628246758166544
+      Gloves_Long_15: -3039514101006155293
+      Gloves_Long_7: -6107850911335083194
+      Gloves_Long_8: 6883363322839985235
+      Gloves_Long_19: -1444351336950483345
+      Gloves_Long_5: -6913098693859886076
+      Gloves_Long_11: 8814403687409104412
+      Gloves_Long_0: -3036856520320368992
+      Gloves_Long_2: -7456376465260804228
+      Gloves_Long_6: -1413405464330865832
+      Gloves_Long_18: -801646937032702677
+      Gloves_Long_17: 1234643677674588917
+      Gloves_Long_1: -4314490945525858086
+      Gloves_Long_14: -3982473671174234387
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

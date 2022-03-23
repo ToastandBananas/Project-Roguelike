@@ -84,6 +84,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -592,6 +593,27 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Shields_Plain_7: 7224658764465040182
+      Shields_Plain_11: 442560075805822924
+      Shields_Plain_4: 6875187787367833208
+      Shields_Plain_9: 1845994989756586063
+      Shields_Plain_3: -7004558639536268662
+      Shields_Plain_19: 6342731420765736890
+      Shields_Plain_15: -8353204685587836160
+      Shields_Plain_18: 2202253980867763278
+      Shields_Plain_6: -1561643085066726744
+      Shields_Plain_10: 2025878411903601715
+      Shields_Plain_17: -1703749577691597649
+      Shields_Plain_13: 6595320638529337423
+      Shields_Plain_1: -1043291551265017118
+      Shields_Plain_2: -3337057714195094687
+      Shields_Plain_12: -2031630939469899967
+      Shields_Plain_8: 3708596382815225016
+      Shields_Plain_0: -2612714518970803533
+      Shields_Plain_5: -1549922281243202348
+      Shields_Plain_14: 5101860129945408562
+      Shields_Plain_16: -8340853266720989809
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

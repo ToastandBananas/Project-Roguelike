@@ -84,6 +84,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -592,6 +593,27 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      PantsAndLegArmor_13: -7224627440508987207
+      PantsAndLegArmor_0: 7064213547540770794
+      PantsAndLegArmor_4: -1861717022229535508
+      PantsAndLegArmor_9: -7316431247807946832
+      PantsAndLegArmor_15: -5170618558313295667
+      PantsAndLegArmor_1: -8667229808375727173
+      PantsAndLegArmor_5: -5383791819446491467
+      PantsAndLegArmor_19: -5718355287613722183
+      PantsAndLegArmor_2: -2574444031537456026
+      PantsAndLegArmor_6: 3449248536656821092
+      PantsAndLegArmor_16: -5394860180796186900
+      PantsAndLegArmor_10: 5907304819477131339
+      PantsAndLegArmor_18: -6380556724361714509
+      PantsAndLegArmor_12: 6631375580752620783
+      PantsAndLegArmor_17: -1700716484431846761
+      PantsAndLegArmor_3: -5990749758871986973
+      PantsAndLegArmor_11: -1527421341244547427
+      PantsAndLegArmor_7: 8206042815811929693
+      PantsAndLegArmor_8: -7491939111278787975
+      PantsAndLegArmor_14: 2411094615965603855
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

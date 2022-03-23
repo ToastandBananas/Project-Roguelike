@@ -84,6 +84,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -592,6 +593,27 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Swords_Basic_16: -8547883160801000389
+      Swords_Basic_18: 7776509220269196009
+      Swords_Basic_17: -2955871939749219633
+      Swords_Basic_0: -5133662976925332979
+      Swords_Basic_11: 8952252386886002119
+      Swords_Basic_3: -8831035406917379485
+      Swords_Basic_14: -5789881979004206075
+      Swords_Basic_19: -1497448602087255089
+      Swords_Basic_13: -1469225312921241726
+      Swords_Basic_9: -2296640805853904783
+      Swords_Basic_8: 8223229356165470206
+      Swords_Basic_15: -269207011424064805
+      Swords_Basic_12: -1211161754454696322
+      Swords_Basic_1: 1560336491388677395
+      Swords_Basic_7: 5320813328248258580
+      Swords_Basic_6: -6576881616218958635
+      Swords_Basic_2: -4329088164155459943
+      Swords_Basic_4: -9182790743372633406
+      Swords_Basic_5: 4648652530162920065
+      Swords_Basic_10: 8453804762826023649
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -84,6 +84,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -592,6 +593,27 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      ShirtsAndBodyArmor_8: -139519438677657044
+      ShirtsAndBodyArmor_5: -4950854399226461915
+      ShirtsAndBodyArmor_3: 3268185844855087177
+      ShirtsAndBodyArmor_13: -6192574086335491899
+      ShirtsAndBodyArmor_17: 7922962519764502366
+      ShirtsAndBodyArmor_7: 4419492020009277699
+      ShirtsAndBodyArmor_10: 7297367800289220642
+      ShirtsAndBodyArmor_9: -4645668062911961185
+      ShirtsAndBodyArmor_19: 6385164813424438413
+      ShirtsAndBodyArmor_14: -5454929819195925489
+      ShirtsAndBodyArmor_6: 6283233572087427082
+      ShirtsAndBodyArmor_11: -4947567093205168505
+      ShirtsAndBodyArmor_12: 1846978774338307880
+      ShirtsAndBodyArmor_16: 6174932918207340366
+      ShirtsAndBodyArmor_2: -6943516956681289710
+      ShirtsAndBodyArmor_0: 3118948398539356029
+      ShirtsAndBodyArmor_1: 8233946077316339242
+      ShirtsAndBodyArmor_15: -1940712491715048298
+      ShirtsAndBodyArmor_18: 2700717461094159501
+      ShirtsAndBodyArmor_4: 6558539774927433708
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

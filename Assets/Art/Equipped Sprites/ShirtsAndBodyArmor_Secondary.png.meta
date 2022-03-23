@@ -84,6 +84,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -592,6 +593,27 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      ShirtsAndBodyArmor_Secondary_12: -1770006924421046569
+      ShirtsAndBodyArmor_Secondary_6: -1962488745759495588
+      ShirtsAndBodyArmor_Secondary_10: 7142989329049591689
+      ShirtsAndBodyArmor_Secondary_11: -1327706671871799070
+      ShirtsAndBodyArmor_Secondary_15: 3871055676941753894
+      ShirtsAndBodyArmor_Secondary_17: -2759724881380430040
+      ShirtsAndBodyArmor_Secondary_4: -6074462406116161115
+      ShirtsAndBodyArmor_Secondary_7: 4270045488470616325
+      ShirtsAndBodyArmor_Secondary_3: 8294215588540098489
+      ShirtsAndBodyArmor_Secondary_19: -5983327876290345634
+      ShirtsAndBodyArmor_Secondary_5: 1388212633956572206
+      ShirtsAndBodyArmor_Secondary_14: -3299923783017130307
+      ShirtsAndBodyArmor_Secondary_1: -8145818787108282003
+      ShirtsAndBodyArmor_Secondary_16: 7377260623018339136
+      ShirtsAndBodyArmor_Secondary_13: 8618330149386856630
+      ShirtsAndBodyArmor_Secondary_2: -5485064551199191588
+      ShirtsAndBodyArmor_Secondary_18: -5521400658624384372
+      ShirtsAndBodyArmor_Secondary_8: -7562002513215948362
+      ShirtsAndBodyArmor_Secondary_9: -7536468401008123283
+      ShirtsAndBodyArmor_Secondary_0: -2751501876923536110
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
